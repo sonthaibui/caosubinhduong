@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sale_form_view_inherit_modify_product_template_id" model="ir.ui.view">
+            <field name="name">sale.order.commitment.date.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/field[@name='state']" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,confirm,done,cancel"/>
+                </xpath>
+
+                <xpath expr="//button[@name='action_cancel']" position="replace">
+                    <button name="action_request" string="Confirm" type="object"
+                        attrs="{'invisible': [('state', 'not in', ['draft', 'sent'])]}"/>
+                    <button name="action_done" string="Lock" type="object"
+                        attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
+                    <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': ['|', ('state', 'in', ['done', 'cancel']), ('id', '=', False)]}"/>
+                    <button name="wizards_open_import_sol" class="btn-primary" type="object" string="Import Data"  context="{'sale_id':id}"/>
+                </xpath>
+                <xpath expr="//button[@id='action_confirm']" position="replace"/>
+                <xpath expr="//button[@name='action_confirm']" position="replace">
+                    <button name="action_split_order" type="object" string="Split Order" states="draft,sent"/>
+                </xpath>
+
+                <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" type="object" name="action_sale_order_history"
+                        groups="sales_team.group_sale_salesman" icon="fa-history">
+                        <field string="Sales" name="sale_order_count" widget="statinfo"/>
+                    </button>
+                    <button class="oe_stat_button" type="object" string="Revised History" name="show_revisedline" icon="fa-tasks">
+                    </button>
+                </xpath>
+
+                <field name="order_line" position="attributes">
+                    <attribute name="context">{'default_commitment_date':commitment_date,'partner_id':partner_id}</attribute>
+                    <attribute name="attrs">{'invisible': [('partner_id', '=', False)]}</attribute>
+                </field>
+                <!-- <xpath expr="//tree/field[@name='product_template_id']" position="before">
+                    <field name="categ_id" option="hide"/>
+                </xpath> -->
+                <xpath expr="//field[@name='order_line']/tree//field[@name='name']" position="after">
+                    <field name="note" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/form//field[@name='tax_id']" position="after">
+                    <field name="commitment_date" autocomplete="off"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                    <field name="forecast_expected_date" invisible="1"/>
+                    <field name="commitment_date" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="class">resize_column</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="qty_on_hand" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='product_template_id']" position="before">
+                    <button type="object" name="action_custom" class="btn" icon="fa-cog"/>
+                </xpath>
+                <xpath expr="//field[@name='product_template_id']" position="attributes">
+                    <attribute name="options">{'no_create_edit': True, 'no_open':True,'no_create':True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                    <attribute name="context">{'default_type':'invoice', 'show_address': 1}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                    <attribute name="context">{'default_type':'delivery','show_address': 1}</attribute>
+                </xpath>
+                <xpath expr="//label[@for='pricelist_id']" position="attributes">
+                    <attribute name="string">Pricing rule</attribute>
+                </xpath>
+                <xpath expr="//tree//field[@name='price_total']" position="attributes">
+                    <attribute name="sum">Total Price</attribute>
+                </xpath>
+                <xpath expr="//tree//field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="sum">Total Qty</attribute>
+                </xpath>
+                <xpath expr="//tree//field[@name='price_unit']" position="attributes">
+                    <attribute name="sum">Total Price Unit</attribute>
+                </xpath>
+                <xpath expr="//tree//field[@name='qty_delivered']" position="attributes">
+                    <attribute name="sum">Total Qty Delivered</attribute>
+                </xpath>
+                <xpath expr="//tree//field[@name='qty_invoiced']" position="attributes">
+                    <attribute name="sum">Total Qty Delivered</attribute>
+                </xpath>        
+                <xpath expr="//tree//field[@name='price_subtotal']" position="attributes">
+                    <attribute name="sum">Subtotal Price</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sale_shipping']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//group[@name='order_details']//field[@name='date_order']" position="after">
+                    <field name="expected_date" invisible="0" autocomplete="off"/>
+                    <field name="commitment_date" required="1" autocomplete="off"/>
+                </xpath>
+                <xpath expr="//group[@name='order_details']//field[@name='payment_term_id']" position="after">
+                    <field name="picking_policy"/>
+                    <field name="journal_id" optional="{'no_create_edit': True, no_open':True, 'no_create':True}"/>
+                    <field name="incoterm" optional="{'no_create_edit': True, no_open':True, 'no_create':True}" attrs="{'readonly': [('state', 'not in', ['draft', 'sent'])]}"/>
+                    <field name="partner_tag_id"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='other_information']" position="before">
+                     <page string="Children Order">
+                        <field name="child_ids" optional="show"/>
+                    </page>
+                    <page string="Quotation History">
+                        <field name="revised_custom_ids" nolabel="1" readonly="True">
+                            <tree editable='bottom'>
+                                <field name="revised_number"/>
+                                <field name="revised_line_ids"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_form_view_inherit_modify_readonly" model="ir.ui.view">
+            <field name="name">sale.order.form.view.inherit.modify.readonly</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('sales_team.group_sale_salesman')])]"/>      
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>                   
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_view_inherit_edit_readonly" model="ir.ui.view">
+            <field name="name">sale order view inherit edit readonly</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>      
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                     <attribute name="readonly">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_form_view_inherit_modify_editable" model="ir.ui.view">
+            <field name="name">sale.order.form.view.inherit.modify.editable</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('sales_team.group_sale_manager')])]"/>      
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                    <attribute name="readonly">0</attribute>                   
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='discount']" position="attributes">
+                    <attribute name="readonly">0</attribute>                   
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='tax_id']" position="attributes">
+                    <attribute name="readonly">0</attribute>                   
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale.menu_product_pricelist_main" model="ir.ui.menu">
+            <field name="name">Pricing Module Rule</field>
+        </record>
+
+        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+            <field name="domain">[('state','in',('draft','sent', 'cancel'))]</field>
+            <field name="context">{'search_default_my_quotation': 1,'search_default_draft':1}</field>
+        </record>
+
+        <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+        </record>
+
+        <record id="view_quotation_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.quotation.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="create_uid"/>
+                </xpath>
+            </field>
+        </record>
+
+         <record id="view_order_tree_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="create_uid"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_status']" position="before">
+                    <field name="state"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">true</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="model_sale_order_action_cofirm" model="ir.actions.server">
+            <field name="name">Confirm order</field>
+            <field name="model_id" ref="model_sale_order"/>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.button_confirm_sale_order()
+            </field>
+        </record>
+
+    </data>
+</odoo>

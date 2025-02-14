@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<odoo>
+  <data>
+
+    <record id="document_page_xview" model="ir.ui.view">
+      <field name="name">document.page.xview</field>
+      <field name="model">document.page</field>
+      <field name="arch" type="xml">
+        <xview parent_id="parent_id">
+        </xview>
+      </field>
+    </record>
+
+    <record id="odb_document_management.action_page" model="ir.actions.act_window">
+      <field name="view_mode">xview,tree,form,kanban</field>
+    </record>
+
+  </data>
+</odoo>

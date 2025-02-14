@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="order_confirmation_successful_mail" model="mail.template">
+            <field name="name">Order Confirmation Successful</field>
+            <!-- <field name="email_to">{{object.partner_id.email or ''}}</field> -->
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="lang">{{object.user_id.lang}}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+				<div>
+					<h2>WE ARE ON IT!</h2>	
+					<br/><br/>
+					<br/>
+                        Hi <strong t-out="object.partner_id.name or ''"></strong>, <br/>
+                        Thank you for your purchase with <strong t-out="object.user_id.company_id.name or object.company_id.name"></strong>. <br/>
+                        Your order <strong t-out="object.name or ''"></strong> has been confirmed and being processed. Once everything is ready to ship, our team will <br/>
+                        reach out and arrange delivery. <br/>
+                        In the meantime, if you have any questions, send us an email at <strong t-out="object.user_id.company_id.email or object.company_id.email"></strong><br/> and we will be be more than <br/>
+                        happy to help. <br/>
+
+                        <strong t-out="object.partner_id.name or ''"></strong> ơi, <br/>
+                        Cảm ơn [anh/chị] đã tin tưởng lựa chọn <strong t-out="object.user_id.company_id.name or object.company_id.name"></strong>. <br/>
+                        Đơn hàng <strong t-out="object.name or ''"></strong> đã được xác nhận và đang trong quá trình xử lý. Sau khi hoàn tất,<strong t-out="object.user_id.company_id.name or object.company_id.name"></strong> sẽ liên hệ để <br/>
+                        sắp xếp giao hàng cho [anh/chị] trong thời gian sớm nhất. <br/>
+                        Nếu bạn có bất kỳ câu hỏi hay thắc mắc, vui lòng liên hệ đến <strong t-out="object.user_id.company_id.email or object.company_id.email"></strong><br/> để được tư vấn và hỗ trợ thêm. <br/>
+					<br/>
+					 	<hr  width="30%" size="5px" align="left"/> 
+                        <h4>ORDER SUMMARY</h4><br/>
+
+                        <h4>CUSTOMER INFORMATION:</h4><br/>
+
+                        Shipping address<br/>
+                        Billing address<br/>
+                        Shipping method <br/>
+                        Payment method<br/>
+
+                        ---------<br/>
+
+                        <strong t-out="object.user_id.company_id.name or object.company_id.name"></strong><br/>
+                        <strong t-out="object.user_id.company_id.street or object.company_id.street"></strong><br/>
+                        <strong t-out="object.user_id.company_id.phone or object.company_id.phone or '+84 90 238 83 10'"></strong><br/>
+
+				</div>
+            </field>
+        </record>
+
+    </data>
+</odoo>

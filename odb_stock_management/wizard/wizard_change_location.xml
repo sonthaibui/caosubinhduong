@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wizard_change_location" model="ir.ui.view">
+        <field name="name">wizard Change action_change_location</field>
+        <field name="model">wizard.change.location</field>
+        <field name="arch" type="xml">
+            <form string="Wizards Change location">
+                <group>
+                    <group>
+                        <field name="location_id"/>
+                    </group>
+                    <group>
+                        <field name="location_dest_id" />
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_change_location" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

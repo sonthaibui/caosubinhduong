@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_pos_bom" name="POS BoM" parent="point_of_sale.pos_config_menu_catalog" action="pos_bom_action" groups="point_of_sale.group_pos_manager"/>
+    </data>
+</odoo>

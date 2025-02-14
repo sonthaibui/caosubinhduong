@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_contact_res_partner_form_view" model="ir.ui.view">
+        <field name="name">sale.contact.res.partner.form.view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="odb_base.base_res_partner_form_view"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <div>
+                    <field name="is_customer"/>
+                    <label for="is_customer"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

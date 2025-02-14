@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <menuitem id="menu_action_account_asset_asset_form" parent="account.menu_finance_entries_management"
+        sequence="110" action="action_account_asset_asset_form" groups="account.group_account_manager"/>
+
+    <menuitem id="menu_finance_config_assets" name="Assets and Revenues"
+        sequence="30" parent="account.menu_finance_configuration"/>
+
+    <menuitem id="menu_action_account_asset_asset_list_normal_purchase" parent="account.account_management_menu"
+        sequence="10" action="action_account_asset_asset_list_normal_purchase"/>
+
+    <menuitem id="menu_asset_depreciation_confirmation_wizard" name="Generate Assets Entries" parent="account.menu_finance_entries_generate_entries"
+        sequence="120" action="action_asset_depreciation_confirmation_wizard" groups="account.group_account_manager"/>
+
+    <menuitem id="menu_action_asset_asset_report" name="Assets" parent="account.account_reports_management_menu"
+        sequence="30" action="action_asset_asset_report"/>
+
+</odoo>

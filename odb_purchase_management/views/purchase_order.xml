@@ -1,0 +1,40 @@
+<odoo>
+
+    <record id="purchase_order_tree_view_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.tree.view.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_form_view_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.view.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree//field[@name='name']" position="after">
+                <field name="note" optional="show" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='button_cancel']" position="after">
+                <button name="wizards_open_import_pol" type="object"  class="btn-primary" string="Import Data" context="{'purchase_id':id}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_view_inherit_edit_readonly" model="ir.ui.view">
+        <field name="name">purchase.order.view.inherit.edit.readonly</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>      
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

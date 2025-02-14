@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_payment_order_deposit_viewer,payment.order.deposit.viewer,model_payment_order_deposit,group_payment_deposit_viewer,1,0,0,0
+access_payment_order_deposit_user,payment.order.deposit.user,model_payment_order_deposit,group_payment_deposit_user,1,1,1,0
+access_payment_order_deposit_manager,payment.order.deposit.manager,model_payment_order_deposit,group_payment_deposit_manager,1,1,1,1
+
+access_payment_order_deposit_wizard_viewer,payment.order.deposit.wizard.viewer,model_payment_order_deposit_wizard,group_payment_deposit_viewer,1,0,0,0
+access_payment_order_deposit_wizard_user,payment.order.deposit.wizard.user,model_payment_order_deposit_wizard,group_payment_deposit_user,1,1,1,1
+access_payment_order_deposit_wizard_manager,payment.order.deposit.wizard.manager,model_payment_order_deposit_wizard,group_payment_deposit_manager,1,1,1,1

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="employee_team_farm_zone_form_view" model="ir.ui.view">
+        <field name="name">employee.team.farm.zone.form.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='coach_id']" position="after">
+                <field name="farm_zone_id" widget="many2many_tags" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

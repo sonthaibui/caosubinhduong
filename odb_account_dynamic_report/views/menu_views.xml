@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_dynamic_reports" name="Sumarry Reports" parent="account.menu_finance_reports"
+            sequence="5" action="action_dynamic_reorts"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <template id="assets_backend" name="Ks ListViewManager assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/scss"  href="/odb_quick_search_tree_view/static/lib/spectrum/spectrum.css"/>
+                <script type="text/javascript" src="/odb_quick_search_tree_view/static/lib/spectrum/spectrum.js"/>
+                <script type="text/javascript" src="/odb_quick_search_tree_view/static/lib/stickytableheaders/jquery.stickytableheaders.js"/>
+                <script type="text/javascript" src="/odb_quick_search_tree_view/static/lib/resizableColumns/jQuery.ResizableColumns.js"/>
+
+                <link rel="stylesheet" type="text/scss"  href="/odb_quick_search_tree_view/static/src/css/list_view_manager.scss"/>
+                <script type="text/javascript" src="/odb_quick_search_tree_view/static/src/js/list_view_manager_view.js"/>
+                <script type="text/javascript" src="/odb_quick_search_tree_view/static/src/js/list_view_manager_controller.js"/>
+                <script type="text/javascript" src="/odb_quick_search_tree_view/static/src/js/list_view_manager_renderer.js"/>
+                <script type="text/javascript" src="/odb_quick_search_tree_view/static/src/js/color_picker.js"/>
+            </xpath>
+        </template>
+</odoo>

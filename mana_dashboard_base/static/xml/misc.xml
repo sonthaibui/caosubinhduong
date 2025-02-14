@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- template preview -->
+    <t t-name="mana_dashboard_base.template_preview">
+        <img width="200" class="template_preview" t-attf-src="/web/image/mana_dashboard.template/{{record.data.id}}/preview" />
+    </t>
+
+</templates>

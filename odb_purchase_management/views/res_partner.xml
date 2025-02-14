@@ -1,0 +1,16 @@
+<odoo>
+    <record id="purchase_vendor_res_partner_form_view" model="ir.ui.view">
+        <field name="name">Purchase.vendor.res.partner.form.view</field>
+        <field name="model">res.partner</field>
+        <field name="priority">17</field>
+        <field name="inherit_id" ref="odb_base.base_res_partner_form_view"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <div>
+                    <field name="is_vendor"/>
+                    <label for="is_vendor"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

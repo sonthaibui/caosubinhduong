@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_adj_template_0" name="Default Template Inventory Adjusment">
+            <t t-call="stock.report_inventory"/>
+        </template>
+
+        <template id="stock_delivery_template_0" name="Default Template Stock Delivery ">
+            <t t-call="stock.report_deliveryslip"/>
+        </template>
+
+        <template id="stock_template_0" name="Default Template Stock Pickking">
+            <t t-call="stock.report_picking"/>
+        </template>
+        <template id="stock_picking_batch_template_0" name="Default Template Stock Picking Batch">
+            <t t-call="stock_picking_batch.report_picking_batch"/>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,86 @@
+<odoo>
+    <data>
+    
+        <record id="stock_move_tree_view" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Moves" create="0">
+                    <field name="date" groups="base.group_no_one" decoration-danger="(state not in ('cancel','done')) and date > current_date"/>
+                    <field name="reference" decoration-success="1"/>
+                    <field name="picking_type_id" optional="hide"/>
+                    <field name="create_date" optional="hide" groups="base.group_no_one"/>
+                    <field name="product_id"/>
+                    <field name="location_id" options="{'no_create': True}" string="From"/>
+                    <field name="location_dest_id" options="{'no_create': True}" string="To"/>
+                    <field name="product_uom_qty"/>
+                    <field name="qty_accumulated" />
+                    <field name="product_uom" options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                    <field name="company_id" groups="base.group_multi_company" invisible="1"/>
+                    <field name="state" widget='badge' decoration-success="state == 'done'" decoration-info="state not in ('done', 'cancel')"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_stock_move_incoming" model="ir.actions.act_window">
+            <field name="name">Stock Moves</field>
+            <field name="res_model">stock.move</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="stock_move_tree_view"/>
+            <field name="search_view_id" ref="stock.view_move_search"/>
+            <field name="domain">[('picking_code', '=', 'incoming')]</field>
+            <field name="context">{'search_default_done': 1, 'search_default_groupby_location_id': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No stock move found
+                </p>
+                <p>
+                    This menu gives you the full traceability of inventory
+                    operations on a specific product. You can filter on the product
+                    to see all the past or future movements for the product.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_stock_move_internal" model="ir.actions.act_window">
+            <field name="name">Stock Moves</field>
+            <field name="res_model">stock.move</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="stock_move_tree_view"/>
+            <field name="search_view_id" ref="stock.view_move_search"/>
+            <field name="domain">[('picking_code', '=', 'internal')]</field>
+            <field name="context">{'search_default_done': 1, 'search_default_groupby_location_id': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No stock move found
+                </p>
+                <p>
+                    This menu gives you the full traceability of inventory
+                    operations on a specific product. You can filter on the product
+                    to see all the past or future movements for the product.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_stock_move_outgoing" model="ir.actions.act_window">
+            <field name="name">Stock Moves</field>
+            <field name="res_model">stock.move</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="stock_move_tree_view"/>
+            <field name="search_view_id" ref="stock.view_move_search"/>
+            <field name="domain">[('picking_code', '=', 'outgoing')]</field>
+            <field name="context">{'search_default_done': 1, 'search_default_groupby_location_id': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No stock move found
+                </p>
+                <p>
+                    This menu gives you the full traceability of inventory
+                    operations on a specific product. You can filter on the product
+                    to see all the past or future movements for the product.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

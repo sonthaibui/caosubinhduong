@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="sequence_form_int_base" model="ir.ui.view">
+		<field name="name">sequence_form_int_base</field>
+	    <field name="model">ir.sequence</field>
+	    <field name="inherit_id" ref="base.sequence_view"/>
+	    <field name="arch" type="xml">
+	    
+	    	<xpath expr="//field[@name='name']" position="after">
+	            <field name="encoding"/>
+	        </xpath>
+	    
+	        <xpath expr="//field[@name='use_date_range']" position="after">
+	 			<field name="rollback" 
+	 				attrs="{'invisible': [('use_date_range','=',False)]}"/>
+	 		</xpath>
+	    </field>
+	</record>
+
+</odoo>

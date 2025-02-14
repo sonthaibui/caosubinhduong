@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_report_template_setting" model="ir.ui.view">
+        <field name="name">sale.report.template.settings</field>
+        <field name="model">report.template.settings</field>
+        <field name="inherit_id" ref="odb_base.view_report_style_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='footer_font']" position="after">
+                <field name="template_so"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

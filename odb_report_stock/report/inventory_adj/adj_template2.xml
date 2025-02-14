@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_adj_template_2" name="Template Adjusment 2">
+             <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <img t-if="doc.company_id.logo" t-att-src="'data:image/png;base64,%s' %  to_text(doc.company_id.logo)" style="max-height: 110px;"/>
+                            </div>
+                            <div class="col-xs-6 col-xs-offset-1 text-center">
+                                <td style="vertical-align:middle;">
+                                    <div t-attf-style="vertical-align:bottom; font-weight:bold;">
+                                        <strong><h2>INVENTORY ADJUSTMENTS</h2></strong>
+                                    </div>
+                                    <div t-attf-style="vertical-align:top;">
+                                        <b><h3>No: <span t-field="o.name"/></h3></b>
+                                    </div>
+                                </td>
+                                <div t-attf-style="border: 1px !important; border-color:{{data['primary_color']}}!important; border-style: groove !important;"/>
+                            </div>
+                            <div class="col-xs-3 text-right">
+                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" style="width:300px;height:60px;"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <t t-if="doc.company_id.watermark_selection == 'custom_name' and doc.company_id.add_watermark == True ">
+                                <div style="position:absolute;opacity:0.11;z-index:1000;-webkit-transform:rotate(-45deg);width:100%; height:100%; top: 450px; ">
+                                    <p t-field="doc.company_id.custom_watermark_name" style="font-size:250px; "/>
+                                </div>
+                            </t>
+                            <t t-if="doc.company_id.watermark_selection == 'company_logo' and doc.company_id.add_watermark == True ">
+                                <div style="position:absolute;opacity:0.11;z-index:1000;-webkit-transform:rotate(-45deg);width:100%; height:100%; top: 400px;">
+                                    <img t-att-src="'data:image/png;base64,%s' %  to_text(doc.company_id.logo) " style="height:500px;"/>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                        <br/>
+                        <br/>
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <h2>INFOMANTION ADJUSTMENTS</h2>
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td rowspan="2" class="col-xs-3">
+                                            <table>
+                                                <tr>
+                                                    <th>
+                                                        <strong>
+                                                            <span>Inventoried Location</span>
+                                                        </strong>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center">
+                                                        
+                                                    </th>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <strong>NAME</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                        <td>
+                                            <strong>INTERNAL REFERENCE</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                        <td>
+                                            <strong>RESPONSIBLE</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                        <td>
+                                            <strong>PLANNED</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                        <td>
+                                            <strong>USER PRINT</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>RELATED DOCUMENT</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                        <td>
+                                            <strong>QUANTITY</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                        <td>
+                                            <strong>SCHEDULED DATE</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                        <td>
+                                            <strong>DEADLINE START</strong>
+                                            <br/>
+                                            
+                                        </td>
+                                        <td>
+                                            <strong>PRINT DATE</strong>
+                                            <br/>
+                                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%b-%d %H:%M')"/>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="oe_structure"/>
+                            <t t-set="locations" t-value="o.line_ids.mapped('location_id')"/>
+                            <table class="table table-condensed">
+                                <t t-set="has_barcode" t-value="any([l.product_id and l.product_id.sudo().barcode or l.package_id for l in o.line_ids])"/>
+                                <t t-set="has_pack" t-value="o.line_ids.filtered('package_id')" groups="stock.group_production_lot"/>
+                                <t t-set="has_lot" t-value="o.line_ids.filtered('prod_lot_id')" groups="stock.group_production_lot"/>
+                                <!-- <t t-set="has_memolot1" t-value="o.line_ids.filtered('memolot1')" groups="stock.group_production_lot"/>
+                                <t t-set="has_memolot2" t-value="o.line_ids.filtered('memolot2')" groups="stock.group_production_lot"/> -->
+                                <thead>
+                                    <tr>
+                                        <th groups="stock.group_stock_multi_locations" class="text-center" style="vertical-align:middle;">
+                                            <strong>Location</strong>
+                                        </th>
+                                        <th class="text-center" style="vertical-align:middle;">
+                                            <strong>Item</strong>
+                                        </th>
+                                        <th t-if="has_barcode" class="text-center" style="vertical-align:middle;">
+                                            <strong>Barcode</strong>
+                                        </th>
+                                        <th class="text-center" style="vertical-align:middle;" width="20%">
+                                            <strong>Product</strong>
+                                        </th>
+                                        <th groups="stock.group_production_lot" t-if="has_lot" class="text-center" style="vertical-align:middle;" width="17%">
+                                            <strong>Lot/SN</strong>
+                                        </th>
+                                        <th groups="stock.group_tracking_lot" t-if="has_pack" class="text-center" style="vertical-align:middle;" width="10%">
+                                            <strong>Package</strong>
+                                        </th>
+                                        <th t-if="has_lot" class="text-center" style="vertical-align:middle;" width="10%">
+                                            <strong>Memolot1</strong>
+                                        </th>
+                                        <th t-if="has_lot" class="text-center" style="vertical-align:middle;" width="10%">
+                                            <strong>Memolot2</strong>
+                                        </th>
+                                        <th class="text-center" style="vertical-align:middle;" width="7%">
+                                            <strong>Quantity</strong>
+                                        </th>
+                                        <th class="text-center" style="vertical-align:middle;" width="7%">
+                                            <strong>Marking Status</strong>
+                                        </th>
+                                        <th class="text-center" style="vertical-align:middle;" width="7%">
+                                            <strong>Actual</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="locations" t-as="location">
+                                    <t t-set="i" t-value="1"/>
+                                        <tr groups="stock.group_stock_multi_locations">
+                                            <td colspan="4"><strong t-esc="location.display_name"/></td>
+                                            <td groups="stock.group_production_lot"></td>
+                                            <td groups="stock.group_tracking_lot"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr t-foreach="o.line_ids.filtered(lambda line: line.location_id.id == location.id)" t-as="line">
+                                            <td groups="stock.group_stock_multi_locations"></td>
+                                            <td class="text-center" style="vertical-align:middle;">
+                                                <span t-esc="i"/>
+                                                <t t-set="i" t-value="i+1"/>
+                                            </td>
+                                            <td t-if="has_barcode"><span t-field="line.product_id.barcode"/></td>
+                                            <td><span t-field="line.product_id"/></td>
+                                            <td groups="stock.group_production_lot" t-if="has_lot"><span t-field="line.prod_lot_id"/></td>
+                                            <td groups="stock.group_tracking_lot" t-if="has_pack"><span t-field="line.package_id"/></td>
+                                            <!-- <td groups="stock.group_production_lot" t-if="has_memolot1"><span t-field="line.prod_lot_id.memolot1"/></td> -->
+                                            <!-- <td groups="stock.group_production_lot" t-if="has_memolot2"><span t-field="line.prod_lot_id.memolot2"/></td> -->
+                                            <td class="text-right"><span t-field="line.product_qty"/> <span t-field="line.product_uom_id" groups="product.group_uom"/></td>
+                                            <td class="text-center" style="vertical-align:bottom;">
+                                                <span>__________</span>
+                                            </td>
+                                            <td class="text-center" style="vertical-align:bottom;">
+                                                <span>__________</span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <!-- <t t-if="o.filter == 'product' and o.product_id">
+                              <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                     <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total Quantity</strong></td>
+                                            <td class="text-right">
+                                                <span t-field="o.total_qty"/> <span t-field="o.product_id.uom_id"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                              </div>
+                            </t> -->
+                        </div>
+                    </t>
+                    <div class="footer">
+                        <div class="text-center" style="border-top: 1px solid black;">
+                            <div class="text-muted">
+                                <div class="row">
+                                    <div class="col-xs-3 text-left">
+                                        <t t-if="doc.company_id.name_report_adj">
+                                            <span t-field="doc.company_id.name_report_adj"/>
+                                        </t>
+                                    </div>
+                                    <div class="col-xs-4 col-xs-offset-1 text-center">
+                                        <t t-if="doc.company_id.partner_id.website">
+                                            <i class="fa fa-globe" aria-hidden="true"/>
+                                            <span t-field="doc.company_id.website"/>
+                                        </t>
+                                    </div>
+                                    <div class="col-xs-3 col-xs-offset-1 text-right">
+                                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%b-%d %H:%M')"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="text-muted">
+                                <div class="row">
+                                    <div class="col-xs-3 text-left">
+                                        <t t-if="doc.company_id.date_report_prd">Date issued:
+                                            <span t-field="doc.company_id.date_report_adj"/>
+                                        </t>
+                                    </div>
+                                    <div class="col-xs-4 col-xs-offset-1 text-center">
+                                        <t t-if="doc.company_id.partner_id.email">
+                                            <i class="fa fa-envelope-o" aria-hidden="true"/>
+                                            <span t-field="doc.company_id.email"/>
+                                        </t>
+                                    </div>
+                                    <div class="col-xs-3 col-xs-offset-1 text-right">
+                                        Page: <span class="page"/>/<span class="topage"/>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="text-muted">
+                                <div class="row">
+                                    <div class="col-xs-3 text-left">
+                                        <t t-if="doc.company_id.rev_report_prd">Revision:
+                                            <span t-field="doc.company_id.rev_report_adj"/>
+                                        </t>
+                                    </div>
+                                    <div class="col-xs-4 col-xs-offset-1 text-center">
+                                        <t t-if="doc.company_id.partner_id.phone">
+                                            <i class="fa fa-phone" aria-hidden="true"/>
+                                            <span t-field="doc.company_id.phone"/>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

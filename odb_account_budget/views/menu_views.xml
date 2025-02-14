@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_budget_post_form" parent="account.account_management_menu"
+        sequence="5" action="open_budget_post_form"/>
+
+    <menuitem id="menu_act_crossovered_budget_lines_view" parent="account.account_reports_management_menu"
+        sequence="20" action="act_budget_lines_view"/>
+
+    <menuitem id="menu_act_budget_view" name="Budgets" parent="account.menu_finance_entries_management"
+        sequence="60" action="act_budget_view" groups="account.group_account_user"/>
+
+</odoo>

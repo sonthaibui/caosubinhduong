@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- end -->
+    <!-- DELIVERY DATE ORDER -->
+    <!-- Create action call view -->
+    <record id="action_report_delivery_date_order" model="ir.actions.act_window">
+        <field name="name">Delivery Date</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">calendar,pivot,graph</field>
+        <field name="search_view_id" ref="odb_sale_management.inherit_search_view"/>
+        <field name="context">{'search_default_30days':1}</field>
+        <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+    </record>
+
+    <record id="report_deli_date_calendar" model="ir.ui.view">
+        <field name="name">delivery date calendar</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <calendar string="Delivery Date Calendar" date_start="date_order" color="state" hide_time="true" event_limit="5">
+                <field name="currency_id" invisible="1"/>
+                <field name="partner_id" avatar_field="avatar_128"/>
+                <field name="amount_total" widget="monetary"/>
+                <field name="payment_term_id"/>
+                <field name="state" filters="1" invisible="1"/>
+            </calendar>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="report_deli_date_pivot">
+        <field name="name">delivery date pivot</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Delivery Date Pivot" sample="1">
+                <field name="commitment_date" interval="month" type="row"/>
+                <field name="state" type="col"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="report_deli_date_order_graph">
+        <field name="name">delivery date graph</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <graph string="Delivery Date Graph" sample="1">
+                <field name="commitment_date" interval="day" type="row"/>
+                <field name="amount_total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <!-- Create detail action call view to sale order -->
+    <record id="deli_date_order_calendar_view" model="ir.actions.act_window.view">
+        <field name="sequence">50</field>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="report_deli_date_calendar"/>
+        <field name="act_window_id" ref="action_report_delivery_date_order"/>
+    </record>
+    
+    <record id="deli_date_order_pivot_view" model="ir.actions.act_window.view">
+        <field name="sequence" >60</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="report_deli_date_pivot"/>
+        <field name="act_window_id" ref="action_report_delivery_date_order"/>
+    </record>
+
+    <record id="deli_date_order_graph_view" model="ir.actions.act_window.view">
+        <field name="sequence">40</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="report_deli_date_order_graph"/>
+        <field name="act_window_id" ref="action_report_delivery_date_order"/>
+    </record>
+
+    <!-- end -->
+
+</odoo>

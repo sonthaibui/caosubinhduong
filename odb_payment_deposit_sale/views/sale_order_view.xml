@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sale_order_form_view_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.view.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <button name="add_payment_deposit" string="Payment Deposit" class="btn btn-info" type="object" attrs="{'invisible': [('state', 'not in', ['sale', 'done']), ('invoice_status', 'not in', ['invoiced'])]}"/>
+                </header>
+                <field name="tag_ids" position="after">
+                    <field name="advance_payment_status"/>
+                </field>
+                <field name="tax_totals_json" position="before">
+                    <div class="o_td_label">
+                    <!-- <div class="oe_subtotal_footer_separator oe_inline o_td_label"> -->
+                        <button name="add_payment_deposit" class="btn btn-outline-danger" string="Add Deposit" type="object" attrs="{'invisible': [('state', 'in', ['done','cancel']), ('invoice_status', 'not in', ['invoiced'])]}"/>
+                        <label for="deposit_amount" string="" attrs="{'invisible': [('state', 'in', ['done','cancel'])]}"/>
+                        <label for="deposit_amount" string="Deposit" attrs="{'invisible': [('state', 'not in', ['done','cancel'])]}"/>
+                    </div>
+                    <field name="deposit_amount" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <!-- <div class="oe_subtotal_footer_separator oe_inline o_td_label"> -->
+                    <div class="o_td_label">
+                        <label for="deposit_remain"/>
+                    </div>
+                    <field name="deposit_remain" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </field>
+
+                <xpath expr="//notebook/page[@name='order_lines']" position="after">
+                    <page string="Payment Deposit">
+                        <field name="payment_deposit_ids" nolabel="1" readonly="1">
+                            <tree editable="bottom" create="1" delete="1">
+                                <field name="sale_id" invisible="1"/>
+                                <field name="name"/>
+                                <field name="payment_ref"/>
+                                <field name="journal_id" options="{'no_create': True}"/>
+                                <field name="payment_type"/>
+                                <field name="payment_method_id" options="{'no_create': True}"/>
+                                <field name="amount_total"/>
+                                <field name="amount_advance"/>
+                                <field name="amount_remain"/>
+                                <field name="currency_id"/>
+                                <field name="partner_id" string="Customer" invisible="1"/>
+                                <field name="state" widget="badge" decoration-success="state == 'approve'" decoration-warning="state == 'cancel'" decoration-info="state == 'confirm'" decoration-muted="state == 'draft'"/>
+                                <button name="set_to_draft" id="set_to_draft" string="Set to Draft" class="btn-primary" type="object" attrs="{'invisible': [('state', 'not in', ['cancel'])]}" groups="odb_payment_deposit.group_payment_deposit_user"/>
+                                <button name="action_confirm" id="action_confirm" string="Confirm" class="btn-success" type="object" attrs="{'invisible': [('state', 'not in', ['draft'])]}" groups="odb_payment_deposit.group_payment_deposit_user"/>
+                                <button name="action_approve" id="action_approve" string="Approve" class="btn-success" type="object" attrs="{'invisible': [('state', 'not in', ['confirm'])]}" groups="odb_payment_deposit.group_payment_deposit_manager"/>
+                                <button name="action_cancel" id="action_cancel" string="Cancel" class="btn-danger" type="object" attrs="{'invisible': [('state', 'in', ['approve','cancel'])]}" groups="odb_payment_deposit.group_payment_deposit_user"/>
+                            </tree>
+                            <form>
+                                <header>
+                                    <button name="set_to_draft" id="set_to_draft" string="Set to Draft" class="btn-primary" type="object" attrs="{'invisible': [('state', 'not in', ['cancel'])]}" groups="base.group_user"/>
+                                    <button name="action_confirm" id="action_confirm" string="Confirm" class="btn-success" type="object" attrs="{'invisible': [('state', 'not in', ['draft'])]}" groups="base.group_user"/>
+                                    <button name="action_approve" id="action_approve" string="Approve" class="btn-success" type="object" attrs="{'invisible': [('state', 'not in', ['confirm'])]}" groups="odb_payment_deposit.group_payment_deposit_manager"/>
+                                    <button name="action_cancel" id="action_cancel" string="Cancel" class="btn-danger" type="object" attrs="{'invisible': [('state', 'in', ['approve','cancel'])]}" groups="base.group_user"/>
+                                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,approve,cancel"/>
+                                </header>
+                                <group>
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="sale_id" invisible="1"/>
+                                        <field name="partner_id" invisible="1"/>
+                                        <field name="currency_id" readonly="1"/>
+                                        <field name="amount_total"/>
+                                        <field name="amount_advance"/>
+                                        <field name="amount_remain"/>
+                                    </group>
+                                    <group>
+                                        <field name="journal_id"/>
+                                        <field name="payment_ref"/>
+                                        <field name="payment_type"/>
+                                        <field name="payment_method_id"/>
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_tree_view_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.view.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="advance_payment_status"  optional="show" widget="badge" decoration-muted="advance_payment_status == 'not_paid'" decoration-info="advance_payment_status == 'paid'" decoration-success="advance_payment_status == 'partial'"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

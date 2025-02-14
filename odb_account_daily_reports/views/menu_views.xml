@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_finance_daily_reports" name="Daily Reports"
+            sequence="50" parent="account.menu_finance_reports"/>
+
+        <menuitem id="menu_daybook" name="Day Book" parent="menu_finance_daily_reports"
+            sequence="10" action="action_account_daybook_menu" groups="account.group_account_user,account.group_account_manager"/>
+
+        <menuitem id="menu_cashbook" name="Cash Book" parent="menu_finance_daily_reports"
+            sequence="20" action="action_account_cashbook_menu" groups="account.group_account_user,account.group_account_manager"/>
+
+        <menuitem id="menu_bankbook" name="Bank Book" parent="menu_finance_daily_reports"
+            sequence="30" action="action_account_bankbook_menu" groups="account.group_account_user,account.group_account_manager"/>
+
+    </data>
+</odoo>
+
