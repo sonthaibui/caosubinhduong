@@ -10,7 +10,7 @@ class RubberTest(models.Model):
     do_up3 = fields.Float('Độ-3N', digits='One Decimal', compute='_compute_do3')
     do_up6 = fields.Float('Độ-6N', digits='One Decimal', compute='_compute_do6')
     do_ngua = fields.Float('Độ', digits='One Decimal')
-    do_bo = fields.Float('Độ', digits='One Decimal')    
+    do_bo = fields.Float('Độ', digits='One Decimal') #test thu    
     
     mu_up = fields.Float('Úp', default='0', digits='Product Unit of Measure')
     mu_up3 = fields.Float('Úp-3N', default='0', digits='Product Unit of Measure')
