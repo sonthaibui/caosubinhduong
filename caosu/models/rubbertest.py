@@ -16,7 +16,8 @@ class RubberTest(models.Model):
     mu_up3 = fields.Float('Úp-3N', default='0', digits='Product Unit of Measure')
     mu_up6 = fields.Float('Úp-6N', default='0', digits='Product Unit of Measure')
     mu_ngua = fields.Float('Ngửa', default='0', digits='Product Unit of Measure')
-    mu_bo = fields.Float('Bợ', default='0', digits='Product Unit of Measure')  
+    mu_bo = fields.Float('Bợ', default='0', digits='Product Unit of Measure') 
+    do_bo = fields.Float('Độ Bợ', default='0', digits='Product Unit of Measure')
 
     ghichu = fields.Char('Ghi chú')
     kichthich = fields.Boolean('KT-U', store=True, readonly=False) #Son sua
