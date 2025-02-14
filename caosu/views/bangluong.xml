@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_salary_board_form" model="ir.ui.view">
+        <field name="name">salaryboard.form</field>
+        <field name="model">salary.board</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <group>
+                  <group>
+                    <field name="thang"/>
+                    <field name="nam"/>
+                  </group>
+                  <group>
+                    <field name="department_id"/>
+                    <field name="tongcong" invisible="1"/>
+                    <field name="chiendo" invisible="1"/>
+                    <field name="rutbot" invisible="1"/>
+                    <field name="dongthem" invisible="1"/>
+                    <field name="ruttt" invisible="1"/>
+                    <field name="ttth" invisible="1"/>
+                    <field name="tiendao" invisible="1"/>
+                    <field name="tamvong" invisible="1"/>
+                    <field name="tbm" invisible="1"/>
+                    <field name="bandao" invisible="1"/>
+                    <field name="banlinhtinh" invisible="1"/>
+                    <field name="nctb" invisible="1"/>
+                    <field name="tienphan" invisible="1"/>
+                    <field name="tienmuon" invisible="1"/>
+                    <field name="tienung" invisible="1"/>
+                    <field name="ungtien" invisible="1"/>
+                    <field name="truidao" invisible="1"/>
+                  </group>
+                  <field name="allowance_line_ids" nolabel="1">
+                    <tree create="0" delete="0" editable="bottom" default_order="sttcn asc">
+                      <field name="sttcn" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="employee_id" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="ltn2" decoration-danger="ltn2 &lt; ltn" decoration-success="ltn2 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn2'/>
+                      <field name="ltn1" decoration-danger="ltn1 &lt; ltn" decoration-success="ltn1 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn1'/>
+                      <field name="ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn'/>
+                      <field name="nctb" style="border-top-style: solid !important;border-width: 1px !important" sum='nctb' attrs="{'column_invisible': [('parent.nctb', '=', 0)]}"/>
+                      <field name="tienphan" style="border-top-style: solid !important;border-width: 1px !important" sum='tienphan' attrs="{'column_invisible': [('parent.tienphan', '=', 0)]}"/>
+                      <field name="chiendo" style="border-top-style: solid !important;border-width: 1px !important" sum='chiendo' attrs="{'column_invisible': [('parent.chiendo', '=', 0)]}"/>
+                      <field name="tongluong" style="border-top-style: solid !important;border-width: 1px !important" sum='tongluong'/>
+                      <field name="tiendao" style="border-top-style: solid !important;border-width: 1px !important" sum='tiendao' attrs="{'column_invisible': [('parent.tiendao', '=', 0)]}"/>
+                      <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important" sum='tienung' attrs="{'column_invisible': [('parent.tienung', '=', 0)]}"/>
+                      <field name="ungtien" style="border-top-style: solid !important;border-width: 1px !important" sum='ungtien' attrs="{'column_invisible': [('parent.ungtien', '=', 0)]}"/>
+                      <field name="tamvong" style="border-top-style: solid !important;border-width: 1px !important" sum='tamvong' attrs="{'column_invisible': [('parent.tamvong', '=', 0)]}"/>
+                      <field name="truidao" style="border-top-style: solid !important;border-width: 1px !important" sum='truidao' attrs="{'column_invisible': [('parent.truidao', '=', 0)]}"/>
+                      <field name="bandao" style="border-top-style: solid !important;border-width: 1px !important" sum='bandao' attrs="{'column_invisible': [('parent.bandao', '=', 0)]}"/>
+                      <field name="tbm" style="border-top-style: solid !important;border-width: 1px !important" sum='tbm' attrs="{'column_invisible': [('parent.tbm', '=', 0)]}"/>
+                      <field name="tienmuon" style="border-top-style: solid !important;border-width: 1px !important" sum='tienmuon' attrs="{'column_invisible': [('parent.tienmuon', '=', 0)]}"/>
+                      <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" sum='rutbot'  attrs="{'column_invisible': [('parent.rutbot', '=', 0)]}"/>
+                      <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" sum='dongthem'  attrs="{'column_invisible': [('parent.dongthem', '=', 0)]}"/>
+                      <field name="ruttt" style="border-top-style: solid !important;border-width: 1px !important" sum='ruttt'  attrs="{'column_invisible': [('parent.ruttt', '=', 0)]}"/>
+                      <field name="ttth" style="border-top-style: solid !important;border-width: 1px !important" sum='ttth'  attrs="{'column_invisible': [('parent.ttth', '=', 0)]}"/>
+                      <field name="banlinhtinh" style="border-top-style: solid !important;border-width: 1px !important" sum='banlinhtinh' attrs="{'column_invisible': [('parent.banlinhtinh', '=', 0)]}"/>
+                      <field name="conlai" style="border-top-style: solid !important;border-width: 1px !important" sum='conlai'/>
+                      <field name="kynhan" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="to500" style="border-top-style: solid !important;border-width: 1px !important" sum='500'/>
+                      <field name="to200" style="border-top-style: solid !important;border-width: 1px !important" sum='200'/>
+                      <field name="to100" style="border-top-style: solid !important;border-width: 1px !important" sum='100'/>
+                      <field name="to50" style="border-top-style: solid !important;border-width: 1px !important" sum='50'/>
+                      <field name="to20" style="border-top-style: solid !important;border-width: 1px !important" sum='20'/>
+                      <field name="to10" style="border-top-style: solid !important;border-width: 1px !important" sum='10'/>
+                      <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important"/>
+                    </tree>
+                  </field>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_salary_board_tree">
+        <field name="name">salaryboard.tree</field>
+        <field name="model">salary.board</field>
+        <field name="arch" type="xml">
+            <tree string="Salary Board Tree View">
+              <field name="department_id"/>
+              <field name="thang"/>
+              <field name="nam"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_bangluong" model="ir.actions.act_window">
+        <field name="name">Bảng Lương</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">salary.board</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Bảng Lương.
+            </p>
+        </field>
+    </record>
+
+</odoo>
