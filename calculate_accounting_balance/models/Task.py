@@ -1,7 +1,6 @@
 from odoo import api, models, fields
-
-class Note(models.Model):
-    _inherit = "note.note"
+class Task(models.Model):
+    _inherit = "project.task"
 
     nguoitao = fields.Char(compute='_compute_nguoitao', string='Người Tạo:', default="0")
     taonguoi = fields.Char(compute='_compute_taonguoi', string='Tạo Người:', default="0")
@@ -20,4 +19,4 @@ class Note(models.Model):
 
     @api.model
     def _compute_taonguoi(self):
-        self.taonguoi = str(self.user_id.id)
+        self.taonguoi = str(self.create_uid.id)
