@@ -5,8 +5,8 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='kanban_state']" position="replace">
-                <field name="kanban_state_id"/>
+            <xpath expr="//field[@name='kanban_state']" position="after">
+                <field name="trangthai_id"/>
             </xpath>
         </field>
     </record>
@@ -16,9 +16,10 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_tree2"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='kanban_state']" position="replace">
-                <field name="kanban_state_id"/>
+            <xpath expr="//field[@name='kanban_state']" position="after">
+                <field name="trangthai_id"/>
             </xpath>
         </field>
     </record>
+    
 </odoo>

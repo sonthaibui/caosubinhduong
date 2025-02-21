@@ -10,7 +10,7 @@
     'depends': ['base','project','account','product','note','document_management_system','stock_account','odb_order_stock_cancel'],
     'data': [
         'views/extentviews.xml',
-        'views/kanban_state_views.xml',
+        'views/trangthai_views.xml',
         'views/project_task_views.xml',
         'security/ir.model.access.csv',
     ],        
