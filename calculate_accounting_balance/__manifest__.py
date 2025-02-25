@@ -9,8 +9,7 @@
     'description': "",
     'depends': ['base','project','account','product','note','document_management_system','stock_account','odb_order_stock_cancel'],
     'data': [               
-        'views/project_views.xml',
-        'views/project_task_views.xml',
+        'views/project_views.xml',        
         'views/product_template_views.xml',
             ],        
     'demo': [],
