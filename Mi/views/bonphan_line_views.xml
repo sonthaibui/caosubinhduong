@@ -1,0 +1,72 @@
+<odoo>
+    <data>
+        <!-- Bonphan Line Views -->
+        <record id="view_bonphan_line_form" model="ir.ui.view">
+            <field name="name">bonphan.line.form</field>
+            <field name="model">bonphan.line</field>
+            <field name="arch" type="xml">
+                <form string="Bón phân Line">
+                    <sheet>
+                        <group>
+                            <field name="lomi_id"/>
+                            <field name="giaidoan"/>
+                            <field name="phan"/>
+                            <field name="slg"/>
+                            <field name="tyle_ro"/>
+                            <field name="tyle_ho"/>
+                            <field name="hang"/>
+                            <field name="ro"/>
+                            <field name="ho"/>
+                            <field name="hom"/>
+                            <field name="N" sum="N"/>
+                            <field name="P" sum="P"/>
+                            <field name="K" sum="K"/>
+                            <field name="Ca" sum="Ca"/>
+                            <field name="Mg" sum="Mg"/>
+                            <field name="Si" sum="Si"/>
+                            <field name="OM" sum="OM"/>
+                            <field name="Humic" sum="Humic"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bonphan_line_tree" model="ir.ui.view">
+            <field name="name">bonphan.line.tree</field>
+            <field name="model">bonphan.line</field>
+            <field name="arch" type="xml">
+                <tree string="Bón phân Line">
+                    <field name="lomi_id"/>
+                    <field name="giaidoan"/>
+                    <field name="phan"/>
+                    <field name="slg"/>
+                    <field name="tyle_ro"/>
+                    <field name="tyle_ho"/>
+                    <field name="hang"/>
+                    <field name="ro"/>
+                    <field name="ho"/>
+                    <field name="hom"/>
+                    <field name="N" sum="N"/>
+                    <field name="P" sum="P"/>
+                    <field name="K" sum="K"/>
+                    <field name="Ca" sum="Ca"/>
+                    <field name="Mg" sum="Mg"/>
+                    <field name="Si" sum="Si"/>
+                    <field name="OM" sum="OM"/>
+                    <field name="Humic" sum="Humic"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Actions -->
+        <record id="action_bonphan_line" model="ir.actions.act_window">
+            <field name="name">Bón phân Line</field>
+            <field name="res_model">bonphan.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menus -->
+        <menuitem id="menu_bonphan_line" name="Bón phân Line" parent="menu_lomi_root" action="action_bonphan_line" sequence="2"/>
+    </data>
+</odoo>

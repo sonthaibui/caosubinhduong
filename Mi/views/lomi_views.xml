@@ -1,0 +1,205 @@
+<odoo>
+    <data>
+        <!-- Lomi Views -->
+        <record id="view_lomi_form" model="ir.ui.view">
+            <field name="name">lomi.form</field>
+            <field name="model">lomi</field>
+            <field name="arch" type="xml">
+                <form string="Lomi">
+                    <sheet>
+                        <group>
+                            <field name="tenlo"/>
+                            <field name="tenhang"/>
+                            <field name="hang"/>
+                            <field name="luong"/>
+                            <field name="giong"/>
+                            <field name="ngaytrong"/>
+                            <field name="ngaytuoi"/>
+                            <field name="kc_hom"/>
+                            <field name="kc_hang"/>
+                            <field name="cd_hang"/>
+                            <field name="sohom"/>
+                            <field name="kieutrong"/>
+                            <field name="kieuro"/>
+                            <field name="cr_ro"/>
+                        </group>
+                        <group>
+                            <field name="bonphan_line_ids">
+                                <tree editable="bottom">
+                                    <field name="giaidoan"/>
+                                    <field name="phan"/>
+                                    <field name="slg"/>
+                                    <field name="tyle_ro"/>
+                                    <field name="tyle_ho"/>
+                                    <field name="hang"/>
+                                    <field name="ro"/>
+                                    <field name="ho"/>
+                                    <field name="hom"/>
+                                    <field name="N"/>
+                                    <field name="P"/>
+                                    <field name="K"/>
+                                    <field name="Ca"/>
+                                    <field name="Mg"/>
+                                    <field name="Si"/>
+                                    <field name="OM"/>
+                                    <field name="Humic"/>
+                                </tree>
+                                <form string="Bón phân Line">
+                                    <group>
+                                        <field name="giaidoan"/>
+                                        <field name="phan"/>
+                                        <field name="slg"/>
+                                        <field name="tyle_ro"/>
+                                        <field name="tyle_ho"/>
+                                        <field name="hang"/>
+                                        <field name="ro"/>
+                                        <field name="ho"/>
+                                        <field name="hom"/>
+                                        <field name="N"/>
+                                        <field name="P"/>
+                                        <field name="K"/>
+                                        <field name="Ca"/>
+                                        <field name="Mg"/>
+                                        <field name="Si"/>
+                                        <field name="OM"/>
+                                        <field name="Humic"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_lomi_tree" model="ir.ui.view">
+            <field name="name">lomi.tree</field>
+            <field name="model">lomi</field>
+            <field name="arch" type="xml">
+                <tree string="Lomi">
+                    <field name="tenlo" optional="show"/>
+                    <field name="tenhang" optional="show"/>
+                    <field name="hang" optional="hide"/>
+                    <field name="luong" optional="hide"/>
+                    <field name="giong" optional="show"/>
+                    <field name="ngaytrong" optional="hide"/>
+                    <field name="ngaytuoi" optional="show"/>
+                    <field name="kc_hom" optional="hide"/>
+                    <field name="kc_hang" optional="hide"/>
+                    <field name="cd_hang" optional="hide"/>
+                    <field name="sohom" optional="show"/>
+                    <field name="kieutrong" optional="show"/>
+                    <field name="kieuro" optional="show"/>
+                    <field name="cr_ro" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Kieutrong Views -->
+        <record id="view_kieutrong_form" model="ir.ui.view">
+            <field name="name">kieutrong.form</field>
+            <field name="model">kieutrong</field>
+            <field name="arch" type="xml">
+                <form string="Kiểu trồng">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_kieutrong_tree" model="ir.ui.view">
+            <field name="name">kieutrong.tree</field>
+            <field name="model">kieutrong</field>
+            <field name="arch" type="xml">
+                <tree string="Kiểu trồng">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Kieuro Views -->
+        <record id="view_kieuro_form" model="ir.ui.view">
+            <field name="name">kieuro.form</field>
+            <field name="model">kieuro</field>
+            <field name="arch" type="xml">
+                <form string="Kiểu đổ rò">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_kieuro_tree" model="ir.ui.view">
+            <field name="name">kieuro.tree</field>
+            <field name="model">kieuro</field>
+            <field name="arch" type="xml">
+                <tree string="Kiểu đổ rò">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Giongmi Views -->
+        <record id="view_giongmi_form" model="ir.ui.view">
+            <field name="name">giongmi.form</field>
+            <field name="model">giongmi</field>
+            <field name="arch" type="xml">
+                <form string="Giống mì">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_giongmi_tree" model="ir.ui.view">
+            <field name="name">giongmi.tree</field>
+            <field name="model">giongmi</field>
+            <field name="arch" type="xml">
+                <tree string="Giống mì">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Actions -->
+        <record id="action_lomi" model="ir.actions.act_window">
+            <field name="name">Lomi</field>
+            <field name="res_model">lomi</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_kieutrong" model="ir.actions.act_window">
+            <field name="name">Kiểu trồng</field>
+            <field name="res_model">kieutrong</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_kieuro" model="ir.actions.act_window">
+            <field name="name">Kiểu đổ rò</field>
+            <field name="res_model">kieuro</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_giongmi" model="ir.actions.act_window">
+            <field name="name">Giống mì</field>
+            <field name="res_model">giongmi</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menus -->
+        <menuitem id="menu_lomi_root" name="Lomi Management" sequence="1"/>
+        <menuitem id="menu_lomi" name="Lomi" parent="menu_lomi_root" action="action_lomi" sequence="1"/>
+        <menuitem id="menu_kieutrong" name="Kiểu trồng" parent="menu_lomi_root" action="action_kieutrong" sequence="2"/>
+        <menuitem id="menu_kieuro" name="Kiểu đổ rò" parent="menu_lomi_root" action="action_kieuro" sequence="3"/>
+        <menuitem id="menu_giongmi" name="Giống mì" parent="menu_lomi_root" action="action_giongmi" sequence="4"/>
+    </data>
+</odoo>

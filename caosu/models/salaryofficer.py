@@ -31,7 +31,7 @@ class SalaryOfficer(models.Model):
     thang13 = fields.Float('Tháng 13', digits='Product Price')
     quankho = fields.Float('Tiền quản kho', digits='Product Price')
     tngm = fields.Float('Trách nhiệm giao mũ', digits='Product Price')
-    tongcong = fields.Float('Thực nhận', digits='Product Price', compute='_compute_tongcong')
+    tongcong = fields.Float('Thực nhận', digits='Product Price') #, compute='_compute_tongcong'
     kyten = fields.Char('Ký tên')
     ghichu = fields.Char('Ghi chú')
     thang = fields.Char('Tháng')
@@ -181,10 +181,10 @@ class SalaryOfficer(models.Model):
             rec.tong = rec.lcb + rec.trachnhiem + rec.xangdt + rec.dixa + rec.thuongcd + rec.rxmt + rec.tienan + rec.vsb + rec.quankho + rec.tngm
             rec.ltn = rec.tong * rec.ngaycong / days
     
-    @api.depends('ltn','ctn','ngayphep','tienung','tiengui','tienquy','tmtr','thuongtl','thang13','rutpl','rutbot','tienmuon','x_tgrb','x_tgtn')
+    '''@api.depends('ltn','ctn','ngayphep','tienung','tiengui','tienquy','tmtr','thuongtl','thang13','rutpl','rutbot','tienmuon','x_tgrb','x_tgtn')
     def _compute_tongcong(self):
         for rec in self:
-            rec.tongcong = rec.ltn + rec.rutpl + rec.x_tgrb + rec.ctn + rec.ngayphep - rec.tienung - rec.tiengui - rec.tienquy - rec.x_tgtn - rec.tienmuon + rec.thuongtl + rec.thang13
+            rec.tongcong = rec.ltn + rec.rutpl + rec.x_tgrb + rec.ctn + rec.ngayphep - rec.tienung - rec.tiengui - rec.tienquy - rec.x_tgtn - rec.tienmuon + rec.thuongtl + rec.thang13'''
 
 class SalaryOfficerByMonth(models.Model):
     _name = 'salary.officer.by.month'

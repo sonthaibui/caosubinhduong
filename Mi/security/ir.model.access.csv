@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lomi,lomi,model_lomi,,1,1,1,1
+access_bonphan_line,bonphan.line,model_bonphan_line,,1,1,1,1
+access_kieutrong,kieutrong,model_kieutrong,,1,1,1,1
+access_kieuro,kieuro,model_kieuro,,1,1,1,1
+access_giongmi,giongmi,model_giongmi,,1,1,1,1
