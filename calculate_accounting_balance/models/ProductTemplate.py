@@ -1,9 +1,4 @@
-import datetime
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
-from odoo.tools import float_is_zero
-import math
-
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
