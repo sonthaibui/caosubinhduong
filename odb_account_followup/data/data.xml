@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="company_followup_1" model="account.followup" forcecreate="False">
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- <record id="followup_line" model="followup.line">
+            <field name="name">Reminder</field>
+            <field name="delay">5</field>
+            <field name="followup_id" ref="company_followup_1"/>
+        </record>
+
+        <record id="followup" model="account.followup">
+            <field name="followup_line_ids" eval="[(6,0,[ref('followup_line')])]"/>
+        </record> -->
+
+    </data>
+</odoo>

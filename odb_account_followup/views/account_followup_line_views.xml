@@ -1,0 +1,89 @@
+<odoo>
+    <data>
+
+        <record id="account_followup_line_tree_view" model="ir.ui.view">
+            <field name="name">followup.line.tree</field>
+            <field name="model">followup.line</field>
+            <field name="arch" type="xml">
+                <tree string="Follow-up Steps">
+                    <field name="name"/>
+                    <field name="delay"/>
+                    <field name="send_email"/>
+                    <field name="send_letter"/>
+                    <field name="manual_action"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="account_followup_line_form_view" model="ir.ui.view">
+            <field name="name">followup.line.form</field>
+            <field name="model">followup.line</field>
+            <field name="arch" type="xml">
+                <form string="Follow-up Steps">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <div class="oe_inline">
+                        After
+                        <field name="delay" class="oe_inline"/>
+                        days overdue, do the following actions:
+                    </div>
+                    <div>
+                        <field name="manual_action" class="oe_inline"/>
+                        <label for="manual_action"/>
+                    </div>
+                    <div>
+                        <field name="send_email" class="oe_inline"/>
+                        <label for="send_email"/>
+                    </div>
+                    <div>
+                        <field name="send_letter" class="oe_inline"/>
+                        <label for="send_letter"/>
+                    </div>
+
+                    <group string="Manual Action" attrs="{'invisible': [('manual_action', '=', False)]}">
+                        <field name="manual_action_responsible_id"/>
+                        <field name="manual_action_note" attrs="{'required': [('manual_action', '&lt;&gt;', False)]}" placeholder="e.g. Call the customer, check if it's paid, ..."/>
+                    </group>
+                    <group string="Send an Email" attrs="{'invisible': [('send_email', '=', False)]}">
+                        <field name="email_template_id" attrs="{'required': [('send_email', '&lt;&gt;', False)]}"/>
+                    </group>
+                    <group string="Send a Letter or Email" attrs="{'invisible': [('send_email', '=', False), ('send_letter', '=', False)]}">
+                        <p colspan="2" class="oe_grey">
+                            Write here the introduction in the letter,
+                            according to the level of the follow-up. You can
+                            use the following keywords in the text. Don't
+                            forget to translate in all languages you installed
+                            using to top right icon.
+                            <table>
+                                <tr>
+                                    <td t-translation="off">%%(partner_name)s
+                                    </td>
+                                    <td>: Partner Name</td>
+                                </tr>
+                                <tr>
+                                    <td t-translation="off">%%(date)s</td>
+                                    <td>: Current Date</td>
+                                </tr>
+                                <tr>
+                                    <td t-translation="off">
+                                        %%(user_signature)s
+                                    </td>
+                                    <td>: User Name</td>
+                                </tr>
+                                <tr>
+                                    <td t-translation="off">%%(company_name)s
+                                    </td>
+                                    <td>: User's Company Name</td>
+                                </tr>
+                            </table>
+                        </p>
+                        <field name="description" nolabel="1" colspan="2"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

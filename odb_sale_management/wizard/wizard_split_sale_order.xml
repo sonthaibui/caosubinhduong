@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="wizard_split_order_form" model="ir.ui.view">
+        <field name="name">Wizard Split Sale Order Form</field>
+        <field name="model">wizard.split.sale.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="sale_id" invisible="1"/>
+                <field name="commitment_date"/>
+                <field name="wz_order_line_ids">
+                    <tree editable="bottom" create="false" delete="false">
+                        <!-- <field name="pr_line_type" invisible="1"/> -->
+                        <field name="product_id" attrs="{'readonly': 1}"/>
+                        <field name="description" attrs="{'readonly': [('selected_field', '=', False)]}"/>
+                        <field name="commitment_date" attrs="{'readonly': [('selected_field', '=', False)]}"/>
+                        <field name="product_uom_qty" attrs="{'readonly': [('selected_field', '=', False)]}"/>
+                        <field name="product_uom" attrs="{'readonly': [('selected_field', '=', False)]}"/>
+                        <field name="partner_id" attrs="{'readonly': [('selected_field', '=', False)]}"/>
+                        <field name="selected_field" widget="boolean_toggle"/>
+                    </tree>
+                </field>         
+                <footer>
+                    <button string="Confirm" name="split_order" type="object" class="btn btn-primary"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

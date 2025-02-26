@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="ks_list_view_fields_selection_list">
+        <div class="quick_search_columns_list">
+            <t t-foreach="widget.quick_search_field_list" t-as="quick_search_field">
+                <div class="ks_list_field_header" t-att-data-field_order="quick_search_field.field_order"
+                     t-att-data-field_name="quick_search_field.field_name" t-att-data-quick_search_columns_name="quick_search_field.quick_search_columns_name">
+                    <div class="ks_list_field_container w-100">
+                        <span class="ks_list_field_info d-flex">
+                            <div class="quick_search_switch" t-att-data-field-id="quick_search_field.field_name">
+                                <t t-if="quick_search_field.ksShowField">
+                                    <input type="checkbox" class="ks_hide_show_checkbox" checked="1"
+                                           t-att-data-field_name="quick_search_field.field_name" title="Hide/Show Columns">
+                                    </input>
+                                </t>
+                                <t t-else="">
+                                    <input type="checkbox" class="ks_hide_show_checkbox"
+                                           t-att-data-field_name="quick_search_field.field_name" title="Hide/Show Columns">
+                                    </input>
+                                </t>
+                                <span class="quick_search_slider ks_round"/>
+                            </div>
+                            <span class="quick_search_editable" t-att-data-field-id="quick_search_field.field_name" type="text">
+                                <t t-esc="quick_search_field.quick_search_columns_name"/>
+                            </span>
+                            <input class="quick_search_editable d-none" t-att-data-field-id="quick_search_field.field_name" type="text"/>
+
+                            <img class="quick_search_order" src="/odb_quick_search_tree_view/static/src/img/move-arrows.svg"
+                                 title="Reorder Columns"/>
+                        </span>
+                    </div>
+                </div>
+            </t>
+        </div>
+        <div class="ks-text-center">
+            <button type="button" class="btn btn-primary cancel_button d-none" title="Cancel Changes">
+                Cancel
+            </button>
+        </div>
+    </t>
+</templates>

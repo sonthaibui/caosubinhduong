@@ -1,0 +1,1471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_rubber_salary" model="report.paperformat">
+      <field name="name">A4 Portrait</field>
+      <field name="format">A4</field>
+      <field name="orientation">Portrait</field>
+      <field name="margin_top">2</field>
+      <field name="margin_bottom">2</field>
+      <field name="margin_left">7</field>
+      <field name="margin_right">7</field>
+      <field name="header_line" eval="False" />
+      <field name="header_spacing">20</field>
+      <field name="dpi">90</field>
+    </record>
+
+    <record id="paperformat_salary_board" model="report.paperformat">
+      <field name="name">A3 Portrait</field>
+      <field name="format">A3</field>
+      <field name="orientation">Portrait</field>
+      <field name="margin_top">7</field>
+      <field name="margin_bottom">7</field>
+      <field name="margin_left">7</field>
+      <field name="margin_right">7</field>
+      <field name="header_line" eval="False" />
+      <field name="header_spacing">20</field>
+      <field name="dpi">90</field>
+    </record>
+
+    <record id="paperformat_salary_office" model="report.paperformat">
+      <field name="name">A4 Landscape</field>
+      <field name="format">A4</field>
+      <field name="orientation">Landscape</field>
+      <field name="margin_top">2</field>
+      <field name="margin_bottom">2</field>
+      <field name="margin_left">7</field>
+      <field name="margin_right">7</field>
+      <field name="header_line" eval="False" />
+      <field name="header_spacing">20</field>
+      <field name="dpi">90</field>
+    </record>
+
+    <record id="action_rubber_salary_report" model="ir.actions.report">
+      <field name="name">In Phiếu Lương</field>
+      <field name="model">rubber.salary</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">caosu.rubber_salary</field>
+      <field name="binding_model_id" ref="model_rubber_salary" />
+      <field name="binding_type">report</field>
+      <field name="paperformat_id" ref="paperformat_rubber_salary" />
+    </record>
+
+    <record id="action_salary_board_report" model="ir.actions.report">
+      <field name="name">In Bảng Lương</field>
+      <field name="model">salary.board</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">caosu.salary_board</field>
+      <field name="binding_model_id" ref="model_salary_board" />
+      <field name="binding_type">report</field>
+      <field name="paperformat_id" ref="paperformat_salary_board" />
+    </record>
+
+    <record id="action_salary_office_report" model="ir.actions.report">
+      <field name="name">In Bảng Lương Bảo Vệ</field>
+      <field name="model">salary.office.department</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">caosu.salary_office_department</field>
+      <field name="binding_model_id" ref="model_salary_office_department" />
+      <field name="binding_type">report</field>
+      <field name="paperformat_id" ref="paperformat_salary_office" />
+    </record>
+
+    <record id="action_salary_officer_report" model="ir.actions.report">
+      <field name="name">In Lương Văn Phòng</field>
+      <field name="model">salary.officer</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">caosu.salary_officer</field>
+      <field name="binding_model_id" ref="model_salary_officer" />
+      <field name="binding_type">report</field>
+      <field name="paperformat_id" ref="paperformat_rubber_salary" />
+    </record>
+
+    <record id="action_reward_by_month_report" model="ir.actions.report">
+      <field name="name">In xét thưởng tháng</field>
+      <field name="model">reward.by.month</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">caosu.reward_by_month</field>
+      <field name="binding_model_id" ref="model_reward_by_month" />
+      <field name="binding_type">report</field>
+      <field name="paperformat_id" ref="paperformat_salary_office" />
+    </record>
+
+    <template id="rubber_salary">
+      <t t-call="web.html_container">
+        <t t-call="web.internal_layout">
+          <div class="page" style="font-family:arial; font-size: 14.9px;">
+            <!-- Report header content -->
+            <t t-foreach="docs" t-as="o">
+              <p style="page-break-before:always;"> </p>
+              <div class="row">
+                <div class="col-6">
+                  <h4>Phiếu lương tháng <span t-field="o.thang" /> năm <span t-field="o.nam" /></h4>
+                </div>
+                <div class="col-3"><h4>CN: <span t-field="o.sttcn" /> <span t-field="o.empname" /></h4></div>
+                <div class="col-3"><h4><span t-field="o.to_name1" /></h4></div>
+              </div>
+              <br></br>
+              <div class="row">
+                <table width="100%">
+                  <thead>
+                    <tr style="text-align: center; border: 1px solid black; border-collapse: collapse;">
+                        <th style="border-right-style: solid; padding-left: 12px; padding-right: 12px;">Ngày</th>
+                        <th style="border-right-style: solid; padding-left: 2px; padding-right: 2px;">Lô</th>
+                        <th style="border-right-style: solid; padding-left: 14px; padding-right: 7px;">Mũ</th>
+                        <th style="border-right-style: solid; padding-left: 7px; padding-right: 14px;">Độ</th>
+                        <th style="border-right-style: solid;">Quy khô</th>
+                        <th style="border-right-style: solid;">ĐG nước</th>
+                        <th style="border-right-style: solid; padding-left: 2px; padding-right: 2px;">Tiền nước</th>
+                        <th t-if="o.tientangdg > 0" style="border-right-style: solid;">ĐG tăng</th>
+                        <th t-if="o.tientangdg > 0" style="border-right-style: solid;">Tiền tăng DG</th>
+                        <th t-if="o.tienday > 0" style="border-right-style: solid; padding-left: 2px; padding-right: 2px;">Dây</th>
+                        <th t-if="o.tienday > 0" style="border-right-style: solid; padding-left: 2px; padding-right: 2px;">Giá dây</th>
+                        <th t-if="o.tienday > 0" style="border-right-style: solid;">Tiền dây</th>
+                        <th t-if="o.tiendong > 0" style="border-right-style: solid;">Đông</th>
+                        <th t-if="o.tiendong > 0" style="border-right-style: solid;">Giá đông</th>
+                        <th t-if="o.tiendong > 0" style="border-right-style: solid;">Tiền đông</th>
+                        <th t-if="o.tienchen > 0" style="border-right-style: solid; padding-left: 2px; padding-right: 2px;">Chén</th>
+                        <th t-if="o.tienchen > 0" style="border-right-style: solid;">Giá chén</th>
+                        <th t-if="o.tienchen > 0" style="border-right-style: solid;">Tiền chén</th>
+                        <th t-if="o.phucap1 > 0" style="border-right-style: solid;">Phụ cấp</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-foreach="o.rubber_line_ids.sorted(key=lambda record: record.ngay, reverse=False)" t-as="line">
+                      <tr style="text-align: center;border: 1px solid black; border-collapse: collapse;">
+                        <td style="border-right-style: solid;">
+                          <span t-field="line.ngay"/>
+                        </td>
+                        <td style="border-right-style: solid;">
+                          <span t-field="line.lo"/>
+                        </td>
+                        <td style="border-right-style: solid;">
+                          <span t-esc="'%.1f'% line.cong"/>
+                        </td>
+                        <td style="border-right-style: solid;">
+                          <span t-if="line.do_phancay > 0" t-esc="'%.1f'% line.do_phancay"/><span t-if="line.do_phancay == 0">-</span>
+                        </td>
+                        <td style="border-right-style: solid;">
+                          <span t-if="line.quykho > 0" t-esc="'%.1f'% line.quykho"/><span t-if="line.quykho == 0">-</span>
+                        </td>
+                        <td style="text-align: right; padding-right: 3px; border-right-style: solid;">
+                          <span t-if="line.dongia_nuoc > 0" t-field="line.dongia_nuoc"/><span t-if="line.dongia_nuoc == 0">-</span>
+                        </td>
+                        <td style="text-align: right; padding-right: 3px; border-right-style: solid;">
+                          <span t-if="line.tiennuoc > 0" t-field="line.tiennuoc"/><span t-if="line.tiennuoc == 0">-</span>
+                        </td>
+                        <td t-if="o.tientangdg > 0" style="border-right-style: solid;">
+                          <span t-if="line.dongia_tang > 0" t-field="line.dongia_tang"/><span t-if="line.dongia_tang == 0">-</span>
+                        </td>
+                        <td t-if="o.tientangdg > 0" style="border-right-style: solid;">
+                          <span t-if="line.tientangdg > 0" t-field="line.tientangdg"/><span t-if="line.tientangdg == 0">-</span>
+                        </td>
+                        <td t-if="o.tienday > 0" style="border-right-style: solid;">
+                          <span t-if="line.muday > 0" t-esc="'%.1f'% line.muday"/><span t-if="line.muday == 0">-</span>
+                        </td>
+                        <td t-if="o.tienday > 0" style="border-right-style: solid;">
+                          <span t-if="line.dongia_day > 0" t-field="line.dongia_day"/><span t-if="line.dongia_day == 0">-</span>
+                        </td>
+                        <td t-if="o.tienday > 0" style="border-right-style: solid;">
+                          <span t-if="line.tienday > 0" t-field="line.tienday"/><span t-if="line.tienday == 0">-</span>
+                        </td>
+                        <td t-if="o.tiendong > 0" style="border-right-style: solid;">
+                          <span t-if="line.mudong > 0" t-esc="'%.1f'% line.mudong"/><span t-if="line.mudong == 0">-</span>
+                        </td>
+                        <td t-if="o.tiendong > 0" style="border-right-style: solid;">
+                          <span t-if="line.dongia_dong > 0" t-field="line.dongia_dong"/><span t-if="line.dongia_dong == 0">-</span>
+                        </td>
+                        <td t-if="o.tiendong > 0" style="border-right-style: solid;">
+                          <span t-if="line.tiendong > 0" t-field="line.tiendong"/><span t-if="line.tiendong == 0">-</span>
+                        </td>
+                        <td t-if="o.tienchen > 0" style="border-right-style: solid;">
+                          <span t-if="line.muchen > 0" t-esc="'%.1f'% line.muchen"/><span t-if="line.muchen == 0">-</span>
+                        </td>
+                        <td t-if="o.tienchen > 0" style="border-right-style: solid;">
+                          <span t-if="line.dongia_chen > 0" t-field="line.dongia_chen"/><span t-if="line.dongia_chen == 0">-</span>
+                        </td>
+                        <td t-if="o.tienchen > 0" style="border-right-style: solid;">
+                          <span t-if="line.tienchen > 0" t-field="line.tienchen"/><span t-if="line.tienchen == 0">-</span>
+                        </td>
+                        <td t-if="o.phucap1 > 0" style="border-right-style: solid;">
+                          <span t-if="line.phucap > 0" t-field="line.phucap"/><span t-if="line.phucap == 0">-</span>
+                        </td>
+                        <td style="text-align: right; padding-right: 3px;">
+                          <span t-if="line.tongtien > 0" t-field="line.tongtien"/><span t-if="line.tongtien == 0">-</span>
+                        </td>
+                      </tr>
+                    </t>
+                  </tbody>
+                  <tfooter>
+                    <tr>
+                        <td style="text-align: center;"><span t-field="o.ngaycao"></span></td>
+                        <td colspan="3"></td>
+                        <td style="text-align: center;">
+                            <span t-esc="'%.1f'% o.quykho"/>
+                        </td>
+                        <td></td>
+                        <td><span t-field="o.tiennuoc"></span></td>
+                        <td t-if="o.tientangdg > 0"></td>
+                        <td t-if="o.tientangdg > 0"><span t-field="o.tientangdg"></span></td>
+                        <td colspan="2" t-if="o.tienday > 0"></td>
+                        <td t-if="o.tienday > 0"><span t-field="o.tienday"></span></td>
+                        <td colspan="2" t-if="o.tiendong > 0"></td>
+                        <td t-if="o.tiendong > 0"><span t-field="o.tiendong"></span></td>
+                        <td colspan="2" t-if="o.tienchen > 0"></td>
+                        <td t-if="o.tienchen > 0"><span t-field="o.tienchen"></span></td>
+                        <td t-if="o.phucap1 > True"></td>
+                        <td style="text-align: right; padding-right: 3px;">
+                            <span t-field="o.tongtien"/>
+                        </td>
+                    </tr>
+                  </tfooter>
+                </table>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <table width="100%">
+                    <tr>
+                      <td width="50%">Số phần</td>
+                      <td><span t-esc="'%.1f'% o.sophan"/></td>
+                    </tr>
+                    <tr>
+                      <td>Quy khô 1 phần</td>
+                      <td><span t-esc="'%.1f'% o.quykho1"/></td>
+                    </tr>
+                    <tr>
+                      <td>Số ngày vắng</td>
+                      <td><span t-field="o.ngaylam"/></td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Lương sản phẩm</td>
+                      <td style="font-weight: bold;"><span t-field="o.tongtien" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                    </tr>
+                    <tr t-if="o.boithuoc != 0">
+                      <td>Bôi thuốc</td>
+                      <td><span t-field="o.boithuoc"/></td>
+                    </tr>
+                    <tr t-if="o.boikeo != 0">
+                      <td>Bôi keo</td>
+                      <td><span t-field="o.boikeo"/></td>
+                    </tr>
+                    <tr t-if="o.giacomang != 0">
+                      <td>Gia cố máng</td>
+                      <td><span t-field="o.giacomang"/></td>
+                    </tr>
+                    <tr t-if="o.chuyencan != 0">
+                      <td>Chuyên cần</td>
+                      <td><span t-field="o.chuyencan"/></td>
+                    </tr>
+                    <tr t-if="o.thuongsl != 0">
+                      <td>Thưởng sản lượng</td>
+                      <td><span t-field="o.thuongsl"/></td>
+                    </tr>
+                    <tr t-if="o.caochoang != 0">
+                      <td>Cạo choàng</td>
+                      <td><span t-field="o.caochoang"/></td>
+                    </tr>
+                    <tr t-if="o.itmu != 0">
+                      <td>Ít mũ</td>
+                      <td><span t-field="o.itmu"/></td>
+                    </tr>
+                    <tr t-if="o.duongxau != 0">
+                      <td>Đường xấu</td>
+                      <td><span t-field="o.duongxau"/></td>
+                    </tr>
+                    <tr t-if="o.tienphan != 0">
+                      <td>Tiền phân</td>
+                      <td><span t-field="o.tienphan"/></td>
+                    </tr>
+                    <tr t-if="o.mmcn != 0">
+                      <td>Mở miệng cạo ngửa</td>
+                      <td><span t-field="o.mmcn"/></td>
+                    </tr>
+                    <tr t-if="o.mmcu != 0">
+                      <td>Mở miệng cạo úp</td>
+                      <td><span t-field="o.mmcu"/></td>
+                    </tr>
+                    <tr t-if="o.bkrtgn != 0">
+                      <td>Buộc kiềng, rãi tô, gắn nắp</td>
+                      <td><span t-field="o.bkrtgn"/></td>
+                    </tr>
+                    <tr t-if="o.rmdm != 0">
+                      <td>Rong mương, đóng máng</td>
+                      <td><span t-field="o.rmdm"/></td>
+                    </tr>
+                    <tr t-if="o.rct != 0">
+                      <td>Rập cờ, thước</td>
+                      <td><span t-field="o.rct"/></td>
+                    </tr>
+                    <tr t-if="o.bkrtmn != 0">
+                      <td>Buộc kiềng, rãi tô, miệng ngửa</td>
+                      <td><span t-field="o.bkrtmn"/></td>
+                    </tr>
+                    <tr t-if="o.phucap != 0">
+                      <td>Tiền phụ cấp</td>
+                      <td><span t-field="o.phucap"/></td>
+                    </tr>
+                    <tr t-if="o.xdn != 0">
+                      <td>Xỏ dây nắp</td>
+                      <td><span t-field="o.xdn"/></td>
+                    </tr>
+                    <tr t-if="o.tienvattu != 0">
+                      <td>Tiền gom tô, nắp kiềng, váy</td>
+                      <td><span t-field="o.tienvattu"/></td>
+                    </tr>
+                    <tr t-if="o.ttmang != 0">
+                      <td>Tiền máng</td>
+                      <td><span t-field="o.ttmang"/></td>
+                    </tr>
+                    <tr t-if="o.caoxa != 0">
+                      <td>Cạo xả</td>
+                      <td><span t-field="o.caoxa"/></td>
+                    </tr>
+                    <tr t-if="o.bddm != 0">
+                      <td>Bắn dây dẫn mũ</td>
+                      <td><span t-field="o.bddm"/></td>
+                    </tr>
+                    <tr t-if="o.bdgv != 0">
+                      <td>Buộc đá, gắn váy</td>
+                      <td><span t-field="o.bdgv"/></td>
+                    </tr>
+                    <tr t-if="o.bdgvmu != 0">
+                      <td>Buộc đá, gắn váy miệng úp</td>
+                      <td><span t-field="o.bdgvmu"/></td>
+                    </tr>
+                    <tr t-if="o.luongthangtruoc != 0">
+                      <td>Lương tháng trước</td>
+                      <td><span t-field="o.luongthangtruoc"/></td>
+                    </tr>
+                    <tr t-if="o.rutbot != 0">
+                      <td>Tiền rút phúc lợi</td>
+                      <td><span t-field="o.rutbot"/></td>
+                    </tr>
+                    <tr t-if="o.dongthem != 0">
+                      <td>Đóng thêm phúc lợi</td>
+                      <td><span t-field="o.dongthem"/></td>
+                    </tr>
+                    <tr t-if="o.ruttt != 0">
+                      <td>Rút tiền thưởng</td>
+                      <td><span t-field="o.ruttt"/></td>
+                    </tr>
+                    <tr>
+                      <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Tổng lương</td>
+                      <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.tongluong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                    </tr>
+                    <tr t-if="o.tienvattu1 != 0">
+                      <td>Tiền giữ vật tư</td>
+                      <td><span t-field="o.tienvattu1"/></td>
+                    </tr>
+                    <tr t-if="o.tbm != 0">
+                      <td>Tiền bấm máng</td>
+                      <td><span t-field="o.tbm"/></td>
+                    </tr>
+                    <tr t-if="o.tienmuon != 0">
+                      <td>Tiền mượn</td>
+                      <td><span t-field="o.tienmuon"/></td>
+                    </tr>
+                    <tr t-if="o.tiencuoinam != 0">
+                      <td>Tiền gửi xe máy</td>
+                      <td><span t-field="o.tiencuoinam"/></td>
+                    </tr>
+                    <tr t-if="o.tienung != 0">
+                      <td>Tiền ứng</td>
+                      <td><span t-field="o.tienung"/></td>
+                    </tr>
+                    <tr t-if="o.tiendao != 0">
+                      <td>Tiền dao</td>
+                      <td><span t-field="o.tiendao"/></td>
+                    </tr>
+                    <tr t-if="o.chiendo != 0">
+                      <td>Chiên độ</td>
+                      <td><span t-field="o.chiendo"/></td>
+                    </tr>
+                    <tr t-if="o.tiengomto != 0">
+                      <td>Tiền giữ gom tô</td>
+                      <td><span t-field="o.tiengomto"/></td>
+                    </tr>
+                    <tr t-if="o.tamvong != 0">
+                      <td>Tầm vong</td>
+                      <td><span t-field="o.tamvong"/></td>
+                    </tr>
+                    <tr t-if="o.truidao != 0">
+                      <td>Trui dao</td>
+                      <td><span t-field="o.truidao"/></td>
+                    </tr>
+                    <tr t-if="o.bandao != 0">
+                      <td>Bán dao</td>
+                      <td><span t-field="o.bandao"/></td>
+                    </tr>
+                    <tr t-if="o.banlinhtinh != 0">
+                      <td>Bán vật tư</td>
+                      <td><span t-field="o.banlinhtinh"/></td>
+                    </tr>
+                    <tr t-if="o.tienbh != 0">
+                      <td>Tiền BH</td>
+                      <td><span t-field="o.tienbh"/></td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: bold;">Còn lại</td>
+                      <td style="font-weight: bold;"><span t-field="o.conlai" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                    </tr>
+                    <tr>
+                      <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Còn lại làm tròn</td>
+                      <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.tongtienr" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                    </tr>
+                    <tr>
+                      <td>Ghi chú</td>
+                      <td><span t-field="o.ghichu"/></td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="col-2">
+                  <table width="100%">
+                    <thead>
+                      <tr>
+                        <th colspan="2" style="text-align: center;">Tiền thưởng</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: center;">Tháng</th>
+                        <th style="text-align: center;">Tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr t-if="o.tt1 == True">
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: center;"><span t-field="o.ttt1"/></td>
+                      </tr>
+                      <tr t-if="o.tt2 == True">
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;"><span t-field="o.ttt2"/></td>
+                      </tr>
+                      <tr t-if="o.tt3 == True">
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;"><span t-field="o.ttt3"/></td>
+                      </tr>
+                      <tr t-if="o.tt4 == True">
+                        <td style="text-align: center;">4</td>
+                        <td style="text-align: center;"><span t-field="o.ttt4"/></td>
+                      </tr>
+                      <tr t-if="o.tt5 == True">
+                        <td style="text-align: center;">5</td>
+                        <td style="text-align: center;"><span t-field="o.ttt5"/></td>
+                      </tr>
+                      <tr t-if="o.tt6 == True">
+                        <td style="text-align: center;">6</td>
+                        <td style="text-align: center;"><span t-field="o.ttt6"/></td>
+                      </tr>
+                      <tr t-if="o.tt7 == True">
+                        <td style="text-align: center;">7</td>
+                        <td style="text-align: center;"><span t-field="o.ttt7"/></td>
+                      </tr>
+                      <tr t-if="o.tt8 == True">
+                        <td style="text-align: center;">8</td>
+                        <td style="text-align: center;"><span t-field="o.ttt8"/></td>
+                      </tr>
+                      <tr t-if="o.tt9 == True">
+                        <td style="text-align: center;">9</td>
+                        <td style="text-align: center;"><span t-field="o.ttt9"/></td>
+                      </tr>
+                      <tr t-if="o.tt10 == True">
+                        <td style="text-align: center;">10</td>
+                        <td style="text-align: center;"><span t-field="o.ttt10"/></td>
+                      </tr>
+                      <tr t-if="o.tt11 == True">
+                        <td style="text-align: center;">11</td>
+                        <td style="text-align: center;"><span t-field="o.ttt11"/></td>
+                      </tr>
+                      <tr t-if="o.tt12 == True">
+                        <td style="text-align: center;">12</td>
+                        <td style="text-align: center;"><span t-field="o.ttt12"/></td>
+                      </tr>
+                    </tbody>
+                    <tfooter>
+                      <tr t-if="o.tt0 == True">
+                        <td style="border-top-style: solid; border-width: 1px; font-weight: bold; text-align: center;">Tổng</td>
+                        <td style="border-top-style: solid; border-width: 1px; font-weight: bold; text-align: center;"><span t-field="o.ttt0"/></td>
+                      </tr>
+                    </tfooter>
+                  </table>
+                  <table width="100%">
+                    <tbody>
+                      <tr t-if="o.rtt1 == True">
+                        <td style="text-align: center;">Rút TT T1</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt1"/></td>
+                      </tr>
+                      <tr t-if="o.rtt2 == True">
+                        <td style="text-align: center;">Rút TT T2</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt2"/></td>
+                      </tr>
+                      <tr t-if="o.rtt3 == True">
+                        <td style="text-align: center;">Rút TT T3</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt3"/></td>
+                      </tr>
+                      <tr t-if="o.rtt4 == True">
+                        <td style="text-align: center;">Rút TT T4</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt4"/></td>
+                      </tr>
+                      <tr t-if="o.rtt5 == True">
+                        <td style="text-align: center;">Rút TT T5</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt5"/></td>
+                      </tr>
+                      <tr t-if="o.rtt6 == True">
+                        <td style="text-align: center;">Rút TT T6</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt6"/></td>
+                      </tr>
+                      <tr t-if="o.rtt7 == True">
+                        <td style="text-align: center;">Rút TT T7</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt7"/></td>
+                      </tr>
+                      <tr t-if="o.rtt8 == True">
+                        <td style="text-align: center;">Rút TT T8</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt8"/></td>
+                      </tr>
+                      <tr t-if="o.rtt9 == True">
+                        <td style="text-align: center;">Rút TT T9</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt9"/></td>
+                      </tr>
+                      <tr t-if="o.rtt10 == True">
+                        <td style="text-align: center;">Rút TT T10</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt10"/></td>
+                      </tr>
+                      <tr t-if="o.rtt11 == True">
+                        <td style="text-align: center;">Rút TT T11</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt11"/></td>
+                      </tr>
+                      <tr t-if="o.rtt12 == True">
+                        <td style="text-align: center;">Rút TT T12</td>
+                        <td style="text-align: center;"><span t-field="o.rbtt12"/></td>
+                      </tr>
+                      <tr t-if="o.tg1 == True">
+                        <td style="text-align: center;">TT tăng/giảm T1</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt1"/></td>
+                      </tr>
+                      <tr t-if="o.tg2 == True">
+                        <td style="text-align: center;">TT tăng/giảm T2</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt2"/></td>
+                      </tr>
+                      <tr t-if="o.tg3 == True">
+                        <td style="text-align: center;">TT tăng/giảm T3</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt3"/></td>
+                      </tr>
+                      <tr t-if="o.tg4 == True">
+                        <td style="text-align: center;">TT tăng/giảm T4</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt4"/></td>
+                      </tr>
+                      <tr t-if="o.tg5 == True">
+                        <td style="text-align: center;">TT tăng/giảm T5</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt5"/></td>
+                      </tr>
+                      <tr t-if="o.tg6 == True">
+                        <td style="text-align: center;">TT tăng/giảm T6</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt6"/></td>
+                      </tr>
+                      <tr t-if="o.tg7 == True">
+                        <td style="text-align: center;">TT tăng/giảm T7</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt7"/></td>
+                      </tr>
+                      <tr t-if="o.tg8 == True">
+                        <td style="text-align: center;">TT tăng/giảm T8</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt8"/></td>
+                      </tr>
+                      <tr t-if="o.tg9 == True">
+                        <td style="text-align: center;">TT tăng/giảm T9</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt9"/></td>
+                      </tr>
+                      <tr t-if="o.tg10 == True">
+                        <td style="text-align: center;">TT tăng/giảm T10</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt10"/></td>
+                      </tr>
+                      <tr t-if="o.tg11 == True">
+                        <td style="text-align: center;">TT tăng/giảm T11</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt11"/></td>
+                      </tr>
+                      <tr t-if="o.tg12 == True">
+                        <td style="text-align: center;">TT tăng/giảm T12</td>
+                        <td style="text-align: center;"><span t-field="o.tgtt12"/></td>
+                      </tr>
+                    </tbody>
+                    <tfooter>
+                      <tr t-if="o.conlaitt == True">
+                        <td style="border-top-style: solid; border-width: 1px; font-weight: bold; text-align: center;">Còn lại</td>
+                        <td style="border-top-style: solid; border-width: 1px; font-weight: bold; text-align: center;"><span t-field="o.rbtt0"/></td>
+                      </tr>
+                    </tfooter>
+                  </table>
+                </div>
+                <div class="col-4">
+                  <table width="100%">
+                    <thead>
+                      <tr>
+                        <th colspan="2" style="text-align: center;">Phúc lợi</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: center;">Tháng</th>
+                        <th style="text-align: center;">Tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr t-if="o.plconlai_hf == True">
+                        <td style="font-weight: bold; text-align: center;">Phúc lợi năm trước'</td>
+                        <td style="font-weight: bold; text-align: center;"><span t-field="o.plconlai"/></td>
+                      </tr>
+                      <tr t-if="o.pl1 == True">
+                        <td style="text-align: center;">Tháng 1</td>
+                        <td style="text-align: center;"><span t-field="o.plt1"/></td>
+                      </tr>
+                      <tr t-if="o.pl1 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg1"/></td>
+                      </tr>
+                      <tr t-if="o.pl2 == True">
+                        <td style="text-align: center;">Tháng 2</td>
+                        <td style="text-align: center;"><span t-field="o.plt2"/></td>
+                      </tr>
+                      <tr t-if="o.pl2 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg2"/></td>
+                      </tr>
+                      <tr t-if="o.pl3 == True">
+                        <td style="text-align: center;">Tháng 3</td>
+                        <td style="text-align: center;"><span t-field="o.plt3"/></td>
+                      </tr>
+                      <tr t-if="o.pl3 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg3"/></td>
+                      </tr>
+                      <tr t-if="o.pl4 == True">
+                        <td style="text-align: center;">Tháng 4</td>
+                        <td style="text-align: center;"><span t-field="o.plt4"/></td>
+                      </tr>
+                      <tr t-if="o.pl4 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg4"/></td>
+                      </tr>
+                      <tr t-if="o.pl5 == True">
+                        <td style="text-align: center;">Tháng 5</td>
+                        <td style="text-align: center;"><span t-field="o.plt5"/></td>
+                      </tr>
+                      <tr t-if="o.pl5 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg5"/></td>
+                      </tr>
+                      <tr t-if="o.pl6 == True">
+                        <td style="text-align: center;">Tháng 6</td>
+                        <td style="text-align: center;"><span t-field="o.plt6"/></td>
+                      </tr>
+                      <tr t-if="o.pl6 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg6"/></td>
+                      </tr>
+                      <tr t-if="o.pl7 == True">
+                        <td style="text-align: center;">Tháng 7</td>
+                        <td style="text-align: center;"><span t-field="o.plt7"/></td>
+                      </tr>
+                      <tr t-if="o.pl7 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg7"/></td>
+                      </tr>
+                      <tr t-if="o.pl8 == True">
+                        <td style="text-align: center;">Tháng 8</td>
+                        <td style="text-align: center;"><span t-field="o.plt8"/></td>
+                      </tr>
+                      <tr t-if="o.pl8 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg8"/></td>
+                      </tr>
+                      <tr t-if="o.pl9 == True">
+                        <td style="text-align: center;">Tháng 9</td>
+                        <td style="text-align: center;"><span t-field="o.plt9"/></td>
+                      </tr>
+                      <tr t-if="o.pl9 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg9"/></td>
+                      </tr>
+                      <tr t-if="o.pl10 == True">
+                        <td style="text-align: center;">Tháng 10</td>
+                        <td style="text-align: center;"><span t-field="o.plt10"/></td>
+                      </tr>
+                      <tr t-if="o.pl10 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg10"/></td>
+                      </tr>
+                      <tr t-if="o.pl11 == True">
+                        <td style="text-align: center;">Tháng 11</td>
+                        <td style="text-align: center;"><span t-field="o.plt11"/></td>
+                      </tr>
+                      <tr t-if="o.pl11 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg11"/></td>
+                      </tr>
+                      <tr t-if="o.pl12 == True">
+                        <td style="text-align: center;">Tháng 12</td>
+                        <td style="text-align: center;"><span t-field="o.plt12"/></td>
+                      </tr>
+                      <tr t-if="o.pl12 == True">
+                        <td colspan="2" style="text-align: center; font-size: 12px;"><span t-field="o.pldg12"/></td>
+                      </tr>
+                    </tbody>
+                    <tfooter>
+                      <tr t-if="o.pl0 == True">
+                        <td style="border-top-style: solid; border-width: 1px; font-weight: bold; text-align: center;">Tổng</td>
+                        <td style="border-top-style: solid; border-width: 1px; font-weight: bold; text-align: center;"><span t-field="o.plt0"/></td>
+                      </tr>
+                    </tfooter>
+                  </table>
+                  <table width="100%">
+                    <tbody>
+                      <tr t-if="o.rb1 == True">
+                        <td style="text-align: center;">Rút bớt tháng 1</td>
+                        <td style="text-align: center;"><span t-field="o.rbt1"/></td>
+                      </tr>
+                      <tr t-if="o.rb2 == True">
+                        <td style="text-align: center;">Rút bớt tháng 2</td>
+                        <td style="text-align: center;"><span t-field="o.rbt2"/></td>
+                      </tr>
+                      <tr t-if="o.rb3 == True">
+                        <td style="text-align: center;">Rút bớt tháng 3</td>
+                        <td style="text-align: center;"><span t-field="o.rbt3"/></td>
+                      </tr>
+                      <tr t-if="o.rb4 == True">
+                        <td style="text-align: center;">Rút bớt tháng 4</td>
+                        <td style="text-align: center;"><span t-field="o.rbt4"/></td>
+                      </tr>
+                      <tr t-if="o.rb5 == True">
+                        <td style="text-align: center;">Rút bớt tháng 5</td>
+                        <td style="text-align: center;"><span t-field="o.rbt5"/></td>
+                      </tr>
+                      <tr t-if="o.rb6 == True">
+                        <td style="text-align: center;">Rút bớt tháng 6</td>
+                        <td style="text-align: center;"><span t-field="o.rbt6"/></td>
+                      </tr>
+                      <tr t-if="o.rb7 == True">
+                        <td style="text-align: center;">Rút bớt tháng 7</td>
+                        <td style="text-align: center;"><span t-field="o.rbt7"/></td>
+                      </tr>
+                      <tr t-if="o.rb8 == True">
+                        <td style="text-align: center;">Rút bớt tháng 8</td>
+                        <td style="text-align: center;"><span t-field="o.rbt8"/></td>
+                      </tr>
+                      <tr t-if="o.rb9 == True">
+                        <td style="text-align: center;">Rút bớt tháng 9</td>
+                        <td style="text-align: center;"><span t-field="o.rbt9"/></td>
+                      </tr>
+                      <tr t-if="o.rb10 == True">
+                        <td style="text-align: center;">Rút bớt tháng 10</td>
+                        <td style="text-align: center;"><span t-field="o.rbt10"/></td>
+                      </tr>
+                      <tr t-if="o.rb11 == True">
+                        <td style="text-align: center;">Rút bớt tháng 11</td>
+                        <td style="text-align: center;"><span t-field="o.rbt11"/></td>
+                      </tr>
+                      <tr t-if="o.rb12 == True">
+                        <td style="text-align: center;">Rút bớt tháng 12</td>
+                        <td style="text-align: center;"><span t-field="o.rbt12"/></td>
+                      </tr>
+                      <tr t-if="o.dt1 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 1</td>
+                        <td style="text-align: center;"><span t-field="o.dtt1"/></td>
+                      </tr>
+                      <tr t-if="o.dt2 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 2</td>
+                        <td style="text-align: center;"><span t-field="o.dtt2"/></td>
+                      </tr>
+                      <tr t-if="o.dt3 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 3</td>
+                        <td style="text-align: center;"><span t-field="o.dtt3"/></td>
+                      </tr>
+                      <tr t-if="o.dt4 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 4</td>
+                        <td style="text-align: center;"><span t-field="o.dtt4"/></td>
+                      </tr>
+                      <tr t-if="o.dt5 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 5</td>
+                        <td style="text-align: center;"><span t-field="o.dtt5"/></td>
+                      </tr>
+                      <tr t-if="o.dt6 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 6</td>
+                        <td style="text-align: center;"><span t-field="o.dtt6"/></td>
+                      </tr>
+                      <tr t-if="o.dt7 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 7</td>
+                        <td style="text-align: center;"><span t-field="o.dtt7"/></td>
+                      </tr>
+                      <tr t-if="o.dt8 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 8</td>
+                        <td style="text-align: center;"><span t-field="o.dtt8"/></td>
+                      </tr>
+                      <tr t-if="o.dt9 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 9</td>
+                        <td style="text-align: center;"><span t-field="o.dtt9"/></td>
+                      </tr>
+                      <tr t-if="o.dt10 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 10</td>
+                        <td style="text-align: center;"><span t-field="o.dtt10"/></td>
+                      </tr>
+                      <tr t-if="o.dt11 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 11</td>
+                        <td style="text-align: center;"><span t-field="o.dtt11"/></td>
+                      </tr>
+                      <tr t-if="o.dt12 == True">
+                        <td style="text-align: center;">Đóng thêm tháng 12</td>
+                        <td style="text-align: center;"><span t-field="o.dtt12"/></td>
+                      </tr>
+                    </tbody>
+                    <tfooter>
+                      <tr t-if="o.conlaipl == True">
+                        <td style="border-top-style: solid; border-width: 1px; font-weight: bold; text-align: center;">Còn lại</td>
+                        <td style="border-top-style: solid; border-width: 1px; font-weight: bold; text-align: center;"><span t-field="o.rbt0"/></td>
+                      </tr>
+                    </tfooter>
+                  </table>
+                </div>
+              </div>
+              <!-- Report row content -->
+            </t>
+            <!-- Report footer content -->
+          </div> <!-- page -->
+        </t>
+      </t>
+  </template>
+
+  <template id="salary_board">
+    <t t-call="web.html_container">
+      <t t-call="web.internal_layout">
+        <div class="page" style="font-family:arial;">
+          <t t-foreach="docs" t-as="o">
+            <div class="row">
+              <h5>BẢNG LƯƠNG CÔNG NHÂN <span t-field="o.department_id.name" /> THÁNG <span t-field="o.thang" /> NĂM <span t-field="o.nam" /></h5>
+            </div>
+            <br></br>
+            <div class="row">
+              <table width="100%">
+                <thead>
+                  <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <th style="padding-left: 5px; border-right-style: solid;">STT</th>
+                      <th style="border-right-style: solid;">Công nhân</th>
+                      <th t-if="o.chiendo > 0" style="border-right-style: solid;">Chiên độ</th>
+                      <th style="border-right-style: solid;">Tổng lương</th>
+                      <th t-if="o.tienung > 0" style="border-right-style: solid;">Tiền ứng 1</th>
+                      <th t-if="o.ungtien > 0" style="border-right-style: solid;">Tiền ứng 2</th>
+                      <th t-if="o.tiendao > 0" style="border-right-style: solid;">Tiền dao</th>
+                      <th t-if="o.tamvong > 0" style="border-right-style: solid;">Tầm vong</th>
+                      <th t-if="o.truidao > 0" style="border-right-style: solid;">Trui dao</th>
+                      <th t-if="o.bandao > 0" style="border-right-style: solid;">Bán dao</th>
+                      <th t-if="o.banlinhtinh > 0" style="border-right-style: solid;">Bán vật tư</th>
+                      <th t-if="o.tbm > 0" style="border-right-style: solid;">Tiền bấm máng</th>
+                      <th t-if="o.tienmuon > 0" style="border-right-style: solid;">Tiền mượn</th>
+                      <th t-if="o.rutbot > 0" style="border-right-style: solid;">Rút bớt</th>
+                      <th t-if="o.dongthem > 0" style="border-right-style: solid;">Đóng thêm</th>
+                      <th t-if="o.ruttt > 0" style="border-right-style: solid;">Rút tiền thưởng</th>
+                      <th style="border-right-style: solid;">Còn lại</th>
+                      <th style="border-right-style: solid;">Ký nhận</th>
+                      <!-- <th>Ghi Chú</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="o.allowance_line_ids.sorted(key=lambda record: record.sttcn, reverse=False)" t-as="line">
+                    <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <td style="padding-top: 15px; padding-bottom: 15px; padding-left: 5px; border-right-style: solid;">
+                        <span t-field="line.sttcn"/>
+                      </td>
+                      <td style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-field="line.empname"/>
+                      </td>
+                      <td t-if="o.chiendo > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.chiendo > 0" t-field="line.chiendo" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.chiendo == 0">-</span>
+                      </td>
+                      <td style="padding-top: 15px; padding-bottom: 15px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.tongluong" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td t-if="o.tienung > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tienung > 0" t-field="line.tienung" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tienung == 0">-</span>
+                      </td>
+                      <td t-if="o.ungtien > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.ungtien > 0" t-field="line.ungtien" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.ungtien == 0">-</span>
+                      </td>
+                      <td t-if="o.tiendao > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tiendao > 0" t-field="line.tiendao" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tiendao == 0">-</span>
+                      </td>
+                      <td t-if="o.tamvong > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tamvong > 0" t-field="line.tamvong" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tamvong == 0">-</span>
+                      </td>
+                      <td t-if="o.truidao > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.truidao > 0" t-field="line.truidao" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.truidao == 0">-</span>
+                      </td>
+                      <td t-if="o.bandao > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.bandao > 0" t-field="line.bandao" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.bandao == 0">-</span>
+                      </td>
+                      <td t-if="o.banlinhtinh > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.banlinhtinh > 0" t-field="line.banlinhtinh" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.banlinhtinh == 0">-</span>
+                      </td>
+                      <td t-if="o.tbm > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tbm > 0" t-field="line.tbm" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tbm == 0">-</span>
+                      </td>
+                      <td t-if="o.tienmuon > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tienmuon > 0" t-field="line.tienmuon" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tienmuon == 0">-</span>
+                      </td>
+                      <td t-if="o.rutbot > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.rutbot > 0" t-field="line.rutbot" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.rutbot == 0">-</span>
+                      </td>
+                      <td t-if="o.dongthem > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.dongthem > 0" t-field="line.dongthem" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.dongthem == 0">-</span>
+                      </td>
+                      <td t-if="o.ruttt > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.ruttt > 0" t-field="line.ruttt" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.ruttt == 0">-</span>
+                      </td>
+                      <td style="padding-top: 15px; padding-bottom: 15px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.conlai" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-field="line.kynhan"/>
+                      </td>
+                      <!-- <td style="padding-top: 15px; padding-bottom: 15px;">
+                        <span t-field="line.ghichu"/>
+                      </td> -->
+                    </tr>
+                  </t>
+                </tbody>
+                <tfooter>
+                  <tr style="text-align: center;">
+                      <td colspan="2" style="text-align: center; font-weight: bold;"><span t-field="o.tongcong"/></td>
+                      <td t-if="o.chiendo > 0" style="font-weight: bold;"><span t-field="o.chiendo" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td style="font-weight: bold;"><span t-field="o.tongluong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tienung > 0" style="font-weight: bold;"><span t-field="o.tienung" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.ungtien > 0" style="font-weight: bold;"><span t-field="o.ungtien" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tiendao > 0" style="font-weight: bold;"><span t-field="o.tiendao" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tamvong > 0" style="font-weight: bold;"><span t-field="o.tamvong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.truidao > 0" style="font-weight: bold;"><span t-field="o.truidao" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.bandao > 0" style="font-weight: bold;"><span t-field="o.bandao" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.banlinhtinh > 0" style="font-weight: bold;"><span t-field="o.banlinhtinh" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tbm > 0" style="font-weight: bold;"><span t-field="o.tbm" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tienmuon > 0" style="font-weight: bold;"><span t-field="o.tienmuon" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.rutbot > 0" style="font-weight: bold;"><span t-field="o.rutbot" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.dongthem > 0" style="font-weight: bold;"><span t-field="o.dongthem" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.ruttt > 0" style="font-weight: bold;"><span t-field="o.ruttt" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td style="font-weight: bold;"><span t-field="o.conlai" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                </tfooter>
+              </table>
+            </div>
+          </t>
+        </div>
+      </t>
+    </t>
+  </template>
+
+  <template id="salary_office_department">
+    <t t-call="web.html_container">
+      <t t-call="web.internal_layout">
+        <div class="page" style="font-family:arial;">
+          <t t-foreach="docs" t-as="o">
+            <div class="row">
+              <h5>THANH TOÁN LƯƠNG BẢO VỆ <span t-field="o.toname" /> THÁNG <span t-field="o.thang" /> NĂM <span t-field="o.nam" /></h5>
+            </div>
+            <br></br>
+            <div class="row">
+              <table width="100%">
+                <thead>
+                  <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <th style="border-right-style: solid;">STT</th>
+                      <th style="border-right-style: solid;">Họ Tên</th>
+                      <th style="border-right-style: solid;">Tổ</th>
+                      <th style="border-right-style: solid;">Ngày Công</th>
+                      <th style="border-right-style: solid;">Mức Lương</th>
+                      <th style="border-right-style: solid;">Thực Lãnh</th>
+                      <th t-if="o.trachnhiem_hf == True" style="border-right-style: solid;">PC TNhiệm</th>
+                      <th t-if="o.dixa_hf == True" style="border-right-style: solid;">PC Đi Xa</th>
+                      <th t-if="o.caotn_hf == True" style="border-right-style: solid;">Cạo TN</th>
+                      <th t-if="o.laimc_hf == True" style="border-right-style: solid;">Lái MC</th>
+                      <th t-if="o.ngaytet_hf == True" style="border-right-style: solid;">Ngày TrTết</th>
+                      <th t-if="o.thuongtet_hf == True" style="border-right-style: solid;">Thưởng TrTết</th>
+                      <th style="border-right-style: solid;">Tổng Cộng</th>
+                      <th style="border-right-style: solid;">Tiền Ứng</th>
+                      <th t-if="o.tienmuon_hf == True" style="border-right-style: solid;">Tiền Mượn</th>
+                      <th style="border-right-style: solid;">Thực Nhận</th>
+                      <th style="border-right-style: solid;">Phúc lợi</th>
+                      <th style="border-right-style: solid;">Phúc lợi TN</th>
+                      <th style="border-right-style: solid;">Phúc lợi TL</th>
+                      <th style="border-right-style: solid;">Phúc lợi TL năm</th>
+                      <th t-if="o.kyten_hf == True" style="border-right-style: solid;">Ký Nhận</th>
+                      <th t-if="o.ghichu_hf == True">Ghi Chú</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="o.salaryofficestaff_line_ids.sorted(key=lambda record: record.stt, reverse=False)" t-as="line">
+                    <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.stt"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.empname"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.toname"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.ngaycong"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.mucluong"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.luongthuc"/>
+                      </td>
+                      <td t-if="o.trachnhiem_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.trachnhiem"/>
+                      </td>
+                      <td t-if="o.dixa_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.dixa"/>
+                      </td>
+                      <td t-if="o.caotn_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.caotn"/>
+                      </td>
+                      <td t-if="o.laimc_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.laimc"/>
+                      </td>
+                      <td t-if="o.ngaytet_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.ngaytructet"/>
+                      </td>
+                      <td t-if="o.thuongtet_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.thuongtructet"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.tongcong"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.tienung"/>
+                      </td>
+                      <td t-if="o.tienmuon_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.tienmuon"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.nhanthuc"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.phucloi"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.phucloitn"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.phucloitl"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.phucloitln"/>
+                      </td>
+                      <td t-if="o.kyten_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.kyten"/>
+                      </td>
+                      <td t-if="o.ghichu_hf == True">
+                        <span t-field="line.ghichu"/>
+                      </td>
+                    </tr>
+                  </t>
+                </tbody>
+                <tfooter>
+                  <tr style="text-align: center;">
+                      <td colspan="6" style="text-align: center; font-weight: bold;"><span t-field="o.tongcong1"/></td>
+                      <td t-if="o.trachnhiem_hf == True"></td>
+                      <td t-if="o.dixa_hf == True"></td>
+                      <td t-if="o.ngaytet_hf == True"></td>
+                      <td t-if="o.thuongtet_hf == True"></td>
+                      <td style="font-weight: bold;"><span t-field="o.tongcong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td></td>
+                      <td t-if="o.tienmuon_hf == True"></td>
+                      <td style="font-weight: bold;"><span t-field="o.nhanthuc" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.kyten_hf == True"></td>
+                      <td t-if="o.ghichu_hf == True"></td>
+                  </tr>
+                </tfooter>
+              </table>
+            </div>
+          </t>
+        </div>
+      </t>
+    </t>
+  </template>
+
+  <template id="salary_officer">
+    <t t-call="web.html_container">
+      <t t-call="web.internal_layout">
+        <div class="page" style="font-family:arial;">
+          <!-- Report header content -->
+          <t t-foreach="docs" t-as="o">
+            <p style="page-break-before:always;"> </p>
+            <div class="row">
+              <div class="col-6">
+                <h5 style="font-weight: bold;">PHIẾU LƯƠNG THÁNG <span t-field="o.thang" />/<span t-field="o.nam" /></h5>
+              </div>
+              <div class="col-4"><h5 style="font-weight: bold;">NV: <span t-field="o.empname" /></h5></div>
+              <div class="col-3"><h5 style="font-weight: bold;">BP: <span t-field="o.toname" /></h5></div>
+            </div>
+            <br></br>
+            <!-- <div class="row">
+              <table width="100%">
+                <thead>
+                  <tr style="text-align: center; border: 1px solid black; border-collapse: collapse;">
+                    <th style="border-right-style: solid;">Ngày công</th>
+                    <th style="border-right-style: solid;">Lương CB</th>
+                    <th style="border-right-style: solid;">Trách nhiệm</th>
+                    <th style="border-right-style: solid;">PC xăng, ĐT</th>
+                    <th style="border-right-style: solid;">PC đi xa</th>
+                    <th style="border-right-style: solid;">PC rửa xe MT</th>
+                    <th style="border-right-style: solid;">Tiền ăn</th>
+                    <th style="border-right-style: solid;">Tiền VS bồn</th>
+                    <th style="border-right-style: solid;">Tiền quản kho</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="text-align: center; border: 1px solid black; border-collapse: collapse;">
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.ngaycong"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.lcb"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.trachnhiem"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.xangdt"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.dixa"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.rxmt"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.tienan"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.vsb"/>
+                    </td>
+                    <td t-if="o.ctn_hf == True" style="border-right-style: solid;">
+                      <span t-field="o.quankho"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br></br>
+            <br></br>
+            <br></br> -->
+            <div class="row">
+              <div class="col-6">
+                <h5>PHẦN LƯƠNG</h5>
+                <table width="100%">
+                  <tr t-if="o.lcb != 0">
+                    <td>Lương cơ bản</td>
+                    <td><span t-field="o.lcb"/></td>
+                  </tr>
+                  <tr t-if="o.trachnhiem != 0">
+                    <td>Phụ cấp trách nhiệm</td>
+                    <td><span t-field="o.trachnhiem"/></td>
+                  </tr>
+                  <tr t-if="o.rxmt != 0">
+                    <td>PC rửa xe MT</td>
+                    <td><span t-field="o.rxmt"/></td>
+                  </tr>
+                  <tr t-if="o.dixa != 0">
+                    <td>PC đi xa</td>
+                    <td><span t-field="o.dixa"/></td>
+                  </tr>
+                  <tr t-if="o.tienan != 0">
+                    <td>Tiền ăn</td>
+                    <td><span t-field="o.tienan"/></td>
+                  </tr>
+                  <tr t-if="o.vsb != 0">
+                    <td>Tiền VS bồn</td>
+                    <td><span t-field="o.vsb"/></td>
+                  </tr>
+                  <tr t-if="o.quankho != 0">
+                    <td>Tiền quản kho</td>
+                    <td><span t-field="o.quankho"/></td>
+                  </tr>
+                  <tr t-if="o.thuongcd != 0">
+                    <td>Thưởng chủ động</td>
+                    <td><span t-field="o.thuongcd"/></td>
+                  </tr>
+                  <tr t-if="o.xangdt != 0">
+                    <td>Phụ cấp điện thoại, xăng</td>
+                    <td><span t-field="o.xangdt"/></td>
+                  </tr>
+                  <tr t-if="o.tngm != 0">
+                    <td>Trách nhiệm giao mũ</td>
+                    <td><span t-field="o.tngm"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Tổng cộng</td>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.tong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                  <tr t-if="o.ngaycong != 0">
+                    <td>Ngày công</td>
+                    <td><span t-field="o.ngaycong"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Thực nhận</td>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.ltn" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                  <tr>
+                    <td>Lương tháng 13</td>
+                    <td><span t-field="o.thang13" /></td>
+                  </tr>
+                  <tr>
+                    <td>Thưởng tích lũy</td>
+                    <td><span t-field="o.thuongtl" /></td>
+                  </tr>
+                  <tr t-if="o.rutpl_hf == True">
+                    <td>Tiền rút PL 1 lần</td>
+                    <td><span t-field="o.rutpl"/></td>
+                  </tr>
+                  <tr t-if="o.x_tgrb != 0">
+                    <td>Rút bớt tiền gửi</td>
+                    <td><span t-field="o.x_tgrb"/></td>
+                  </tr>
+                  <tr t-if="o.tienung != 0">
+                    <td>Trừ tiền ứng</td>
+                    <td><span t-field="o.tienung"/></td>
+                  </tr>
+                  <tr t-if="o.x_tgtn != 0">
+                    <td>Trừ tiền gửi</td>
+                    <td><span t-esc="o.x_tgtn" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr t-if="o.tienquy != 0">
+                    <td>Trừ tiền quỹ</td>
+                    <td><span t-field="o.tienquy"/></td>
+                  </tr>
+                  <tr t-if="o.tienmuon != 0">
+                    <td>Trừ tiền mượn</td>
+                    <td><span t-field="o.tienmuon"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Còn lại</td>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.tongcong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                  <br></br>
+                  <tr>
+                    <td style="width: 50%; text-align: left;">Góp ý</td>
+                    <td style="width: 50%; text-align: left;"><span t-raw="o.gopy"/></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-6">
+                <h5>PHẦN TIỀN MƯỢN</h5>
+                <table width="100%">
+                  <tr>
+                    <td>1. Tiền mượn tháng trước còn</td>
+                    <td><span t-esc="o.x_tmtt" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>2. Tiền mượn thêm trong tháng</td>
+                    <td><span t-esc="o.x_tmtn" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>3. Tiền mượn trả trong tháng</td>
+                    <td><span t-esc="o.x_tmtr" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>4. Trừ tiền mượn</td>
+                    <td><span t-field="o.tienmuon"/></td>
+                  </tr>
+                  <tr >
+                    <td style="border-top-style: solid; border-width: 1px;">5. Tiền mượn còn: 1 + 2 - 3 - 4</td>
+                    <td style="border-top-style: solid; border-width: 1px;"><span t-esc="o.x_tmcl" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                </table>
+                <br></br>
+                <h5>PHẦN PHÚC LỢI</h5>
+                <table width="100%">
+                  <tr>
+                    <td>1. Phúc lợi tháng này</td>
+                    <td><span t-field="o.phucloi"/></td>
+                  </tr>
+                  <tr>
+                    <td>2. Phúc lợi tích lũy</td>
+                    <td><span t-field="o.phucloitl"/></td>
+                  </tr>
+                  <tr>
+                    <td>a. Tỷ lệ rút PL (%)</td>
+                    <td><span t-field="o.tylerut"/></td>
+                  </tr>
+                  <tr>
+                    <td>b. Rút PL 1 lần</td>
+                    <td><span t-field="o.rutpl"/></td>
+                  </tr>
+                  <tr>
+                    <td>3. Phúc lợi đóng thêm</td>
+                    <td><span t-field="o.dongthem"/></td>
+                  </tr>
+                  <tr>
+                    <td>4. Chia lãi phúc lợi</td>
+                    <td><span t-field="o.chialai"/></td>
+                  </tr>
+                  <tr >
+                    <td>5. Phúc lợi rút bớt</td>
+                    <td><span t-field="o.rutbot"/></td>
+                  </tr>
+                  <tr >
+                    <td>6. Phúc lợi còn lại: 2 + 3 - 4 - 5</td>
+                    <td><span t-field="o.conlai1"/></td>
+                  </tr>
+                </table>
+                <br></br>
+                <h5>PHẦN TIỀN GỬI</h5>
+                <table width="100%">
+                  <tr>
+                    <td>1. Tiền gửi tháng trước còn</td>
+                    <td><span t-esc="o.x_tgtt" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>2. Tiền gửi thêm tháng này</td>
+                    <td><span t-esc="o.x_tgtn" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>3. Tiền gửi rút bớt</td>
+                    <td><span t-esc="o.x_tgrb" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>4. Tiền gửi còn lại</td>
+                    <td><span t-esc="o.x_tgtl" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <!-- Report row content -->
+          </t>
+          <!-- Report footer content -->
+        </div> <!-- page -->
+      </t>
+    </t>
+  </template>
+
+  <template id="reward_by_month">
+    <t t-call="web.html_container">
+      <t t-call="web.internal_layout">
+        <div class="page" style="font-family:arial; font-size: 14.9px;">
+          <t t-foreach="docs" t-as="o">
+            <div class="row">
+              <h5>BẢNG XÉT THƯỞNG THÁNG <span t-field="o.to.name" /> THÁNG <span t-field="o.thang" /> NĂM <span t-field="o.nam" /></h5>
+            </div>
+            <br></br>             
+            <div class="row">
+              <table width="100%">
+                <thead>
+                  <tr style="border: 1px solid black; border-collapse: collapse; text-align: center; font-size: 16.9px;">
+                      <th style="padding-left: 5px; border-right-style: solid;">STT</th>
+                      <th style="border-right-style: solid;padding-top: 1px; padding-bottom: 1px; padding-left: 1px; padding-right: 1px; width: 120px;">Công Nhân</th>
+                      <th style="border-right-style: solid;">CP</th>
+                      <th style="border-right-style: solid;">KP</th>
+                      <th style="border-right-style: solid;">Chuyên cần</th>
+                      <th style="border-right-style: solid;">KT lần 1 </th>
+                      <th style="border-right-style: solid;">Thưởng 1</th>
+                      <th style="border-right-style: solid;">KT lần 2</th>
+                      <th style="border-right-style: solid;">Thưởng 2</th>
+                      <th style="border-right-style: solid;">Đúng giờ</th>
+                      <th style="border-right-style: solid;">Gỡ mũ dây</th>
+                      <th style="border-right-style: solid;">Úp tô đậy váy</th>
+                      <th style="border-right-style: solid;">VS thùng</th>
+                      <th style="border-right-style: solid;">Tận thu mũ</th>
+                      <th style="border-right-style: solid;">Tích cực</th>
+                      <th style="border-right-style: solid;">Cộng</th>
+                      <th style="border-right-style: solid;">Số suất</th>
+                      <th style="border-right-style: solid;">Tổng tiền</th>
+                      <th t-if="o.ttth > 0" style="border-right-style: solid;">TT tăng/giảm</th>
+                      <th t-if="o.ruttt > 0" style="border-right-style: solid;">Rút TT</th>
+                      <th style="border-right-style: solid;">Lũy kế </th>
+                      <th>Phúc lợi</th>
+                      <th t-if="o.pltl > 0" style="border-right-style: solid;">Phúc lợi TL</th>
+                      <th t-if="o.pltln > 0" style="border-right-style: solid;">Phúc lợi TLN</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="o.reward_line_ids.sorted(key=lambda record: record.sttcn, reverse=False)" t-as="line">
+                    <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.sttcn"/>
+                      </td>
+                      <td style="padding-top: 1px; padding-bottom: 1px; padding-left: 1px; padding-right: 1px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.employee_id.name"/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.cophep"/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.kophep"/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.chuyencan" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.diemkythuat1"/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.tinhkythuat1" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.diemkythuat2"/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.tinhkythuat2" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.dunggio" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.gomuday" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.upday" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.vesinh" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.tanthumu" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 05x; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.tichcuc" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-esc="'%.1f'% line.motsuat"/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-esc="'%.1f'% line.sosuatcao"/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.tongtien" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td t-if="o.ttth > 0" style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.ttth" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td t-if="o.ruttt > 0" style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.ruttt" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.tongtien_luyke" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.phucloi" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td t-if="o.pltl > 0" style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.phucloitl" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td t-if="o.pltln > 0" style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.phucloitln" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                    </tr>
+                  </t>
+                </tbody>
+              </table>
+            </div>
+          </t>
+        </div>
+      </t>
+    </t>
+  </template>
+
+</odoo>

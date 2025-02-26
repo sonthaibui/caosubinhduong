@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_plantation_form" model="ir.ui.view">
+        <field name="name">plantation.form</field>
+        <field name="model">plantation</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                  <field name="rubber_line_ids" nolabel="1">
+                    <tree create="0" delete="0" editable="bottom" default_order="ngay" decoration-bf="kichthich == True" limit ="200">
+                      <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="lo" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" />
+                      <field name="rubbersalary_id" string="Tên CN" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="congnuoc" style="border-top-style: solid !important;border-width: 1px !important" optional ="hide"/>
+                      <field name="congtap" style="border-top-style: solid !important;border-width: 1px !important" optional ="hide"/>
+                      <field name="cong" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="mulantruoc" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="do_phancay" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="chenhlechkho" decoration-success="chenhlechkho_state == True" decoration-danger="chenhlechkho_state == False"  widget="percentage" optional="show"/>
+                      <field name="chenhlechkho_state" optional="hide"/>
+                      <field name="mudong" style="border-top-style: solid !important;border-width: 1px !important" optional ="hide"/>
+                      <field name="muday" style="border-top-style: solid !important;border-width: 1px !important" optional ="hide"/>
+                      <field name="kichthich" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="congthuc_kt" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="dao_kt" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="lan_kt" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="thoitiet" style="border-top-style: solid !important;border-width: 1px !important" optional ="show"/>
+                      <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important" optional ="hide"/>
+                    </tree>
+                  </field>
+                  <notebook>
+                    <page string="Information">
+                      <group>
+                        <group>
+                          <field name="can_duplicate" string='Can Duplicate'/>
+                          <field name="name"/>
+                          <field name='nongtruong'/>
+                          <field name="loso"/>
+                          <field name="sophan"/>
+                          <field name='hangso'/>
+                          <field name="to"/>
+                          <field name="lo"/>
+                          <field name='toname' invisible='1'/>
+                          <field name='sttcn'/>
+                          <field name="employee_id" domain="[('name','like',toname),('department_id','=',to)]" attrs="{'readonly': [('to','=',False)]}"/>                    
+                          <field name='caycao'/>
+                          <field name='cayk'/>
+                          <field name='cayd6'/>
+                          <field name='ghi_chu'/>
+                        </group>
+                        <group>
+                          <field name="giong1"/>
+                          <field name='tyle1'/>
+                          <field name='giong2'/>
+                          <field name='tyle2'/>
+                          <field name='giong3'/>
+                          <field name='tyle3'/>
+                          <field name='namtrong'/>
+                          <field name='nammomieng'/>
+                          <field name='namcaoup'/>
+                          <field name='cayd68'/>
+                          <field name='cayd810'/>
+                          <field name='cayd10'/>
+                        </group>
+                      </group>
+                    </page>
+                    <page string="Note">
+                      <field name="note" />
+                    </page>
+                  </notebook>
+                                    
+                  <field name="treeline_line_ids" string="Hàng Cây">
+                    <tree editable="bottom">
+                      <field name="stt"/>
+                      <field name='o'/>
+                      <field name="k"/>
+                      <field name="km"/>
+                      <field name="g"/>
+                      <field name="tong"/>
+                      <field name="loso"/>
+                    </tree>
+                    <!--<field name="plantation_id"/>
+                    <field name="nongtruong"/>
+                    <field name="toname"/>
+                    <field name="lo"/>-->
+                  </field>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_plantation_tree">
+        <field name="name">plantation.tree</field>
+        <field name="model">plantation</field>
+        <field name="arch" type="xml">
+            <tree string="Plantation Tree View" multi_edit="1" default_order="name">
+                <field name="lo" optional="show"/>
+                <field name="sttcn" string="STT" optional="show"/>
+                <field name="employee_id" optional="show" domain="[('name','like',toname),('department_id','=',to)]" attrs="{'readonly': [('to','=',False)]}"/>
+                <field name='nongtruong' optional="hide"/>
+                <field name="loso"/>
+                <field name="sophan"/>
+                <field name="caycao" string="Cây cạo"/>
+                <field name="to" invisible='1'/>
+                <field name="to_name" optional="hide"/>
+                <field name="lo" optional="hide"/>                
+                <field name='toname' invisible='1'/>                
+                <field name="giong1" optional='show'/>
+                <field name='tyle1' optional='show'/>
+                <field name='giong2' optional='show'/>
+                <field name='tyle2' optional='show'/>
+                <field name='giong3' optional='show'/>
+                <field name='tyle3' optional='show'/>
+                <field name='namtrong' optional='show'/>
+                <field name='nammomieng' optional='show'/>
+                <field name='namcaoup' optional='show'/>
+                <field name='hangso' optional='hide'/>
+                <field name='caycao' optional='hide'/>
+                <field name='cayk' optional='hide'/>
+                <field name='cayd6' optional='hide'/>
+                <field name='cayd68' optional='hide'/>
+                <field name='cayd810' optional='hide'/>
+                <field name='cayd10' optional='hide'/>
+                <field name='ghi_chu' optional='hide'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="plantation_view_search" model="ir.ui.view">
+        <field name="name">plantation.view.search</field>
+        <field name="model">plantation</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="loso" />
+                <group expand="0" string="Group By">
+                    <filter name="to_name" string="Tổ" context="{'group_by': 'to_name'}" />
+                    <filter name="lo" string="Lô" context="{'group_by': 'lo'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_nhapphancay" model="ir.actions.act_window">
+        <field name="name">Phần Cây</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">plantation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_to_name":1, "search_default_lo":1,}</field>
+        <field name="help" type="html">
+            <p>
+              Phần Cây.
+            </p>
+        </field>
+    </record>
+
+</odoo>

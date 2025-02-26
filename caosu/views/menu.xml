@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <menuitem
+        id="caosu_menu"
+        name="Cao su"
+        web_icon="caosu,static/description/icon.png"
+        sequence="0"/>
+
+    <menuitem
+        id="phancay_menu"
+        name="Phần cây"
+        parent="caosu_menu"
+        sequence="0"/>
+
+    <menuitem
+        id="thinghiem_menu"
+        name="Thí nghiệm"
+        parent="caosu_menu"
+        sequence="1"/>
+    
+    <menuitem
+        id="sanluong_menu"
+        name="Sản lượng"
+        parent="caosu_menu"
+        sequence="2"/>
+
+    <menuitem
+        id="luongcn_menu"
+        name="Lương CN"
+        parent="caosu_menu"
+        sequence="3"/>
+      
+        <!--<menuitem id="luongvp" parent="luongcn_menu" name="Lương văn phòng" sequence="2">
+          <menuitem
+            id="salaryofficerbymonth_menu"
+            name="Bảng lương văn phòng"
+            action="action_salaryofficerbymonth"
+            sequence="0"/>
+    
+          <menuitem
+            id="salaryofficer_menu"
+            name="Lương văn phòng"
+            action="action_salaryofficer"
+            sequence="1"/>
+        </menuitem>
+    </menuitem>-->
+
+    <menuitem
+        id="nhapphancay_menu"
+        name="Nhập phần cây"
+        action="action_nhapphancay"
+        parent="phancay_menu"
+        sequence="0"/>
+
+    <menuitem
+        id="nhaphangcay_menu"
+        name="Nhập hàng cây"
+        action="action_nhaphangcay"
+        parent="phancay_menu"
+        sequence="1"/>
+
+    <menuitem
+        id="nhapsanluong_menu"
+        name="Nhập sản lượng"
+        action="action_nhapsanluong"
+        parent="sanluong_menu"
+        sequence="0"/>
+
+    <menuitem
+        id="sanluongcn_menu"
+        name="Sản lượng CN"
+        action="action_sanluongcn"
+        parent="sanluong_menu"
+        sequence="1"/>
+
+    <menuitem
+        id="nhanvaban_menu"
+        name="Nhận và bán"
+        action="action_nhanvaban"
+        parent="sanluong_menu"
+        sequence="2"/>
+
+    <menuitem
+        id="xetaibanmu_menu"
+        name="Giá mũ"
+        action="action_xetaibanmu"
+        parent="sanluong_menu"
+        sequence="3"/>
+
+    <menuitem
+        id="nhapphancaytn_menu"
+        name="Nhập cây thí nghiệm"
+        action="action_nhapphancaytn"
+        parent="thinghiem_menu"
+        sequence="0"/>
+
+    <menuitem
+        id="nhapsanluongtn_menu"
+        name="Nhập mũ thí nghiệm"
+        action="action_nhapsanluongtn"
+        parent="thinghiem_menu"
+        sequence="1"/>
+    
+    <menuitem
+        id="sanluongtn_menu"
+        name="Mũ thí nghiệm"
+        action="action_sanluongtn"
+        parent="thinghiem_menu"
+        sequence="2"/>
+
+    <menuitem id="luong" parent="luongcn_menu" name="Lương" sequence="0">
+      <menuitem
+        id="phieuluong_menu"
+        name="Phiếu lương"
+        action="action_phieuluong"
+        sequence="2"/>
+
+      <menuitem
+        id="bangluong_menu"
+        name="Bảng lương"
+        action="action_bangluong"
+        sequence="3"/>
+
+      <menuitem
+        id="bangluongvp_menu"
+        name="Bảng lương bảo vệ"
+        action="action_bangluongvp"
+        sequence="4"/>
+
+        <menuitem
+        id="luongvp_menu"
+        name="Lương bảo vệ"
+        action="action_luongvp"
+        sequence="5"/>
+
+      <!--<menuitem
+        id="salaryofficerbymonth_menu"
+        name="Bảng lương văn phòng"
+        action="action_salaryofficerbymonth"
+        sequence="6"/>
+
+      <menuitem
+        id="luongvp_menu"
+        name="Lương văn phòng"
+        action="action_salaryofficer"
+        sequence="7"/>-->
+
+      <menuitem
+        id="phucapthang_menu"
+        name="Phụ cấp tháng"
+        action="action_phucapthang"
+        sequence="0"/>
+
+      <menuitem
+        id="phucap_menu"
+        name="Phụ cấp"
+        action="action_phucap"
+        sequence="1"/>
+    </menuitem>
+
+    <menuitem id="thuong" parent="luongcn_menu" name="Thưởng" sequence="1">
+      <menuitem
+        id="xetthuongthang_menu"
+        name="Xét thưởng theo tháng"
+        action="action_xetthuongthang"
+        sequence="0"/>
+
+      <menuitem
+        id="xetthuong_menu"
+        name="Xét thưởng"
+        action="action_xetthuong"
+        sequence="1"/>
+
+      <!--<menuitem
+        id="xetthuongthangnv_menu"
+        name="Xét Thưởng Tháng Nhân Viên"
+        action="action_xetthuongthangnv"
+        sequence="2"/>
+
+      <menuitem
+        id="xetthuongnv_menu"
+        name="Xét Thưởng Nhân Viên"
+        action="action_xetthuongnv"
+        sequence="3"/>-->
+
+      <menuitem
+        id="phucloi_menu"
+        name="Phúc lợi nhân viên"
+        action="action_phucloi"
+        sequence="4"/>
+    </menuitem>
+    
+    <menuitem id="luongvp" parent="luongcn_menu" name="Lương văn phòng" sequence="2">
+      <menuitem
+        id="salaryofficerbymonth_menu"
+        name="Bảng lương văn phòng"
+        action="action_salaryofficerbymonth"
+        sequence="0"/>
+
+      <menuitem
+        id="salaryofficer_menu"
+        name="Lương văn phòng"
+        action="action_salaryofficer"
+        sequence="1"/>
+    </menuitem>
+
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="payment_deposit_wizard_form_view" model="ir.ui.view">
+        <field name="name">Add Deposit</field>
+        <field name="model">payment.order.deposit.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Add Payment Deposit">
+                <group>
+                    <group>
+                        <field name="journal_id" domain="[('type','in',['bank', 'cash'])]" string="Payment Method"/>
+                        <field name="payment_type"/>
+                        <field name="payment_ref"/>
+                        <field name="compute_type"/>
+                        <field name="value"/>
+                    </group>
+                    <group>
+                        <field name="name"/>
+                        <field name="amount_total"/>
+                        <field name="amount_advance"/>
+                        <field name="amount_remain"/>
+                        <field name="currency_id"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="description" placeholder="Description for payment."/>
+                </group>
+                <footer>
+                    <button name="make_advance_payment" string="Confirm" type="object" class="btn-primary"
+                        context="{'default_amount_advance': amount_advance, 'default_amount_remain': amount_remain}"/>
+                    <button special="cancel" string="Cancel" class="btn-danger"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

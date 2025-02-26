@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+      <!-- Top menu item -->
+    <menuitem name="Setting Menu" id="menu_items_custome" web_icon="odb_menu_items,static/description/odoo_menu_icon.png" sequence="450"/>
+    <menuitem id="menu_users" name="Menu Items" parent="menu_items_custome" sequence="1" action="base.grant_menu_access"/>
+</odoo>
+
+

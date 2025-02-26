@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_farm_root" name="Farm"/>
+
+    <menuitem id="menu_farm_farm_job_operation" name="Operations" 
+        parent="menu_farm_root" sequence="10"/>
+
+        <menuitem id="menu_farm_job_operation_land" name="Job Operation" action="action_farm_job_operation"
+            parent="menu_farm_farm_job_operation" sequence="10" groups="group_farm_manager"/>
+
+        <menuitem id="farm_produce_quality_menu" name="Produced Quantity" action="action_farm_produce_quality"
+            sequence="20" parent="menu_farm_farm_job_operation" groups="group_farm_manager"/>
+
+    <menuitem id="menu_farm_data" name="Data Management" 
+        sequence="20" parent="menu_farm_root"/>
+
+    <menuitem id="menu_farm_job" name="Jobs List" 
+        sequence="20" parent="menu_farm_root"/>
+
+        <menuitem id="land_job_menu" name="Jobs" action="action_farm_job"
+            parent="menu_farm_job" sequence="10"/>
+        
+        <menuitem id="menu_farm_job_farm_job_line" name="Job Line" action="action_farm_job_line"
+            parent="menu_farm_job" sequence="20" groups="group_farm_manager"/>
+
+    <menuitem id="menu_farm_zone" name="Zone" parent="menu_farm_root"
+        sequence="30" action="action_farm_zone_form_act_window"/>
+
+    <menuitem id="menu_farm_configuration" name="Configuration"
+        sequence="90" parent="menu_farm_root"/>
+
+        <menuitem id="menu_farm_area" name="Farm Land" parent="menu_farm_configuration"
+            sequence="90" action="action_farm_land"/>
+
+        <menuitem id="menu_farmer_team" name="Farm Team" action="action_farmer_team"
+            parent="menu_farm_configuration" sequence="50" groups="group_farm_manager"/>
+
+        <menuitem id="menu_farm_job_stage_land" name="Farm Stage" action="action_farm_stage"
+            parent="menu_farm_configuration" sequence="60" groups="group_farm_manager"/>
+
+</odoo>

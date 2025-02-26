@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_salary_office_department_form" model="ir.ui.view">
+        <field name="name">salaryofficedepartment.form</field>
+        <field name="model">salary.office.department</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <notebook>
+                  <page string="Thông tin">
+                    <group>
+                      <group>
+                        <field name="recorded" invisible="1"/>
+                        <field name="thang" attrs="{'readonly': [('recorded','=',True)]}"/>
+                        <field name="nam" attrs="{'readonly': [('recorded','=',True)]}"/>
+                      </group>
+                      <group>
+                        <field name="to" attrs="{'readonly': [('recorded','=',True)]}"/>
+                      </group>
+                    </group>
+                  </page>
+                  <page string="Hide fields">
+                    <group>
+                      <group>
+                        <field name="dep_hf" string="Tên Tổ"/>
+                        <field name="trachnhiem_hf" string="Phụ Cấp Trách Nhiệm"/>
+                        <field name="dixa_hf" string="Phụ Cấp Đi Xa"/>
+                        <field name="tienmuon_hf" string="Tiền Mượn"/>
+                        <field name="caotn_hf" string="Cạo thí nghiệm"/>
+                        <field name="laimc_hf" string="Lái máy cày"/>
+                      </group>
+                      <group>
+                        <field name="ngaytet_hf" string="Ngày Trực Tết"/>
+                        <field name="thuongtet_hf" string="Thưởng Trực Tết"/>
+                        <field name="ghichu_hf" string="Ghi Chú"/>
+                        <field name="kyten_hf" string="Ký Tên"/>
+                        <field name="chiendo_hf" string="Chiên độ"/>
+                      </group>
+                    </group>
+                  </page>
+                </notebook>
+                <group>
+                  <field name="salaryofficestaff_line_ids" nolabel="1">
+                    <tree create="1" delete="1" editable="bottom" default_order="stt asc">
+                      <field name="stt" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="empname" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="to" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.dep_hf', '=', True)]}"/>
+                      <field name="toname" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.dep_hf', '=', False)]}"/>
+                      <field name="ngaycong" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="mucluong" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="luongthuc" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="trachnhiem" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.trachnhiem_hf', '=', False)]}"/>
+                      <field name="dixa" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.dixa_hf', '=', False)]}"/>
+                      <field name="caotn" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.caotn_hf', '=', False)]}"/>
+                      <field name="laimc" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.laimc_hf', '=', False)]}"/>
+                      <field name="chiendo" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.chiendo_hf', '=', False)]}"/>
+                      <field name="ngaytructet" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.ngaytet_hf', '=', False)]}"/>
+                      <field name="thuongtructet" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.thuongtet_hf', '=', False)]}"/>
+                      <field name="tongcong" sum="Tổng Cộng" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="tienmuon" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.tienmuon_hf', '=', False)]}"/>
+                      <field name="banvattu" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="nhanthuc" sum="Nhận Thực" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="diachi" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="cophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="kophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="phucloi" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="phucloitn" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="phucloitl" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="phucloitln" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <!-- <field name="conlai" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/> -->
+                      <field name="kyten" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.kyten_hf', '=', False)]}"/>
+                      <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.ghichu_hf', '=', False)]}"/>
+                    </tree>
+                  </field>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_salary_office_staff_form" model="ir.ui.view">
+        <field name="name">salaryofficestaff.form</field>
+        <field name="model">salary.office.staff</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <group>
+                  <field name="stt"/>
+                  <field name="employee_id"/>
+                  <field name="toname"/>
+                  <field name="thang"/>
+                  <field name="nam"/>
+                  <field name="tongcong"/>
+                  <field name="tienung"/>
+                  <field name="nhanthuc"/>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_salary_officer_by_month_form" model="ir.ui.view">
+      <field name="name">salaryofficerbymonth.form</field>
+      <field name="model">salary.officer.by.month</field>
+      <field name="arch" type="xml">
+          <form>
+            <sheet>
+              <notebook>
+                <page string="Thông tin">
+                  <group>
+                    <group>
+                      <field name="recorded" invisible="1"/>
+                      <field name="thang" attrs="{'readonly': [('recorded','=',True)]}"/>
+                    </group>
+                    <group>
+                      <field name="nam" attrs="{'readonly': [('recorded','=',True)]}"/>
+                    </group>
+                  </group>
+                </page>
+                <page string="Hide fields">
+                  <group>
+                    <group>
+                      <field name="ctn_hf" string="Cạo thí nghiệm"/>
+                      <field name="tiengui_hf" string="Tiền gửi"/>
+                      <field name="tienquy_hf" string="Tiền quỹ"/>
+                      <field name="ngayphep_hf" string="Ngày phép"/>
+                    </group>
+                    <group>
+                      <field name="thuongtl_hf" string="Thưởng tích luỹ"/>
+                      <field name="thang13_hf" string="Lương tháng 13"/>
+                      <field name="rutpl_hf" string="Rút PL 1 lần"/>
+                      <field name="tylerut_hf" string="Tỷ lệ rút PL"/>
+                    </group>
+                  </group>
+                </page>
+              </notebook>
+              
+              <group>
+                <field name="salaryofficer_ids" nolabel="1">
+                  <tree editable="bottom" default_order="stt asc">
+                    <field name="stt" style="border-top-style: solid !important;border-width: 1px !important"/>
+                    <field name="empname" style="border-top-style: solid !important;border-width: 1px !important"/>
+                    <field name="ngaycong" style="border-top-style: solid !important;border-width: 1px !important"/>
+                    <field name="lcb" style="border-top-style: solid !important;border-width: 1px !important" sum="lcb"/>
+                    <field name="trachnhiem" style="border-top-style: solid !important;border-width: 1px !important" sum="trachnhiem"/>
+                    <field name="xangdt" style="border-top-style: solid !important;border-width: 1px !important" sum="xangdt"/>
+                    <field name="dixa" style="border-top-style: solid !important;border-width: 1px !important" sum="dixa"/>
+                    <field name="rxmt" style="border-top-style: solid !important;border-width: 1px !important" sum="rxmt"/>
+                    <field name="tienan" style="border-top-style: solid !important;border-width: 1px !important" sum="tienan"/>
+                    <field name="vsb" style="border-top-style: solid !important;border-width: 1px !important" sum="vsb"/>
+                    <field name="quankho" style="border-top-style: solid !important;border-width: 1px !important" sum="quankho"/>
+                    <field name="tngm" style="border-top-style: solid !important;border-width: 1px !important" sum="tngm"/>
+                    <field name="ltn" style="border-top-style: solid !important;border-width: 1px !important" sum="ltn"/>
+                    <field name="ctn" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.ctn_hf', '=', False)]}" sum="ctn"/>
+                    <field name="ngayphep" style="border-top-style: solid !important;border-width: 1px !important" sum="ngayphep" attrs="{'column_invisible': [('parent.ngayphep_hf', '=', False)]}"/>
+                    <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important" sum="tienung"/>
+                    <!--<field name="tienmuon" style="border-top-style: solid !important;border-width: 1px !important" sum="tienmuon"/>-->
+                    <field name="tiengui" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.tiengui_hf', '=', False)]}" sum="tiengui"/>
+                    <field name="tienquy" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.tienquy_hf', '=', False)]}" sum="tienquy"/>
+                    <field name="thuongtl" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.thuongtl_hf', '=', False)]}" sum="thuongtl"/>
+                    <field name="thang13" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.thang13_hf', '=', False)]}" sum="thang13"/>
+                    <field name="tmtt" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                    <field name="tmtn" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                    <field name="tmtr" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                    <field name="tmcl" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                    <field name="phucloi" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                    <field name="phucloitl" style="border-top-style: solid !important;border-width: 1px !important" sum="phucloitl" optional="show"/>
+                    <field name="tylerut" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.tylerut_hf', '=', False)]}"/>
+                    <field name="rutpl" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.rutpl_hf', '=', False)]}"/>
+                    <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" sum="dongthem" optional="show"/>
+                    <field name="chialai" style="border-top-style: solid !important;border-width: 1px !important" sum="chialai" optional="show"/>
+                    <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" sum="rutbot" optional="show"/>
+                    <field name="conlai" style="border-top-style: solid !important;border-width: 1px !important" sum="conlai" optional="show"/>
+                    <field name="tongcong" style="border-top-style: solid !important;border-width: 1px !important" sum="tongcong"/>
+                    <field name="diachi" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                    <field name="cophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                    <field name="kophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                    <field name="kyten" style="border-top-style: solid !important;border-width: 1px !important"/>
+                    <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important"/>
+                  </tree>
+                </field>
+              </group>
+            </sheet>
+          </form>
+      </field>
+    </record>
+
+    <record id="view_salary_officer_form" model="ir.ui.view">
+      <field name="name">salaryofficer.form</field>
+      <field name="model">salary.officer</field>
+      <field name="arch" type="xml">
+          <form>
+            <sheet>
+              <notebook>
+                <page string="Thông tin">
+                  <group>
+                    <group string="PHẦN LƯƠNG">
+                      <field name="thang" />
+                      <field name="nam" />
+                      <field name="lcb"/>
+                      <field name="trachnhiem"/>
+                      <field name="thuongcd"/>
+                      <field name="xangdt"/>
+                      <field name="tienan"/>
+                      <field name="dixa"/>
+                      <field name="rxmt"/>
+                      <field name="vsb"/>
+                      <field name="tngm"/>
+                      <field name="quankho" attrs="{'invisible': [('quankho_hf', '=', False)]}"/>
+                      <field name="ctn" attrs="{'invisible': [('ctn_hf', '=', False)]}"/>
+                      <field name="ngayphep" attrs="{'invisible': [('ngayphep_hf', '=', False)]}"/>
+                      <field name="thuongtl" attrs="{'invisible': [('thuongtl_hf', '=', False)]}"/>
+                      <field name="thang13" attrs="{'invisible': [('thang13_hf', '=', False)]}"/>
+                      <field name="x_tgrb"/>
+                      <field name="rutpl" string="Tiền rút PL 1 lần" attrs="{'invisible': [('rutpl_hf', '=', False)]}"/>
+                      <field name="tong"/>
+                      <field name="ngaycong"/>
+                      <field name="ltn"/>
+                      <field name="tienung"/>
+                      <field name="tienquy" attrs="{'invisible': [('tienquy_hf', '=', False)]}"/>
+                      <field name="tiengui" attrs="{'invisible': [('tiengui_hf', '=', False)]}"/>
+                      <field name="tienmuon"/>
+                      <field name="x_tgtn" string="Trừ tiền gửi"/>
+                      <field name="tongcong" string="Còn lại"/>
+                      <field name="gopy"/>
+                    </group>
+                    <group>
+                      <group string="PHẦN TIỀN MƯỢN">
+                        <field name="x_tmtt" string="1. Tiền mượn tháng trước còn"/>
+                        <field name="x_tmtn" string="2. Tiền mượn thêm trong tháng"/>
+                        <field name="x_tmtr" string="3. Tiền mượn trả trong tháng"/>
+                        <field name="tienmuon" string="4. Trừ tiền mượn"/>
+                        <field name="x_tmcl" string="5. Tiền mượn còn: 1 + 2 - 3 - 4"/>
+                      </group>
+                      <group string="PHẦN PHÚC LỢI">
+                        <field name="phucloi" string="1. Phúc lợi tháng này"/>
+                        <field name="phucloitl" string="2. Phúc lợi tích lũy"/>
+                        <field name="tylerut" string="a. Tỷ lệ rút (%)" attrs="{'invisible': [('tylerut_hf', '=', False)]}"/>
+                        <field name="rutpl" string="b. Rút PL 1 lần" attrs="{'invisible': [('rutpl_hf', '=', False)]}"/>
+                        <field name="dongthem" string="3. Phúc lợi đóng thêm"/>
+                        <field name="chialai" string="4. Chia lãi phúc lợi"/>
+                        <field name="rutbot" string="5. Phúc lợi rút bớt"/>
+                        <field name="conlai1" string="6. Phúc lợi còn lại: 2 + 3 - 4 - 5"/>
+                      </group>
+                      <group string="PHẦN TIỀN GỬI">
+                        <field name="x_tgtt" string="1. Tiền gửi tháng trước còn"/>
+                        <field name="x_tgtn" string="2. Tiền gửi thêm tháng này"/>
+                        <field name="x_tgrb" string="3. Tiền gửi rút bớt"/>
+                        <field name="x_tgtl" string="4. Tiền gửi còn lại"/>
+                      </group>
+                    </group>
+                  </group>
+                </page>
+                <page string="Hide fields">
+                  <group>
+                    <group>
+                      <field name="quankho_hf" string="Tiền quản kho"/>
+                      <field name="ctn_hf" string="Cạo thí nghiệm"/>
+                      <field name="tiengui_hf" string="Tiền gửi"/>
+                      <field name="tienquy_hf" string="Tiền quỹ"/>
+                    </group>
+                    <group>
+                      <field name="ngayphep_hf" string="Ngày phép"/>
+                      <field name="thuongtl_hf" string="Thưởng tích luỹ"/>
+                      <field name="thang13_hf" string="Lương tháng 13"/>
+                      <field name="rutpl_hf" string="Rút PL 1 lần"/>
+                      <field name="tylerut_hf" string="Tỷ lệ rút PL"/>
+                    </group>
+                  </group>
+                </page>
+              </notebook>
+            </sheet>
+          </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_salary_office_department_tree">
+        <field name="name">salaryofficedepartment.tree</field>
+        <field name="model">salary.office.department</field>
+        <field name="arch" type="xml">
+            <tree string="Salary Office Department Tree View" multi_edit="1">
+              <field name="thang"/>
+              <field name="nam"/>
+              <field name="to"/>
+            </tree>
+        </field>
+    </record>
+  
+    <record model="ir.ui.view" id="view_salary_office_staff_tree">
+        <field name="name">salaryofficestaff.tree</field>
+        <field name="model">salary.office.staff</field>
+        <field name="arch" type="xml">
+            <tree string="Salary Office Staff Tree View" create="0" multi_edit="1">
+              <field name="stt"/>
+              <field name="empname"/>
+              <field name="to"/>
+              <field name="thang"/>
+              <field name="nam"/>
+              <field name="tongcong"/>
+              <field name="tienung"/>
+              <field name="nhanthuc"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_salary_officer_by_month_tree">
+      <field name="name">salaryofficerbymonth.tree</field>
+      <field name="model">salary.officer.by.month</field>
+      <field name="arch" type="xml">
+          <tree string="Salary Officer By Month Tree View" multi_edit="1">
+            <field name="thang"/>
+            <field name="nam"/>
+          </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_salary_officer_tree">
+      <field name="name">salaryofficer.tree</field>
+      <field name="model">salary.officer</field>
+      <field name="arch" type="xml">
+          <tree string="Salary Officer Tree View" create="0" multi_edit="1">
+            <field name="stt"/>
+            <field name="empname"/>
+            <field name="thang"/>
+            <field name="nam"/>
+            <field name="tongcong"/>
+          </tree>
+      </field>
+    </record>
+
+    <record id="action_bangluongvp" model="ir.actions.act_window">
+        <field name="name">Bảng lương bảo vệ</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">salary.office.department</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Bảng lương bảo vệ.
+            </p>
+        </field>
+    </record>
+  
+    <record id="action_luongvp" model="ir.actions.act_window">
+        <field name="name">Lương bảo vệ</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">salary.office.staff</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Lương bảo vệ.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_salaryofficerbymonth" model="ir.actions.act_window">
+      <field name="name">Bảng lương văn phòng</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">salary.officer.by.month</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+          <p>
+            Bảng lương văn phòng.
+          </p>
+      </field>
+    </record>
+
+    <record id="action_salaryofficer" model="ir.actions.act_window">
+      <field name="name">Lương văn phòng</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">salary.officer</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+          <p>
+            Lương văn phòng.
+          </p>
+      </field>
+    </record>
+
+</odoo>

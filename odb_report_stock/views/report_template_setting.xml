@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="batch_transfer_report_template_setting" model="ir.ui.view">
+        <field name="name">stock.report.template.settings</field>
+        <field name="model">report.template.settings</field>
+        <field name="inherit_id" ref="odb_reports_base.view_report_style_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='footer_font']" position="after">
+                <field name="template_pk"/>
+                <field name="template_delivery"/>
+                <field name="template_adj"/>
+                <field name="template_stock_picking_batch"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

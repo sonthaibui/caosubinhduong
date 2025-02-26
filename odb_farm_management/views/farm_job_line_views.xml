@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="farm_job_line_view_form" model="ir.ui.view">
+        <field name="name">farm.job.line.view.form</field>
+        <field name="model">farm.job.line</field>
+        <field name="arch" type="xml">
+            <form string="Farm Job Line">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="notes" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="farm_job_line_view_tree" model="ir.ui.view">
+        <field name="name">farm.job.line.view.tree</field>
+        <field name="model">farm.job.line</field>
+        <field name="arch" type="xml">
+            <tree string="Farm Job Line">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    
+    <record id="action_farm_job_line" model="ir.actions.act_window">
+        <field name="name">Farm Job Line</field>
+        <field name="res_model">farm.job.line</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

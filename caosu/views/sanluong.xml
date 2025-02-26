@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+  <record id="hr_employee_form_rubber" model="ir.ui.view">
+    <field name="name">hr.employee.form.rubber</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_form"/>
+    <field name="arch" type="xml">
+      <field name="coach_id" position="after">
+        <field name="diachi"/>
+      </field>
+    </field>
+  </record>
+
+    <record id="view_rubber_form" model="ir.ui.view">
+        <field name="name">rubber.form</field>
+        <field name="model">rubber</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="1" delete="0">
+                <sheet>
+                  <group>
+                    <group>
+                      <field name="plantation_id"></field>
+                      <field name="rubbersalary_id"/>
+                      <field name="rubberbydate_id"/>
+                      <field name="ngay"/>
+                      <field name="nam_kt"/>
+                      <field name="lo"/>
+                      <field name="munuoc1" string="N1"/>
+                      <field name="munuoc2" string="N2"/>
+                      <field name="munuoc3" string="N3"/>
+                      <field name="mutap1" string="T1"/>
+                      <field name="mutap2" string="T2"/>
+                    </group>
+                    <group>
+                      <field name="congnuoc"/>
+                      <field name="congtap"/>
+                      <field name="cong"/>
+                      <field name="do_phancay"/>
+                      <field name="mudong"/>
+                      <field name="muday"/>
+                      <field name="kichthich"/>
+                      <field name="ghichu"/>
+                    </group>
+                  </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_rubber_tree">
+        <field name="name">rubber.tree</field>
+        <field name="model">rubber</field>
+        <field name="arch" type="xml">
+          <tree string="Rubber Tree View" create="0" multi_edit="1" default_order="ngay" decoration-bf="kichthich == True" decoration-warning="(miengcao =='2 miệng') or (miengcao =='Miệng ngửa cũ')" decoration-primary="miengcao =='Miệng ngửa mới'">
+            <!--<field name="rubberbydate_id" widget="open_tab"/>
+            <field name="plantation_id" widget="many2onebutton"/>            
+            <field name="rubbersalary_id" widget="many2onebutton"/>-->
+            <field name="plantation_id" optional="hide"/>
+            <field name="rubbersalary_id"/>
+            <field name="lo"/>
+            <field name="planname"/>
+            <field name="ngay"/>
+            <field name="thang" optional="hide"/>
+            <field name="nam" optional="hide"/>
+            <field name="nam_kt" optional="show"/>    
+            <field name="mulantruoc" optional="show"/>
+            <field name="chenhlechmu" decoration-success="chenhlechmu_state == True" decoration-danger="chenhlechmu_state == False" optional="show"/>
+            <field name="chenhlechmu_state" optional="hide"/>       
+            <field name="mudaotruoc" optional="show"/>
+            <field name="cong"/>
+            <field name="do_phancay"/>
+            <field name="quykho"/>
+            <field name="chenhlechkho" decoration-success="chenhlechkho_state == True" decoration-danger="chenhlechkho_state == False"  widget="percentage" optional="show"/>
+            <field name="chenhlechkho_state" optional="hide"/>
+            <field name="dongia_nuoc" optional="hide"/>              
+            <field name="tiennuoc" optional="hide"/>
+            <field name="muday" optional="hide"/>
+            <field name="dongia_day" optional="hide"/>
+            <field name="tienday" optional="hide"/>
+            <field name="phucap" optional="hide"/>
+            <field name="tongtien" optional="hide"/>
+            <field name="miengcao" optional="show"/>
+            <field name="dao_kt" optional="show"/>
+            <field name="lan_kt" optional="show"/>
+            <field name="kichthich"/>
+            <field name="congthuc_kt"/>           
+            <field name="thoitiet"/>
+            <field name="ghichu"/>
+          </tree>
+        </field>
+    </record>
+
+    <record id="view_rubber_pivot" model="ir.ui.view">
+        <field name="name">rubber.pivot</field>
+        <field name="model">rubber</field>
+        <field name="arch" type="xml">
+          <pivot string="Sản Lượng CN" sample="1">
+            <field name="ngay" type="row"/>
+            <field name="cong" type="measure" string="Cộng"/>
+            <field name="to" type="col" string="Tổ"/>
+            <field name="rubbersalary_id" type="col" string="CN"/>
+          </pivot>
+        </field>
+    </record>
+
+    <record id="view_rubber_search" model="ir.ui.view">
+        <field name="name">rubber.search</field>
+        <field name="model">rubber</field>
+        <field name="arch" type="xml">
+          <search>
+            <field name="ngay" />
+            <filter name="2024" string="2024" domain="[('ngay','&lt;=',time.strftime('2025-01-31')),('ngay','&gt;=',time.strftime('2024-02-01'))]"/>
+            <group expand="0" string="Group By">
+              <filter name="to" string="Tổ" context="{'group_by': 'to'}"/>
+              <filter name="lo" string="Lô" context="{'group_by': 'lo'}"/>
+              <filter name="STT" string="STT" context="{'group_by': 'planname'}"/>
+              <filter name="dao_kt" string="Dao kt" context="{'group_by': 'dao_kt'}"/>
+              <filter name="lan_kt" string="Lan kt" context="{'group_by': 'lan_kt'}"/>
+              <filter name="daoup" string="Phien" context="{'group_by': 'daoup'}"/>
+              <!--<filter name="ngay1" string="Ngày" context="{'group_by': 'ngay'}" />-->
+            </group>
+          </search>
+        </field>
+    </record>
+
+    <record id="action_sanluongcn" model="ir.actions.act_window">
+        <field name="name">Sản Lượng CN</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rubber</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="context">{"search_default_to":1, "search_default_lo":1, "search_default_CN":1, "search_default_2024":1,}</field>
+        <field name="help" type="html">
+            <p>
+                Sản lượng công nhân cạo.
+            </p>
+        </field>
+    </record>
+
+    <record forcecreate="True" id="decimal_rubber_one" model="decimal.precision">
+        <field name="name">One Decimal</field>
+        <field name="digits">1</field>
+    </record>
+
+</odoo>

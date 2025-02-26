@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sale_order_line_search_view" model="ir.ui.view">
+            <field name="name">sale.order.line.search</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <search string="Sale Line">
+                    <field name="name"/>
+                    <field name="product_id"/>
+                    <field name="product_template_id"/>
+                    <field name="categ_id"/>
+                    <field name="order_partner_id"/>
+                    <field name="salesman_id"/>
+                    <separator/>
+                    <filter string="Draft" name="filter_draft" domain="[('state', 'in', ['draft', 'sent'])]"/>
+                    <filter string="Validated" name="filter_confirm" domain="[('state', '=', 'confirm')]"/>
+                    <filter string="Approved" name="filter_done" domain="[('state', '=', ['sale', 'done'])]"/>
+                    <filter string="Canceled" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Month" name="group_date_order" context="{'group_by':'date_order:month'}"/>
+                        <filter string="Product Template" name="group_product_template_id" context="{'group_by':'product_template_id'}"/>
+                        <filter string="Product Variant" name="group_product_id" context="{'group_by':'product_id'}"/>
+                        <filter string="Customer" name="group_partner_id" context="{'group_by':'order_partner_id'}"/>
+                        <separator/>
+                        <filter string="Customer" name="group_partner_id" context="{'group_by':'order_partner_id'}"/>
+                        <filter string="Category" name="group_categ_id" context="{'group_by':'categ_id'}"/>
+                        <filter string="Salesman" name="group_salesman_id" context="{'group_by':'salesman_id'}"/>
+                        <filter string="State" name="group_state" context="{'group_by':'state'}"/>
+                        <filter string="Payment Method" name="group_journal_id" context="{'group_by':'journal_id'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="state" select="multi" icon="fa-tags" enable_counters="1"/>
+                        <field name="invoice_status" select="multi" icon="fa-tags" enable_counters="1"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_order_line_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.order.line.tree</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_uom_qty']" position="after">
+                    <field name="price_unit" optional="hide"/>
+                    <field name="discount" optional="hide"/>
+                    <field name="tax_id" optional="hide"/>
+                    <field name="price_subtotal" optional="hide"/>
+                    <field name="commitment_date"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="note" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_sale_order_line" model="ir.actions.act_window">
+            <field name="name">Sales Lines</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_order_line_tree_inherit"/>
+            <field name="search_view_id" ref="sale_order_line_search_view"/>
+            <field name="context">{'search_default_group_state':1,'search_default_group_partner_id':1}</field>
+        </record>
+    </data>
+</odoo>

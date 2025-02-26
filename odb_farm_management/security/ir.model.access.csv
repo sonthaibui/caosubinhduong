@@ -1,0 +1,29 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+acl_land,management.land user,model_farm_land,group_farm_viewer,1,0,0,0
+acl_land_management,management.land land_manager,model_farm_land,group_farm_manager,1,1,1,1
+
+acl_farm_zone,farm.zone user,model_farm_zone,group_farm_viewer,1,0,0,0
+acl_farm_zone_management,small.small farm_zone_manager,model_farm_zone,group_farm_manager,1,1,1,1
+
+acl_farm_job,farm.job user,model_farm_job,group_farm_viewer,1,0,0,0
+acl_farm_job_management,farm.job farm_job_manager,model_farm_job,group_farm_manager,1,1,1,1
+
+acl_farm_job_line,farm.job.line user,model_farm_job_line,group_farm_viewer,1,0,0,0
+acl_farm_job_line_management,farm.job.line farm_job_line_manager,model_farm_job_line,group_farm_manager,1,1,1,1
+
+acl_farm_produce_quality,farm.produce.quality user,model_farm_produce_quality,group_farm_viewer,1,0,0,0
+acl_farm_produce_quality_management,farm.produce.quality farm_produce_quality_manager,model_farm_produce_quality,group_farm_manager,1,1,1,1
+
+acl_farmer_team,farmer.team user,model_farmer_team,group_farm_viewer,1,0,0,0
+acl_farmer_team_management,farmer.team farmer_team_manager,model_farmer_team,group_farm_manager,1,1,1,1
+
+acl_land_stage,land.plan.stage user,model_farm_stage,group_farm_viewer,1,0,0,0
+acl_land_stage_management,land.plan.stage land_stage_manager,model_farm_stage,group_farm_manager,1,1,1,1
+
+acl_farm_job_operation,farm.farm.job.operation user,model_farm_job_operation,group_farm_viewer,1,0,0,0
+acl_farm_job_operation_management,farm.farm.job.operation farm_job_operation_manager,model_farm_job_operation,group_farm_manager,1,1,1,1
+
+acl_land_management_maintenance_equipment,farm.land.maintenance.equipment land_management_maintenance_equipment,maintenance.model_maintenance_equipment,group_farm_manager,1,1,1,1
+
+acl_wizard_disable_farm_zone,wizard.disable.farm.zone user,model_wizard_disable_farm_zone,group_farm_viewer,1,0,0,0
+acl_wizard_disable_farm_zone_management,wizard.disable.farm.zone wizard_disable_farm_zone_manager,model_wizard_disable_farm_zone,group_farm_manager,1,1,1,1

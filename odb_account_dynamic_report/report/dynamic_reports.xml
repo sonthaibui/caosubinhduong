@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="dyanmic_report_paperformat" model="report.paperformat">
+            <field name="name">Dynamic report paperformat</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">25</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_account_reports_pdf" model="ir.actions.report">
+            <field name="name">Dynamic reports</field>
+            <field name="model">dynamic.report.config</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odb_account_dynamic_report.om_account_reports_pdf</field>
+            <field name="report_file">odb_account_dynamic_report.om_account_reports_pdf</field>
+            <field name="paperformat_id" ref="odb_account_dynamic_report.dyanmic_report_paperformat"/>
+        </record>
+
+    </data>
+</odoo>

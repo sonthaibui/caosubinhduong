@@ -1,0 +1,29 @@
+.table-condensed {
+    border: 1px solid;
+    border-color: black;
+}
+
+.table-info-i {
+    background-color: rgb(6, 213, 6);
+    border: 1px solid;
+    border-color: black;
+}
+
+h4 {
+    color: red;
+}
+
+tr {
+    border: 1px solid;
+    border-color: black;
+}
+
+th {
+    border: 1px solid;
+    border-color: black;
+}
+
+td {
+    border: 1px solid;
+    border-color: black;
+}

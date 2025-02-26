@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.rule" id="library_farm_zone_user_rule">
+        <field name="name">Farm: see only public land</field>
+        <field name="model_id" ref="model_farm_zone"/>
+        <field name="groups" eval="[(4, ref('odb_farm_management.group_farm_user'))]"/>
+        <field name="domain_force">
+            [('is_public', '=', True)]
+        </field>
+    </record>
+    <record model="ir.rule" id="library_farm_zone_all_rule">
+        <field name="name">Farm: see all land</field>
+        <field name="model_id" ref="model_farm_zone"/>
+        <field name="groups" eval="[(4, ref('odb_farm_management.group_farm_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

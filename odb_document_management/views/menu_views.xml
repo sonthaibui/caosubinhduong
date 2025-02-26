@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+<!-- Top menu item -->
+        <menuitem name="Documents" id="menu_document_root" groups="group_documents_viewer"
+            web_icon="odb_document_management,static/description/icon.png" sequence="1"/>
+
+        <menuitem name="Documents" id="menu_knowledge" parent="menu_document_root" sequence="10"/>
+
+            <menuitem name="Pages" id="menu_page"
+                parent="menu_knowledge" action="action_page" sequence="10"/>
+
+            <menuitem name="Pages history" id="menu_page_history"
+                parent="menu_knowledge" action="action_history" sequence="20" groups="base.group_no_one"/>
+
+
+        <menuitem name="Attachment" id="menu_document_attachment"
+            parent="menu_document_root" groups="group_documents_viewer" sequence="150"/>
+
+            <menuitem name="Attachment" id="menu_document"
+                parent="menu_document_attachment" action="action_documents_attachment_views" sequence="1"/>
+
+        <menuitem name="Configuration" id="menu_document_configuration"
+            parent="menu_document_root" groups="group_documents_manager" sequence="200"/>
+
+            <menuitem name="Settings" id="menu_document_settings"
+                parent="menu_document_configuration" action="action_document_configuration" sequence="10"/>
+            
+            <menuitem name="Categories" id="menu_category"
+                parent="menu_document_configuration" action="action_category" sequence="20"/>
+
+            <menuitem name="Connections" id="menu_document_connection"
+                parent="menu_document_configuration" action="action_document_connection" sequence="30" groups="base.group_system"/>
+
+    </data>
+</odoo>

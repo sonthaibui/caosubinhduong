@@ -1,0 +1,150 @@
+.h5_DISTRICT{text-align: center}
+.edit tr{
+  width: 100%;
+}
+.edit th{
+  text-decoration: underline;
+  width: 32%;
+  padding-bottom: 2%;
+}
+.edit h6{
+  font-weight: bolder;
+  font-size: 12px;
+  /* font-family: "Times New Roman", sans-serif, serif; */
+}
+.edit td{
+  width: 68%;
+  font-size: 12px;
+  padding-bottom: 2%;
+
+  /* font-family: "Times New Roman", sans-serif, serif; */
+}
+
+.edit2 tr{
+  width: 100%;
+}
+
+.edit2 th{
+  text-decoration: underline;
+  width: 38%;
+  padding-bottom: 2%;
+
+}
+.edit2 h6{
+  font-weight: bolder;
+  font-size: 12px;
+  /* font-family: "Times New Roman", sans-serif, serif; */
+}
+.edit2 td{
+  width: 55%;
+  font-size: 12px;
+  padding-bottom: 2%;
+  padding-left: 8%;
+
+  /* font-family: "Times New Roman", sans-serif, serif; */
+}
+
+
+
+.edit3 ul li{
+  text-decoration: underline;
+  font-weight: bolder;
+}
+
+
+.edit_th{width:89%}
+.edit_th th{
+  text-align: right !important;
+  width: 44%;
+  font-size: 12px;
+  padding-right: 5px;
+}
+.edit_th td{
+  text-align:center;
+  width:20%;
+  font-size:12px
+}
+
+.h5_COMMERCIAL{
+    text-align: center;
+    margin-right: 106px;}
+
+.tg  {
+  border-collapse:collapse;
+  border-spacing:0;
+}
+.tg td{
+  border-color:black;
+  border-style:solid;
+  border-width:1px;
+  font-family:Arial, sans-serif;
+  font-size:12px;
+  overflow:hidden;
+  word-break:normal;
+  text-align: center;
+}
+.tg th{border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;word-break:normal;}
+.tg .tg-z9od{font-size:15px;text-align:left;vertical-align:top}
+.tg .tg-0lax{text-align:center;vertical-align:top}
+
+.tg .tg-0lax2{text-align:center;vertical-align:top; font-size:12px;height: 21px;}
+.tg .edit{border-left-style:none; border-bottom-style: none;
+    border-top-style: none;}
+
+.table td,th{
+  font-size:9px
+}
+
+ul{
+  list-style-type: none;
+  /* margin-left: 14px;   */
+}
+
+h6{font-size:15px; margin:0}
+
+.info{
+  border-collapse:collapse;
+  border-spacing:0;
+  margin-left: 10px;
+}
+.info th{
+  border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;word-break:normal;
+}
+.info td{
+  font-size:12px; 
+  margin-left:38px;
+  border-style: solid;
+  border-color:black;
+  border-width:1px;
+  font-family:Arial, sans-serif;
+  font-size:12px;
+  overflow:hidden;
+  word-break:normal;
+}
+.idet_thead{
+  background-color: #009879;
+  color: #ffffff;
+  line-height: 0px;
+}
+
+.edittable th{
+  width: 30%;
+}
+.edittable td{
+  width: 70%;
+}
+.edit_bank h5{
+  font-size: 11px;
+  font-weight: bolder;
+  text-decoration: underline; 
+}
+.edit_bank_id h5{
+  font-size: 12px;
+  padding-left: 3%;
+}
+
+.edit_printer h6,span{
+  font-size: 14px;
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="stock_move_menu_operations" name="Stock Moves"
+            sequence="6" parent="stock.menu_stock_warehouse_mgmt" groups="stock.group_stock_user"/>
+
+            <menuitem id="stock_move_menu_icooming" name="Icoming" action="action_stock_move_incoming"
+                sequence="10" parent="stock_move_menu_operations" groups="stock.group_stock_user"/>
+
+            <menuitem id="stock_move_menu_internal" name="Internal" action="action_stock_move_internal"
+                sequence="20" parent="stock_move_menu_operations" groups="stock.group_stock_user"/>
+
+            <menuitem id="stock_move_menu_outgoing" name="Outgoing" action="action_stock_move_outgoing"
+                sequence="30" parent="stock_move_menu_operations" groups="stock.group_stock_user"/>
+
+    </data>
+</odoo>

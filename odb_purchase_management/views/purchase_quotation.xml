@@ -1,0 +1,10 @@
+<odoo>
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+        <field name="domain">[('state','not in',('purchase', 'done'))]</field>
+        <field name="context">{'quotation_only': True,'search_default_my_purchases': 1,'search_default_draft':1}</field>
+    </record>
+
+    <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+            <field name="domain">[('state','in',('purchase', 'done'))]</field>
+    </record>
+</odoo>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_plantationtest_form" model="ir.ui.view">
+        <field name="name">plantationtest.form</field>
+        <field name="model">plantation.test</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <group>
+                  <group>
+                    <field name="name"/>
+                    <field name='nongtruong'/>
+                    <field name="loso"/>
+                    <field name="sophan"/>
+                    <field name='hangso'/>
+                    <field name="to"/>
+                    <field name="lo"/>
+                    <field name='toname' invisible='1'/>
+                    <field name='sttcn'/>
+                    <field name="employee_id" domain="[('name','like',toname),('department_id','=',to)]" attrs="{'readonly': [('to','=',False)]}"/>                    
+                    
+                  </group>
+                  <group>
+                    <field name="giong"/>
+                    <field name='tyle'/>
+                    
+                  </group>
+                  <field name="rubbertest_line_ids" nolabel="1">
+                    <tree create="0" delete="0" editable="bottom" default_order="ngay" decoration-bf="kichthich == True" >
+                      <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="lo" style="border-top-style: solid !important;border-width: 1px !important"/>                
+                      <field name="mu_up" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="mulantruoc_up" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>                      
+                      <field name="do_up" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="quykho_up" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="chenhlechkho_up" decoration-success="chenhlechkho_up_state == True" decoration-danger="chenhlechkho_up_state == False"  widget="percentage" optional="show"/>
+                      <field name="chenhlechkho_up_state" optional="hide"/>
+                      <field name="kt_daoup" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="mu_ngua" optional="hide" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="mulantruoc_ngua" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>                      
+                      <field name="do_ngua" optional="hide" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="quykho_ngua" optional="hide"/>
+                      <field name="chenhlechkho_ngua" decoration-success="chenhlechkho_up_state == True" decoration-danger="chenhlechkho_up_state == False"  widget="percentage" optional="hide"/>
+                      <field name="chenhlechkho_ngua_state" optional="hide"/>
+                      <field name="kt_daongua" optional="hide" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="mu_bo" optional="hide" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="do_bo" optional="hide" style="border-top-style: solid !important;border-width: 1px !important" />
+                      <field name="kichthich" optional="show" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="kichthichngua" optional="show" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="congthuc_kt" optional="show" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="miengcao" optional="show" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="thoitiet" optional="show" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="ghichu" optional="show" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      
+                    </tree>
+                  </field>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_plantationtest_tree">
+        <field name="name">plantationtest.tree</field>
+        <field name="model">plantation.test</field>
+        <field name="arch" type="xml">
+            <tree string="Plantation Test Tree View" multi_edit="1">
+              <field name="name"/>
+              <field name='nongtruong'/>
+              <field name="loso"/>
+              <field name="hangso"/>
+              <field name="to" invisible='1'/>
+              <field name="to_name"/>             
+              <field name='toname' invisible='1'/>
+              <field name="employee_id" domain="[('name','like',toname),('department_id','=',to)]" attrs="{'readonly': [('to','=',False)]}"/>
+              <field name="giong" optional='show'/>
+              <field name='tyle' optional='show'/>              
+              <field name='namtrong' optional='show'/>
+              <field name='nammomieng' optional='show'/>
+              <field name='namcaoup' optional='show'/>            
+              
+            </tree>
+        </field>
+    </record>
+    <record id="plantationtest_view_search" model="ir.ui.view">
+      <field name="name">plantationtest.view.search</field>
+      <field name="model">plantation.test</field>
+      <field name="arch" type="xml">
+          <search>              
+              <group expand="0" string="Group By">
+                  <filter name="to" string="Tổ" context="{'group_by': 'to'}" />
+                  <filter name="lo" string="Lô" context="{'group_by': 'lo'}" />                  
+              </group>
+          </search>
+      </field>
+    </record>
+    <record id="action_nhapphancaytn" model="ir.actions.act_window">
+        <field name="name">Phần Cây TN</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">plantation.test</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_to":1, "search_default_lo":1,"search_default_name":1,}</field>
+        <field name="help" type="html">
+            <p>
+              Phần Cây TN.
+            </p>
+        </field>
+    </record>
+
+</odoo>

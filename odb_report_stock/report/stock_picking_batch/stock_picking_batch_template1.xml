@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="stock_picking_batch_template_1" name="District Eight Template">
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"></t>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"></t>
+            </t>
+            <div class="header col-12" t-attf-style="vertical-align:middle;padding-bottom:0px; padding-left:0px; padding-right:0px;">
+                <t t-if="company.df_style.header">
+                    <div class="row">
+                        <div class="col-3">
+                                <img class="float-left" t-if="company.logo" t-att-src="image_data_uri(company.logo)" width="180px" height="30px"/>
+                        </div>
+                        <div class="col-1"/>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="col-3"/>
+                                <div class="col-7">
+                                    <div t-attf-style="font-family:'Neue Haas Unica';font-size:32px">
+                                        PACKING LIST
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div style="font-family:'Neue Haas Unica';font-size:11.33px;font-weight:bold;text-align:right">
+                                <t t-esc="o.name"/>
+                            </div>
+                            <div style="font-family:'Neue Haas Unica';font-size:11.33px;font-weight:bold;text-align:right">
+                                <t t-esc="o.scheduled_date.strftime('%d-%m-%Y')"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+            <div class="article page" t-attf-style="color:{{company.df_style.text_color}};">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-4">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    COMPANY
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px">
+                                    <t t-esc="company.name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-3">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    CUSTOMER
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red">
+                                    Truong Minh Luan
+                                </div>
+                            </div>
+                            <!-- <div class="col-2">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;font-weight:bold">
+                                    FROM
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red;text-align:right">
+                            <!-- <t t-esc="picking_type_id.default_location_src_id.name"/> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-4">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    STREET
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px">
+                                    <t t-esc="company.street"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-3">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    CONTACT
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red">
+                                    Truong Minh Luan
+                                </div>
+                            </div>
+                            <!-- <div class="col-2">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;font-weight:bold">
+                                    TO
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red;text-align:right">
+                            <!-- <t t-esc="picking_type_id.default_location_dest_id.name"/> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-4">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    EMAIL
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px">
+                                    <t t-esc="company.email"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-3">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    ADDRESS
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red">
+                                    Truong Minh Luan's Adress
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-4">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    <div>PHONE</div>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-size:11.33px">
+                                    <t t-esc="company.phone"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-3">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    PHONE
+                                </div>
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    EMAIL
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red">
+                                    0123456789
+                                </div>
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red">
+                                    minhluan260144@gmail.com
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-4">
+                              
+                            </div>
+                            <div class="col-8">
+        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-3">
+                                <div t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px">
+                                    DELIVERY ADDRESS
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red">
+                                    Cambodia
+                                </div>
+                            </div>
+                            <!-- <div class="col-2">
+                                <div style="font-family:'Neue Haas Unica';font-size:11.33px;font-weight:bold">
+                                    FROM
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div style="font-family:'Neue Haas Unica';font-size:11.33px;color:red;text-align:right">
+                            <!-- <t t-esc="picking_type_id.default_location_src_id.name"/> -->
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                
+                <table style="width:100%;">
+                    <thead style="font-size:11.33px;font-weight:bold;font-family:'Neue Haas Unica';border-bottom:2px solid black;border-top:solid black 2px">
+                        <th class="text-left" style="padding-left:0;width:10.5%;vertical-align:middle;">CODE</th>
+                        <th t-attf-style="width:35%;vertical-align:middle;">PRODUCT</th>
+                        <th t-attf-style="width:8%;vertical-align:middle;text-align:center">PACKAGE</th>
+                        <th t-attf-style="width:7%;vertical-align:middle;text-align:center">
+                            <div>ITEM</div>
+                            <div>QTY</div>
+                        </th>
+                        <th t-attf-style="width:7%;vertical-align:middle;text-align:center">
+                            <div>PCKGS</div>
+                            <div>QTY</div>
+                        </th>
+                        <th t-attf-style="width:8%;vertical-align:middle;text-align:center">
+                            DIMENSION (cm)
+                            <div class="row">
+                                <div class="col-4">
+                                    <span>L</span>
+                                </div>
+                                <div class="col-4">
+                                    <span>W</span>
+                                </div>
+                                <div class="col-4">
+                                    <span>H</span>
+                                </div>
+                            </div>
+                        </th>
+                        <th t-attf-style="width:8%;vertical-align:middle;text-align:center">
+                            <div>WEIGHT UNIT</div>
+                            <div>
+                                <span>N.W</span><span style="padding:10%"></span><span>G.W</span>
+                            </div>
+                        </th>
+                        <th t-attf-style="width:8%;vertical-align:middle;text-align:center">
+                            <div>TOTAL WEIGHT</div>
+                            <div>
+                                <span>N.W</span><span style="padding:10%"></span><span>G.W</span>
+                            </div>
+                        </th>
+                        <th t-attf-style="width:8%;vertical-align:middle;text-align:center">CBM</th>
+                    </thead>
+                    <tbody style="font-size:11.33px;font-family:'Neue Haas Unica'">
+                        <t t-set="sum_pckgs_qty" t-value="0"/>
+                        <t t-set="sum_cbm" t-value="0"/>  
+                        <t t-foreach="o.move_ids" t-as="move">
+                            <tr>
+                                <td style="padding-right:5px;border-right:solid white 3px;border-bottom-style: solid;border-bottom-width: thin;"><t t-esc="move.product_id.default_code"/></td>
+                                <td style="padding-right:5px;border-right:solid white 3px;border-bottom-style: solid;border-bottom-width: thin;">
+                                    <span style="font-weight:bold"><t t-esc="move.product_id.product_tmpl_id.name"/></span>
+                                    <t t-set="i" t-value="0"/>
+                                    <div>
+                                        <t t-foreach="move.product_id.product_template_attribute_value_ids" t-as="ptav">
+                                            <span class="text-muted" style="font-family:Neue Haas Unica;font-size:11.33px;">
+                                                <t t-esc="ptav.attribute_id.name"/>:<t t-esc="ptav.product_attribute_value_id.description"/>
+                                                <t t-if="i &lt; (len(move.product_id.product_template_attribute_value_ids) -1)">
+                                                    <div/>
+                                                </t>
+                                                <t t-set="i" t-value="i+1"/>  
+                                            </span>
+                                        </t>
+                                    </div>
+                                </td>
+                                <td style="padding-right:5px;border-right:solid white 3px;border-bottom-style: solid;border-bottom-width: thin;text-align:center;">
+
+                                </td>
+                                <td style="padding-right:5px;border-right:solid white 3px;border-bottom-style: solid;border-bottom-width: thin;text-align:center;vertical-align:middle">
+
+                                </td>
+                                <td style="padding-right:5px;border-right:solid white 3px;border-bottom-style: solid;border-bottom-width: thin;text-align:center;vertical-align:middle">
+                                    <t t-esc="move.product_uom_qty"/>
+                                    <t t-set="sum_pckgs_qty" t-value="sum_pckgs_qty + move.product_uom_qty"/>
+                                </td>
+                                <td style="border-right:solid white 3px;border-bottom-style: solid;border-bottom-width:thin;text-align:center;vertical-align:middle">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div style="vertical-align:middle;border:red"><t t-esc="move.product_id.dimension_length"/></div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div style="vertical-align:middle"><t t-esc="move.product_id.dimension_width"/></div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div style="vertical-align:middle"><t t-esc="move.product_id.dimension_height"/></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="border-right:solid white 3px;border-bottom-style: solid;border-bottom-width: thin;text-align:center;vertical-align:middle">
+                                    
+                                </td>
+                                <td style="border-right:solid white 3px;border-bottom-style: solid;border-bottom-width:thin;text-align:center;vertical-align:middle">
+                                    <div>
+                                        <span style="color:red"><t t-esc="move.product_id.weight"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span style="color:red"><t t-esc="move.product_id.weight"/></span>
+                                    </div>
+                                </td>
+                                <td style="border-right:solid white 3px;border-bottom-style: solid;border-bottom-width: thin;text-align:center;vertical-align:middle">
+                                    <t t-esc="move.product_id.volume"/>
+                                    <t t-set="sum_cbm" t-value="sum_cbm + move.product_id.volume"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfood>
+                        <!-- <tr >
+                            <td></td>
+                            <td t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px;vertical-align:middle">TOTAL:  </td>
+                            <td></td><td></td><td></td><td></td>
+                            <td>
+                                <t t-esc="sum_pckgs_qty"/>
+                            </td>
+                        </tr> -->
+                        <tr style="border-top: 1.65px solid black;border-bottom: 2px solid black;">
+                            <td></td>
+                            <td t-attf-style="font-family:'Neue Haas Unica';font-weight:bold;font-size:11.33px;vertical-align:middle">TOTAL</td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:11.33px;font-family:'Neue Haas Unica';font-weight:bold;vertical-align:middle;text-align:center;padding:1%"><t t-esc="sum_pckgs_qty"/></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-size:11.33px;font-family:'Neue Haas Unica';font-weight:bold;vertical-align:middle;text-align:center;padding:1%"><t t-esc="sum_cbm"/></td>
+                        </tr>
+                    </tfood>
+                </table>
+            </div>
+            <div class="footer text-muted">
+                <div class="row" style="font-family:'Neue Haas Unica';font-size:9.33px">
+                    <div class="col-4">
+                        <div>
+                            <t t-esc="company.street"/>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-9">
+                                <div>
+                                    <div t-esc="company.website"/>
+                                </div>
+                                <div>
+                                    <div t-esc="company.phone"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="text-muted text-right">P.</div>
+                        <div class="text-muted text-right">
+                            <span class="page"/> /<span class="topage"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="report_stock_picking_batch" inherit_id="stock_picking_batch.report_picking_batch">
+            <xpath expr="//t[@t-foreach='docs']" position="replace">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="odb_report_stock.stock_picking_batch_template_1" t-lang="o.partner_id.lang"/>                    
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

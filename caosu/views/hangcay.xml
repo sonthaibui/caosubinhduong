@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_tree_line_form" model="ir.ui.view">
+        <field name="name">treeline.form</field>
+        <field name="model">tree.line</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <group>
+                  <field name="stt"/>
+                  <field name='o'/>
+                  <field name="k"/>
+                  <field name="km"/>
+                  <field name="g"/>
+                  <field name="tong"/>
+                  <field name="plantation_id"/>
+                  <field name="nongtruong"/>
+                  <field name="toname"/>
+                  <field name="loso"/>
+                  <field name="lo"/>
+                  <field name='ghi_chu'/>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_treeline_tree">
+        <field name="name">treeline.tree</field>
+        <field name="model">tree.line</field>
+        <field name="arch" type="xml">
+            <tree string="Tree Line Tree View" multi_edit="1">
+              <field name="stt"/>
+              <field name='o'/>
+              <field name="k"/>
+              <field name="km"/>
+              <field name="g"/>
+              <field name="tong"/>
+              <field name="plantation_id"/>
+              <field name="nongtruong"/>
+              <field name="toname"/>
+              <field name="loso"/>
+              <field name="lo"/>
+              <field name='ghi_chu' optional='show'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_nhaphangcay" model="ir.actions.act_window">
+        <field name="name">Hàng Cây</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tree.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Hàng Cây.
+            </p>
+        </field>
+    </record>
+
+</odoo>

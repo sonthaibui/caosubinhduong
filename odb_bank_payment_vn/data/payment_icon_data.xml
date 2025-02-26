@@ -1,0 +1,103 @@
+<odoo>
+
+	<record id="payment_icon_bank_vcb" model="payment.icon">
+		<field name="name">VCB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/VCB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_acb" model="payment.icon">
+		<field name="name">ACB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/ACB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_bidv" model="payment.icon">
+		<field name="name">BIDV</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/BIDV.png"/>
+	</record>
+
+	<record id="payment_icon_bank_dab" model="payment.icon">
+		<field name="name">DAB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/DAB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_exb" model="payment.icon">
+		<field name="name">EXB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/EXB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_icb" model="payment.icon">
+		<field name="name">ICB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/ICB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_MB" model="payment.icon">
+		<field name="name">MB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/MB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_msb" model="payment.icon">
+		<field name="name">MSB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/MSB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_stb" model="payment.icon">
+		<field name="name">STB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/STB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_tcb" model="payment.icon">
+		<field name="name">TCB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/TCB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_vib" model="payment.icon">
+		<field name="name">VIB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/VIB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_abbank" model="payment.icon">
+		<field name="name">ABBANK</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/ABBANK.png"/>
+	</record>
+
+	<record id="payment_icon_bank_agribank" model="payment.icon">
+		<field name="name">AGRIBANK</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/AGRIBANK.png"/>
+	</record>
+
+	<record id="payment_icon_bank_hdbank" model="payment.icon">
+		<field name="name">HDBANK</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/HDBANK.png"/>
+	</record>
+
+	<record id="payment_icon_bank_lpb" model="payment.icon">
+		<field name="name">LIENVIETPOSTBANK</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/LPB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_tpbank" model="payment.icon">
+		<field name="name">TPBANK</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/TPBANK.png"/>
+	</record>
+
+	<record id="payment_icon_bank_vpbank" model="payment.icon">
+		<field name="name">VPBANK</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/VPBANK.png"/>
+	</record>
+
+	<record id="payment_icon_bank_shb" model="payment.icon">
+		<field name="name">SHB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/SHB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_ocb" model="payment.icon">
+		<field name="name">OCB</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/OCB.png"/>
+	</record>
+
+	<record id="payment_icon_bank_seabank" model="payment.icon">
+		<field name="name">SEABANK</field>
+		<field name="image" type="base64" file="odb_bank_payment_vn/static/img/SEABANK.png"/>
+	</record>
+
+</odoo>

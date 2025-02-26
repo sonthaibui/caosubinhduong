@@ -1,0 +1,18 @@
+<odoo>
+    <odoo>
+        <record id="base_res_partner_form_view" model="ir.ui.view">
+            <field name="name">base.res.partner.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_title')]/h1" position="after">
+                    <h5 style="margin-top:0px">
+                        <i>
+                            <field name="barcode" readonly="True"/>
+                        </i>
+                    </h5>
+                </xpath>
+            </field>
+        </record>
+    </odoo>
+</odoo>

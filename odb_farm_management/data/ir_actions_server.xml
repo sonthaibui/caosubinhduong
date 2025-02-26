@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- <record id="action_update_land_stage" model="ir.actions.server">
+            <field name="name">Update State</field>
+            <field name="model_id" ref="model_farm_zone"/>
+            <field name="binding_model_id" ref="model_farm_zone"/>
+            <field name="state">code</field>
+            <field name="code">     
+                      if records:
+                            records.action_update_state()
+            </field>
+        </record> -->
+
+
+        <record id="action_update_bar_code" model="ir.actions.server">
+            <field name="name">Update Code</field>
+            <field name="model_id" ref="model_farm_zone"/>
+            <field name="binding_model_id" ref="model_farm_zone"/>
+            <field name="state">code</field>
+            <field name="code">     
+                      if records:
+                            records.action_update_code()
+            </field>
+        </record>
+
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="invoice_confirm_mail" model="mail.template">
+            <field name="name">Invoice Confirm Mail</field>
+            <field name="subject"></field>
+            <field name="email_from"></field>
+            <field name="email_to"></field>
+            <field name="email_cc"></field>
+            <field name="model_id" ref="odb_account_accountant.model_account_move"/>
+            <field name="lang"></field>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+				<div>
+					<h3>INVOICE CONFIRM <strong t-out="object.name or ''"></strong> </h3>
+					<br/><br/>
+                    <table style="border-collapse: collapse; width: 100%;" border="0">
+                        <tbody>
+                            <tr style="border-bottom:1px solid black">
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">Customer</td>
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">Delivery Address</td>
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">Invoice Date</td>
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">Due Date</td>
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">Journal</td>
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">Untaxed Amount</td>
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">VAT</td>
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">Amount Total</td>
+                                <td style="width: 11.1111%;text-align: center;font-weight: bold;font-size:10.11px">Currency</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="object.partner_id.name or ''"></span></td>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="object.partner_shipping_id.name or ''"></span></td>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="object.invoice_date or ''"></span></td>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="object.invoice_date_due or ''"></span></td>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="object.journal_id.name or ''"></span></td>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="'{:,.0f}'.format(object.amount_untaxed) or ''"></span></td>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="'{:,.0f}'.format(object.amount_tax) or ''"></span></td>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="'{:,.0f}'.format(object.amount_total) or ''"></span></td>
+                                <td style="width: 11.1111%;text-align: center;color:red;font-size:10.11px"><span t-out="object.currency_id.name or ''"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+				</div>
+			</field>
+		</record>
+        
+    </data>
+</odoo>

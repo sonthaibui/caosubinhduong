@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit view odoo -->
+    <record id="view_inherit_order_product_pivot" model="ir.ui.view">
+        <field name="name">sale.report.inherit.pivot</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_pivot"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="replace">
+            </xpath>
+            <xpath expr="//field[@name='date']" position="replace">
+                <field name="date" interval="week" type="col"/>
+                <field name="categ_id" type="row"/>
+            </xpath>
+            <xpath expr="//field[@name='price_subtotal']" position="after">
+                <field name="product_uom_qty" type="measure"/>
+                <field name="qty_delivered" type="measure"/>
+            </xpath>
+        </field>
+   </record>
+
+   <record id="inherit_view_order_product_search" model="ir.ui.view">
+    <field name="name">sale.report.inherit.search</field>
+    <field name="model">sale.report</field>
+    <field name="inherit_id" ref="sale.view_order_product_search"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='industry_id']" position="after">
+            <!-- <filter name="7days" help="7 days" string="7 days" domain="[
+                ('date', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))),
+                ('date', '&lt;=', (context_today() - datetime.timedelta(7)).strftime('%Y-%m-%d')),]"/> -->
+            <filter name="7days" help="7 days" string="7 days" domain="[
+            ('date', '&gt;=', (context_today() - datetime.timedelta(7)).strftime('%Y-%m-%d')),
+            ('date', '&lt;=', (context_today() + datetime.timedelta(7)).strftime('%Y-%m-%d')),]"/>
+            <filter name="15days" help="Range 15 days" string="Range 15 days" domain="[
+                ('date', '&gt;=', (context_today() - datetime.timedelta(15)).strftime('%Y-%m-%d')),
+                ('date', '&lt;=', (context_today() + datetime.timedelta(15)).strftime('%Y-%m-%d')),]"/>
+            <filter name="30days" help="Range 30 days" string="Range 30 days" domain="[
+                ('date', '&gt;=', (context_today() - datetime.timedelta(30)).strftime('%Y-%m-%d')),
+                ('date', '&lt;=', (context_today() + datetime.timedelta(30)).strftime('%Y-%m-%d')),]"/>
+            <filter name="6month" help="Range 6 months" string="Range 6 months" domain="[
+                ('date', '&gt;=', (context_today() - datetime.timedelta(180)).strftime('%Y-%m-%d')),
+                ('date', '&lt;=', (context_today() + datetime.timedelta(180)).strftime('%Y-%m-%d')),]"/>
+            <filter name="12month" help="Range 12 months" string="Range 12 months" domain="[
+                ('date', '&gt;=', (context_today() - datetime.timedelta(365)).strftime('%Y-%m-%d')),
+                ('date', '&lt;=', (context_today() + datetime.timedelta(365)).strftime('%Y-%m-%d')),]"/>    
+        </xpath>
+    </field>
+    </record>
+
+    <record id="sale.action_order_report_all" model="ir.actions.act_window">
+        <field name="context">{'search_default_Sales':1, 'group_by_no_leaf':1,'group_by':[],'search_default_30days':1,}</field>
+    </record>
+
+    <!-- end -->
+   
+</odoo>

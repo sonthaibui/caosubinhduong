@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_reward_office_by_month_tree">
+        <field name="name">rewardofficebymonth.tree</field>
+        <field name="model">reward.office.by.month</field>
+        <field name="arch" type="xml">
+            <tree string="Reward Office By Month Tree View">
+              <field name="month"/>
+              <field name="year"/>
+              <field name='note'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_xetthuongnv" model="ir.actions.act_window">
+        <field name="name">Xét Thưởng Nhân viên</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">reward.office</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Xét Thưởng Nhân Viên.
+            </p>
+        </field>
+    </record>
+  
+    <record id="action_xetthuongthangnv" model="ir.actions.act_window">
+        <field name="name">Xét Thưởng Tháng Nhân viên</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">reward.office.by.month</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Xét Thưởng Tháng Nhân Viên.
+            </p>
+        </field>
+    </record>
+
+</odoo>

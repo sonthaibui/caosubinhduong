@@ -1,0 +1,3335 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* erpvn_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-08-21 07:15+0000\n"
+"PO-Revision-Date: 2018-08-21 07:15+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "&amp;bull;"
+msgstr "&amp;bull;"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+msgid "<br/>\n"
+"									Payment Terms :"
+msgstr "<br/>\n"
+"									Điều khoản thanh toán :"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+msgid "<i class=\"fa fa              -list-ol\" aria-hidden=\"true\"/>\n"
+"										Item"
+msgstr "<i class=\"fa fa              -list-ol\" aria-hidden=\"true\"/>\n"
+"										Mục"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<i class=\"fa fa-cart-arrow-down\" aria-hidden=\"true\"/>\n"
+"										Product"
+msgstr "<i class=\"fa fa-cart-arrow-down\" aria-hidden=\"true\"/>\n"
+"										Sản phẩm"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<i class=\"fa fa-cc-mastercard\" aria-hidden=\"true\"/>\n"
+"											Price"
+msgstr "<i class=\"fa fa-cc-mastercard\" aria-hidden=\"true\"/>\n"
+"											Giá tiền"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+msgid "<i class=\"fa fa-cc-mastercard\" aria-hidden=\"true\"/>\n"
+"											Tax Excluded Price"
+msgstr "<i class=\"fa fa-cc-mastercard\" aria-hidden=\"true\"/>\n"
+"											Giá chưa thuế"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<i class=\"fa fa-cc-mastercard\" aria-hidden=\"true\"/>\n"
+"										Price"
+msgstr "<i class=\"fa fa-cc-mastercard\" aria-hidden=\"true\"/>\n"
+"										Giá tiền"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "<i class=\"fa fa-cc-mastercard\" aria-hidden=\"true\"/>\n"
+"										Tax Excluded Price"
+msgstr "<i class=\"fa fa-cc-mastercard\" aria-hidden=\"true\"/>\n"
+"										Giá chưa thuế"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+msgid "<i class=\"fa fa-first-order\" aria-hidden=\"true\">\n"
+"										</i>\n"
+"										<strong>Ordered Quantity</strong>"
+msgstr "<i class=\"fa fa-first-order\" aria-hidden=\"true\">\n"
+"										</i>\n"
+"										<strong>Số lượng đặt hàng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<i class=\"fa fa-first-order\" aria-hidden=\"true\">\n"
+"										</i>\n"
+"										Ordered Quantity"
+msgstr "<i class=\"fa fa-first-order\" aria-hidden=\"true\">\n"
+"										</i>\n"
+"										Số lượng đặt hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"											Unit Price"
+msgstr "<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"											Đơn giá"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"										Amount"
+msgstr "<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"										Thành tiền"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"										Unit Price"
+msgstr "<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"										Đơn giá"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<i class=\"fa fa-list-ol\" aria-hidden=\"true\"/>\n"
+"											Item"
+msgstr "<i class=\"fa fa-list-ol\" aria-hidden=\"true\"/>\n"
+"											Mục"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<i class=\"fa fa-list-ol\" aria-hidden=\"true\"/>\n"
+"										Item"
+msgstr "<i class=\"fa fa-list-ol\" aria-hidden=\"true\"/>\n"
+"										Mục"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"										<strong>Customer Address:</strong>"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"										<strong>Địa chỉ khách hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"										Vendor Address"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"										Địa chỉ nhà cung cấp"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Customer Address:</strong>"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Địa chỉ khách hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									Customer Address"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									Địa chỉ nhà cung cấp"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									Vendor Address"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									Địa chỉ nhà cung cấp"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								<strong>Customer Address:</strong>"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								<strong>Địa chỉ khách hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								<strong>Customer Address</strong>"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								<strong>Địa chỉ khách hàng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								<strong>Invoice Address</strong>"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								<strong>Địa chỉ hóa đơn</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								<strong>Vendor Address</strong>"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								<strong>Địa chỉ nhà cung cấp</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+msgid "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								Invoice To:"
+msgstr "<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"								Hóa đơn cho:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<i class=\"fa fa-percent\" aria-hidden=\"true\"/>\n"
+"											Disc.(%)"
+msgstr "<i class=\"fa fa-percent\" aria-hidden=\"true\"/>\n"
+"Chiếc khấu(%)"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<i class=\"fa fa-percent\" aria-hidden=\"true\"/>\n"
+"										Disc.(%)"
+msgstr "<i class=\"fa fa-percent\" aria-hidden=\"true\"/>\n"
+"Chiếc khấu(%)"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<i class=\"fa fa-picture-o\" aria-hidden=\"true\"/>\n"
+"												Product Image"
+msgstr "<i class=\"fa fa-picture-o\" aria-hidden=\"true\"/>\n"
+"												Hình sản phẩm"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<i class=\"fa fa-picture-o\" aria-hidden=\"true\"/>\n"
+"											Product Image"
+msgstr "<i class=\"fa fa-picture-o\" aria-hidden=\"true\"/>\n"
+"											Hình sản phẩm"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"											Quantity"
+msgstr "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"											Số lượng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										<strong>Delivered Quantity</strong>"
+msgstr "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										<strong>Số lượng đã giao</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										<strong>Ordered Quantity</strong>"
+msgstr "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										<strong>Số lượng đặt hàng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+msgid "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										Ordered Quantity"
+msgstr "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										Số lượng đặt hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										Quantity"
+msgstr "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										Số lượng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+msgid "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										v Quantity"
+msgstr "<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"										v Số lượng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<i class=\"fa fa-tags\" aria-hidden=\"true\"/>\n"
+"											Taxes"
+msgstr "<i class=\"fa fa-tags\" aria-hidden=\"true\"/>\n"
+"											Thuế"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<i class=\"fa fa-tags\" aria-hidden=\"true\"/>\n"
+"										Taxes"
+msgstr "<i class=\"fa fa-tags\" aria-hidden=\"true\"/>\n"
+"										Thuế"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"											Description"
+msgstr "<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"											Mô tả"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"										Description"
+msgstr "<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"										Mô tả"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+msgid "<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"										</i>\n"
+"										Shipping Address"
+msgstr "<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"										</i>\n"
+"										Địa chỉ giao hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+msgid "<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"									</i>\n"
+"									Shipping Address"
+msgstr "<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"									</i>\n"
+"									Địa chỉ giao hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+msgid "<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"								</i>\n"
+"								<strong>Shipping Address</strong>"
+msgstr "<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"								</i>\n"
+"								<strong>Địa chỉ giao hàng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<span class=\"pull-left\">Lot/Serial Number</span>"
+msgstr "<span class=\"pull-left\">Số lô/Sơ-ri</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<span class=\"text-center\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Customer Address:</strong>\n"
+"								</span>"
+msgstr "<span class=\"text-center\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Địa chỉ khách hàng:</strong>\n"
+"								</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<span class=\"text-center\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Customer Address</strong>\n"
+"								</span>"
+msgstr "<span class=\"text-center\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Địa chỉ khách hàng</strong>\n"
+"								</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "<span class=\"text-center\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Vendor Address</strong>\n"
+"								</span>"
+msgstr "<span class=\"text-center\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Địa chỉ nhà cung cấp</strong>\n"
+"								</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "<span class=\"text-center\">\n"
+"									<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"									</i>\n"
+"									<strong>Shipping Address</strong>\n"
+"								</span>"
+msgstr "<span class=\"text-center\">\n"
+"									<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"									</i>\n"
+"									<strong>Địa chỉ giao hàng</strong>\n"
+"								</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">\n"
+"									\n"
+"									<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"									</i>\n"
+"									Shipping Address\n"
+"								</span>\n"
+"								<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">\n"
+"									\n"
+"									<i class=\"fa fa-truck\" aria-hidden=\"true\">\n"
+"									</i>\n"
+"									Địa chỉ giao hàng\n"
+"								</span>\n"
+"								<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									Customer Address\n"
+"								</span>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									Địa chỉ khách hàng\n"
+"								</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Commitment Date:</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Ngày cam kết:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Due Date :</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Ngày đáo hạn:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Fiscal Position:</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Vị thế tài chính:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Fiscal Position</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Vị thế tài chính</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Invoice Date :</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Ngày hóa đơn:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Order Date :</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Ngày đặt hàng:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Reference::</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Tham khảo::</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Salesperson</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Nhân viên kinh doanh</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Scheduled Date</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Ngày dự trù</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Source Doc:</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Tài liệu nguồn:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">State :</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Tình trạng:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Your Reference :</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Tham khảo của bạn:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-center\">Your Reference</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-center\">Tham khảo của bạn</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-right\">Invoice Total</span>\n"
+"										<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-right\">Tổng hóa đơn</span>\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+msgid "<span style=\" color: gray!important;\" class=\"text-right\">Order (Origin) :</span>\n"
+"										<br/>"
+msgstr "<span style=\" color: gray!important;\" class=\"text-right\">Đơn hàng (ban đầu):</span>\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+msgid "<span style=\" color: gray!important;\" name=\"td_sched_date_h\" class=\"text-center\">Date:</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" name=\"td_sched_date_h\" class=\"text-center\">Ngày:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+msgid "<span style=\" color: gray!important;\" name=\"td_sched_date_h\" class=\"text-center\">Scheduled Date:</span>\n"
+"											<br/>"
+msgstr "<span style=\" color: gray!important;\" name=\"td_sched_date_h\" class=\"text-center\">Ngày dự trù:</span>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+msgid "<span style=\" color: gray!important;\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Customer Address:</strong>\n"
+"								</span>"
+msgstr "<span style=\" color: gray!important;\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									<strong>Địa chỉ khách hàng:</strong>\n"
+"								</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+msgid "<span style=\" color: gray!important;\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									Vendor Address\n"
+"								</span>"
+msgstr "<span style=\" color: gray!important;\">\n"
+"									<i class=\"fa fa-map-marker\" aria-hidden=\"true\"/>\n"
+"									Địa chỉ nhà cung cấp\n"
+"								</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+msgid "<span style=\" color: gray!important;\">Comment:</span>"
+msgstr "<span style=\" color: gray!important;\">Bình luận:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+msgid "<span style=\" color: gray!important;\">Customer Address:</span>"
+msgstr "<span style=\" color: gray!important;\">Địa chỉ khách hàng:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+msgid "<span style=\" color: gray!important;\">Note:</span>"
+msgstr "<span style=\" color: gray!important;\">Ghi chú:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+msgid "<span style=\"font:25px  lucida-console,sans-serif!important;\">Purchase Quotation:</span>"
+msgstr "<span style=\"font:25px  lucida-console,sans-serif!important;\">Báo giá thu mua:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+msgid "<span style=\"font:25px lucida-console,sans-serif          !important;\">Picking Operations:</span>"
+msgstr "<span style=\"font:25px lucida-console,sans-serif          !important;\">Hoạt động giao nhận hàng:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+msgid "<span style=\"font:25px lucida-console,sans-serif !important;\">Delivery Note:</span>"
+msgstr "<span style=\"font:25px lucida-console,sans-serif !important;\">Ghi chú nhận hàng:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+msgid "<span style=\"font:25px lucida-console,sans-serif !important;\">Picking Operations:</span>"
+msgstr "<span style=\"font:25px lucida-console,sans-serif !important;\">Hoạt động giao nhận hàng:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+msgid "<span style=\"font:25px lucida-console,sans-serif !important;\">Picking Opertions:</span>"
+msgstr "<span style=\"font:25px lucida-console,sans-serif !important;\">Hoạt động giao nhận hàng:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+msgid "<span style=\"font:25px lucida-console,sans-serif!important;\">Purchase Quotation:</span>"
+msgstr "<span style=\"font:25px lucida-console,sans-serif!important;\">Báo giá thu mua:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+msgid "<span>\n"
+"												<strong>Customer Address:</strong>\n"
+"											</span>"
+msgstr "<span>\n"
+"												<strong>Địa chỉ khách hàng:</strong>\n"
+"											</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+msgid "<span>\n"
+"										<strong>Customer Address:</strong>\n"
+"									</span>"
+msgstr "<span>\n"
+"										<strong>Địa chỉ khách hàng:</strong>\n"
+"									</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+msgid "<span>\n"
+"								<strong>Invoice Address:</strong>\n"
+"							</span>"
+msgstr "<span>\n"
+"								<strong>Địa chỉ hóa đơn:</strong>\n"
+"							</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<span><strong>Customer Address:</strong></span>"
+msgstr "<span><strong>Địa chỉ khách hàng:</strong></span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<span><strong>Delivery Address:</strong></span>"
+msgstr "<span><strong>Địa chỉ bàn giao:</strong></span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<span><strong>Partner Address:</strong></span>"
+msgstr "<span><strong>Địa chỉ Đối tác:</strong></span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<span><strong>Warehouse Address:</strong></span>"
+msgstr "<span><strong>Địa chỉ Nhà kho:</strong></span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document_duplicate
+msgid "<span>Duplicate:</span>"
+msgstr "<span>Bản sao:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+msgid "<span>Fiscal Position:</span>"
+msgstr "<span>Vị thế tài chính:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+msgid "<span>Invoice Address</span>"
+msgstr "<span>Địa chỉ hóa đơn</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<span>No reservation or quantity done yet.</span>"
+msgstr "<span>Không có xí trước hoặc chưa có sản phẩm hoàn thành</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+msgid "<span>Purchase Quotation:</span>"
+msgstr "<span>Báo giá mua hàng:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+msgid "<span>Sale Order:</span>"
+msgstr "<span>Đơn bán hàng:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+msgid "<span>Salesperson:</span>"
+msgstr "<span>Nhân viên kinh doanh:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<span>Signature :</span>"
+msgstr "<span>Chữ ký:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+msgid "<span>Taxes</span>"
+msgstr "<span>Thuế</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+msgid "<span>Total Without Taxes</span>"
+msgstr "<span>Tổng chưa thuế</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+msgid "<span>Your Reference:</span>"
+msgstr "<span>Tham khảo của bạn:</span>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+msgid "<strong style=\"font-size:20px\">Invoice Address</strong>\n"
+"										<br/>"
+msgstr "<strong style=\"font-size:20px\">Địa chỉ hóa đơn</strong>\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+msgid "<strong style=\"font-size:20px\">Shipping Address:</strong>\n"
+"										<br/>"
+msgstr "<strong style=\"font-size:20px\">Địa chỉ giao hàng:</strong>\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+msgid "<strong style=\"font-size:20px\">Vendor Address:</strong>\n"
+"										<br/>"
+msgstr "<strong style=\"font-size:20px\">Địa chỉ nhà cung cấp:</strong>\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+msgid "<strong>\n"
+"												<i class=\"fa fa-arrow-circle-down\" aria-hidden=\"true\"/>\n"
+"												Source\n"
+"											</strong>"
+msgstr "<strong>\n"
+"												<i class=\"fa fa-arrow-circle-down\" aria-hidden=\"true\"/>\n"
+"												Nguồn\n"
+"											</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+msgid "<strong>\n"
+"												<i class=\"fa fa-calendar\" aria-hidden=\"true\"/>\n"
+"												Expected Date\n"
+"											</strong>"
+msgstr "<strong>\n"
+"												<i class=\"fa fa-calendar\" aria-hidden=\"true\"/>\n"
+"												Ngày dự kiến\n"
+"											</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+msgid "<strong>\n"
+"												<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"												Qty\n"
+"											</strong>"
+msgstr "<strong>\n"
+"												<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"												Số Lượng\n"
+"											</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+msgid "<strong>\n"
+"												<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"												Description\n"
+"											</strong>"
+msgstr "<strong>\n"
+"												<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"												Mô tả\n"
+"											</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+msgid "<strong>\n"
+"												<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"												Destination\n"
+"											</strong>"
+msgstr "<strong>\n"
+"												<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"												Mô tả\n"
+"											</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-arrow-circle-down\" aria-hidden=\"true\"/>\n"
+"											Source\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-arrow-circle-down\" aria-hidden=\"true\"/>\n"
+"											Nguồn\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-barcode\" aria-hidden=\"true\"/>\n"
+"											Barcode\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-barcode\" aria-hidden=\"true\"/>\n"
+"											Mã vạch\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-calendar\" aria-hidden=\"true\"/>\n"
+"											Date Req.\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-calendar\" aria-hidden=\"true\"/>\n"
+"											Ngày yêu cầu\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-calendar\" aria-hidden=\"true\"/>\n"
+"											Expected Date\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-calendar\" aria-hidden=\"true\"/>\n"
+"											Ngày dự kiến\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-cart-arrow-down\" aria-hidden=\"true\"/>\n"
+"											Product\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-cart-arrow-down\" aria-hidden=\"true\"/>\n"
+"											Sản phẩm\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"											Net Price\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"											Giá vốn\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"											Unit Price\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-gg-circle\" aria-hidden=\"true\"/>\n"
+"											Đơn giá\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"											Qty\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"											Số lượng\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"											Quantity\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-sort-amount-asc\" aria-hidden=\"true\"/>\n"
+"											Số lượng\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-sort-numeric-asc\" aria-hidden=\"true\"/>\n"
+"											Lot/Serial Number\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-sort-numeric-asc\" aria-hidden=\"true\"/>\n"
+"											Số lô/Sơ-ri\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-tags\" aria-hidden=\"true\"/>\n"
+"											Taxes\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-tags\" aria-hidden=\"true\"/>\n"
+"											Thuế\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"											Description\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"											Mô tả\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "<strong>\n"
+"											<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"											Destination\n"
+"										</strong>"
+msgstr "<strong>\n"
+"											<i class=\"fa fa-th-large\" aria-hidden=\"true\"/>\n"
+"											Mô tả\n"
+"										</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "<strong>Comment:</strong>"
+msgstr "<strong>Bình luận:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+msgid "<strong>Comment:</strong>\n"
+"									<br/>"
+msgstr "<strong>Bình luận:</strong>\n"
+"									<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+msgid "<strong>Commitment Date :</strong>"
+msgstr "<strong>Ngày cam kết:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<strong>Commitment Date</strong>"
+msgstr "<strong>Ngày Cam kết</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+msgid "<strong>Customer Address :</strong>"
+msgstr "<strong>Địa chỉ khách hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+msgid "<strong>Customer Address:</strong>"
+msgstr "<strong>Địa chỉ khách hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<strong>Customer address:</strong>"
+msgstr "<strong>Địa chỉ khách hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+msgid "<strong>Customer address:</strong>\n"
+"											<br/>"
+msgstr "<strong>Địa chỉ khách hàng:</strong>\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+msgid "<strong>Date:</strong>"
+msgstr "<strong>Ngày:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+msgid "<strong>Delivery Address:</strong>"
+msgstr "<strong>Địa chỉ giao hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "<strong>Delivery Address</strong>"
+msgstr "<strong>Địa chỉ giao hàng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+msgid "<strong>Due Date :</strong>"
+msgstr "<strong>Ngày đáo hạn:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "<strong>Fiscal Position Remark:</strong>"
+msgstr "<strong>Ghi chú Vị thế Tài khoá:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+msgid "<strong>Fiscal Position:</strong>"
+msgstr "<strong>Vị thế Tài khoá:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+msgid "<strong>Invoice Date:</strong>"
+msgstr "<strong>Ngày hoá đơn:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "<strong>Note:</strong>"
+msgstr "<strong>Ghi chú:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+msgid "<strong>Note:</strong>\n"
+"									<br/>"
+msgstr "<strong>Ghi chú:</strong>\n"
+"									<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+msgid "<strong>Order (Origin) :</strong>"
+msgstr "<strong>Đơn hàng (ban đầu):</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<strong>Order (Origin)</strong>"
+msgstr "<strong>Lệnh (Gốc)</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+msgid "<strong>Order Date :</strong>"
+msgstr "<strong>Ngày đặt hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+msgid "<strong>Payment Term :</strong>"
+msgstr "<strong>Chính sách thanh toán:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+msgid "<strong>Payment Term:</strong>"
+msgstr "<strong>Chính sách thanh toán:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+msgid "<strong>Payment Terms :</strong>"
+msgstr "<strong>Chính sách thanh toán:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+msgid "<strong>Reference:</strong>"
+msgstr "<strong>Tham chiếu:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+msgid "<strong>Salesperson:</strong>"
+msgstr "<strong>Nhân viên bán hàng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+msgid "<strong>Scheduled Date :</strong>"
+msgstr "<strong>Ngày dự trù:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+msgid "<strong>Scheduled Date:</strong>"
+msgstr "<strong>Ngày dự trù:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<strong>Scheduled Date</strong>"
+msgstr "<strong>Ngày ấn định</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+msgid "<strong>Shipping Address :</strong>"
+msgstr "<strong>Địa chỉ giao hàng:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "<strong>Shipping address:</strong>"
+msgstr "<strong>Địa chỉ giao hàng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+msgid "<strong>Source Doc :</strong>"
+msgstr "<strong>Tài liệu nguồn:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+msgid "<strong>State :</strong>"
+msgstr "<strong>Trạng thái:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "<strong>State</strong>"
+msgstr "<strong>Trạng thái</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "<strong>Subtotal</strong>"
+msgstr "<strong>Tổng phụ</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<strong>Total Without Taxes</strong>"
+msgstr "<strong>Tổng chưa thuế</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "<strong>Total</strong>"
+msgstr "<strong>Tổng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+msgid "<strong>Vendor Address :</strong>"
+msgstr "<strong>Địa chỉ nhà cung cấp:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+msgid "<strong>Vendor Address:</strong>"
+msgstr "<strong>Địa chỉ nhà cung cấp:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+msgid "<strong>Warehouse Address:</strong>\n"
+"									<br/>"
+msgstr "<strong>Địa chỉ kho hàng:</strong>\n"
+"									<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "<strong>Warehouse Address</strong>"
+msgstr "<strong>Địa chỉ kho hàng</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+msgid "<strong>Your Reference :</strong>"
+msgstr "<strong>Tham khảo của bạn:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+msgid "<strong>Your Reference:</strong>"
+msgstr "<strong>Tham chiếu của bạn:</strong>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "All items couldn't be shipped, the remaining ones will be shipped as soon as they\n"
+"											become available."
+msgstr "Không thể giao hàng hết một lần, các mặt hàng còn lại sẽ được vận chuyển ngay \n"
+"											khi chúng có sẵn."
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Amount"
+msgstr "Tổng tiền"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Amount Due"
+msgstr "Nợ đến hạn"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "Barcode"
+msgstr "Mã vạch"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Cancelled Invoice  #"
+msgstr "Hóa đơn đã hủy#"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "Cancelled Invoice :"
+msgstr "Hóa đơn đã hủy:"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Canva Report"
+msgstr "Canva Report"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Classic Report"
+msgstr "Classic Report"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+msgid "Commitment Date"
+msgstr "Ngày cam kết"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+msgid "Commitment Date :"
+msgstr "Ngày cam kết:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "Commitment Date:\n"
+"										<br/>"
+msgstr "Ngày cam kết:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_res_company
+msgid "Companies"
+msgstr "Công ty"
+
+#. module: erpvn_reports
+#: selection:res.company,watermark_selection:0
+msgid "Company Logo"
+msgstr "Logo Công ty"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "Customer Address"
+msgstr "Địa chỉ khách hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+msgid "Customer Address :"
+msgstr "Địa chỉ khách hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+msgid "Customer Code"
+msgstr "Mã khách hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "Customer Code :\n"
+"										<br/>"
+msgstr "Mã khách hàng:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+msgid "Date"
+msgstr "Ngày tháng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+msgid "Date :"
+msgstr "Ngày :"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+msgid "Date Ordered"
+msgstr "Ngày đã đặt hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "Date Ordered :"
+msgstr "Ngày đã đặt hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Date Ordered:"
+msgstr "Ngày đã đặt hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+msgid "Date:"
+msgstr "Ngày:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "Date:\n"
+"										<br/>"
+msgstr "Ngày:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+msgid "Delivery Address"
+msgstr "Địa chỉ giao hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+msgid "Delivery Address:"
+msgstr "Địa chỉ giao hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "Delivery Note:"
+msgstr "Ghi chú giao hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "Destination"
+msgstr "Đích"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_account_report_invoice_display_name
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_account_report_invoice_with_payments_display_name
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_purchase_report_purchaseorder_display_name
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_purchase_report_purchasequotation_display_name
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_sale_report_saleorder_display_name
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_stock_report_deliveryslip_display_name
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_stock_report_picking_display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Draft Invoice #"
+msgstr "Hóa đơn dự thảo #"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "Draft Invoice :"
+msgstr "Hóa đơn dự thảo:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Due Date:"
+msgstr "Ngày đáo hạn:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+msgid "Due Date:\n"
+"										<br/>"
+msgstr "Ngày đáo hạn:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Elegant Report"
+msgstr "Elegant Report"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "Email:"
+msgstr "Email:"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Fency Report"
+msgstr "Fency Report"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+msgid "Fiscal Position:"
+msgstr "Vị thế tài khóa:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+msgid "Fiscal Position:\n"
+"											<br/>"
+msgstr "Vị thế tài khóa:\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Fiscal Position:\n"
+"										<br/>"
+msgstr "Vị thế tài khóa:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_account_report_invoice_id
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_account_report_invoice_with_payments_id
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_purchase_report_purchaseorder_id
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_purchase_report_purchasequotation_id
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_sale_report_saleorder_id
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_stock_report_deliveryslip_id
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_stock_report_picking_id
+msgid "ID"
+msgstr "ID"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Invoice  #"
+msgstr "Hóa đơn  #"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "Invoice :"
+msgstr "Hóa đơn:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+msgid "Invoice Address"
+msgstr "Địa chỉ hóa đơn"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "Invoice Address :"
+msgstr "Địa chỉ hóa đơn:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+msgid "Invoice Date"
+msgstr "Ngày Hoá đơn"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "Invoice Date :"
+msgstr "Ngày hóa đơn:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Invoice Date :\n"
+"										<br/>"
+msgstr "Ngày hóa đơn:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+msgid "Invoice To :"
+msgstr "Hóa đơn đến:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Invoice address:"
+msgstr "Địa chỉ hóa đơn:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Invoice and shipping address:"
+msgstr "Hóa đơn và địa chỉ giao hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "Invoicing address:"
+msgstr "Địa chỉ Xuất Hoá đơn"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "Invoicing and shipping address:"
+msgstr "Địa chỉ giao hàng và xuất hoá đơn:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Item"
+msgstr "Mục"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_account_report_invoice___last_update
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_account_report_invoice_with_payments___last_update
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_purchase_report_purchaseorder___last_update
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_purchase_report_purchasequotation___last_update
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_sale_report_saleorder___last_update
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_stock_report_deliveryslip___last_update
+#: model:ir.model.fields,field_description:erpvn_reports.field_report_stock_report_picking___last_update
+msgid "Last Modified on"
+msgstr "Sửa lần cuối"
+
+#. module: erpvn_reports
+#: selection:res.company,watermark_selection:0
+msgid "Letter Head"
+msgstr "Thư đầu"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_letter_head
+msgid "Letter Logo"
+msgstr "Logo chữ"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "Lot/Serial Number"
+msgstr "Số Lô/Sê-ri"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Modern Report"
+msgstr "Modern Report"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Odoo Default"
+msgstr "Mặc định hệ thống"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+msgid "Order (Origin)"
+msgstr "Đơn hàng (ban đầu)"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+msgid "Order (Origin) :"
+msgstr "Đơn hàng (ban đầu):"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "Order (Origin) :\n"
+"										<br/>"
+msgstr "Đơn hàng (ban đầu):\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+msgid "Order Date"
+msgstr "Ngày đặt hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+msgid "Order Date :"
+msgstr "Ngày đặt hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "Order Date :\n"
+"										<br/>"
+msgstr "Ngày đặt hàng:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+msgid "Our Reference :"
+msgstr "Tham khảo của chúng tôi:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "PRO-FORMA #"
+msgstr "DỰ THẢO #"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "PRO-FORMA :"
+msgstr "DỰ THẢO:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "Page:"
+msgstr "Trang:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+msgid "Page:\n"
+"										<span class=\"page\"/>\n"
+"										/\n"
+"										<span class=\"topage\"/>"
+msgstr "Trang:\n"
+"										<span class=\"page\"/>\n"
+"										/\n"
+"										<span class=\"topage\"/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+msgid "Page:\n"
+"									<span class=\"page\"/>\n"
+"									/\n"
+"									<span class=\"topage\"/>"
+msgstr "Trang:\n"
+"									<span class=\"page\"/>\n"
+"									/\n"
+"									<span class=\"topage\"/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+msgid "Page:\n"
+"							<span class=\"page\"/>\n"
+"							/\n"
+"							<span class=\"topage\"/>"
+msgstr "Trang:\n"
+"							<span class=\"page\"/>\n"
+"							/\n"
+"							<span class=\"topage\"/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Payment Status"
+msgstr "Tình trạng thanh toán"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "Payment Term :"
+msgstr "Chính sách thanh toán:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+msgid "Payment Terms"
+msgstr "Điều khoản Thanh toán"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Payment Terms :"
+msgstr "Chính sách thanh toán:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "Phone:"
+msgstr "Điện thoại:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+msgid "Picking Operations	:"
+msgstr "Hoạt động giao nhận:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+msgid "Picking Operations:"
+msgstr "Hoạt động giao nhận:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "Picking Opertions:"
+msgstr "Hoạt động giao nhận:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Professional Report"
+msgstr "Chuyên gia báo cáo"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.inherit_res_company_view
+msgid "Professional Template Configuration"
+msgstr "Cấu hình mẫu báo cáo"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+msgid "Purchase Order :"
+msgstr "Đơn thu mua:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "Purchase Quotation:"
+msgstr "Báo giá thu mua:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "Quantity"
+msgstr "Số lượng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+msgid "Quotation Date"
+msgstr "Ngày Báo giá"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "Quotation Date :"
+msgstr "Ngày báo giá:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Quotation Date:"
+msgstr "Ngày báo giá:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+msgid "Reference"
+msgstr "Tham chiếu"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+msgid "Reference:\n"
+"											<br/>"
+msgstr "Tham khảo:\n"
+"											<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Reference:\n"
+"										<br/>"
+msgstr "Tham khảo:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Refund :"
+msgstr "Hoàn trả:"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Retro Report"
+msgstr "Retro Report"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Sale Order:"
+msgstr "Đơn bán hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Sale Quotation:"
+msgstr "Báo giá bán hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+msgid "Salesperson"
+msgstr "Nhân viên bán hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+msgid "Salesperson :\n"
+"										<br/>"
+msgstr "Nhân viên kinh doanh:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Salesperson:\n"
+"										<br/>"
+msgstr "Nhân viên kinh doanh:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+msgid "Scheduled Date"
+msgstr "Ngày theo kế hoạch"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+msgid "Scheduled Date :"
+msgstr "Ngày dự trù:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "Scheduled Date :\n"
+"										<br/>"
+msgstr "Ngày dự trù:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "Scheduled Date:\n"
+"										<br/>"
+msgstr "Ngày dự trù:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_sale_font_color
+msgid "Select Font Color"
+msgstr "Chọn màu Font"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_sale_header_footer
+msgid "Select Header & Footer Color"
+msgstr "Chọn màu đầu & cuối trang"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_primary_color
+msgid "Select Primary Color"
+msgstr "Chọn màu sắc tổng thể"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_secondary_color
+msgid "Select Secondary Color"
+msgstr "Chọn màu sách phụ"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_temp_selection
+msgid "Select Template For Sale,Purchase,Stock & Account"
+msgstr "Chọn mẫu cho Kinh doanh, Thu mua, Kho & Kế toán"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Shine Report"
+msgstr "Shine Report"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Shipping Address"
+msgstr "Địa chỉ Giao hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+msgid "Shipping address:"
+msgstr "Địa chỉ Giao hàng:"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_add_product_image
+msgid "Show Product Image in Report"
+msgstr "Hiện ảnh của sản phẩm trong báo cáo"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_signature_logo
+msgid "Signature Logo"
+msgstr "Chữ lý Logo"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "Source"
+msgstr "Nguồn"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+msgid "Source :\n"
+"										<br/>"
+msgstr "Nguồn:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+msgid "Source Doc:"
+msgstr "Tài liệu nguồn:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Source Doc:\n"
+"										<br/>"
+msgstr "Tài liệu nguồn:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+msgid "Source Document:"
+msgstr "Tài liệu nguồn:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+msgid "State"
+msgstr "Giai đoạn"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "State :\n"
+"										<br/>"
+msgstr "Bang/Tỉnh:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "TIN:"
+msgstr "TIN:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Taxes"
+msgstr "Thuế"
+
+#. module: erpvn_reports
+#: selection:res.company,watermark_selection:0
+msgid "Text"
+msgstr "Văn bản"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "This shipment is a backorder of"
+msgstr "Lô hàng này là phần dở dang của"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+msgid "Total"
+msgstr "Tổng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+msgid "Total Without Taxes"
+msgstr "Tổng chưa thuế"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+msgid "Total:"
+msgstr "Tổng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "VAT:"
+msgstr "VAT:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "Vendor Address"
+msgstr "Địa chỉ nhà cung cấp"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+msgid "Vendor Address :"
+msgstr "Địa chỉ nhà cung cấp:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Vendor Bill :"
+msgstr "Thanh toán cho nhà cung cấp:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+msgid "Vendor Refund :"
+msgstr "Hoàn tiền cho nhà cung cấp:"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Vintage Report"
+msgstr "Vintage Report"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_add_signature
+msgid "Want Signature?"
+msgstr "Muốn thêm chữ ký?"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_add_watermark
+msgid "Want Watermark?"
+msgstr "Muốn thêm Watermark?"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "Warehouse Address"
+msgstr "Địa chỉ kho hàng"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+msgid "Warehouse Address :"
+msgstr "Địa chỉ kho hàng:"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+msgid "Warehouse Address:\n"
+"										<br/>"
+msgstr "Địa chỉ kho hàng:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_custom_watermark_name
+msgid "Watermark Name"
+msgstr "Tên Watermark"
+
+#. module: erpvn_reports
+#: model:ir.model.fields,field_description:erpvn_reports.field_res_company_watermark_selection
+msgid "Watermark Selection"
+msgstr "Chọn Watermark"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stockdelivery_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stockdelivery_layout_document
+msgid "Website:"
+msgstr "Website:"
+
+#. module: erpvn_reports
+#: selection:res.company,temp_selection:0
+msgid "Western Report"
+msgstr "Western Report"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_report_stock
+msgid "You do not have any products reserved for this picking.  Please click the 'Reserve' button\n"
+"                                to check if products are available."
+msgstr "Bạn không có sản phẩm nào được xí trước cho hoạt động giao nhận này. Vui lòng bấm vào nút\n"
+" 'Xí trước' để kiểm tra xem sản phẩm có khả dụng không."
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_stock_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_stock_layout_document
+msgid "You do not have any products reserved for this picking. Please click the 'Reserve'\n"
+"										button to check if products are available."
+msgstr "Bạn không có sản phẩm nào được xí trước cho hoạt động giao nhận này. Vui lòng bấm vào nút\n"
+"										'Xí trước' để kiểm tra xem sản phẩm có khả dụng không."
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_purchasequotation_layout_document
+msgid "Your Order Reference"
+msgstr "Tham khảo đơn hàng của bạn"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_purchasequotation_layout_document
+msgid "Your Order Reference:\n"
+"										<br/>"
+msgstr "Tham khảo đơn hàng của bạn:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_saleorder_layout_document
+msgid "Your Reference"
+msgstr "Tham chiếu của Bạn"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_purchasequotation_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchaseorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_purchasequotation_layout_document
+msgid "Your Reference :\n"
+"										<br/>"
+msgstr "Tham khảo của bạn:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_saleorder_layout_document
+#: model:ir.ui.view,arch_db:erpvn_reports.western_saleorder_layout_document
+msgid "Your Reference:\n"
+"										<br/>"
+msgstr "Tham khảo của bạn:\n"
+"										<br/>"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document_duplicate
+msgid "invoice"
+msgstr "hóa đơn"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_ir_actions_report
+msgid "ir.actions.report"
+msgstr "ir.actions.report"
+
+#. module: erpvn_reports
+#: model:ir.ui.view,arch_db:erpvn_reports.canva_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.classic_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.elegant_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.fency_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.modern_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.professional_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.retro_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.shine_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.vintage_accountinvoice_layout_document_duplicate
+#: model:ir.ui.view,arch_db:erpvn_reports.western_accountinvoice_layout_document_duplicate
+msgid "refund"
+msgstr "hoàn tiền"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_report_account_report_invoice
+msgid "report.account.report_invoice"
+msgstr "report.account.report_invoice"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_report_account_report_invoice_with_payments
+msgid "report.account.report_invoice_with_payments"
+msgstr "report.account.report_invoice_with_payments"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_report_purchase_report_purchaseorder
+msgid "report.purchase.report_purchaseorder"
+msgstr "report.purchase.report_purchaseorder"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_report_purchase_report_purchasequotation
+msgid "report.purchase.report_purchasequotation"
+msgstr "report.purchase.report_purchasequotation"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_report_sale_report_saleorder
+msgid "report.sale.report_saleorder"
+msgstr "report.sale.report_saleorder"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_report_stock_report_deliveryslip
+msgid "report.stock.report_deliveryslip"
+msgstr "report.stock.report_deliveryslip"
+
+#. module: erpvn_reports
+#: model:ir.model,name:erpvn_reports.model_report_stock_report_picking
+msgid "report.stock.report_picking"
+msgstr "report.stock.report_picking"
+

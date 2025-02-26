@@ -1,0 +1,331 @@
+.o_dynamic_report {
+    width: 98%;
+    max-width: 99%;
+    padding: 10px;
+    height: 98%;
+    max-height: 99%;
+    overflow: auto;
+}
+/*controller start*/
+.dynamic_control_header {
+    width: 100%;
+    padding: 5px 30px 5px 30px;
+    border: 1px solid;
+    border-color: #7c7bad;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 12px;
+    min-height: 20px;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+}
+
+.ctrl_body {
+    width: 100%;
+}
+
+.ctrl_date {
+    width: 100%;
+    float: left;
+}
+
+.inner_row {
+	margin-bottom: 15px;
+}
+.ctrl_body .inner_row {
+    width: 24%;
+    float: left;
+    margin-top: 8px;
+    padding: 2px;
+}
+.ctrl_date .inner_row {
+    width: 49%;
+    float: left;
+    margin-top: 8px;
+    padding: 2px;
+}
+
+.ctrl_col.journals {
+    width: 95%;
+}
+
+.col_label {
+    font-weight: 600;
+}
+
+/* .col_body {
+    float: left;
+} */
+
+.select_2 {
+    min-width: 95%;
+}
+/*.account_report_id {
+	min-width: 30%;
+}*/
+
+.fetch_report_btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 11px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 600;
+    height: 30px;
+}
+/*controller end*/
+
+.h_row.footer {
+    padding: 7px 0px 1px 0px;
+}
+.dynamic_report_body {
+    min-width: 100%;
+    width: max-content;
+    padding: 5px;
+    border: 1px solid lightgray;
+}
+.page .dynamic_report_body {
+    margin:unset !important;
+    display:max-content;
+}
+
+.dynamic_body, .r_header {
+	width:100%;
+}
+.r_header {
+    font-weight: 600;
+}
+.r_header .h_col {
+    margin-left: 15px;
+}
+
+.r_content {
+    min-width: 100%;
+    width: max-content;
+}
+
+table.table_r_content {
+    min-width: 100%;
+    width: max-content;
+}
+
+tr.r_line {
+    border-bottom: 1px solid;
+    border-color: #1b66a942;
+}
+
+tr.r_line td {
+    padding-top: 6px;
+}
+
+tr[data-id="0"] {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.r_line.root_line {
+    font-weight: bold;
+}
+
+.r_line.root, .r_line.section_heading, .r_line.font_bold {
+    font-weight: bold;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.h_row {
+	display: block;
+}
+.h_row.ctrl {
+    width: 100%;
+    column-count: 1;
+    padding: unset;
+}
+.h_row.ctrl > i {
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 25px;
+    cursor: pointer;
+}
+.ctrl_col {
+    width: 100%;
+    padding-bottom: 5%;
+}
+.ctrl_col input {
+	width: 95%;
+}
+
+.r_line td span {
+    padding-left: 7px;
+}
+
+.report_buttons {
+     font-size: 14px;
+     display: flex;
+ }
+.report_buttons > div {
+    cursor: pointer;
+    padding: 4px;
+}
+/* .report_buttons > div:hover {
+  padding: 2px;
+} */
+
+@media only screen and (max-width: 670px) {
+    .ctrl_body .inner_row {
+        width: 100%;
+    }
+    .dynamic_report_body {
+        max-width: 99%;
+        overflow: auto;
+    }
+}
+
+.fetch_report {
+    display: flex;
+    padding-left: 7%;
+}
+
+[class*="col-"] {
+    width: 100%;
+  }
+
+@media (max-width: 575.98px) {
+    .fetch_report {
+        display: flex;
+        padding-left: 4%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .dynamic_control_header {
+        width: 100%;
+        padding: 5px 5px 5px 5px;
+        border: 1px solid;
+        border-color: #7c7bad;
+        border-radius: 2px;
+        background-color: #fff;
+        font-size: 12px;
+        min-height: 20px;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
+}
+
+@media (max-width: 412px) {
+    .dynamic_report_body {
+        margin-left: 1%;
+    }
+    .dynamic_control_header {
+        margin-left: 1%;
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .dynamic_control_header {
+        width: 100%;
+        padding: 5px 5px 5px 5px;
+        border: 1px solid;
+        border-color: #7c7bad;
+        border-radius: 2px;
+        background-color: #fff;
+        font-size: 12px;
+        min-height: 20px;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
+    .col-md-8 {
+        max-width: 66.666667%;
+        flex: 0 0 66.666667%;
+    }
+    .col-md-4 {
+        padding-left: 2%;
+        max-width: 33.333333%;
+        flex: 0 0 33.333333%;
+    }
+}
+
+@media (min-width: 992px) {
+    .dynamic_control_header {
+        width: 100%;
+        padding: 5px 5px 5px 5px;
+        border: 1px solid;
+        border-color: #7c7bad;
+        border-radius: 2px;
+        background-color: #fff;
+        font-size: 12px;
+        min-height: 20px;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
+    .col-md-8 {
+        max-width: 78.666667%;
+        flex: 0 0 78.666667%;
+    }
+    .col-md-4 {
+        max-width: 21.333333%;
+        flex: 0 0 21.333333%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .dynamic_control_header {
+        width: 100%;
+        padding: 5px 5px 5px 5px;
+        border: 1px solid;
+        border-color: #7c7bad;
+        border-radius: 2px;
+        background-color: #fff;
+        font-size: 12px;
+        min-height: 20px;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
+    .col-md-8 {
+        max-width: 75.666667%;
+        flex: 0 0 75.666667%;
+    }
+    .col-md-4 {
+        max-width: 24.333333%;
+        flex: 0 0 24.333333%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .dynamic_control_header {
+        width: 100%;
+        padding: 5px 5px 5px 5px;
+        border: 1px solid;
+        border-color: #7c7bad;
+        border-radius: 2px;
+        background-color: #fff;
+        font-size: 12px;
+        min-height: 20px;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
+    .fetch_report {
+        display: flex;
+        padding-left: 5%;
+    }
+    .col-xl-10 {
+        max-width: 82%;
+        flex: 0 0 82%;
+    }
+    .col-xl-2 {
+        padding-left: 1%;
+        max-width: 18%;
+        flex: 0 0 18%;
+    }
+}

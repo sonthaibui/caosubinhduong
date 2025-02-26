@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_allowance_by_month_form" model="ir.ui.view">
+        <field name="name">allowancebymonth.form</field>
+        <field name="model">allowance.by.month</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                <header>
+                    <field name="thongbao" decoration-danger="1" nolabel="1" decoration-bf="1"/>
+                </header>
+                <group>
+                    <group>
+                        <field name="recorded" invisible="1"/>
+                        <field name="thang" attrs="{'readonly': [('recorded', '!=', False)]}"/>
+                        <field name="nam" attrs="{'readonly': [('recorded', '!=', False)]}"/>
+                        <field name="department_id" attrs="{'readonly': [('recorded', '!=', False)]}"/>
+                        <field name="dg_nuoc" attrs="{'invisible': [('recorded', '=', False)]}"/>
+                    </group>
+                    <group>
+                        <field name="dg_chen" attrs="{'invisible': [('recorded', '=', False)]}"/>
+                        <field name="dg_day" attrs="{'invisible': [('recorded', '=', False)]}"/>
+                        <field name="dg_dong" attrs="{'invisible': [('recorded', '=', False)]}"/>
+                        <field name="dg_tang" attrs="{'invisible': [('recorded', '=', False)]}"/>
+                    </group>
+                    <field name="allowance_line_ids" nolabel="1">
+                        <tree editable="bottom" default_order="sttcn asc">
+                            <field name="sttcn" style="border-top-style: solid !important;border-width: 1px !important"/>
+                            <field name="employee_id" style="border-top-style: solid !important;border-width: 1px !important"/>
+                            <field name="dgta" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                            <field name="dgtb" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                            <field name="dgtc" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                            <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important" sum='tienung'/>
+                            <field name="ungtien" style="border-top-style: solid !important;border-width: 1px !important" sum='ungtien'/>
+                            <field name="tamvong" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tamvong'/>
+                            <field name="truidao" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='truidao'/>
+                            <field name="bandao" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='bandao'/>
+                            <field name="banlinhtinh" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='banlinhtinh'/>
+                            <field name="tiendao" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tiendao'/>
+                            <field name="boithuoc" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='boithuoc'/>
+                            <field name="boikeo" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='boikeo'/>
+                            <field name="giacomang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='giacomang'/>
+                            <field name="cophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                            <field name="kophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                            <field name="chuyencan" style="border-top-style: solid !important;border-width: 1px !important" sum='chuyencan'/>
+                            <field name="phucap" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='phucap'/>
+                            <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important" sum='quykho'/>
+                            <field name="sophan" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                            <field name="caochoang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='caochoang'/>
+                            <field name="duongxau" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='duongxau'/>
+                            <field name="itmu" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='itmu'/>
+                            <field name="chiendo" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='chiendo'/>
+                            <field name="tienvattu" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienvattu'/>
+                            <field name="tienvattu1" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienvattu1'/>
+                            <field name="tiencuoinam" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienung'/>
+                            <field name="tiengomto" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tiengomto'/>
+                            <field name="tienbh" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienbh'/>
+                            <field name="tienphan" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienphan'/>
+                            <field name="thuong_sl" style="border-top-style: solid !important;border-width: 1px !important" sum='thuong_sl'/>
+                            <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important"/>
+                            <field name="mmcn" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='mmcn'/>
+                            <field name="mmcu" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='mmcu'/>
+                            <field name="bkrtgn" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='bkrtgn'/>
+                            <field name="bkrtmn" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='bkrtmn'/>
+                            <field name="luongthangtruoc" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='luongthangtruoc'/>
+                            <field name="somang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                            <field name="giamang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                            <field name="tienmang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienmang'/>
+                            <field name="ttmang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='ttmang'/>
+                            <field name="bdgv" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='bdgv'/>
+                            <field name="bdgvmu" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='bdgvmu'/>
+                            <field name="rmdm" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='rmdm'/>
+                            <field name="tienmuon" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienmuon'/>
+                            <field name="caoxa" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='caoxa'/>
+                            <field name="bddm" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='bddm'/>
+                            <field name="rct" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='rct'/>
+                            <field name="xdn" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='xdn'/>
+                            <field name="tbm" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tbm'/>
+                        </tree>
+                    </field>
+                </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_allowance_by_month_tree">
+        <field name="name">allowancebymonth.tree</field>
+        <field name="model">allowance.by.month</field>
+        <field name="arch" type="xml">
+            <tree string="Allowance By Month Tree View">
+                <field name="recorded" invisible="1"/>
+                <field name="thang" attrs="{'readonly': [('recorded', '=', True)]}"/>
+                <field name="department_id" attrs="{'readonly': [('recorded', '=', True)]}"/>
+                <field name="nam" attrs="{'readonly': [('recorded', '=', True)]}"/>
+                <field name="dg_nuoc" attrs="{'invisible': [('recorded', '=', False)]}"/>
+                <field name="dg_day" attrs="{'invisible': [('recorded', '=', False)]}"/>
+                <field name="dg_tang" attrs="{'invisible': [('recorded', '=', False)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_allowance_form" model="ir.ui.view">
+        <field name="name">allowance.form</field>
+        <field name="model">allowance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="sttcn"/>
+                            <field name="rubbersalary_id"/>
+                            <field name="salaryboard_id"/>
+                            <field name="employeebenefit_id"/>
+                            <field name="thang"/>
+                            <field name="nam"/>
+                            <field name="employee_id"/>
+                            <field name="salaryboard_id"/>
+                            <field name="tienung"/>
+                            <field name="tamvong"/>
+                            <field name="truidao"/>
+                            <field name="bandao"/>
+                            <field name="banlinhtinh"/>
+                            <field name="tiendao"/>
+                            <field name="boithuoc"/>
+                            <field name="chuyencan"/>
+                            <field name="ngaylam"/>
+                            <field name="phucap"/>
+                            <field name="quykho"/>
+                            <field name="sophan"/>
+                            <field name="caochoang"/>
+                            <field name="duongxau"/>
+                        </group>
+                        <group>
+                            <field name="itmu"/>
+                            <field name="chiendo"/>
+                            <field name="tienbh"/>
+                            <field name="thuong_sl"/>
+                            <field name="ghichu"/>
+                            <field name="somang"/>
+                            <field name="giamang"/>
+                            <field name="tienmang"/>
+                            <field name="ttmang"/>
+                            <field name="caoxa"/>
+                            <field name="tienmuon"/>
+                            <field name="bddm"/>
+                            <field name="mmcn"/>
+                            <field name="mmcu"/>
+                            <field name="bkrtgn"/>
+                            <field name="bkrtmn"/>
+                            <field name="luongthangtruoc"/>
+                            <field name="bdgv"/>
+                            <field name="bdgvmu"/>
+                            <field name="rmdm"/>
+                            <field name="rct"/>
+                            <field name="xdn"/>
+                            <field name="tbm"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_allowance_tree">
+        <field name="name">allowance.tree</field>
+        <field name="model">allowance</field>
+        <field name="arch" type="xml">
+            <tree string="Allowance Tree View" create="0">
+                <field name="sttcn"/>
+                <field name="employee_id"/>
+                <field name="rubbersalary_id" optional="hide"/>
+                <field name="salaryboard_id" optional="hide"/>
+                <field name="employeebenefit_id" optional="hide"/>
+                <field name="tienung"/>
+                <field name="tamvong" optional="hide"/>
+                <field name="truidao" optional="hide"/>
+                <field name="bandao" optional="hide"/>
+                <field name="banlinhtinh" optional="hide"/>
+                <field name="tiendao" optional="hide"/>
+                <field name="boithuoc" optional="hide"/>
+                <field name="chuyencan"/>
+                <field name="ngaylam"/>
+                <field name="phucap" optional="hide"/>
+                <field name="quykho"/>
+                <field name="sophan"/>
+                <field name="tienbh" optional="hide"/>
+                <field name="caochoang" optional="hide"/>
+                <field name="duongxau" optional="hide"/>
+                <field name="itmu" optional="hide"/>
+                <field name="chiendo" optional="hide"/>
+                <field name="thuong_sl"/>
+                <field name="ghichu"/>
+                <field name="somang" optional="hide"/>
+                <field name="giamang" optional="hide"/>
+                <field name="tienmang" optional="hide"/>
+                <field name="ttmang" optional="hide"/>
+                <field name="caoxa" optional="hide"/>
+                <field name="tienmuon" optional="hide"/>
+                <field name="bddm" optional="hide"/>
+                <field name="mmcn" optional="hide"/>
+                <field name="mmcu" optional="hide"/>
+                <field name="bkrtgn" optional="hide"/>
+                <field name="bkrtmn" optional="hide"/>
+                <field name="luongthangtruoc" optional="hide"/>
+                <field name="bdgv" optional="hide"/>
+                <field name="bdgvmu" optional="hide"/>
+                <field name="rmdm" optional="hide"/>
+                <field name="rct" optional="hide"/>
+                <field name="xdn" optional="hide"/>
+                <field name="tbm" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_phucap" model="ir.actions.act_window">
+        <field name="name">Phụ Cấp</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">allowance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Phụ Cấp.
+            </p>
+        </field>
+    </record>
+  
+    <record id="action_phucapthang" model="ir.actions.act_window">
+        <field name="name">Phụ Cấp Tháng</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">allowance.by.month</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Phụ Cấp Tháng.
+            </p>
+        </field>
+    </record>
+
+</odoo>

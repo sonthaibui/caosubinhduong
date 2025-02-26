@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_reward_form" model="ir.ui.view">
+        <field name="name">reward.form</field>
+        <field name="model">reward</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <group>
+                  <group>
+                    <field name="employee_id"/>
+                    <field name="thang"/>
+                    <field name="nam"/>
+                    <field name="cophep"/>
+                    <field name="kophep"/>
+                    <!--<field name="ngaynghi"/>-->
+                    <field name="chuyencan"/>
+                    <field name="tinhkythuat1"/>
+                    <field name="tinhkythuat2"/>
+                  </group>
+                  <group>
+                    <field name="dunggio"/>
+                    <field name="gomuday"/>
+                    <field name="upday"/>
+                    <field name="tanthumu"/>
+                    <field name="tichcuc"/>
+                    <field name="sosuatcao"/>
+                    <field name="tongtien"/>
+                  </group>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_reward_by_month_form" model="ir.ui.view">
+        <field name="name">rewardbymonth.form</field>
+        <field name="model">reward.by.month</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <header>
+                  <field name="thongbao" decoration-danger="1" nolabel="1" decoration-bf="1"/>
+                </header>
+                <group>
+                  <group>
+                    <field name="recorded" invisible="1"/>
+                    <field name="thang" attrs="{'readonly': [('recorded', '!=', False)]}"/>
+                    <field name="nam" attrs="{'readonly': [('recorded', '!=', False)]}"/>
+                  </group>
+                  <group>
+                    <field name="to" attrs="{'readonly': [('recorded', '!=', False)]}"/>
+                    <field name="pltl" invisible="1"/>
+                    <field name="pltln" invisible="1"/>
+                  </group>
+                  <field name="reward_line_ids" nolabel="1">
+                    <tree create="1" delete="1" editable="bottom" default_order="sttcn asc">
+                      <field name="sttcn" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="employee_id" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="cophep" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="kophep" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="chuyencan" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="diemkythuat1" style="width: 50px !important; border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="tinhkythuat1" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="diemkythuat2" style="width: 50px !important; border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="tinhkythuat2" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="dunggio" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="gomuday" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="upday" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="vesinh" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="tanthumu" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="tichcuc" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="motsuat" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="sosuatcao" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/> <!-- attrs="{'column_invisible': [('parent.sosuatcao_hf', '=', False)]}"/> -->
+                      <field name="diachi" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="namkt" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="thangkt" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="phucloi" style="border-top-style: solid !important;border-width: 1px !important" sum="phucloi"/>
+                      <field name="pltext" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                      <field name="phucloitl" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.pltl', '=', 0)]}" sum="phucloitl" optional="show"/>
+                      <field name="phucloitln" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.pltln', '=', 0)]}" sum="phucloitln" optional="show"/>
+                      <field name="tongtien" style="border-top-style: solid !important;border-width: 1px !important" />
+                      <field name="ttth" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="ruttt" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                      <field name="tongtientl" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtientl"/>
+                      <field name="tongtientln" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtientln"/>
+                    </tree>
+                  </field>
+                </group>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_reward_tree">
+        <field name="name">reward.tree</field>
+        <field name="model">reward</field>
+        <field name="arch" type="xml">
+            <tree string="Reward Tree View" create="0">
+              <field name="sttcn"/>
+              <field name="employee_id"/>
+              <field name="thang"/>
+              <field name="nam"/>
+              <field name="cophep"/>
+              <field name="kophep"/>
+              <field name="diachi"/>
+              <field name="phucloi"/>
+              <field name="phucloitl"/>
+              <field name="phucloitln"/>
+              <field name="rutbot"/>
+              <field name="dongthem"/>
+              <!-- <field name="conlai"/> -->
+              <!--<field name="ngaynghi"/>-->
+              <field name="chuyencan"/>
+              <field name="diemkythuat1"/>
+              <field name="tinhkythuat1"/>
+              <field name="diemkythuat2"/>
+              <field name="tinhkythuat2"/>
+              <field name="dunggio"/>
+              <field name="vesinh" optional="hide"/>
+              <field name="gomuday"/>
+              <field name="upday"/>
+              <field name="tanthumu"/>
+              <field name="tichcuc"/>
+              <field name="motsuat"/>
+              <field name="sosuatcao" optional="show"/>
+              <field name="tongtien"/>
+              <field name="tongtientl"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_reward_by_month_tree">
+        <field name="name">rewardbymonth.tree</field>
+        <field name="model">reward.by.month</field>
+        <field name="arch" type="xml">
+            <tree string="Reward By Month Tree View">
+              <field name="recorded" invisible="1"/>
+              <field name="to" attrs="{'readonly': [('recorded','=',True)]}"/>
+              <field name="thang" attrs="{'readonly': [('recorded','=',True)]}"/>
+              <field name="nam" attrs="{'readonly': [('recorded','=',True)]}"/>
+              <field name='ghichu'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_xetthuong" model="ir.actions.act_window">
+        <field name="name">Xét Thưởng</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">reward</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_year":1, "search_default_month":1, "search_default_rewardbymonth":1,}</field>
+        <field name="help" type="html">
+            <p>
+              Xét Thưởng.
+            </p>
+        </field>
+    </record>
+
+    <record id="reward_view_search" model="ir.ui.view">
+      <field name="name">reward.view.search</field>
+      <field name="model">reward</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="nam" />
+          <field name="thang" />
+          <field name="rewardbymonth_id" />
+          <group expand="0" string="Group By">
+            <filter name="year" string="Năm" context="{'group_by': 'nam'}"/>
+            <filter name="month" string="Tháng" context="{'group_by': 'thang'}"/>
+            <filter name="rewardbymonth" string="Reward By Month" context="{'group_by': 'rewardbymonth_id'}"/>
+        </group>
+        </search>
+      </field>
+    </record>
+  
+    <record id="action_xetthuongthang" model="ir.actions.act_window">
+        <field name="name">Xét Thưởng Tháng</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">reward.by.month</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>
+              Xét Thưởng Tháng.
+            </p>
+        </field>
+    </record>
+
+</odoo>

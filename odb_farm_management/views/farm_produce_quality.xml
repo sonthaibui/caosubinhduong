@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='action_farm_produce_quality' model='ir.actions.act_window'>
+        <field name="name">Land Product Quantity</field>
+        <field name="res_model">farm.produce.quality</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Form View -->
+    <record id="farm_produce_quality_view_form" model="ir.ui.view">
+        <field name="name">Land Product Quantity Form</field>
+        <field name="model">farm.produce.quality</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="notes"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+     <!-- Tree(list) View -->
+    <record id="farm_produce_quality_view_tree" model="ir.ui.view">
+        <field name="name">Land Product Quantity List</field>
+        <field name="model">farm.produce.quality</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

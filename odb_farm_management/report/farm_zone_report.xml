@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <template id="assets_common_farm_zone_report" name="CSS Small Land Report" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/odb_farm_management/static/src/css/style.css"/>
+        </xpath>
+    </template> -->
+
+    <template id="farm_zone_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h4>Land Name: <t t-esc="o.name"/></h4>
+                        <span t-field="o.image_1920" t-options='{"widget": "image", "style":"width: 300px;height: 300px"}'/>
+                        <br></br>
+                        <br></br>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr class="table-info-i">
+                                    <th>Land Area</th>
+                                    <th>Code</th>
+                                    <th>Acreage Land</th>
+                                    <th>Farmer Team</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><t t-esc="o.land_mana_id.name"/></td>
+                                    <td><t t-esc="o.code"/></td>
+                                    <td><t t-esc="o.acreage_land"/> m2</td>
+                                    <td>
+                                        <t t-foreach="o.farmer_team_ids" t-as="i">
+                                            <t t-esc="i.name"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <div class="job">
+                        <h4>Jobs Of Land</h4>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr class="table-info-i">
+                                    <th>Job Name</th>
+                                    <th>Device</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Remaining Days</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>State</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.farm_job_ids" t-as="rc">
+                                <tr>
+                                    <td><t t-esc="rc.name"/></td>
+                                    <td>
+                                        <t t-foreach="rc.device_ids" t-as="r">
+                                            <span><t t-esc="r.name"/></span>
+                                        </t>
+                                    </td>
+                                    <td><t t-esc="rc.start_date"/></td>
+                                    <td><t t-esc="rc.end_date"/></td>
+                                    <td><t t-esc="rc.remaining_days"/></td>
+                                    <td><t t-esc="rc.product_id.name"/></td>
+                                    <td><t t-esc="rc.quantity"/></td>
+                                    <td><t t-esc="rc.state"/></td>
+                                </tr>                                    
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
