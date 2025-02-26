@@ -196,7 +196,7 @@ class RubberByDate(models.Model):
                 rec.recorded = True
                 if rec.to.name != 'TỔ Chung' or rec.to.name != 'TỔ Xe tải':
                     if len(self.env['plantation'].search([('to', '=', rec.to.id),('lo', '=', rec.lo)])) == False:
-                        raise UserError(_("Department " + rec.to.name.upper() + " lot " + rec.lo.upper() + " doesn't have any plantation."))
+                        raise UserError(_("Department "  " doesn't have any plantation.")) #+ rec.to.name.upper() + " lot " + rec.lo.upper() +
                     else:
                         plants = self.env['plantation'].search([('to', '=', rec.to.id),('lo', '=', rec.lo)])
                         for plant in plants:
