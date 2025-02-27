@@ -1,0 +1,15 @@
+<odoo>
+    <!-- Inherit and modify the Kanban view for tasks -->
+    <record id="view_project_task_kanban_inherit" model="ir.ui.view">
+        <field name="name">project.task.kanban.view.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.action_view_all_task"/>
+        <field name="arch" type="xml">
+            <xpath expr="//My Tasks" position="attributes">
+                <attribute name="default_group_by">personal_stage_id</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!--Define the default order for kanban view-->
+    
+</odoo>

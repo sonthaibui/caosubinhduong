@@ -1,0 +1,16 @@
+<odoo>
+    <!-- Inherit and modify the existing action to apply the default filter for Custom Category -->
+    <record id="action_module_custom_category" model="ir.actions.act_window">
+        <field name="name">Custom Category Modules</field>
+        <field name="res_model">ir.module.module</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_custom_category': 1}</field>
+    </record>
+
+    <!-- Update the menu item to ensure it uses the correct action -->
+    <record id="menu_module_custom_category" model="ir.ui.menu">
+        <field name="name">Custom Category Modules</field>
+        <field name="parent_id" ref="base.menu_custom"/>
+        <field name="action" ref="action_module_custom_category"/>
+    </record>
+</odoo>

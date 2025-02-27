@@ -1,0 +1,37 @@
+<odoo>
+    <!-- Inherit and modify the action for the task menu -->
+    <record id="project.action_view_all_task" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
+        <field name="context">{
+            'group_by': 'kanban_state',
+            'kanban_state_column_order': ["normal", "blocked", "done", "False"]
+        }</field>
+       
+       <!-- <field name="context">{'group_by': 'project_stage_id'}</field>-->
+    </record>
+    <!-- Action for project.task.stage.personal 
+    <record id="action_project_task_stage_personal" model="ir.actions.act_window">
+        <field name="name">Personal Task Stages</field>
+        <field name="res_model">project.task.stage.personal</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    Menu item under Configuration > Task Stages
+    <menuitem id="menu_project_task_stage_personal"
+              name="Personal Task Stages"
+              parent="project.menu_project_config"
+              action="action_project_task_stage_personal"
+              sequence="10"/> -->
+</odoo>
+
+<!--<odoo>
+    
+    <record id="project.action_view_task" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
+        <field name="context">{'group_by': 'project_id.stage_id'}</field>
+    </record>
+</odoo>-->

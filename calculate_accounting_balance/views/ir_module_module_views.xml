@@ -1,0 +1,33 @@
+
+<odoo>
+    <!-- Inherit and modify the control panel view for apps -->
+    <record id="ir_module_module_filter_inherit" model="ir.ui.view">
+        <field name="name">ir.module.module.filter.inherit</field>
+        <field name="model">ir.module.module</field>
+        <field name="inherit_id" ref="base.view_module_filter"/>
+        <field name="arch" type="xml">
+            <!-- Modify the search view to set default category filter to Custom -->
+            <xpath expr="//search" position="replace">
+                <search string="Search modules">
+                    <field name="name" filter_domain="['|', '|', ('summary', 'ilike', self), ('shortdesc', 'ilike', self), ('name', 'ilike', self)]" string="Module"/>
+                    <filter name="app" string="Apps" domain="[('application', '=', True)]"/>
+                    <filter name="extra" string="Extra" domain="[('application', '=', False)]"/>
+                    <separator/>
+                    <filter name="installed" string="Installed" domain="[('state', 'in', ['installed', 'to upgrade', 'to remove'])]"/>
+                    <filter name="not_installed" string="Not Installed" domain="[('state', 'in', ['uninstalled', 'uninstallable', 'to install'])]"/>
+                    <filter string="Custom Category" name="custom_category" domain="[('category_id.name', '=', 'Custom')]"/>
+                    <field name="category_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Author" name="author" domain="[]" context="{'group_by':'author'}"/>
+                        <filter string="Category" name="category" domain="[]" context="{'group_by':'category_id'}"/>
+                        <filter string="State" name="state" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="category_id" string="Categories" enable_counters="1"/>
+                    </searchpanel>
+                    <!--<context>{'search_default_custom_category': 1}</context>-->
+                </search>
+            </xpath>
+        </field>
+    </record>
+</odoo>
