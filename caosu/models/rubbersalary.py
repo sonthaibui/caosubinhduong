@@ -41,7 +41,7 @@ class RubberSalary(models.Model):
     tienchen = fields.Float('tienchen', digits='Product Price', compute='_compute_khotien')
     phucap1 = fields.Float('phucap1', digits='Product Price', compute='_compute_khotien')
     tongtien = fields.Monetary('Tổng cộng', compute='_compute_khotien')
-    rubber_line_ids = fields.One2many('rubber', 'rubbersalary_id', string='Sản lượng mũ cạo', domain=[('bymonth', '=', True)])
+    rubber_line_ids = fields.One2many('rubber', 'rubbersalary_id', string='Sản lượng mũ cạo', domain=[('bymonth', '=', True)]) # hàm on change bên dưới để set những rubber nào có bymonth = True
     reward_line_ids = fields.One2many('reward', 'rubbersalary_id', string='Thuong', domain=[('bymonth', '=', True)])
     reward_id = fields.Many2one('reward', string='Reward', readonly=True)
     tongtien_reward = fields.Monetary('Tiền thưởng năm', compute='_compute_thuong')
@@ -584,13 +584,16 @@ class RubberSalary(models.Model):
                 rec.tongluong = 0
                 rec.conlai = 0
 
+    #Tìm những rubber nào có cùng tháng, năm, employee_id với tháng, năm, employee_id của rubber salary, thêm điều kiện là phải có giá trị cộng, mũ đay, mũ đông, mũ chèn, phụ cấp > 0 thì bymonth = True, ngược lại bymonth = False)
+    #Sau đó cho hiện những rubber có bymonth = True trong phiếu lương
+    #Phải thêm đk cùng tổ nữa vì năm nay có trường hợp 1 công nhân làm 2 tổ trong tháng 1 như tổ 70
     @api.onchange('thang', 'nam')
     def _onchange_thang(self):
         if self.thang and self.nam:  
             if self.env['rubber'].search([('rubbersalary_id.employee_id','=', self.name)]):
                 rbs = self.env['rubber'].search([('rubbersalary_id.employee_id','=', self.name)])
                 for rb in rbs:                               
-                    if rb.thang == self.thang and rb.nam == self.nam and (rb.cong > 0 or rb.muday > 0 or rb.mudong > 0 or rb.muchen > 0 or rb.phucap >0):                    
+                    if rb.thang == self.thang and rb.nam == self.nam and rb.to ==self.to_name and (rb.cong > 0 or rb.muday > 0 or rb.mudong > 0 or rb.muchen > 0 or rb.phucap >0):                    
                         rb.bymonth = True   
                     else:
                         rb.bymonth = False

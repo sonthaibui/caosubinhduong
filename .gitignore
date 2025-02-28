@@ -2,7 +2,16 @@
 __pycache__/
 *.py[cod]
 *$py.class
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
+# Ignore specific directories and their contents
+accounting_pdf_reports/
+base_account_budget/
 
+# Add any other directories or files you want to ignore
+# For example:
+# other_directory/
 # C extensions
 *.so
 
