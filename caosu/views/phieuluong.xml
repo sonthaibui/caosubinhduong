@@ -15,6 +15,8 @@
                   <group>
                     <field name="thang"/>
                     <field name="nam"/>
+                    <field name="startdate"/>
+                    <field name="enddate"/>
                     <field name="namkt"/>
                   </group>
                 </group>
@@ -102,7 +104,7 @@
                   <group string="Thưởng cuối năm">
                     <group string="Phúc lợi" attrs="{'invisible': [('plt2','=',0)]}">
                       <field name="pl13" invisible="1"/>
-                      <field name="pl14" invisible="1"/>
+                      
                       <field name="pl3" invisible="1"/>
                       <field name="pl4" invisible="1"/>
                       <field name="pl5" invisible="1"/>
@@ -115,7 +117,7 @@
                       <field name="pl12" invisible="1"/>
                       <field name="pl2" invisible="1"/>
                       <field name="rb13" invisible="1"/>
-                      <field name="rb14" invisible="1"/>
+                      
                       <field name="rb3" invisible="1"/>
                       <field name="rb4" invisible="1"/>
                       <field name="rb5" invisible="1"/>
@@ -128,7 +130,7 @@
                       <field name="rb12" invisible="1"/>
                       <field name="rb2" invisible="1"/>
                       <field name="dt13" invisible="1"/>
-                      <field name="dt14" invisible="1"/>
+                      
                       <field name="dt3" invisible="1"/>
                       <field name="dt4" invisible="1"/>
                       <field name="dt5" invisible="1"/>
@@ -140,7 +142,7 @@
                       <field name="dt11" invisible="1"/>
                       <field name="dt12" invisible="1"/>
                       <field name="tg13" invisible="1"/>
-                      <field name="tg14" invisible="1"/>
+                      
                       <field name="tg3" invisible="1"/>
                       <field name="tg4" invisible="1"/>
                       <field name="tg5" invisible="1"/>
@@ -152,7 +154,7 @@
                       <field name="tg11" invisible="1"/>
                       <field name="tg12" invisible="1"/>
                       <field name="rtt13" invisible="1"/>
-                      <field name="rtt14" invisible="1"/>
+                      
                       <field name="rtt3" invisible="1"/>
                       <field name="rtt4" invisible="1"/>
                       <field name="rtt5" invisible="1"/>
@@ -188,8 +190,7 @@
                       <field name="pldg12" nolabel="1" attrs="{'invisible': [('pl12','=',False)]}"/>
                       <field name="plt13" attrs="{'invisible': [('pl13','=',False)]}"/>
                       <field name="pldg13" nolabel="1" attrs="{'invisible': [('pl13','=',False)]}"/>
-                      <field name="plt14" attrs="{'invisible': [('pl14','=',False)]}"/>
-                      <field name="pldg14" nolabel="1" attrs="{'invisible': [('pl14','=',False)]}"/>
+                      
                       <field name="plt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('pl2','=',False)]}"/>
                       <field name="rbt3" attrs="{'invisible': [('rb3','=',False)]}"/>
                       <field name="rbt4" attrs="{'invisible': [('rb4','=',False)]}"/>
@@ -202,7 +203,7 @@
                       <field name="rbt11" attrs="{'invisible': [('rb11','=',False)]}"/>
                       <field name="rbt12" attrs="{'invisible': [('rb12','=',False)]}"/>
                       <field name="rbt13" attrs="{'invisible': [('rb13','=',False)]}"/>
-                      <field name="rbt14" attrs="{'invisible': [('rb2','=',False)]}"/>
+                      
                       <field name="dtt3" attrs="{'invisible': [('dt3','=',False)]}"/>
                       <field name="dtt4" attrs="{'invisible': [('dt4','=',False)]}"/>
                       <field name="dtt5" attrs="{'invisible': [('dt5','=',False)]}"/>
@@ -214,12 +215,12 @@
                       <field name="dtt11" attrs="{'invisible': [('dt11','=',False)]}"/>
                       <field name="dtt12" attrs="{'invisible': [('dt12','=',False)]}"/>
                       <field name="dtt13" attrs="{'invisible': [('dt13','=',False)]}"/>
-                      <field name="dtt14" attrs="{'invisible': [('dt14','=',False)]}"/>
-                      <field name="rbt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('rb13','=',False),('rb14','=',False),('rb3','=',False),('rb4','=',False),('rb5','=',False),('rb6','=',False),('rb7','=',False),('rb8','=',False),('rb9','=',False),('rb10','=',False),('rb11','=',False),('rb12','=',False),('dt13','=',False),('dt14','=',False),('dt3','=',False),('dt4','=',False),('dt5','=',False),('dt6','=',False),('dt7','=',False),('dt8','=',False),('dt9','=',False),('dt10','=',False),('dt11','=',False),('dt12','=',False)]}"/>
+                     
+                      <field name="rbt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('rb13','=',False),('rb3','=',False),('rb4','=',False),('rb5','=',False),('rb6','=',False),('rb7','=',False),('rb8','=',False),('rb9','=',False),('rb10','=',False),('rb11','=',False),('rb12','=',False),('dt13','=',False),('dt3','=',False),('dt4','=',False),('dt5','=',False),('dt6','=',False),('dt7','=',False),('dt8','=',False),('dt9','=',False),('dt10','=',False),('dt11','=',False),('dt12','=',False)]}"/>
                     </group>
                     <group string="Thưởng tháng" attrs="{'invisible': [('ttt2','=',0)]}">
                       <field name="tt13" invisible="1"/>
-                      <field name="tt14" invisible="1"/>
+                      
                       <field name="tt3" invisible="1"/>
                       <field name="tt4" invisible="1"/>
                       <field name="tt5" invisible="1"/>
@@ -242,7 +243,7 @@
                       <field name="ttt11" attrs="{'invisible': [('tt11','=',False)]}"/>
                       <field name="ttt12" attrs="{'invisible': [('tt12','=',False)]}"/>
                       <field name="ttt13" attrs="{'invisible': [('tt13','=',False)]}"/>
-                      <field name="ttt14" attrs="{'invisible': [('tt14','=',False)]}"/>
+                      
                       <field name="ttt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('tt2','=',False)]}"/>
                       <field name="rbtt3" attrs="{'invisible': [('rtt3','=',False)]}"/>
                       <field name="rbtt4" attrs="{'invisible': [('rtt4','=',False)]}"/>
@@ -255,7 +256,7 @@
                       <field name="rbtt11" attrs="{'invisible': [('rtt11','=',False)]}"/>
                       <field name="rbtt12" attrs="{'invisible': [('rtt12','=',False)]}"/>
                       <field name="rbtt13" attrs="{'invisible': [('rtt13','=',False)]}"/>
-                      <field name="rbtt14" attrs="{'invisible': [('rtt14','=',False)]}"/>
+                      
                       <field name="tgtt3" attrs="{'invisible': [('tg3','=',False)]}"/>
                       <field name="tgtt4" attrs="{'invisible': [('tg4','=',False)]}"/>
                       <field name="tgtt5" attrs="{'invisible': [('tg5','=',False)]}"/>
@@ -267,8 +268,8 @@
                       <field name="tgtt11" attrs="{'invisible': [('tg11','=',False)]}"/>
                       <field name="tgtt12" attrs="{'invisible': [('tg12','=',False)]}"/>
                       <field name="tgtt13" attrs="{'invisible': [('tg13','=',False)]}"/>
-                      <field name="tgtt14" attrs="{'invisible': [('tg14','=',False)]}"/>
-                      <field name="rbtt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('rtt13','=',False),('rtt14','=',False),('rtt3','=',False),('rtt4','=',False),('rtt5','=',False),('rtt6','=',False),('rtt7','=',False),('rtt8','=',False),('rtt9','=',False),('rtt10','=',False),('rtt11','=',False),('rtt12','=',False),('tg13','=',False),('tg14','=',False),('tg3','=',False),('tg4','=',False),('tg5','=',False),('tg6','=',False),('tg7','=',False),('tg8','=',False),('tg9','=',False),('tg10','=',False),('tg11','=',False),('tg12','=',False)]}"/>
+                      
+                      <field name="rbtt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('rtt13','=',False),('rtt3','=',False),('rtt4','=',False),('rtt5','=',False),('rtt6','=',False),('rtt7','=',False),('rtt8','=',False),('rtt9','=',False),('rtt10','=',False),('rtt11','=',False),('rtt12','=',False),('tg13','=',False),('tg3','=',False),('tg4','=',False),('tg5','=',False),('tg6','=',False),('tg7','=',False),('tg8','=',False),('tg9','=',False),('tg10','=',False),('tg11','=',False),('tg12','=',False)]}"/>
                     </group>       
                   </group>   
                 </group>
