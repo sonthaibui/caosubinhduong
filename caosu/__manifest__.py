@@ -25,7 +25,7 @@
         'views/xetthuong.xml',
         'views/xetai.xml',
         'views/phieuluong.xml',
-        'report/caosu_report.xml',],
+        'report/rubber_salary_report.xml',],
     'demo': [],
     'application': True,
     'installable': True,

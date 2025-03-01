@@ -94,194 +94,10 @@ class RubberSalary(models.Model):
     tongtienr = fields.Monetary('Còn lại làm tròn', readonly=True)
     tongluong = fields.Monetary('Tổng lương', readonly=True)
     conlai = fields.Monetary('Còn lại', readonly=True)
-    # Phuc loi
-   
-    pl13 = fields.Boolean('pl1', default=True)
-    #pl14 = fields.Boolean('pl2', default=True)
-    pl2 = fields.Boolean('pl0', default=True)
-    pl3 = fields.Boolean('pl3', default=True)
-    pl4 = fields.Boolean('pl4', default=True)
-    pl5 = fields.Boolean('pl5', default=True)
-    pl6 = fields.Boolean('pl6', default=True)
-    pl7 = fields.Boolean('pl7', default=True)
-    pl8 = fields.Boolean('pl8', default=True)
-    pl9 = fields.Boolean('pl9', default=True)
-    pl10 = fields.Boolean('pl10', default=True)
-    pl11 = fields.Boolean('pl11', default=True)
-    pl12 = fields.Boolean('pl12', default=True)
-    
-    rb13 = fields.Boolean('rb1', default=True)
-    #rb14 = fields.Boolean('rb2', default=True)
-    rb2 = fields.Boolean('rb0', default=True)
-    rb3 = fields.Boolean('rb3', default=True)
-    rb4 = fields.Boolean('rb4', default=True)
-    rb5 = fields.Boolean('rb5', default=True)
-    rb6 = fields.Boolean('rb6', default=True)
-    rb7 = fields.Boolean('rb7', default=True)
-    rb8 = fields.Boolean('rb8', default=True)
-    rb9 = fields.Boolean('rb9', default=True)
-    rb10 = fields.Boolean('rb10', default=True)
-    rb11 = fields.Boolean('rb11', default=True)
-    rb12 = fields.Boolean('rb12', default=True)
-    
-    dt13 = fields.Boolean('dt1', default=True)
-    #dt14 = fields.Boolean('dt2', default=True)
-    dt2 = fields.Boolean('dt0', default=True)
-    dt3 = fields.Boolean('dt3', default=True)
-    dt4 = fields.Boolean('dt4', default=True)
-    dt5 = fields.Boolean('dt5', default=True)
-    dt6 = fields.Boolean('dt6', default=True)
-    dt7 = fields.Boolean('dt7', default=True)
-    dt8 = fields.Boolean('dt8', default=True)
-    dt9 = fields.Boolean('dt9', default=True)
-    dt10 = fields.Boolean('dt10', default=True)
-    dt11 = fields.Boolean('dt11', default=True)
-    dt12 = fields.Boolean('dt12', default=True)
-    
-    tg13 = fields.Boolean('tg1', default=True)
-    #tg14 = fields.Boolean('tg2', default=True)
-    tg2 = fields.Boolean('tg0', default=True)
-    tg3 = fields.Boolean('tg3', default=True)
-    tg4 = fields.Boolean('tg4', default=True)
-    tg5 = fields.Boolean('tg5', default=True)
-    tg6 = fields.Boolean('tg6', default=True)
-    tg7 = fields.Boolean('tg7', default=True)
-    tg8 = fields.Boolean('tg8', default=True)
-    tg9 = fields.Boolean('tg9', default=True)
-    tg10 = fields.Boolean('tg10', default=True)
-    tg11 = fields.Boolean('tg11', default=True)
-    tg12 = fields.Boolean('tg12', default=True)
-    
-    rtt13 = fields.Boolean('rtt1', default=True)
-    rtt2 = fields.Boolean('rtt0', default=True)
-    rtt3 = fields.Boolean('rtt3', default=True)
-    rtt4 = fields.Boolean('rtt4', default=True)
-    rtt5 = fields.Boolean('rtt5', default=True)
-    rtt6 = fields.Boolean('rtt6', default=True)
-    rtt7 = fields.Boolean('rtt7', default=True)
-    rtt8 = fields.Boolean('rtt8', default=True)
-    rtt9 = fields.Boolean('rtt9', default=True)
-    rtt10 = fields.Boolean('rtt10', default=True)
-    rtt11 = fields.Boolean('rtt11', default=True)
-    rtt12 = fields.Boolean('rtt12', default=True)
-    
-    tt13 = fields.Boolean('tt1', default=True)
-    #tt14 = fields.Boolean('tt2', default=True)
-    tt2 = fields.Boolean('tt0', default=True)
-    tt3 = fields.Boolean('tt3', default=True)
-    tt4 = fields.Boolean('tt4', default=True)
-    tt5 = fields.Boolean('tt5', default=True)
-    tt6 = fields.Boolean('tt6', default=True)
-    tt7 = fields.Boolean('tt7', default=True)
-    tt8 = fields.Boolean('tt8', default=True)
-    tt9 = fields.Boolean('tt9', default=True)
-    tt10 = fields.Boolean('tt10', default=True)
-    tt11 = fields.Boolean('tt11', default=True)
-    tt12 = fields.Boolean('tt12', default=True)
-    conlaipl = fields.Boolean('conlaipl', default=True, compute='_compute_conlaipl')
-    conlaitt = fields.Boolean('tconlaittt12', default=True, compute='_compute_conlaitt')
-    
-    plt13 = fields.Float('Tháng 1', default=0, compute='_compute_plt', digits='Product Price')
-    #plt14 = fields.Float('Tháng 2', default=0, compute='_compute_plt', digits='Product Price')
-    plt2 = fields.Monetary(' ', default=0, compute='_compute_plt')
-    plt3 = fields.Float('Tháng 3', default=0, compute='_compute_plt', digits='Product Price')
-    plt4 = fields.Float('Tháng 4', default=0, compute='_compute_plt', digits='Product Price')
-    plt5 = fields.Float('Tháng 5', default=0, compute='_compute_plt', digits='Product Price')
-    plt6 = fields.Float('Tháng 6', default=0, compute='_compute_plt', digits='Product Price')
-    plt7 = fields.Float('Tháng 7', default=0, compute='_compute_plt', digits='Product Price')
-    plt8 = fields.Float('Tháng 8', default=0, compute='_compute_plt', digits='Product Price')
-    plt9 = fields.Float('Tháng 9', default=0, compute='_compute_plt', digits='Product Price')
-    plt10 = fields.Float('Tháng 10', default=0, compute='_compute_plt', digits='Product Price')
-    plt11 = fields.Float('Tháng 11', default=0, compute='_compute_plt', digits='Product Price')
-    plt12 = fields.Float('Tháng 12', default=0, compute='_compute_plt', digits='Product Price')
-    
-    rbt13 = fields.Float('Rút bớt tháng 1', default=0, compute='_compute_plt', digits='Product Price')
-    #rbt14 = fields.Float('Rút bớt tháng 2', default=0, compute='_compute_plt', digits='Product Price')
-    rbt2 = fields.Float('Còn lại', default=0, compute='_compute_plt', digits='Product Price')
-    rbt3 = fields.Float('Rút bớt tháng 3', default=0, compute='_compute_plt', digits='Product Price')
-    rbt4 = fields.Float('Rút bớt tháng 4', default=0, compute='_compute_plt', digits='Product Price')
-    rbt5 = fields.Float('Rút bớt tháng 5', default=0, compute='_compute_plt', digits='Product Price')
-    rbt6 = fields.Float('Rút bớt tháng 6', default=0, compute='_compute_plt', digits='Product Price')
-    rbt7 = fields.Float('Rút bớt tháng 7', default=0, compute='_compute_plt', digits='Product Price')
-    rbt8 = fields.Float('Rút bớt tháng 8', default=0, compute='_compute_plt', digits='Product Price')
-    rbt9 = fields.Float('Rút bớt tháng 9', default=0, compute='_compute_plt', digits='Product Price')
-    rbt10 = fields.Float('Rút bớt tháng 10', default=0, compute='_compute_plt', digits='Product Price')
-    rbt11 = fields.Float('Rút bớt tháng 11', default=0, compute='_compute_plt', digits='Product Price')
-    rbt12 = fields.Float('Rút bớt tháng 12', default=0, compute='_compute_plt', digits='Product Price')
-    
-    dtt13 = fields.Float('Đóng thêm tháng 1', default=0, compute='_compute_plt', digits='Product Price')
-    #dtt14 = fields.Float('Đóng thêm tháng 2', default=0, compute='_compute_plt', digits='Product Price')
-    dtt2 = fields.Float('Đóng thêm', default=0, compute='_compute_plt', digits='Product Price')
-    dtt3 = fields.Float('Đóng thêm tháng 3', default=0, compute='_compute_plt', digits='Product Price')
-    dtt4 = fields.Float('Đóng thêm tháng 4', default=0, compute='_compute_plt', digits='Product Price')
-    dtt5 = fields.Float('Đóng thêm tháng 5', default=0, compute='_compute_plt', digits='Product Price')
-    dtt6 = fields.Float('Đóng thêm tháng 6', default=0, compute='_compute_plt', digits='Product Price')
-    dtt7 = fields.Float('Đóng thêm tháng 7', default=0, compute='_compute_plt', digits='Product Price')
-    dtt8 = fields.Float('Đóng thêm tháng 8', default=0, compute='_compute_plt', digits='Product Price')
-    dtt9 = fields.Float('Đóng thêm tháng 9', default=0, compute='_compute_plt', digits='Product Price')
-    dtt10 = fields.Float('Đóng thêm tháng 10', default=0, compute='_compute_plt', digits='Product Price')
-    dtt11 = fields.Float('Đóng thêm tháng 11', default=0, compute='_compute_plt', digits='Product Price')
-    dtt12 = fields.Float('Đóng thêm tháng 12', default=0, compute='_compute_plt', digits='Product Price')
-    
-    rbtt13 = fields.Float('Rút tiền thưởng tháng 1', default=0, compute='_compute_plt', digits='Product Price')
-    #rbtt14 = fields.Float('Rút tiền thưởng tháng 2', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt2 = fields.Float('Còn lại', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt3 = fields.Float('Rút tiền thưởng tháng 3', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt4 = fields.Float('Rút tiền thưởng tháng 4', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt5 = fields.Float('Rút tiền thưởng tháng 5', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt6 = fields.Float('Rút tiền thưởng tháng 6', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt7 = fields.Float('Rút tiền thưởng tháng 7', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt8 = fields.Float('Rút tiền thưởng tháng 8', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt9 = fields.Float('Rút tiền thưởng tháng 9', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt10 = fields.Float('Rút tiền thưởng tháng 10', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt11 = fields.Float('Rút tiền thưởng tháng 11', default=0, compute='_compute_plt', digits='Product Price')
-    rbtt12 = fields.Float('Rút tiền thưởng tháng 12', default=0, compute='_compute_plt', digits='Product Price')
-    
-    tgtt13 = fields.Float('Tiền thưởng tăng/giảm tháng 1', default=0, compute='_compute_plt', digits='Product Price')
-    #tgtt14 = fields.Float('Tiền thưởng tăng/giảm tháng 2', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt2 = fields.Float('Còn lại', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt3 = fields.Float('Tiền thưởng tăng/giảm tháng 3', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt4 = fields.Float('Tiền thưởng tăng/giảm tháng 4', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt5 = fields.Float('Tiền thưởng tăng/giảm tháng 5', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt6 = fields.Float('Tiền thưởng tăng/giảm tháng 6', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt7 = fields.Float('Tiền thưởng tăng/giảm tháng 7', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt8 = fields.Float('Tiền thưởng tăng/giảm tháng 8', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt9 = fields.Float('Tiền thưởng tăng/giảm tháng 9', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt10 = fields.Float('Tiền thưởng tăng/giảm tháng 10', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt11 = fields.Float('Tiền thưởng tăng/giảm tháng 11', default=0, compute='_compute_plt', digits='Product Price')
-    tgtt12 = fields.Float('Tiền thưởng tăng/giảm tháng 12', default=0, compute='_compute_plt', digits='Product Price')
-    pldg13 = fields.Char(' ', default="", compute='_compute_plt')
-    #pldg14 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg2 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg3 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg4 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg5 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg6 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg7 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg8 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg9 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg10 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg11 = fields.Char(' ', default="", compute='_compute_plt')
-    pldg12 = fields.Char(' ', default="", compute='_compute_plt')
-    
-    ttt13 = fields.Float('Tháng 1', default=0, compute='_compute_plt', digits='Product Price')
-    #ttt14 = fields.Float('Tháng 2', default=0, compute='_compute_plt', digits='Product Price')
-    ttt2 = fields.Monetary(' ', default=0, compute='_compute_plt')
-    ttt3 = fields.Float('Tháng 3', default=0, compute='_compute_plt', digits='Product Price')
-    ttt4 = fields.Float('Tháng 4', default=0, compute='_compute_plt', digits='Product Price')
-    ttt5 = fields.Float('Tháng 5', default=0, compute='_compute_plt', digits='Product Price')
-    ttt6 = fields.Float('Tháng 6', default=0, compute='_compute_plt', digits='Product Price')
-    ttt7 = fields.Float('Tháng 7', default=0, compute='_compute_plt', digits='Product Price')
-    ttt8 = fields.Float('Tháng 8', default=0, compute='_compute_plt', digits='Product Price')
-    ttt9 = fields.Float('Tháng 9', default=0, compute='_compute_plt', digits='Product Price')
-    ttt10 = fields.Float('Tháng 10', default=0, compute='_compute_plt', digits='Product Price')
-    ttt11 = fields.Float('Tháng 11', default=0, compute='_compute_plt', digits='Product Price')
-    ttt12 = fields.Float('Tháng 12', default=0, compute='_compute_plt', digits='Product Price')
     rutbot = fields.Float('Rút bớt', digits='Product Price', compute='_compute_plt')
     ruttt = fields.Float('Rút tiền thưởng', digits='Product Price', compute='_compute_plt')
     dongthem = fields.Float('Đóng thêm', digits='Product Price', compute='_compute_plt')
-    plconlai = fields.Monetary('PL Năm trước', compute='_compute_plt')
-    plconlai_hf = fields.Boolean(default=False)
+    # Phuc loi  
 
     @api.constrains('employee_id','thang','nam')
     def _check_rubbersalary_unique(self):
@@ -289,201 +105,25 @@ class RubberSalary(models.Model):
         if allowancebymonth_counts > 0:
             raise ValidationError(_("Phiếu lương công nhân" + self.employee_id.name.lower() + " tháng " + self.thang + "/" + self.nam + " đã tồn tại."))
 
-    @api.depends('rb13','rb2','rb3','rb4','rb5','rb6','rb7','rb8','rb9','rb10','rb11','rb12','dt13','dt2','dt3','dt4','dt5','dt6','dt7','dt8','dt9','dt10','dt11','dt12')
-    def _compute_conlaipl(self):
-        for rec in self:
-            if rec.rb13 == True or rec.rb2 == True  or rec.rb3 == True or rec.rb4 == True or rec.rb5 == True or rec.rb6 == True or rec.rb7 == True or rec.rb8 == True or rec.rb9 == True or rec.rb10 == True or rec.rb11 == True or rec.rb12 == True or rec.dt13 == True or rec.dt2 == True  or rec.dt3 == True or rec.dt4 == True or rec.dt5 == True or rec.dt6 == True or rec.dt7 == True or rec.dt8 == True or rec.dt9 == True or rec.dt10 == True or rec.dt11 == True or rec.dt12 == True:
-                rec.conlaipl = True
-            else:
-                rec.conlaipl = False
-
-    @api.depends('rtt13','rtt2','rtt3','rtt4','rtt5','rtt6','rtt7','rtt8','rtt9','rtt10','rtt11','rtt12','tg13','tg2','tg3','tg4','tg5','tg6','tg7','tg8','tg9','tg10','tg11','tg12')
-    def _compute_conlaitt(self):
-        for rec in self:
-            if rec.rtt13 == True or rec.rtt2 == True or rec.rtt3 == True or rec.rtt4 == True or rec.rtt5 == True or rec.rtt6 == True or rec.rtt7 == True or rec.rtt8 == True or rec.rtt9 == True or rec.rtt10 == True or rec.rtt11 == True or rec.rtt12 == True or rec.tg13 == True or rec.tg2 == True or rec.tg3 == True or rec.tg4 == True or rec.tg5 == True or rec.tg6 == True or rec.tg7 == True or rec.tg8 == True or rec.tg9 == True or rec.tg10 == True or rec.tg11 == True or rec.tg12 == True:
-                rec.conlaitt = True
-            else:
-                rec.conlaitt = False
-
     @api.depends('to')
     def _compute_ref(self):
         for rec in self:
             rec.ref = 'To' + rec.to.name[3:6]
 
-    @api.depends('employee_id','thang','nam')
+    @api.depends('employee_id','startdate','enddate','thang','nam')
     def _compute_plt(self):
         for rec in self:
-            rec.plt2 = 0
-            rec.plt13 = 0
-            #rec.plt14 = 0
-            rec.plt3 = 0
-            rec.plt4 = 0
-            rec.plt5 = 0
-            rec.plt6 = 0
-            rec.plt7 = 0
-            rec.plt8 = 0
-            rec.plt9 = 0
-            rec.plt10 = 0
-            rec.plt11 = 0
-            rec.plt12 = 0
-            rec.rbt13 = 0
-            #rec.rbt14 = 0
-            rec.rbt2 = 0
-            rec.rbt3 = 0
-            rec.rbt4 = 0
-            rec.rbt5 = 0
-            rec.rbt6 = 0
-            rec.rbt7 = 0
-            rec.rbt8 = 0
-            rec.rbt9 = 0
-            rec.rbt10 = 0
-            rec.rbt11 = 0
-            rec.rbt12 = 0
-            rec.dtt13 = 0
-            #rec.dtt14 = 0
-            rec.dtt2 = 0
-            rec.dtt3 = 0
-            rec.dtt4 = 0
-            rec.dtt5 = 0
-            rec.dtt6 = 0
-            rec.dtt7 = 0
-            rec.dtt8 = 0
-            rec.dtt9 = 0
-            rec.dtt10 = 0
-            rec.dtt11 = 0
-            rec.dtt12 = 0            
-            rec.rbtt13 = 0
-            #rec.rbtt14 = 0
-            rec.rbtt2 = 0
-            rec.rbtt3 = 0
-            rec.rbtt4 = 0
-            rec.rbtt5 = 0
-            rec.rbtt6 = 0
-            rec.rbtt7 = 0
-            rec.rbtt8 = 0
-            rec.rbtt9 = 0
-            rec.rbtt10 = 0
-            rec.rbtt11 = 0
-            rec.rbtt12 = 0
-            rec.tgtt13 = 0
-            #rec.tgtt14 = 0
-            rec.tgtt2 = 0
-            rec.tgtt3 = 0
-            rec.tgtt4 = 0
-            rec.tgtt5 = 0
-            rec.tgtt6 = 0
-            rec.tgtt7 = 0
-            rec.tgtt8 = 0
-            rec.tgtt9 = 0
-            rec.tgtt10 = 0
-            rec.tgtt11 = 0
-            rec.tgtt12 = 0
-            rec.pldg13 = ""
-            #rec.pldg14 = ""
-            rec.pldg2 = ""
-            rec.pldg3 = ""
-            rec.pldg4 = ""
-            rec.pldg5 = ""
-            rec.pldg6 = ""
-            rec.pldg7 = ""
-            rec.pldg8 = ""
-            rec.pldg9 = ""
-            rec.pldg10 = ""
-            rec.pldg11 = ""
-            rec.pldg12 = ""            
-            rec.ttt13 = 0
-            #rec.ttt14 = 0
-            rec.ttt2 = 0
-            rec.ttt3 = 0
-            rec.ttt4 = 0
-            rec.ttt5 = 0
-            rec.ttt6 = 0
-            rec.ttt7 = 0
-            rec.ttt8 = 0
-            rec.ttt9 = 0
-            rec.ttt10 = 0
-            rec.ttt11 = 0
-            rec.ttt12 = 0
-            rec.plconlai = 0
-            rec.rutbot = 0
-            rec.ruttt = 0
-            rec.dongthem = 0
-            rec.namkt = ''
-            rec.thangkt = ''
-            namkt = ''
-            thangkt = ''
-            if int(rec.thang) >= 2:
-                namkt = rec.nam
-                thangkt = rec.thang
+            rw = self.env['reward'].search([('employee_id','=',rec.employee_id.id),('nam','=',rec.nam),('thang','=',rec.thang)])            
+            rec.rutbot = rw.rutbot
+            rec.ruttt = rw.ruttt
+            rec.dongthem = rw.dongthem
+            if rec.thang == '01':
+                rec.namkt = str(int(rec.nam) - 1)
+                rec.thangkt = '1'
             else:
-                namkt = str(int(rec.nam) - 1)
-                if int(rec.thang) == 1:
-                    thangkt = '13'
-                #elif int(rec.thang) == 2:
-                    #thangkt = '14'
-            rec.namkt = namkt
-            rec.thangkt = thangkt
-            rwbs = self.env['reward'].search([('namkt','=',str(int(rec.nam) - 1)),('employee_id','=',rec.employee_id.id)])
-            if len(rwbs) > 0:
-                rec.plconlai_hf = True
-                conlai = 0
-                for rwb in rwbs:
-                    conlai += rwb.phucloitln
-                rec.plconlai = conlai
-            else:
-                rec.plconlai_hf = False
-                rec.plconlai = 0
-            rws = self.env['reward'].search([('employee_id','=',rec.employee_id.id),('namkt','=',rec.nam),('thangkt','!=','14')])
-            if len(rws) > 0:
-                for rw in rws:
-                    rec['plt' + str(int(rw.thangkt))] = rw.phucloi
-                    rec['rbt' + str(int(rw.thangkt))] = rw.rutbot
-                    rec['dtt' + str(int(rw.thangkt))] = rw.dongthem
-                    rec['rbtt' + str(int(rw.thangkt))] = rw.ruttt
-                    rec['tgtt' + str(int(rw.thangkt))] = rw.ttth
-                    rec['pldg' + str(int(rw.thangkt))] = rw.pltext
-                    rec['ttt' + str(int(rw.thangkt))] = rw.tongtien
-                    if rw.thangkt == rec.thangkt:
-                        rec.plt1 = rw.phucloitl
-                        rec.rbt1 = rw.phucloitln
-                        rec.ttt1 = rw.tongtientl
-                        rec.rbtt1 = rw.tongtientln
-                        rec.rutbot = rw.rutbot
-                        rec.ruttt = rw.ruttt
-                        rec.dongthem = rw.dongthem
-            for x in range(2, 14):
-                if x > int(rec.thangkt):
-                    rec['pl' + str(x)] = False
-                else:
-                    rec['pl' + str(x)] = True
-                    if rec['plt' + str(x)] == 0:
-                        rec['pl' + str(x)] = False
-            for z in range(2, 14):
-                if z > int(rec.thangkt):
-                    rec['rb' + str(z)] = False
-                    rec['dt' + str(z)] = False
-                    rec['rtt' + str(z)] = False
-                    rec['tg' + str(z)] = False
-                else:
-                    rec['rb' + str(z)] = True
-                    rec['dt' + str(z)] = True
-                    rec['rtt' + str(z)] = True
-                    rec['tg' + str(z)] = True
-                    if rec['rbt' + str(z)] == 0:
-                        rec['rb' + str(z)] = False
-                    if rec['dtt' + str(z)] == 0:
-                        rec['dt' + str(z)] = False
-                    if rec['rbtt' + str(z)] == 0:
-                        rec['rtt' + str(z)] = False
-                    if rec['tgtt' + str(z)] == 0:
-                        rec['tg' + str(z)] = False
-            for y in range(2, 14):
-                if y > int(rec.thangkt):
-                    rec['tt' + str(y)] = False
-                else:
-                    rec['tt' + str(y)] = True
-                    if rec['ttt' + str(y)] == 0:
-                        rec['tt' + str(y)] = False
+                rec.namkt = rec.nam
+                rec.thangkt = rec.thang
+            
 
     @api.depends('to')
     def _compute_toname(self):
@@ -605,7 +245,7 @@ class RubberSalary(models.Model):
     #Tìm những rubber nào có cùng tháng, năm, employee_id với tháng, năm, employee_id của rubber salary, thêm điều kiện là phải có giá trị cộng, mũ đay, mũ đông, mũ chèn, phụ cấp > 0 thì bymonth = True, ngược lại bymonth = False)
     #Sau đó cho hiện những rubber có bymonth = True trong phiếu lương
     #Phải thêm đk cùng tổ nữa vì năm nay có trường hợp 1 công nhân làm 2 tổ trong tháng 1 như tổ 70
-    @api.onchange('startdate', 'enddate', 'to')
+    @api.onchange('startdate', 'enddate', 'to', 'namkt')
     def _onchange_thang(self):
         
         if self.startdate and self.enddate and self.to:  
@@ -619,13 +259,13 @@ class RubberSalary(models.Model):
                         rb.bymonth = True   
                     else:
                         rb.bymonth = False
-            """ if self.env['reward'].search([('employee_id','=', self.name)]):             
-                rrs = self.env['reward'].search([('employee_id','=', self.name)])          
-                for rr in rrs:                                                  
-                    if rr.namkt == self.namkt:                    
-                        rr.bymonth = True                           
-                    else:                        
-                        rr.bymonth = False  """           
+        if self.env['reward'].search([('employee_id','=', self.name)]):
+            rws = self.env['reward'].search([('employee_id','=', self.name)])               
+            for rw in rws:                                           
+                if self.namkt == rw.namkt:
+                    rw.bymonth = True
+                else:
+                    rw.bymonth = False               
 
     @api.depends('rubber_line_ids')
     def _compute_khotien(self):
@@ -652,26 +292,7 @@ class RubberSalary(models.Model):
                 rec.tienchen = 0
                 rec.phucap1 = 0
                 rec.ngaycao = 0
-        """ if self.rubber_line_ids:
-            for line in self.rubber_line_ids:
-                if line.bymonth == True:
-                    self.quykho += line.quykho
-                    self.tongtien += line.tongtien
-                    self.tientangdg += line.tientangdg
-                    self.tiennuoc += line.tiennuoc
-                    self.tienday += line.tienday
-                    self.tiendong += line.tiendong
-                    self.tienchen += line.tienchen
-                    self.ngaycao += 1
-        else:
-            self.quykho = 0
-            self.tongtien = 0
-            self.tientangdg = 0
-            self.tiennuoc = 0
-            self.tienday = 0
-            self.tiendong = 0
-            self.tienchen = 0
-            self.ngaycao = 0 """
+        
 
     @api.depends('rubber_line_ids')
     def _compute_thuong(self):

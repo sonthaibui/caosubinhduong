@@ -101,176 +101,22 @@
                     <field name="tongtienr" style="font-weight:500;font-size:16px;"/>
                     <field name="ghichu"/>
                   </group>
-                  <group string="Thưởng cuối năm">
-                    <group string="Phúc lợi" attrs="{'invisible': [('plt2','=',0)]}">
-                      <field name="pl13" invisible="1"/>
-                      
-                      <field name="pl3" invisible="1"/>
-                      <field name="pl4" invisible="1"/>
-                      <field name="pl5" invisible="1"/>
-                      <field name="pl6" invisible="1"/>
-                      <field name="pl7" invisible="1"/>
-                      <field name="pl8" invisible="1"/>
-                      <field name="pl9" invisible="1"/>
-                      <field name="pl10" invisible="1"/>
-                      <field name="pl11" invisible="1"/>
-                      <field name="pl12" invisible="1"/>
-                      <field name="pl2" invisible="1"/>
-                      <field name="rb13" invisible="1"/>
-                      
-                      <field name="rb3" invisible="1"/>
-                      <field name="rb4" invisible="1"/>
-                      <field name="rb5" invisible="1"/>
-                      <field name="rb6" invisible="1"/>
-                      <field name="rb7" invisible="1"/>
-                      <field name="rb8" invisible="1"/>
-                      <field name="rb9" invisible="1"/>
-                      <field name="rb10" invisible="1"/>
-                      <field name="rb11" invisible="1"/>
-                      <field name="rb12" invisible="1"/>
-                      <field name="rb2" invisible="1"/>
-                      <field name="dt13" invisible="1"/>
-                      
-                      <field name="dt3" invisible="1"/>
-                      <field name="dt4" invisible="1"/>
-                      <field name="dt5" invisible="1"/>
-                      <field name="dt6" invisible="1"/>
-                      <field name="dt7" invisible="1"/>
-                      <field name="dt8" invisible="1"/>
-                      <field name="dt9" invisible="1"/>
-                      <field name="dt10" invisible="1"/>
-                      <field name="dt11" invisible="1"/>
-                      <field name="dt12" invisible="1"/>
-                      <field name="tg13" invisible="1"/>
-                      
-                      <field name="tg3" invisible="1"/>
-                      <field name="tg4" invisible="1"/>
-                      <field name="tg5" invisible="1"/>
-                      <field name="tg6" invisible="1"/>
-                      <field name="tg7" invisible="1"/>
-                      <field name="tg8" invisible="1"/>
-                      <field name="tg9" invisible="1"/>
-                      <field name="tg10" invisible="1"/>
-                      <field name="tg11" invisible="1"/>
-                      <field name="tg12" invisible="1"/>
-                      <field name="rtt13" invisible="1"/>
-                      
-                      <field name="rtt3" invisible="1"/>
-                      <field name="rtt4" invisible="1"/>
-                      <field name="rtt5" invisible="1"/>
-                      <field name="rtt6" invisible="1"/>
-                      <field name="rtt7" invisible="1"/>
-                      <field name="rtt8" invisible="1"/>
-                      <field name="rtt9" invisible="1"/>
-                      <field name="rtt10" invisible="1"/>
-                      <field name="rtt11" invisible="1"/>
-                      <field name="rtt12" invisible="1"/>
-                      <field name="rtt2" invisible="1"/>
-                      <field name="plconlai_hf" invisible="1"/>
-                      <field name="plconlai" style="font-weight: bold !important; color: red;" attrs="{'invisible': [('plconlai_hf','=',False)]}"/>
-                      <field name="plt3" attrs="{'invisible': [('pl3','=',False)]}"/>
-                      <field name="pldg3" nolabel="1" attrs="{'invisible': [('pl3','=',False)]}"/>
-                      <field name="plt4" attrs="{'invisible': [('pl4','=',False)]}"/>
-                      <field name="pldg4" nolabel="1" attrs="{'invisible': [('pl4','=',False)]}"/>
-                      <field name="plt5" attrs="{'invisible': [('pl5','=',False)]}"/>
-                      <field name="pldg5" nolabel="1" attrs="{'invisible': [('pl5','=',False)]}"/>
-                      <field name="plt6" attrs="{'invisible': [('pl6','=',False)]}"/>
-                      <field name="pldg6" nolabel="1" attrs="{'invisible': [('pl6','=',False)]}"/>
-                      <field name="plt7" attrs="{'invisible': [('pl7','=',False)]}"/>
-                      <field name="pldg7" nolabel="1" attrs="{'invisible': [('pl7','=',False)]}"/>
-                      <field name="plt8" attrs="{'invisible': [('pl8','=',False)]}"/>
-                      <field name="pldg8" nolabel="1" attrs="{'invisible': [('pl8','=',False)]}"/>
-                      <field name="plt9" attrs="{'invisible': [('pl9','=',False)]}"/>
-                      <field name="pldg9" nolabel="1" attrs="{'invisible': [('pl9','=',False)]}"/>
-                      <field name="plt10" attrs="{'invisible': [('pl10','=',False)]}"/>
-                      <field name="pldg10" nolabel="1" attrs="{'invisible': [('pl10','=',False)]}"/>
-                      <field name="plt11" attrs="{'invisible': [('pl11','=',False)]}"/>
-                      <field name="pldg11" nolabel="1" attrs="{'invisible': [('pl11','=',False)]}"/>
-                      <field name="plt12" attrs="{'invisible': [('pl12','=',False)]}"/>
-                      <field name="pldg12" nolabel="1" attrs="{'invisible': [('pl12','=',False)]}"/>
-                      <field name="plt13" attrs="{'invisible': [('pl13','=',False)]}"/>
-                      <field name="pldg13" nolabel="1" attrs="{'invisible': [('pl13','=',False)]}"/>
-                      
-                      <field name="plt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('pl2','=',False)]}"/>
-                      <field name="rbt3" attrs="{'invisible': [('rb3','=',False)]}"/>
-                      <field name="rbt4" attrs="{'invisible': [('rb4','=',False)]}"/>
-                      <field name="rbt5" attrs="{'invisible': [('rb5','=',False)]}"/>
-                      <field name="rbt6" attrs="{'invisible': [('rb6','=',False)]}"/>
-                      <field name="rbt7" attrs="{'invisible': [('rb7','=',False)]}"/>
-                      <field name="rbt8" attrs="{'invisible': [('rb8','=',False)]}"/>
-                      <field name="rbt9" attrs="{'invisible': [('rb9','=',False)]}"/>
-                      <field name="rbt10" attrs="{'invisible': [('rb10','=',False)]}"/>
-                      <field name="rbt11" attrs="{'invisible': [('rb11','=',False)]}"/>
-                      <field name="rbt12" attrs="{'invisible': [('rb12','=',False)]}"/>
-                      <field name="rbt13" attrs="{'invisible': [('rb13','=',False)]}"/>
-                      
-                      <field name="dtt3" attrs="{'invisible': [('dt3','=',False)]}"/>
-                      <field name="dtt4" attrs="{'invisible': [('dt4','=',False)]}"/>
-                      <field name="dtt5" attrs="{'invisible': [('dt5','=',False)]}"/>
-                      <field name="dtt6" attrs="{'invisible': [('dt6','=',False)]}"/>
-                      <field name="dtt7" attrs="{'invisible': [('dt7','=',False)]}"/>
-                      <field name="dtt8" attrs="{'invisible': [('dt8','=',False)]}"/>
-                      <field name="dtt9" attrs="{'invisible': [('dt9','=',False)]}"/>
-                      <field name="dtt10" attrs="{'invisible': [('dt10','=',False)]}"/>
-                      <field name="dtt11" attrs="{'invisible': [('dt11','=',False)]}"/>
-                      <field name="dtt12" attrs="{'invisible': [('dt12','=',False)]}"/>
-                      <field name="dtt13" attrs="{'invisible': [('dt13','=',False)]}"/>
-                     
-                      <field name="rbt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('rb13','=',False),('rb3','=',False),('rb4','=',False),('rb5','=',False),('rb6','=',False),('rb7','=',False),('rb8','=',False),('rb9','=',False),('rb10','=',False),('rb11','=',False),('rb12','=',False),('dt13','=',False),('dt3','=',False),('dt4','=',False),('dt5','=',False),('dt6','=',False),('dt7','=',False),('dt8','=',False),('dt9','=',False),('dt10','=',False),('dt11','=',False),('dt12','=',False)]}"/>
-                    </group>
-                    <group string="Thưởng tháng" attrs="{'invisible': [('ttt2','=',0)]}">
-                      <field name="tt13" invisible="1"/>
-                      
-                      <field name="tt3" invisible="1"/>
-                      <field name="tt4" invisible="1"/>
-                      <field name="tt5" invisible="1"/>
-                      <field name="tt6" invisible="1"/>
-                      <field name="tt7" invisible="1"/>
-                      <field name="tt8" invisible="1"/>
-                      <field name="tt9" invisible="1"/>
-                      <field name="tt10" invisible="1"/>
-                      <field name="tt11" invisible="1"/>
-                      <field name="tt12" invisible="1"/>
-                      <field name="tt2" invisible="1"/>
-                      <field name="ttt3" attrs="{'invisible': [('tt3','=',False)]}"/>
-                      <field name="ttt4" attrs="{'invisible': [('tt4','=',False)]}"/>
-                      <field name="ttt5" attrs="{'invisible': [('tt5','=',False)]}"/>
-                      <field name="ttt6" attrs="{'invisible': [('tt6','=',False)]}"/>
-                      <field name="ttt7" attrs="{'invisible': [('tt7','=',False)]}"/>
-                      <field name="ttt8" attrs="{'invisible': [('tt8','=',False)]}"/>
-                      <field name="ttt9" attrs="{'invisible': [('tt9','=',False)]}"/>
-                      <field name="ttt10" attrs="{'invisible': [('tt10','=',False)]}"/>
-                      <field name="ttt11" attrs="{'invisible': [('tt11','=',False)]}"/>
-                      <field name="ttt12" attrs="{'invisible': [('tt12','=',False)]}"/>
-                      <field name="ttt13" attrs="{'invisible': [('tt13','=',False)]}"/>
-                      
-                      <field name="ttt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('tt2','=',False)]}"/>
-                      <field name="rbtt3" attrs="{'invisible': [('rtt3','=',False)]}"/>
-                      <field name="rbtt4" attrs="{'invisible': [('rtt4','=',False)]}"/>
-                      <field name="rbtt5" attrs="{'invisible': [('rtt5','=',False)]}"/>
-                      <field name="rbtt6" attrs="{'invisible': [('rtt6','=',False)]}"/>
-                      <field name="rbtt7" attrs="{'invisible': [('rtt7','=',False)]}"/>
-                      <field name="rbtt8" attrs="{'invisible': [('rtt8','=',False)]}"/>
-                      <field name="rbtt9" attrs="{'invisible': [('rtt9','=',False)]}"/>
-                      <field name="rbtt10" attrs="{'invisible': [('rtt10','=',False)]}"/>
-                      <field name="rbtt11" attrs="{'invisible': [('rtt11','=',False)]}"/>
-                      <field name="rbtt12" attrs="{'invisible': [('rtt12','=',False)]}"/>
-                      <field name="rbtt13" attrs="{'invisible': [('rtt13','=',False)]}"/>
-                      
-                      <field name="tgtt3" attrs="{'invisible': [('tg3','=',False)]}"/>
-                      <field name="tgtt4" attrs="{'invisible': [('tg4','=',False)]}"/>
-                      <field name="tgtt5" attrs="{'invisible': [('tg5','=',False)]}"/>
-                      <field name="tgtt6" attrs="{'invisible': [('tg6','=',False)]}"/>
-                      <field name="tgtt7" attrs="{'invisible': [('tg7','=',False)]}"/>
-                      <field name="tgtt8" attrs="{'invisible': [('tg8','=',False)]}"/>
-                      <field name="tgtt9" attrs="{'invisible': [('tg9','=',False)]}"/>
-                      <field name="tgtt10" attrs="{'invisible': [('tg10','=',False)]}"/>
-                      <field name="tgtt11" attrs="{'invisible': [('tg11','=',False)]}"/>
-                      <field name="tgtt12" attrs="{'invisible': [('tg12','=',False)]}"/>
-                      <field name="tgtt13" attrs="{'invisible': [('tg13','=',False)]}"/>
-                      
-                      <field name="rbtt2" style="border-top-style: solid !important; border-width: 1px !important; font-weight: bold !important; color: red;" attrs="{'invisible': [('rtt13','=',False),('rtt3','=',False),('rtt4','=',False),('rtt5','=',False),('rtt6','=',False),('rtt7','=',False),('rtt8','=',False),('rtt9','=',False),('rtt10','=',False),('rtt11','=',False),('rtt12','=',False),('tg13','=',False),('tg3','=',False),('tg4','=',False),('tg5','=',False),('tg6','=',False),('tg7','=',False),('tg8','=',False),('tg9','=',False),('tg10','=',False),('tg11','=',False),('tg12','=',False)]}"/>
-                    </group>       
+                  <group string="Thưởng cuối năm">                    
+                    <field name="reward_line_ids" nolabel="1">
+                      <tree default_order="thang">                        
+                        <field name="thang" style="border-top-style: solid !important;border-width: 1px !important" />
+                        <field name="phucloi" style="border-top-style: solid !important;border-width: 1px !important" sum="phucloi" optional="show"/>
+                        <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                        <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                        <field name="phucloitl" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                        <field name="phucloitln" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                        <field name="tongtien" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtien" optional="show"/>
+                        <field name="ttth" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                        <field name="ruttt" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                        <field name="tongtientl" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtientl" optional="hide"/>
+                        <field name="tongtientln" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtientln" optional="hide"/>
+                      </tree>
+                    </field>         
                   </group>   
                 </group>
               </sheet>

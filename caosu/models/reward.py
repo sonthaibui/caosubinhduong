@@ -38,8 +38,8 @@ class Reward(models.Model):
     rewardbymonth_id = fields.Many2one('reward.by.month', string='Reward By Month', ondelete='cascade')
     rubbersalary_id = fields.Many2one('rubber.salary', string='Phiếu Lương', ondelete='set null')
     sttcn = fields.Char('STT CN')
-    namkt=fields.Char(string='Năm khai thác', readonly=True)
-    thangkt = fields.Char('Tháng khai thác', readonly=True)
+    namkt=fields.Char(string='Năm khai thác', compute='_compute_namkt')
+    thangkt = fields.Char('Tháng khai thác', compute='_compute_namkt')
     diachi = fields.Selection(related='employee_id.diachi', string='Địa chỉ')
     cophep = fields.Integer('CP', default=0)
     kophep = fields.Integer('KP', default=0)
@@ -52,6 +52,16 @@ class Reward(models.Model):
     rutbot = fields.Float('Rút PL', digits='Product Price')
     dongthem = fields.Float('Đóng thêm', digits='Product Price')
     #conlai = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai')
+
+    @api.depends('thang','nam')
+    def _compute_namkt(self):
+        for rec in self:
+            if rec.thang =='01':
+                rec.thangkt = rec.thang
+                rec.namkt = str(int(rec.nam) - 1)
+            else:
+                rec.thangkt = rec.thang
+                rec.namkt = rec.nam
 
     @api.onchange('rutbot')
     def _onchange_rutbot(self):

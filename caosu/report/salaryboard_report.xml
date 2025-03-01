@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_salary_board" model="report.paperformat">
+      <field name="name">A3 Portrait</field>
+      <field name="format">A3</field>
+      <field name="orientation">Portrait</field>
+      <field name="margin_top">7</field>
+      <field name="margin_bottom">7</field>
+      <field name="margin_left">7</field>
+      <field name="margin_right">7</field>
+      <field name="header_line" eval="False" />
+      <field name="header_spacing">20</field>
+      <field name="dpi">90</field>
+    </record>
+
+    <record id="action_salary_board_report" model="ir.actions.report">
+      <field name="name">In Bảng Lương</field>
+      <field name="model">salary.board</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">caosu.salary_board</field>
+      <field name="binding_model_id" ref="model_salary_board" />
+      <field name="binding_type">report</field>
+      <field name="paperformat_id" ref="paperformat_salary_board" />
+    </record>
+
+    <template id="salary_board">
+    <t t-call="web.html_container">
+      <t t-call="web.internal_layout">
+        <div class="page" style="font-family:arial;">
+          <t t-foreach="docs" t-as="o">
+            <div class="row">
+              <h5>BẢNG LƯƠNG CÔNG NHÂN <span t-field="o.department_id.name" /> THÁNG <span t-field="o.thang" /> NĂM <span t-field="o.nam" /></h5>
+            </div>
+            <br></br>
+            <div class="row">
+              <table width="100%">
+                <thead>
+                  <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <th style="padding-left: 5px; border-right-style: solid;">STT</th>
+                      <th style="border-right-style: solid;">Công nhân</th>
+                      <th t-if="o.chiendo > 0" style="border-right-style: solid;">Chiên độ</th>
+                      <th style="border-right-style: solid;">Tổng lương</th>
+                      <th t-if="o.tienung > 0" style="border-right-style: solid;">Tiền ứng 1</th>
+                      <th t-if="o.ungtien > 0" style="border-right-style: solid;">Tiền ứng 2</th>
+                      <th t-if="o.tiendao > 0" style="border-right-style: solid;">Tiền dao</th>
+                      <th t-if="o.tamvong > 0" style="border-right-style: solid;">Tầm vong</th>
+                      <th t-if="o.truidao > 0" style="border-right-style: solid;">Trui dao</th>
+                      <th t-if="o.bandao > 0" style="border-right-style: solid;">Bán dao</th>
+                      <th t-if="o.banlinhtinh > 0" style="border-right-style: solid;">Bán vật tư</th>
+                      <th t-if="o.tbm > 0" style="border-right-style: solid;">Tiền bấm máng</th>
+                      <th t-if="o.tienmuon > 0" style="border-right-style: solid;">Tiền mượn</th>
+                      <th t-if="o.rutbot > 0" style="border-right-style: solid;">Rút bớt</th>
+                      <th t-if="o.dongthem > 0" style="border-right-style: solid;">Đóng thêm</th>
+                      <th t-if="o.ruttt > 0" style="border-right-style: solid;">Rút tiền thưởng</th>
+                      <th style="border-right-style: solid;">Còn lại</th>
+                      <th style="border-right-style: solid;">Ký nhận</th>
+                      <!-- <th>Ghi Chú</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="o.allowance_line_ids.sorted(key=lambda record: record.sttcn, reverse=False)" t-as="line">
+                    <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <td style="padding-top: 15px; padding-bottom: 15px; padding-left: 5px; border-right-style: solid;">
+                        <span t-field="line.sttcn"/>
+                      </td>
+                      <td style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-field="line.empname"/>
+                      </td>
+                      <td t-if="o.chiendo > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.chiendo > 0" t-field="line.chiendo" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.chiendo == 0">-</span>
+                      </td>
+                      <td style="padding-top: 15px; padding-bottom: 15px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.tongluong" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td t-if="o.tienung > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tienung > 0" t-field="line.tienung" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tienung == 0">-</span>
+                      </td>
+                      <td t-if="o.ungtien > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.ungtien > 0" t-field="line.ungtien" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.ungtien == 0">-</span>
+                      </td>
+                      <td t-if="o.tiendao > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tiendao > 0" t-field="line.tiendao" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tiendao == 0">-</span>
+                      </td>
+                      <td t-if="o.tamvong > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tamvong > 0" t-field="line.tamvong" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tamvong == 0">-</span>
+                      </td>
+                      <td t-if="o.truidao > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.truidao > 0" t-field="line.truidao" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.truidao == 0">-</span>
+                      </td>
+                      <td t-if="o.bandao > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.bandao > 0" t-field="line.bandao" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.bandao == 0">-</span>
+                      </td>
+                      <td t-if="o.banlinhtinh > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.banlinhtinh > 0" t-field="line.banlinhtinh" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.banlinhtinh == 0">-</span>
+                      </td>
+                      <td t-if="o.tbm > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tbm > 0" t-field="line.tbm" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tbm == 0">-</span>
+                      </td>
+                      <td t-if="o.tienmuon > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.tienmuon > 0" t-field="line.tienmuon" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.tienmuon == 0">-</span>
+                      </td>
+                      <td t-if="o.rutbot > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.rutbot > 0" t-field="line.rutbot" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.rutbot == 0">-</span>
+                      </td>
+                      <td t-if="o.dongthem > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.dongthem > 0" t-field="line.dongthem" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.dongthem == 0">-</span>
+                      </td>
+                      <td t-if="o.ruttt > 0" style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-if="line.ruttt > 0" t-field="line.ruttt" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-if="line.ruttt == 0">-</span>
+                      </td>
+                      <td style="padding-top: 15px; padding-bottom: 15px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.conlai" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
+                      <td style="padding-top: 15px; padding-bottom: 15px; border-right-style: solid;">
+                        <span t-field="line.kynhan"/>
+                      </td>
+                      <!-- <td style="padding-top: 15px; padding-bottom: 15px;">
+                        <span t-field="line.ghichu"/>
+                      </td> -->
+                    </tr>
+                  </t>
+                </tbody>
+                <tfooter>
+                  <tr style="text-align: center;">
+                      <td colspan="2" style="text-align: center; font-weight: bold;"><span t-field="o.tongcong"/></td>
+                      <td t-if="o.chiendo > 0" style="font-weight: bold;"><span t-field="o.chiendo" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td style="font-weight: bold;"><span t-field="o.tongluong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tienung > 0" style="font-weight: bold;"><span t-field="o.tienung" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.ungtien > 0" style="font-weight: bold;"><span t-field="o.ungtien" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tiendao > 0" style="font-weight: bold;"><span t-field="o.tiendao" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tamvong > 0" style="font-weight: bold;"><span t-field="o.tamvong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.truidao > 0" style="font-weight: bold;"><span t-field="o.truidao" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.bandao > 0" style="font-weight: bold;"><span t-field="o.bandao" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.banlinhtinh > 0" style="font-weight: bold;"><span t-field="o.banlinhtinh" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tbm > 0" style="font-weight: bold;"><span t-field="o.tbm" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.tienmuon > 0" style="font-weight: bold;"><span t-field="o.tienmuon" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.rutbot > 0" style="font-weight: bold;"><span t-field="o.rutbot" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.dongthem > 0" style="font-weight: bold;"><span t-field="o.dongthem" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.ruttt > 0" style="font-weight: bold;"><span t-field="o.ruttt" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td style="font-weight: bold;"><span t-field="o.conlai" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                </tfooter>
+              </table>
+            </div>
+          </t>
+        </div>
+      </t>
+    </t>
+    </template>
+</odoo>

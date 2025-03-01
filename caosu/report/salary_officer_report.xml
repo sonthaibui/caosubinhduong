@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_salary_officer_report" model="ir.actions.report">
+      <field name="name">In Lương Văn Phòng</field>
+      <field name="model">salary.officer</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">caosu.salary_officer</field>
+      <field name="binding_model_id" ref="model_salary_officer" />
+      <field name="binding_type">report</field>
+      <field name="paperformat_id" ref="paperformat_rubber_salary" />
+    </record> 
+
+    <template id="salary_officer">
+    <t t-call="web.html_container">
+      <t t-call="web.internal_layout">
+        <div class="page" style="font-family:arial;">
+          <!-- Report header content -->
+          <t t-foreach="docs" t-as="o">
+            <p style="page-break-before:always;"> </p>
+            <div class="row">
+              <div class="col-6">
+                <h5 style="font-weight: bold;">PHIẾU LƯƠNG THÁNG <span t-field="o.thang" />/<span t-field="o.nam" /></h5>
+              </div>
+              <div class="col-4"><h5 style="font-weight: bold;">NV: <span t-field="o.empname" /></h5></div>
+              <div class="col-3"><h5 style="font-weight: bold;">BP: <span t-field="o.toname" /></h5></div>
+            </div>
+            <br></br>
+            <!-- <div class="row">
+              <table width="100%">
+                <thead>
+                  <tr style="text-align: center; border: 1px solid black; border-collapse: collapse;">
+                    <th style="border-right-style: solid;">Ngày công</th>
+                    <th style="border-right-style: solid;">Lương CB</th>
+                    <th style="border-right-style: solid;">Trách nhiệm</th>
+                    <th style="border-right-style: solid;">PC xăng, ĐT</th>
+                    <th style="border-right-style: solid;">PC đi xa</th>
+                    <th style="border-right-style: solid;">PC rửa xe MT</th>
+                    <th style="border-right-style: solid;">Tiền ăn</th>
+                    <th style="border-right-style: solid;">Tiền VS bồn</th>
+                    <th style="border-right-style: solid;">Tiền quản kho</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="text-align: center; border: 1px solid black; border-collapse: collapse;">
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.ngaycong"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.lcb"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.trachnhiem"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.xangdt"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.dixa"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.rxmt"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.tienan"/>
+                    </td>
+                    <td style="border-right-style: solid;">
+                      <span t-field="o.vsb"/>
+                    </td>
+                    <td t-if="o.ctn_hf == True" style="border-right-style: solid;">
+                      <span t-field="o.quankho"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br></br>
+            <br></br>
+            <br></br> -->
+            <div class="row">
+              <div class="col-6">
+                <h5>PHẦN LƯƠNG</h5>
+                <table width="100%">
+                  <tr t-if="o.lcb != 0">
+                    <td>Lương cơ bản</td>
+                    <td><span t-field="o.lcb"/></td>
+                  </tr>
+                  <tr t-if="o.trachnhiem != 0">
+                    <td>Phụ cấp trách nhiệm</td>
+                    <td><span t-field="o.trachnhiem"/></td>
+                  </tr>
+                  <tr t-if="o.rxmt != 0">
+                    <td>PC rửa xe MT</td>
+                    <td><span t-field="o.rxmt"/></td>
+                  </tr>
+                  <tr t-if="o.dixa != 0">
+                    <td>PC đi xa</td>
+                    <td><span t-field="o.dixa"/></td>
+                  </tr>
+                  <tr t-if="o.tienan != 0">
+                    <td>Tiền ăn</td>
+                    <td><span t-field="o.tienan"/></td>
+                  </tr>
+                  <tr t-if="o.vsb != 0">
+                    <td>Tiền VS bồn</td>
+                    <td><span t-field="o.vsb"/></td>
+                  </tr>
+                  <tr t-if="o.quankho != 0">
+                    <td>Tiền quản kho</td>
+                    <td><span t-field="o.quankho"/></td>
+                  </tr>
+                  <tr t-if="o.thuongcd != 0">
+                    <td>Thưởng chủ động</td>
+                    <td><span t-field="o.thuongcd"/></td>
+                  </tr>
+                  <tr t-if="o.xangdt != 0">
+                    <td>Phụ cấp điện thoại, xăng</td>
+                    <td><span t-field="o.xangdt"/></td>
+                  </tr>
+                  <tr t-if="o.tngm != 0">
+                    <td>Trách nhiệm giao mũ</td>
+                    <td><span t-field="o.tngm"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Tổng cộng</td>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.tong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                  <tr t-if="o.ngaycong != 0">
+                    <td>Ngày công</td>
+                    <td><span t-field="o.ngaycong"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Thực nhận</td>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.ltn" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                  <tr>
+                    <td>Lương tháng 13</td>
+                    <td><span t-field="o.thang13" /></td>
+                  </tr>
+                  <tr>
+                    <td>Thưởng tích lũy</td>
+                    <td><span t-field="o.thuongtl" /></td>
+                  </tr>
+                  <tr t-if="o.rutpl_hf == True">
+                    <td>Tiền rút PL 1 lần</td>
+                    <td><span t-field="o.rutpl"/></td>
+                  </tr>
+                  <tr t-if="o.x_tgrb != 0">
+                    <td>Rút bớt tiền gửi</td>
+                    <td><span t-field="o.x_tgrb"/></td>
+                  </tr>
+                  <tr t-if="o.tienung != 0">
+                    <td>Trừ tiền ứng</td>
+                    <td><span t-field="o.tienung"/></td>
+                  </tr>
+                  <tr t-if="o.x_tgtn != 0">
+                    <td>Trừ tiền gửi</td>
+                    <td><span t-esc="o.x_tgtn" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr t-if="o.tienquy != 0">
+                    <td>Trừ tiền quỹ</td>
+                    <td><span t-field="o.tienquy"/></td>
+                  </tr>
+                  <tr t-if="o.tienmuon != 0">
+                    <td>Trừ tiền mượn</td>
+                    <td><span t-field="o.tienmuon"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Còn lại</td>
+                    <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.tongcong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                  <br></br>
+                  <tr>
+                    <td style="width: 50%; text-align: left;">Góp ý</td>
+                    <td style="width: 50%; text-align: left;"><span t-raw="o.gopy"/></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-6">
+                <h5>PHẦN TIỀN MƯỢN</h5>
+                <table width="100%">
+                  <tr>
+                    <td>1. Tiền mượn tháng trước còn</td>
+                    <td><span t-esc="o.x_tmtt" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>2. Tiền mượn thêm trong tháng</td>
+                    <td><span t-esc="o.x_tmtn" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>3. Tiền mượn trả trong tháng</td>
+                    <td><span t-esc="o.x_tmtr" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>4. Trừ tiền mượn</td>
+                    <td><span t-field="o.tienmuon"/></td>
+                  </tr>
+                  <tr >
+                    <td style="border-top-style: solid; border-width: 1px;">5. Tiền mượn còn: 1 + 2 - 3 - 4</td>
+                    <td style="border-top-style: solid; border-width: 1px;"><span t-esc="o.x_tmcl" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                </table>
+                <br></br>
+                <h5>PHẦN PHÚC LỢI</h5>
+                <table width="100%">
+                  <tr>
+                    <td>1. Phúc lợi tháng này</td>
+                    <td><span t-field="o.phucloi"/></td>
+                  </tr>
+                  <tr>
+                    <td>2. Phúc lợi tích lũy</td>
+                    <td><span t-field="o.phucloitl"/></td>
+                  </tr>
+                  <tr>
+                    <td>a. Tỷ lệ rút PL (%)</td>
+                    <td><span t-field="o.tylerut"/></td>
+                  </tr>
+                  <tr>
+                    <td>b. Rút PL 1 lần</td>
+                    <td><span t-field="o.rutpl"/></td>
+                  </tr>
+                  <tr>
+                    <td>3. Phúc lợi đóng thêm</td>
+                    <td><span t-field="o.dongthem"/></td>
+                  </tr>
+                  <tr>
+                    <td>4. Chia lãi phúc lợi</td>
+                    <td><span t-field="o.chialai"/></td>
+                  </tr>
+                  <tr >
+                    <td>5. Phúc lợi rút bớt</td>
+                    <td><span t-field="o.rutbot"/></td>
+                  </tr>
+                  <tr >
+                    <td>6. Phúc lợi còn lại: 2 + 3 - 4 - 5</td>
+                    <td><span t-field="o.conlai1"/></td>
+                  </tr>
+                </table>
+                <br></br>
+                <h5>PHẦN TIỀN GỬI</h5>
+                <table width="100%">
+                  <tr>
+                    <td>1. Tiền gửi tháng trước còn</td>
+                    <td><span t-esc="o.x_tgtt" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>2. Tiền gửi thêm tháng này</td>
+                    <td><span t-esc="o.x_tgtn" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>3. Tiền gửi rút bớt</td>
+                    <td><span t-esc="o.x_tgrb" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                  <tr>
+                    <td>4. Tiền gửi còn lại</td>
+                    <td><span t-esc="o.x_tgtl" t-options='{"widget": "float", "precision": 0}'/></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <!-- Report row content -->
+          </t>
+          <!-- Report footer content -->
+        </div> <!-- page -->
+      </t>
+    </t>
+    </template> 
+
+</odoo>
+    
+    

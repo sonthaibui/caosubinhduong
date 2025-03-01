@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="salary_office_department">
+    <t t-call="web.html_container">
+      <t t-call="web.internal_layout">
+        <div class="page" style="font-family:arial;">
+          <t t-foreach="docs" t-as="o">
+            <div class="row">
+              <h5>THANH TOÁN LƯƠNG BẢO VỆ <span t-field="o.toname" /> THÁNG <span t-field="o.thang" /> NĂM <span t-field="o.nam" /></h5>
+            </div>
+            <br></br>
+            <div class="row">
+              <table width="100%">
+                <thead>
+                  <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <th style="border-right-style: solid;">STT</th>
+                      <th style="border-right-style: solid;">Họ Tên</th>
+                      <th style="border-right-style: solid;">Tổ</th>
+                      <th style="border-right-style: solid;">Ngày Công</th>
+                      <th style="border-right-style: solid;">Mức Lương</th>
+                      <th style="border-right-style: solid;">Thực Lãnh</th>
+                      <th t-if="o.trachnhiem_hf == True" style="border-right-style: solid;">PC TNhiệm</th>
+                      <th t-if="o.dixa_hf == True" style="border-right-style: solid;">PC Đi Xa</th>
+                      <th t-if="o.caotn_hf == True" style="border-right-style: solid;">Cạo TN</th>
+                      <th t-if="o.laimc_hf == True" style="border-right-style: solid;">Lái MC</th>
+                      <th t-if="o.ngaytet_hf == True" style="border-right-style: solid;">Ngày TrTết</th>
+                      <th t-if="o.thuongtet_hf == True" style="border-right-style: solid;">Thưởng TrTết</th>
+                      <th style="border-right-style: solid;">Tổng Cộng</th>
+                      <th style="border-right-style: solid;">Tiền Ứng</th>
+                      <th t-if="o.tienmuon_hf == True" style="border-right-style: solid;">Tiền Mượn</th>
+                      <th style="border-right-style: solid;">Thực Nhận</th>
+                      <th style="border-right-style: solid;">Phúc lợi</th>
+                      <th style="border-right-style: solid;">Phúc lợi TN</th>
+                      <th style="border-right-style: solid;">Phúc lợi TL</th>
+                      <th style="border-right-style: solid;">Phúc lợi TL năm</th>
+                      <th t-if="o.kyten_hf == True" style="border-right-style: solid;">Ký Nhận</th>
+                      <th t-if="o.ghichu_hf == True">Ghi Chú</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="o.salaryofficestaff_line_ids.sorted(key=lambda record: record.stt, reverse=False)" t-as="line">
+                    <tr style="border: 1px solid black; border-collapse: collapse; text-align: center;">
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.stt"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.empname"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.toname"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.ngaycong"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.mucluong"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.luongthuc"/>
+                      </td>
+                      <td t-if="o.trachnhiem_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.trachnhiem"/>
+                      </td>
+                      <td t-if="o.dixa_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.dixa"/>
+                      </td>
+                      <td t-if="o.caotn_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.caotn"/>
+                      </td>
+                      <td t-if="o.laimc_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.laimc"/>
+                      </td>
+                      <td t-if="o.ngaytet_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.ngaytructet"/>
+                      </td>
+                      <td t-if="o.thuongtet_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.thuongtructet"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.tongcong"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.tienung"/>
+                      </td>
+                      <td t-if="o.tienmuon_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.tienmuon"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.nhanthuc"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.phucloi"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.phucloitn"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.phucloitl"/>
+                      </td>
+                      <td style="border-right-style: solid;">
+                        <span t-field="line.phucloitln"/>
+                      </td>
+                      <td t-if="o.kyten_hf == True" style="border-right-style: solid;">
+                        <span t-field="line.kyten"/>
+                      </td>
+                      <td t-if="o.ghichu_hf == True">
+                        <span t-field="line.ghichu"/>
+                      </td>
+                    </tr>
+                  </t>
+                </tbody>
+                <tfooter>
+                  <tr style="text-align: center;">
+                      <td colspan="6" style="text-align: center; font-weight: bold;"><span t-field="o.tongcong1"/></td>
+                      <td t-if="o.trachnhiem_hf == True"></td>
+                      <td t-if="o.dixa_hf == True"></td>
+                      <td t-if="o.ngaytet_hf == True"></td>
+                      <td t-if="o.thuongtet_hf == True"></td>
+                      <td style="font-weight: bold;"><span t-field="o.tongcong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td></td>
+                      <td t-if="o.tienmuon_hf == True"></td>
+                      <td style="font-weight: bold;"><span t-field="o.nhanthuc" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <td t-if="o.kyten_hf == True"></td>
+                      <td t-if="o.ghichu_hf == True"></td>
+                  </tr>
+                </tfooter>
+              </table>
+            </div>
+          </t>
+        </div>
+      </t>
+    </t>
+  </template>
+
+</odoo>
