@@ -68,19 +68,27 @@ class SalaryOfficer(models.Model):
     chialai = fields.Float('Chia lãi', digits='Product Price')
     conlai = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai')
     conlai1 = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai1')
-    gopy = fields.Html('Góp ý')
+    gopy = fields.Html('Góp ý / Ghi chú')
     now = fields.Date('now', default=fields.Datetime.now())
     tylerut = fields.Float('Tỷ lệ rút', digits='Product Price')
     rutpl = fields.Float('Rút PL 1 lần', compute='_compute_rutpl', digits='Product Price')
     tylerut_hf = fields.Boolean(default=False)
     rutpl_hf = fields.Boolean(default=False)
     
-    tong_html = fields.Html(string='Tổng cộng', digits='Product Price', compute='_compute_bold_text')
+    tong_html = fields.Html(string='Tổng cộng', compute='_compute_bold_text')
+    ltn_html = fields.Html(string='Lương thực nhận', compute='_compute_bold_text')
+    tongcong_html = fields.Html(string='Lương thực nhận', compute='_compute_bold_text')
 
-    @api.depends('tong')
+    @api.depends('tong', 'ltn', 'tongcong')
     def _compute_bold_text(self):
         for record in self:
-            record.tong_html = f"<b>{record.tong}</b>"
+            formatted_value = "{:,.0f}".format(record.tong)
+            record.tong_html = f"<b>{formatted_value}</b>"            
+            formatted_value = "{:,.0f}".format(record.ltn)
+            record.ltn_html = f"<b>{formatted_value}</b>"
+            formatted_value = "{:,.0f}".format(record.tongcong)
+            record.tongcong_html = f"<b>{formatted_value}</b>"
+         
             
 
 

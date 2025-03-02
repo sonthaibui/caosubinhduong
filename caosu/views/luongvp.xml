@@ -216,7 +216,7 @@
                       <field name="ctn" attrs="{'invisible': [('ctn_hf', '=', False)]}"/>
                       <field name="tong_html" widget="html"/>                      
                       <field name="ngaycong"/>
-                      <field name="ltn"/>
+                      <field name="ltn_html" widget="html"/>
                       <field name="ngayphep" attrs="{'invisible': [('ngayphep', '=', 0)]}"/>
                       <field name="thuongtl" attrs="{'invisible': [('thuongtl', '=', 0)]}"/>
                       <field name="thang13" attrs="{'invisible': [('thang13', '=', 0)]}"/>
@@ -229,7 +229,7 @@
                       <field name="tienmuon" attrs="{'invisible': [('tienmuon', '=', 0)]}"/>
                       <field name="tienung" attrs="{'invisible': [('tienung', '=', 0)]}"/>
                       <field name="x_tgtn" string="Trừ tiền gửi" attrs="{'invisible': [('x_tgtn', '=', 0)]}"/>
-                      <field name="tongcong" string="Còn lại"/>
+                      <field name="tongcong_html" string="Còn lại" widget="html"/>
                       <field name="gopy"/>
                     </group>
                     <group>

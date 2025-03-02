@@ -160,6 +160,10 @@
                     <td>Trừ tiền quỹ</td>
                     <td><span t-field="o.tienquy"/></td>
                   </tr>
+                  <tr t-if="o.tienquy != 0">
+                    <td>Tiền trực tết</td>
+                    <td><span t-field="o.tructet"/></td>
+                  </tr>
                   <tr t-if="o.tienmuon != 0">
                     <td>Trừ tiền mượn</td>
                     <td><span t-field="o.tienmuon"/></td>

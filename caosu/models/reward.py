@@ -44,7 +44,7 @@ class Reward(models.Model):
     cophep = fields.Integer('CP', default=0)
     kophep = fields.Integer('KP', default=0)
     tongtientl = fields.Float('TT tích lũy', digits='Product Price', compute='_compute_tongtientl')
-    tongtientln = fields.Float('TT TL năm', digits='Product Price', compute='_compute_tongtientl')
+    #tongtientln = fields.Float('TT TL năm', digits='Product Price', compute='_compute_tongtientl')
     phucloi = fields.Float('Phúc lợi', digits='Product Price')#, compute='_compute_phucloi')
     pltext = fields.Char('Diễn giải PL')
     phucloitl = fields.Float('PL tích lũy', digits='Product Price') #, compute='_compute_phucloitl'
@@ -79,16 +79,7 @@ class Reward(models.Model):
         res.tichcuc = 100000
         return res
             
-    """ @api.depends('phucloitl','rutbot','dongthem')
-    def _compute_conlai(self):
-        for rec in self:
-            rec.conlai = 0
-            rec.conlai = rec.phucloitl - rec.rutbot + rec.dongthem
-            rws = self.env['reward'].search([('employee_id','=',rec.employee_id.id)])
-            if len(rws) > 0:
-                for rw in rws:
-                    rw.conlai = rec.conlai """
-
+    
     @api.depends('chuyencan','kythuatb','kythuatc','dunggio','gomuday','upday','tanthumu','tichcuc','vesinh') 
     def _compute_motsuat(self):
         for rec in self:
@@ -107,17 +98,25 @@ class Reward(models.Model):
     def _compute_tongtientl(self):
         for rec in self:
             tongtientl = 0
-            tongtientln = 0
+            rws = self.env['reward'].search([('employee_id','=',rec.employee_id.id)])
+            for rw in rws:
+                if int(rw.nam) < int(rec.nam):                    
+                    tongtientl += rw.tongtien - rw.ruttt + rw.ttth                    
+                elif int(rw.nam) == int(rec.nam):
+                    if int(rw.thang) <= int(rec.thang):
+                        tongtientl += rw.tongtien - rw.ruttt + rw.ttth  
+            rec.tongtientl = tongtientl        
+            '''tongtientln = 0
             rws = self.env['reward'].search([('employee_id','=',rec.employee_id.id),('nam','=',rec.nam)])
             rwbs = self.env['reward'].search([('nam','=',str(int(rec.nam) - 1)),('employee_id','=',rec.employee_id.id)])
             if len(rwbs) > 0:
-                tongtientln = rwbs[len(rwbs) - 1].tongtientln
+                tongtientln = rwbs[len(rwbs) - 1].tongtientln # lay tien luy ke nam truoc
             for rw in rws:
                 if int(rw.thang) <= int(rec.thang):
                     tongtientl += rw.tongtien
                     tongtientln += rw.tongtien - rw.ruttt + rw.ttth
             rec.tongtientl = tongtientl
-            rec.tongtientln = tongtientln
+            rec.tongtientln = tongtientln'''
 
     @api.depends('diemkythuat1','diemkythuat2','to')
     def _compute_kythuat(self):

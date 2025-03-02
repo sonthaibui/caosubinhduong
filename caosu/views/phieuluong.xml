@@ -114,7 +114,7 @@
                         <field name="ttth" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                         <field name="ruttt" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                         <field name="tongtientl" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtientl" optional="hide"/>
-                        <field name="tongtientln" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtientln" optional="hide"/>
+                        
                       </tree>
                     </field>         
                   </group>   
