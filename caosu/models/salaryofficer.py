@@ -22,6 +22,8 @@ class SalaryOfficer(models.Model):
     tienan = fields.Float('Tiền ăn', digits='Product Price')
     vsb = fields.Float('Tiền VS bồn', digits='Product Price')
     ctn = fields.Float('Cạo TN', digits='Product Price')
+    tructet = fields.Float('Trực tết', digits='Product Price')
+    ngaytt = fields.Float('Ngày trực tết', digits='Product Price')
     ngayphep = fields.Float('Ngày phép', digits='Product Price')
     tienung = fields.Float('Trừ tiền ứng', digits='Product Price')
     tiengui = fields.Float('Trừ tiền gửi', digits='Product Price')
@@ -31,7 +33,7 @@ class SalaryOfficer(models.Model):
     thang13 = fields.Float('Tháng 13', digits='Product Price')
     quankho = fields.Float('Tiền quản kho', digits='Product Price')
     tngm = fields.Float('Trách nhiệm giao mũ', digits='Product Price')
-    tongcong = fields.Float('Thực nhận', digits='Product Price') #, compute='_compute_tongcong'
+    tongcong = fields.Float('Thực nhận', compute='_compute_tongcong', digits='Product Price')  
     kyten = fields.Char('Ký tên')
     ghichu = fields.Char('Ghi chú')
     thang = fields.Char('Tháng')
@@ -43,7 +45,7 @@ class SalaryOfficer(models.Model):
     ngayphep_hf = fields.Boolean(default=False)
     ctn_hf = fields.Boolean(default=False)
     tiengui_hf = fields.Boolean(default=False)
-    tienquy_hf = fields.Boolean(default=False)
+    tienquy_hf = fields.Boolean(default=False)    
     thuongtl_hf = fields.Boolean(default=False)
     thang13_hf = fields.Boolean(default=False)
     quankho_hf = fields.Boolean(default=False)
@@ -72,6 +74,16 @@ class SalaryOfficer(models.Model):
     rutpl = fields.Float('Rút PL 1 lần', compute='_compute_rutpl', digits='Product Price')
     tylerut_hf = fields.Boolean(default=False)
     rutpl_hf = fields.Boolean(default=False)
+    
+    tong_html = fields.Html(string='Tổng cộng', digits='Product Price', compute='_compute_bold_text')
+
+    @api.depends('tong')
+    def _compute_bold_text(self):
+        for record in self:
+            record.tong_html = f"<b>{record.tong}</b>"
+            
+
+
 
     @api.model_create_multi
     def create(self, vals):
@@ -172,7 +184,7 @@ class SalaryOfficer(models.Model):
             rec.rutpl = 0
             rec.rutpl = rec.tylerut * rec.phucloitl
 
-    @api.depends('lcb','trachnhiem','xangdt','dixa','rxmt','tienan','vsb','thang','ngaycong','nam','quankho','tngm','thuongcd')
+    @api.depends('lcb','trachnhiem','xangdt','dixa','rxmt','tienan','vsb','thang','ngaycong','nam','quankho','tngm','thuongcd','tructet')
     def _compute_ltn(self):
         for rec in self:
             rec.tong = 0
@@ -181,10 +193,10 @@ class SalaryOfficer(models.Model):
             rec.tong = rec.lcb + rec.trachnhiem + rec.xangdt + rec.dixa + rec.thuongcd + rec.rxmt + rec.tienan + rec.vsb + rec.quankho + rec.tngm
             rec.ltn = rec.tong * rec.ngaycong / days
     
-    '''@api.depends('ltn','ctn','ngayphep','tienung','tiengui','tienquy','tmtr','thuongtl','thang13','rutpl','rutbot','tienmuon','x_tgrb','x_tgtn')
+    @api.depends('ltn','ctn','ngayphep','tienung','tiengui','tienquy','tmtr','thuongtl','thang13','rutpl','rutbot','tienmuon','x_tgrb','x_tgtn','tructet')
     def _compute_tongcong(self):
         for rec in self:
-            rec.tongcong = rec.ltn + rec.rutpl + rec.x_tgrb + rec.ctn + rec.ngayphep - rec.tienung - rec.tiengui - rec.tienquy - rec.x_tgtn - rec.tienmuon + rec.thuongtl + rec.thang13'''
+            rec.tongcong = rec.ltn + rec.rutpl + rec.x_tgrb + rec.ctn + rec.ngayphep - rec.tienung - rec.tiengui - rec.tienquy - rec.x_tgtn - rec.tienmuon + rec.thuongtl + rec.thang13 + rec.tructet
 
 class SalaryOfficerByMonth(models.Model):
     _name = 'salary.officer.by.month'

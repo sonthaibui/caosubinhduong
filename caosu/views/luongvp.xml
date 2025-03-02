@@ -156,6 +156,8 @@
                     <field name="tngm" style="border-top-style: solid !important;border-width: 1px !important" sum="tngm"/>
                     <field name="ltn" style="border-top-style: solid !important;border-width: 1px !important" sum="ltn"/>
                     <field name="ctn" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.ctn_hf', '=', False)]}" sum="ctn"/>
+                    <field name="tructet" style="border-top-style: solid !important;border-width: 1px !important"/>
+                    <field name="ngaytt" style="border-top-style: solid !important;border-width: 1px !important"/>
                     <field name="ngayphep" style="border-top-style: solid !important;border-width: 1px !important" sum="ngayphep" attrs="{'column_invisible': [('parent.ngayphep_hf', '=', False)]}"/>
                     <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important" sum="tienung"/>
                     <!--<field name="tienmuon" style="border-top-style: solid !important;border-width: 1px !important" sum="tienmuon"/>-->
@@ -204,27 +206,29 @@
                       <field name="lcb"/>
                       <field name="trachnhiem"/>
                       <field name="thuongcd"/>
-                      <field name="xangdt"/>
-                      <field name="tienan"/>
-                      <field name="dixa"/>
-                      <field name="rxmt"/>
-                      <field name="vsb"/>
-                      <field name="tngm"/>
-                      <field name="quankho" attrs="{'invisible': [('quankho_hf', '=', False)]}"/>
+                      <field name="xangdt" attrs="{'invisible': [('xangdt', '=', 0)]}"/>
+                      <field name="tienan" attrs="{'invisible': [('tienan', '=', 0)]}"/>
+                      <field name="dixa" attrs="{'invisible': [('dixa', '=', 0)]}"/>
+                      <field name="rxmt" attrs="{'invisible': [('rxmt', '=', 0)]}"/>
+                      <field name="vsb" attrs="{'invisible': [('vsb', '=', 0)]}"/>
+                      <field name="tngm" attrs="{'invisible': [('tngm', '=', 0)]}"/>
+                      <field name="quankho" attrs="{'invisible': [('quankho', '=', 0)]}"/>
                       <field name="ctn" attrs="{'invisible': [('ctn_hf', '=', False)]}"/>
-                      <field name="ngayphep" attrs="{'invisible': [('ngayphep_hf', '=', False)]}"/>
-                      <field name="thuongtl" attrs="{'invisible': [('thuongtl_hf', '=', False)]}"/>
-                      <field name="thang13" attrs="{'invisible': [('thang13_hf', '=', False)]}"/>
-                      <field name="x_tgrb"/>
-                      <field name="rutpl" string="Tiền rút PL 1 lần" attrs="{'invisible': [('rutpl_hf', '=', False)]}"/>
-                      <field name="tong"/>
+                      <field name="tong_html" widget="html"/>                      
                       <field name="ngaycong"/>
                       <field name="ltn"/>
-                      <field name="tienung"/>
-                      <field name="tienquy" attrs="{'invisible': [('tienquy_hf', '=', False)]}"/>
-                      <field name="tiengui" attrs="{'invisible': [('tiengui_hf', '=', False)]}"/>
-                      <field name="tienmuon"/>
-                      <field name="x_tgtn" string="Trừ tiền gửi"/>
+                      <field name="ngayphep" attrs="{'invisible': [('ngayphep', '=', 0)]}"/>
+                      <field name="thuongtl" attrs="{'invisible': [('thuongtl', '=', 0)]}"/>
+                      <field name="thang13" attrs="{'invisible': [('thang13', '=', 0)]}"/>
+                      <field name="x_tgrb" attrs="{'invisible': [('x_tgrb', '=', 0)]}"/>
+                      <field name="rutpl" string="Tiền rút PL 1 lần" attrs="{'invisible': [('rutpl', '=', 0)]}"/>                     
+                      <field name="tienquy" attrs="{'invisible': [('tienquy', '=', 0)]}"/>
+                      <field name="ngaytt" attrs="{'invisible': [('ngaytt', '=', 0)]}"/>
+                      <field name="tructet" attrs="{'invisible': [('tructet', '=', 0)]}"/>
+                      <field name="tiengui" attrs="{'invisible': [('tiengui', '=', 0)]}"/>
+                      <field name="tienmuon" attrs="{'invisible': [('tienmuon', '=', 0)]}"/>
+                      <field name="tienung" attrs="{'invisible': [('tienung', '=', 0)]}"/>
+                      <field name="x_tgtn" string="Trừ tiền gửi" attrs="{'invisible': [('x_tgtn', '=', 0)]}"/>
                       <field name="tongcong" string="Còn lại"/>
                       <field name="gopy"/>
                     </group>
