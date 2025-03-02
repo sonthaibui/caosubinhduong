@@ -19,10 +19,10 @@ class RewardByMonth(models.Model):
     name = fields.Char('Tên tổ', related='to.name')
     ghichu = fields.Char('Ghi chú')
     reward_line_ids = fields.One2many('reward', 'rewardbymonth_id', string='Xét Thưởng CN', copy=True)
-    ttth = fields.Float(compute='_compute_ttth', string='ttth')
-    ruttt = fields.Float(compute='_compute_ttth', string='ruttt')
-    pltl = fields.Float(compute='_compute_ttth', string='pltl')
-    pltln = fields.Float(compute='_compute_ttth', string='pltln')
+    #ttth = fields.Float(compute='_compute_ttth', string='ttth')
+    #ruttt = fields.Float(compute='_compute_ttth', string='ruttt')
+    #pltl = fields.Float(compute='_compute_ttth', string='pltl')
+    #pltln = fields.Float(compute='_compute_ttth', string='pltln')
     thongbao = fields.Char(compute='_compute_thongbao', string='Thông báo')
     
     @api.depends('thang','nam','to')
@@ -34,7 +34,7 @@ class RewardByMonth(models.Model):
                 if len(rws) != 1:
                     rec.thongbao = "BẢNG PHỤ CẤP THÁNG " + rec.thang + "/" + rec.nam + " " + rec.to.name + " CHƯA TẠO. HÃY TẠO ĐỂ CẬP NHẬT NGÀY PHÉP CÔNG NHÂN."
     
-    @api.depends('reward_line_ids')
+    '''@api.depends('reward_line_ids')
     def _compute_ttth(self):
         for rec in self:
             rec.ttth = 0
@@ -53,7 +53,7 @@ class RewardByMonth(models.Model):
             rec.ttth = ttth
             rec.ruttt = ruttt
             rec.pltl = pltl
-            rec.pltln = pltln
+            rec.pltln = pltln'''
 
     def _compute_recorded(self):
         for rec in self:
@@ -124,7 +124,7 @@ class RewardByMonth(models.Model):
                                 thangkt = '13'
                             elif int(rec.thang) == 2:
                                 thangkt = '14'
-                        pltl = phucloi
+                        '''pltl = phucloi
                         pltln = phucloi
                         phucloitl = 0
                         phucloitln = 0
@@ -138,10 +138,10 @@ class RewardByMonth(models.Model):
                                     pltl += rw.phucloi
                                     pltln += rw.phucloi - rw.rutbot + rw.dongthem
                         phucloitl = pltl
-                        phucloitln = pltln
+                        phucloitln = pltln'''
 
                         self.env['reward'].create({'cophep': cophep, 'kophep': kophep, 'rubbersalary_id': rs.id, 'employee_id': plant.employee_id.id, 'rewardbymonth_id': rec.id, 
-                            'thang': rec.thang, 'nam': rec.nam, 'namkt': namkt, 'thangkt': thangkt, 'sttcn': plant.sttcn, 'chuyencan': chuyencan, 'phucloi': phucloi, 'pltext': pltext, 'phucloitln': phucloitln, 'phucloitl': phucloitl})
+                            'thang': rec.thang, 'nam': rec.nam, 'namkt': namkt, 'thangkt': thangkt, 'sttcn': plant.sttcn, 'chuyencan': chuyencan, 'pltext': pltext}) #'phucloi': phucloi,, 'phucloitl': phucloitl
 
     @api.constrains('to', 'thang', 'nam')
     def _constrains_unique(self):

@@ -7,7 +7,7 @@
     'website': 'https://www.caosubinhduong.com',
     'summary': 'Nhập sản lượng cao su công nhân cạo hằng ngày',
     'description': """Nhập sản lượng cao su công nhân cạo hằng ngày""",
-    'depends': ['hr', 'mail'],
+    'depends': ['hr', 'mail', 'base', 'web'],
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
@@ -25,7 +25,9 @@
         'views/xetthuong.xml',
         'views/xetai.xml',
         'views/phieuluong.xml',
+        #'views/assets.xml',
         'report/rubber_salary_report.xml',],
+    
     'demo': [],
     'application': True,
     'installable': True,

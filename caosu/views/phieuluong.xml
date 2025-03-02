@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+    <!--<template id="assets_backend" name="custom_module assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/caosu/static/src/js/custom_sum.js"></script>
+        </xpath>
+    </template>-->
+    
     <record id="view_rubber_salary_form" model="ir.ui.view">
         <field name="name">rubbersalary.form</field>
         <field name="model">rubber.salary</field>
@@ -104,12 +109,11 @@
                   <group string="Thưởng cuối năm">                    
                     <field name="reward_line_ids" nolabel="1">
                       <tree default_order="thang">                        
-                        <field name="thang" style="border-top-style: solid !important;border-width: 1px !important" />
+                        <field name="thang" style="border-top-style: solid !important;border-width: 1px !important" /> <!--sum="Tổng cộng"-->
                         <field name="phucloi" style="border-top-style: solid !important;border-width: 1px !important" sum="phucloi" optional="show"/>
                         <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                         <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
-                        <field name="phucloitl" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
-                        <field name="phucloitln" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                        <field name="phucloitl" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>                        
                         <field name="tongtien" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtien" optional="show"/>
                         <field name="ttth" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                         <field name="ruttt" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
