@@ -115,16 +115,16 @@ class RewardByMonth(models.Model):
                             pltext = '= (' + str(int(tien)) + ' / ' + str(days) + ' ngày) x ' + str(ngaylam) + ' ngày x 30%'
                         namkt = ''
                         thangkt = ''
-                        if int(rec.thang) >= 3:
+                        if int(rec.thang) >= 2:
                             namkt = rec.nam
                             thangkt = rec.thang
                         else:
                             namkt = str(int(rec.nam) - 1)
                             if int(rec.thang) == 1:
                                 thangkt = '13'
-                            elif int(rec.thang) == 2:
+                            '''elif int(rec.thang) == 2:
                                 thangkt = '14'
-                        '''pltl = phucloi
+                        pltl = phucloi
                         pltln = phucloi
                         phucloitl = 0
                         phucloitln = 0
