@@ -10,14 +10,17 @@ RUN apt-get update && apt-get install -y \
     vim \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Switch back to the odoo user
-USER odoo
+# Create the vscode user if it doesn't exist
+RUN id -u vscode &>/dev/null || useradd -m -s /bin/bash vscode
 
-# Set up the working directory
+# Switch to the vscode user
+USER vscode
+
+# Set up the working directory to where Odoo expects custom add-ons
 WORKDIR /mnt/extra-addons
 
 # Copy your add-on to the working directory
 COPY . /mnt/extra-addons
 
-# Expose Odoo port
+# Expose Odoo port (default is 8069)
 EXPOSE 8069
