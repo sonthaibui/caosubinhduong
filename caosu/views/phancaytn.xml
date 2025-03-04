@@ -18,6 +18,7 @@
                     <field name="lo"/>
                     <field name='toname' invisible='1'/>
                     <field name='sttcn'/>
+                    <field name='socay'/>
                     <field name="employee_id" domain="[('name','like',toname),('department_id','=',to)]" attrs="{'readonly': [('to','=',False)]}"/>                    
                     
                   </group>
@@ -107,5 +108,38 @@
             </p>
         </field>
     </record>
+    <!-- Form view for the rubber.tree model -->
+    <record id="view_rubber_tree_form" model="ir.ui.view">
+        <field name="name">rubber.tree.form</field>
+        <field name="model">rubber.tree</field>
+        <field name="arch" type="xml">
+            <form string="Rubber Tree">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Tree view for the rubber.tree model -->
+    <record id="view_rubber_tree_tree" model="ir.ui.view">
+        <field name="name">rubber.tree.tree</field>
+        <field name="model">rubber.tree</field>
+        <field name="arch" type="xml">
+            <tree string="Rubber Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Action for the rubber.tree model -->
+    <record id="action_rubber_tree" model="ir.actions.act_window">
+        <field name="name">Rubber Trees</field>
+        <field name="res_model">rubber.tree</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu item for the rubber.tree model -->
+    <menuitem id="menu_rubber_tree" name="Rubber Trees" parent="thinghiem_menu" action="action_rubber_tree"/>
 
 </odoo>

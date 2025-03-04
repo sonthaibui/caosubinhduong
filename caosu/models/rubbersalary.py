@@ -259,13 +259,14 @@ class RubberSalary(models.Model):
                         rb.bymonth = True   
                     else:
                         rb.bymonth = False
-        if self.env['reward'].search([('employee_id','=', self.name)]):
-            rws = self.env['reward'].search([('employee_id','=', self.name)])               
-            for rw in rws:                                           
-                if self.namkt == rw.namkt:
-                    rw.bymonth = True
-                else:
-                    rw.bymonth = False               
+        '''#Them de tinh luong tu ngay toi ngay
+        if self.env['allowance'].search([('employee_id','=', self.name)]):
+            als = self.env['allowance'].search([('employee_id','=', self.name)])               
+            for al in als:                                 
+                
+                if self.startdate and self.enddate and self.thang == al.thang and self.to == al.to:  
+                    al.startdate = self.startdate
+                    al.enddate = self.enddate'''             
 
     @api.depends('rubber_line_ids')
     def _compute_khotien(self):
