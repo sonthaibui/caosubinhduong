@@ -1,0 +1,14 @@
+# Ignore unnecessary files and directories
+.git
+.github
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite
+*.log
+*.bak
+*.swp
+*.DS_Store
+node_modules
