@@ -48,6 +48,8 @@ class Allowance(models.Model):
     salaryboard_id = fields.Many2one('salary.board', string='Bảng Lương', ondelete='cascade')
     employeebenefit_id = fields.Many2one('employee.benefit', string='Phúc Lợi Nhân Viên', ondelete='cascade')
     allowancebymonth_id = fields.Many2one('allowance.by.month', string='Phụ cấp theo tháng', ondelete='cascade')
+    startdate = fields.Date('Ngày bắt đầu', required=True,store=True)
+    enddate = fields.Date('Ngày kết thúc', required=True,store=True)
     thang = fields.Char('Tháng')
     nam = fields.Char('Năm')
     sttcn = fields.Char('STT')

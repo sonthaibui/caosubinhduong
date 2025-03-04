@@ -21,6 +21,7 @@ class PlantationTest(models.Model):
         ('11', '11'), ('12', '12'), ('13', '13'), ('14', '14'), ('15', '15'), ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'), ('20', '20'), ('21', '21'),
         ('22', '22'), ('23', '23'), ('24', '24'), ('25', '25'), ('26', '26'), ('27', '27'), ('28', '28'), ('29', '29'), ('30', '30'),
     ], string='STT CN', default='01', required=True)
+    socay = fields.Many2one('rubber.tree', string='Số Cây', required=True, default=lambda self: self._default_socay()) # ko set defaut thi bi loi bool khi tinh ten phan cay
     employee_id = fields.Many2one('hr.employee', string='Công nhân', required=True)
     hangso = fields.Char('Hàng số')    
     giong = fields.Char('Giống', default='GT1')
@@ -30,17 +31,43 @@ class PlantationTest(models.Model):
     namcaoup = fields.Char('Năm Cạo Úp', default='2015')
     rubbertest_line_ids = fields.One2many('rubber.test', 'plantationtest_id', string='Sản lượng mũ cạo thí nghiệm')
 
+    @api.model
+    def _default_socay(self):
+        # Set the default value for socay; adjust the domain as needed
+        default_tree = self.env['rubber.tree'].search([], limit=1, order='id asc')
+        return default_tree.id if default_tree else False
+    
     @api.constrains('nongtruong','lo','to','sttcn')
     def _check_plantationtest_unique(self):
         plantationtest_counts = self.search_count([('nongtruong','=', self.nongtruong),('id','!=',self.id),
-            ('lo','=',self.lo),('to','=',self.to.id),('sttcn','=',self.sttcn)])
+            ('lo','=',self.lo),('to','=',self.to.id),('socay','=',self.socay.id)])
         if plantationtest_counts > 0:
             raise ValidationError("Plantation Test already exists!")       
     
     
-    @api.depends('nongtruong','to','lo','sttcn')
+    @api.depends('nongtruong','to','lo','socay.name')
     def _compute_ma_to(self):
         for rec in self:
             ref = 'To' + rec.to.name[3:]
-            rec.name = rec.nongtruong + '-' + ref + '-' + rec.lo.upper() + rec.sttcn
+            rec.name = rec.nongtruong + '-' + ref + '-' + rec.lo.upper() + rec.socay.name
             rec.toname = '-' + rec.to.name[3:]
+class RubberTree(models.Model):
+    _name = 'rubber.tree'
+    _description = 'Cây Cao Su'
+    _rec_name = "name"
+
+    active = fields.Boolean('Active', default=True)
+    name = fields.Char(string='Name', required=True, copy=False, default='New')
+
+    
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'New') == 'New':
+            last_record = self.search([], order='id desc', limit=1)
+            if last_record:
+                last_name = last_record.name
+                new_name = str(int(last_name) + 1).zfill(2)
+            else:
+                new_name = '01'
+            vals['name'] = new_name
+        return super(RubberTree, self).create(vals)

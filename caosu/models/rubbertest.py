@@ -35,7 +35,7 @@ class RubberTest(models.Model):
     plantationtest_id = fields.Many2one('plantation.test', string='Phần cây thí nghiệm', ondelete='cascade')
     empname = fields.Char('Tên Công Nhân', related='plantationtest_id.employee_id.name')    
     plantestcode = fields.Char(related='plantationtest_id.name')
-    plantestname = fields.Selection(related='plantationtest_id.sttcn')    
+    plantestname = fields.Char(related='plantationtest_id.socay.name') #Luc dau related='plantationtest_id.socay' bi loi ko vao odoo duoc  
     to = fields.Char('Tổ', compute='_compute_to', store=True, readonly=False) #Son them
     miengcao = fields.Char('Miệng cạo', store=True, readonly=False) #Son them
     thoitiet = fields.Char('Thời tiết', compute='_compute_thoitiet', store=True, readonly=False) #Son them

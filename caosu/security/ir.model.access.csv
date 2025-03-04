@@ -26,3 +26,4 @@ access.tree.line,access_tree_line,caosu.model_tree_line,base.group_user,1,1,1,1
 access.plantation.test,access_plantation_test,caosu.model_plantation_test,base.group_user,1,1,1,1
 access.rubber.test,access_rubber_test,caosu.model_rubber_test,base.group_user,1,1,1,1
 access.rubber.test.date,access_rubber_test_date,caosu.model_rubber_test_date,base.group_user,1,1,1,1
+access.rubber.tree,access_rubber_tree,caosu.model_rubber_tree,base.group_user,1,1,1,1

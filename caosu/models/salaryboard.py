@@ -52,7 +52,7 @@ class SalaryBoard(models.Model):
             als = self.env['allowance'].search([('employee_id.department_id','=',self.department_id.id)])
             for al in als:
                 if al.thang == self.thang and al.nam == self.nam:
-                    al.bymonth = True
+                    al.bymonth = True #Hien phu cap nao cung to, cung thang va nam
                 else:
                     al.bymonth = False
 
