@@ -58,7 +58,7 @@ class RubberTestByDate(models.Model):
                         raise UserError(_("Department " + self.to.name.upper() + " lot " + self.lo.upper() + " doesn't have any plantation test."))
                     #bao loi neu to chua co plantation
                     else:
-                        plants = self.env['plantation.test'].search([('to', '=', self.to.id),('lo', '=', self.lo)])
+                        plants = self.env['plantation.test'].search([('to', '=', self.to.id),('lo', '=', self.lo),('active', '=', True), ])
                         for plant in plants:
                             self.env['rubber.test'].create({'rubbertestbydate_id': self.id, 'plantationtest_id': plant.id})
                             #Tao san luong va gan plantation_id

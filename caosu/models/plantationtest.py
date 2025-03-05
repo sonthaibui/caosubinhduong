@@ -1,6 +1,8 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
+#Phai de o tren plantiontest thi moi ko bi ko nhan ra model rubber.tree trong field socay
+#co the tao file python khac thi ko bi loi
 class RubberTree(models.Model):
     _name = 'rubber.tree'
     _description = 'Cây Cao Su'
@@ -74,3 +76,6 @@ class PlantationTest(models.Model):
             ref = 'To' + rec.to.name[3:]
             rec.name = rec.nongtruong + '-' + ref + '-' + rec.lo.upper() + rec.socay.name
             rec.toname = '-' + rec.to.name[3:]
+    @api.onchange('nongtruong', 'to', 'lo', 'socay')
+    def _onchange_fields(self):
+        self._compute_ma_to()

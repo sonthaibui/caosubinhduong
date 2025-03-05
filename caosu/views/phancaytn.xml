@@ -66,8 +66,9 @@
         <field name="name">plantationtest.tree</field>
         <field name="model">plantation.test</field>
         <field name="arch" type="xml">
-            <tree string="Plantation Test Tree View" multi_edit="1">
+            <tree string="Plantation Test Tree View" multi_edit="1" default_order="socay">
               <field name="name"/>
+              <field name="socay" optional='hide'/>
               <field name='nongtruong'/>
               <field name="loso"/>
               <field name="hangso"/>
