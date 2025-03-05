@@ -33,13 +33,12 @@ class PlantationTest(models.Model):
 
     @api.model
     def _default_socay(self):
-        # Set the default value for socay; adjust the domain as needed
-        rubbertree=self.env['rubber.tree'].search([('name','=','01')], limit=1)
-        if rubbertree:
-            default_tree = rubbertree
-        else:             
+        # Ensure at least one RubberTree record exists
+        default_tree = self.env['rubber.tree'].search([], limit=1)
+        if not default_tree:
+            # Create a default RubberTree record if none exist
             default_tree = self.env['rubber.tree'].create({'name': '01'})
-        return default_tree.id if default_tree else False
+        return default_tree.id
     
     @api.constrains('nongtruong','lo','to','sttcn')
     def _check_plantationtest_unique(self):
