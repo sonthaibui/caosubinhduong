@@ -61,7 +61,7 @@ class RubberTestByDate(models.Model):
                         plants = self.env['plantation.test'].search([('to', '=', self.to.id),('lo', '=', self.lo)])
                         for plant in plants:
                             self.env['rubber.test'].create({'rubbertestbydate_id': self.id, 'plantationtest_id': plant.id})
-                            #Tao san luong va gan plantation_id va rubber.salary_id
+                            #Tao san luong va gan plantation_id
     @api.depends('to','ngay')
     def _compute_recname(self):
         for rec in self:
