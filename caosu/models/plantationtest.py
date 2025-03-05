@@ -34,7 +34,11 @@ class PlantationTest(models.Model):
     @api.model
     def _default_socay(self):
         # Set the default value for socay; adjust the domain as needed
-        default_tree = self.env['rubber.tree'].search([], limit=1, order='id asc')
+        rubbertree_counts=self.env['rubber.tree'].search_count([])
+        if rubbertree_counts > 0:
+            default_tree = self.env['rubber.tree'].search([], limit=1, order='id asc')
+        else:             
+            default_tree = self.env['rubber.tree'].create({'name': '01'})
         return default_tree.id if default_tree else False
     
     @api.constrains('nongtruong','lo','to','sttcn')
