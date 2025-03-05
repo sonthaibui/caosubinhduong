@@ -127,7 +127,7 @@
         <field name="name">rubber.tree.tree</field>
         <field name="model">rubber.tree</field>
         <field name="arch" type="xml">
-            <tree string="Rubber Tree">
+            <tree string="Tạo cây TN">
                 <field name="name"/>
             </tree>
         </field>
@@ -140,6 +140,6 @@
     </record>
 
     <!-- Menu item for the rubber.tree model -->
-    <menuitem id="menu_rubber_tree" name="Rubber Trees" parent="thinghiem_menu" action="action_rubber_tree"/>
+    <menuitem id="menu_rubber_tree" name="Tạo cây TN" parent="thinghiem_menu" action="action_rubber_tree"/>
 
 </odoo>
