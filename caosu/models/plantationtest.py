@@ -1,6 +1,26 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
+class RubberTree(models.Model):
+    _name = 'rubber.tree'
+    _description = 'Cây Cao Su'
+    _rec_name = "name"
+
+    active = fields.Boolean('Active', default=True)
+    name = fields.Char(string='Name', required=True, copy=False, default='New')
+
+    
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'New') == 'New':
+            last_record = self.search([], order='id desc', limit=1)
+            if last_record:
+                last_name = last_record.name
+                new_name = str(int(last_name) + 1).zfill(2)
+            else:
+                new_name = '01'
+            vals['name'] = new_name
+        return super(RubberTree, self).create(vals)
 class PlantationTest(models.Model):
     _name = 'plantation.test'
     _description = 'Plantation Test Model'
@@ -54,23 +74,3 @@ class PlantationTest(models.Model):
             ref = 'To' + rec.to.name[3:]
             rec.name = rec.nongtruong + '-' + ref + '-' + rec.lo.upper() + rec.socay.name
             rec.toname = '-' + rec.to.name[3:]
-class RubberTree(models.Model):
-    _name = 'rubber.tree'
-    _description = 'Cây Cao Su'
-    _rec_name = "name"
-
-    active = fields.Boolean('Active', default=True)
-    name = fields.Char(string='Name', required=True, copy=False, default='New')
-
-    
-    @api.model
-    def create(self, vals):
-        if vals.get('name', 'New') == 'New':
-            last_record = self.search([], order='id desc', limit=1)
-            if last_record:
-                last_name = last_record.name
-                new_name = str(int(last_name) + 1).zfill(2)
-            else:
-                new_name = '01'
-            vals['name'] = new_name
-        return super(RubberTree, self).create(vals)
