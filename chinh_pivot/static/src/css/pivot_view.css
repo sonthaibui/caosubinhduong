@@ -1,0 +1,16 @@
+.o_pivot th .o_pivot_header_cell {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row !important; /* Ensure horizontal layout */
+}
+
+.o_pivot .o_pivot_toggle {
+    margin-right: 5px !important;
+    float: none !important; /* Remove any float */
+}
+
+/* Target the toggle and label container directly */
+.o_pivot .o_pivot_header_cell > div {
+    display: flex;
+    align-items: center;
+}

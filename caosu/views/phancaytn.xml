@@ -142,5 +142,5 @@
 
     <!-- Menu item for the rubber.tree model -->
     <menuitem id="menu_rubber_tree" name="Tạo cây TN" parent="thinghiem_menu" action="action_rubber_tree"/>
-
+    
 </odoo>

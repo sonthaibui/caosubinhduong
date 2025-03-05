@@ -13,6 +13,7 @@ class RubberTestByDate(models.Model):
     daongua = fields.Integer('Dao ngửa thứ')  
     ghichu = fields.Char('Ghi chú')    
     kt_daoup = fields.Char('Dao kích thích')  
+    ctktup = fields.Many2one('ctkt', string='CT úp', default=lambda self: self._default_ctkt())
     lo = fields.Selection([('a', 'A'), ('b', 'B'), ('c', 'C')], string='Lô', default='a', required=True, tracking=True)
     miengcao = fields.Char('Miệng cạo')
     ngay = fields.Date('Ngày', default=fields.Datetime.now(), required=True, tracking=True)     
@@ -92,3 +93,18 @@ class RubberTestByDate(models.Model):
             self['do_tb3'] = y / x
         else:
             self['do_tb3'] = 0
+    
+    @api.model
+    def _default_ctkt(self):
+        default_ctkt = self.env['ctkt'].search([('name','=','Chưa bôi')], limit=1)
+        if not default_ctkt:
+            # Create a default ctkt record if none exist
+            default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})
+        return default_ctkt.id
+        
+    
+    @api.onchange('ctktup')
+    def _onchange_ctktup(self):
+        for line in self.rubbertest_line_ids:
+            if not line.occtktup:
+                line.ctktup = self.ctktup
