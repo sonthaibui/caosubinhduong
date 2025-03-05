@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!-- Form view for the ctkt model -->
+        <record id="view_ctkt_form" model="ir.ui.view">
+            <field name="name">ctkt.form</field>
+            <field name="model">ctkt</field>
+            <field name="arch" type="xml">
+                <form string="Công thức kích thích">
+                    <sheet>
+                        <group>
+                            <field name="name"/>                        
+                            <field name="congthuc"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Tree view for the ctkt model -->
+        <record id="view_ctkt_tree" model="ir.ui.view">
+            <field name="name">ctkt.tree</field>
+            <field name="model">ctkt</field>
+            <field name="arch" type="xml">
+                <tree string="Tạo công thức kích thích ">
+                    <field name="name"/>                
+                    <field name="congthuc"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_congthuckichthich" model="ir.actions.act_window">
+            <field name="name">Công thức kích thích</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ctkt</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context"></field>
+            <field name="help" type="html">
+                <p>
+                    Nhập những công thức kích thích
+                </p>
+            </field>
+        </record>
+        <!-- Menu item for the ctkt model -->
+        <menuitem id="menu_ctkt" name="Công thức kích thích" parent="thinghiem_menu" action="action_congthuckichthich"/>
+    </data>
+</odoo>

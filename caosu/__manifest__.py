@@ -25,6 +25,7 @@
         'views/xetthuong.xml',
         'views/xetai.xml',
         'views/phieuluong.xml',
+        'views/congthuckt.xml',
         #'views/assets.xml',
         'report/rubber_salary_report.xml',],
     
