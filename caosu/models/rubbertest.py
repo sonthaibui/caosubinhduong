@@ -74,7 +74,9 @@ class RubberTest(models.Model):
     chenhlechkho_ngua_state = fields.Boolean('CLKN', default=True,store=True)
     quykho_up = fields.Float('Quy Khô U', default='0',store=True, digits=(16, 1))#son them 23.6.24
     quykho_ngua = fields.Float('Quy Khô N', default='0',store=True, digits=(16, 1))
-    #color = fields.Char(related='plantationtest_id.color')        
+    #color = fields.Char(related='plantationtest_id.color')
+    vanhcay = fields.Integer(related='plantationtest_id.vanhcay')
+    matcao = fields.Char(related='plantationtest_id.matcao.name')        
 
     @api.depends('rubbertestbydate_id.ngay')
     def _compute_ngay(self):

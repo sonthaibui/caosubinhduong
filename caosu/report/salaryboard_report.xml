@@ -18,13 +18,13 @@
       <field name="name">In Bảng Lương</field>
       <field name="model">salary.board</field>
       <field name="report_type">qweb-pdf</field>
-      <field name="report_name">caosu.salary_board</field>
+      <field name="report_name">caosu.salary_board_template</field>
       <field name="binding_model_id" ref="model_salary_board" />
       <field name="binding_type">report</field>
       <field name="paperformat_id" ref="paperformat_salary_board" />
     </record>
 
-    <template id="salary_board">
+    <template id="salary_board_template">
     <t t-call="web.html_container">
       <t t-call="web.internal_layout">
         <div class="page" style="font-family:arial;">

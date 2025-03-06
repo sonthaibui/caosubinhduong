@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="paperformat_reward_by_month" model="report.paperformat">
+      <field name="name">A3 Portrait</field>
+      <field name="format">A3</field>
+      <field name="orientation">Portrait</field>
+      <field name="margin_top">7</field>
+      <field name="margin_bottom">7</field>
+      <field name="margin_left">7</field>
+      <field name="margin_right">7</field>
+      <field name="header_line" eval="False" />
+      <field name="header_spacing">20</field>
+      <field name="dpi">90</field>
+    </record>
     <record id="action_reward_by_month_report" model="ir.actions.report">
       <field name="name">In xét thưởng tháng</field>
       <field name="model">reward.by.month</field>
       <field name="report_type">qweb-pdf</field>
-      <field name="report_name">caosu.reward_by_month</field>
+      <field name="report_name">caosu.reward_by_month_template</field>
       <field name="binding_model_id" ref="model_reward_by_month" />
       <field name="binding_type">report</field>
-      <field name="paperformat_id" ref="paperformat_rubber_salary" />
+      <field name="paperformat_id" ref="paperformat_reward_by_month" />
     </record>
 
-    <template id="reward_by_month">
+    <template id="reward_by_month_template">
     <t t-call="web.html_container">
       <t t-call="web.internal_layout">
         <div class="page" style="font-family:arial; font-size: 14.9px;">
@@ -41,8 +53,8 @@
                       <th style="border-right-style: solid;">Cộng</th>
                       <th style="border-right-style: solid;">Số suất</th>
                       <th style="border-right-style: solid;">Tổng tiền</th>
-                      <th t-if="o.ttth > 0" style="border-right-style: solid;">TT tăng/giảm</th>
-                      <th t-if="o.ruttt > 0" style="border-right-style: solid;">Rút TT</th>
+                      <!--<th t-if="o.ttth > 0" style="border-right-style: solid;">TT tăng/giảm</th>
+                      <th t-if="o.ruttt > 0" style="border-right-style: solid;">Rút TT</th>-->
                       <th style="border-right-style: solid;">Lũy kế </th>
                       <th>Phúc lợi</th>
                       <th t-if="o.pltl > 0" style="border-right-style: solid;">Phúc lợi TL</th>
@@ -106,12 +118,12 @@
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
                         <span t-field="line.tongtien" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
-                      <td t-if="o.ttth > 0" style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
+                      <!--<td t-if="o.ttth > 0" style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
                         <span t-field="line.ttth" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
                       <td t-if="o.ruttt > 0" style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
                         <span t-field="line.ruttt" t-options='{"widget": "float", "precision": 0}'/>
-                      </td>
+                      </td>-->
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; font-weight: bold; border-right-style: solid;">
                         <span t-field="line.tongtien_luyke" t-options='{"widget": "float", "precision": 0}'/>
                       </td>

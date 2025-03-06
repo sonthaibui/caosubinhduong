@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="paperformat_salary_officer" model="report.paperformat">
+      <field name="name">A4 Portrait</field>
+      <field name="format">A4</field>
+      <field name="orientation">Portrait</field>
+      <field name="margin_top">2</field>
+      <field name="margin_bottom">2</field>
+      <field name="margin_left">7</field>
+      <field name="margin_right">7</field>
+      <field name="header_line" eval="False" />
+      <field name="header_spacing">20</field>
+      <field name="dpi">90</field>
+    </record>
     <record id="action_salary_officer_report" model="ir.actions.report">
       <field name="name">In Lương Văn Phòng</field>
       <field name="model">salary.officer</field>
       <field name="report_type">qweb-pdf</field>
-      <field name="report_name">caosu.salary_officer</field>
+      <field name="report_name">caosu.salary_officer_template</field>
       <field name="binding_model_id" ref="model_salary_officer" />
       <field name="binding_type">report</field>
-      <field name="paperformat_id" ref="paperformat_rubber_salary" />
+      <field name="paperformat_id" ref="paperformat_salary_officer" />
     </record> 
 
-    <template id="salary_officer">
+    <template id="salary_officer_template">
     <t t-call="web.html_container">
       <t t-call="web.internal_layout">
         <div class="page" style="font-family:arial;">
           <!-- Report header content -->
           <t t-foreach="docs" t-as="o">
             <p style="page-break-before:always;"> </p>
-            <div class="row">
+            <div style="height: 40px;"></div>
+            <div class="row">              
               <div class="col-6">
                 <h5 style="font-weight: bold;">PHIẾU LƯƠNG THÁNG <span t-field="o.thang" />/<span t-field="o.nam" /></h5>
               </div>

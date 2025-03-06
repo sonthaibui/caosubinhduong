@@ -80,6 +80,8 @@
             <field name="kichthichngua" optional="hide"/>
             <field name="congthuc_kt" optional="hide"/>
             <field name="miengcao" optional="hide"/>
+            <field name="vanhcay" optional="show"/>
+            <field name="matcao" optional="show"/>
             <field name="thoitiet" optional="show"/>
             <field name="ghichu" optional="show"/>
           </tree>

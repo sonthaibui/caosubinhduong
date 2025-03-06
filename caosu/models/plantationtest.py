@@ -23,6 +23,13 @@ class RubberTree(models.Model):
                 new_name = '01'
             vals['name'] = new_name
         return super(RubberTree, self).create(vals)
+class Matcao(models.Model):
+    _name = 'matcao'
+    _description = 'Mặt Cao'
+    _rec_name = "name"
+
+    active = fields.Boolean('Active', default=True)
+    name = fields.Char(string='Name', required=True, copy=False, default='Binh thuong')
 class PlantationTest(models.Model):
     _name = 'plantation.test'
     _description = 'Plantation Test Model'
@@ -53,6 +60,7 @@ class PlantationTest(models.Model):
     namcaoup = fields.Char('Năm Cạo Úp', default='2015')
     rubbertest_line_ids = fields.One2many('rubber.test', 'plantationtest_id', string='Sản lượng mũ cạo thí nghiệm')
     vanhcay = fields.Integer('Vành Cây', default=0)
+    matcao = fields.Many2one('matcao', string='Mặt cạo', required=True, store=True)
     '''color = fields.Selection([
         ('red', 'Red'), 
         ('blue', 'Blue'), 
