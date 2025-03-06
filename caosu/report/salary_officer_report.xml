@@ -145,11 +145,11 @@
                     <td style="border-top-style: solid; border-width: 1px; font-weight: bold;">Thực nhận</td>
                     <td style="border-top-style: solid; border-width: 1px; font-weight: bold;"><span t-field="o.ltn" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
                   </tr>
-                  <tr>
+                  <tr t-if="o.thang13 != 0">
                     <td>Lương tháng 13</td>
                     <td><span t-field="o.thang13" /></td>
                   </tr>
-                  <tr>
+                  <tr t-if="o.thuongtl != 0">
                     <td>Thưởng tích lũy</td>
                     <td><span t-field="o.thuongtl" /></td>
                   </tr>
@@ -173,7 +173,7 @@
                     <td>Trừ tiền quỹ</td>
                     <td><span t-field="o.tienquy"/></td>
                   </tr>
-                  <tr t-if="o.tienquy != 0">
+                  <tr t-if="o.tructet != 0">
                     <td>Tiền trực tết</td>
                     <td><span t-field="o.tructet"/></td>
                   </tr>
