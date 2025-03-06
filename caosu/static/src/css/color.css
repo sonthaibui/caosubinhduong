@@ -1,0 +1,38 @@
+.oe_list_field_brown {    
+    color: rgb(119, 64, 64) !important;
+}
+
+.oe_list_field_orange {    
+    color: orange !important;
+}
+
+.oe_list_field_green {    
+    color: green !important;
+}
+
+.oe_list_field_blue {    
+    color: blue !important;
+}
+
+.oe_list_field_red {    
+    color: red !important;
+}
+
+.oe_list_field_purple {   
+    color: purple !important;
+}
+
+.oe_list_field_pink {    
+    color: rgb(242, 37, 160) !important;
+}
+.oe_list_field_yellow {
+    /* background-color: yellow !important; */
+    color: yellow !important;
+}
+.oe_list_field_black {
+    /* background-color: yellow !important; */
+    color: black !important;
+}
+.oe_list_field_default {    
+    color: black !important;
+}

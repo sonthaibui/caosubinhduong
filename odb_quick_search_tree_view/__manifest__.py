@@ -25,6 +25,7 @@
     'application': False,
     'depends': [
         'base',
+        'web',
         'base_setup'
     ],
     'data': [

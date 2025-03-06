@@ -52,6 +52,19 @@ class PlantationTest(models.Model):
     nammomieng = fields.Char('Năm Mở Miệng', default='2000')
     namcaoup = fields.Char('Năm Cạo Úp', default='2015')
     rubbertest_line_ids = fields.One2many('rubber.test', 'plantationtest_id', string='Sản lượng mũ cạo thí nghiệm')
+    vanhcay = fields.Integer('Vành Cây', default=0)
+    '''color = fields.Selection([
+        ('red', 'Red'), 
+        ('blue', 'Blue'), 
+        ('green', 'Green'), 
+        ('black', 'Black'), 
+        ('brown', 'Brown'), 
+        ('pink', 'Pink'), 
+        ('purple', 'Purple'), 
+        ('orange', 'Orange'), 
+        ('grey', 'Grey'), 
+        ('yellow', 'Yellow')
+    ], string='Color', default='black')'''    
 
     @api.model
     def _default_socay(self):

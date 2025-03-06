@@ -29,9 +29,9 @@ class RubberTest(models.Model):
     do_ngua = fields.Float('Độ', digits=(16, 1))
     do_bo = fields.Float('Độ', digits=(16, 1)) #test thu    
     
-    mu_up = fields.Float('Úp', default='0', digits=(16, 0))
-    mu_up3 = fields.Float('Úp-3N', default='0', digits=(16, 0))
-    mu_up6 = fields.Float('Úp-6N', default='0', digits=(16, 0))
+    mu_up = fields.Float('Úp', default='0', digits=(42, 0))
+    mu_up3 = fields.Float('Úp-3N', default='0', digits=(42, 1))
+    mu_up6 = fields.Float('Úp-6N', default='0', digits=(42, 3))
     mu_ngua = fields.Float('Ngửa', default='0', digits=(16, 0))
     mu_bo = fields.Float('Bợ', default='0', digits=(16, 0))     
 
@@ -74,6 +74,7 @@ class RubberTest(models.Model):
     chenhlechkho_ngua_state = fields.Boolean('CLKN', default=True,store=True)
     quykho_up = fields.Float('Quy Khô U', default='0',store=True, digits=(16, 1))#son them 23.6.24
     quykho_ngua = fields.Float('Quy Khô N', default='0',store=True, digits=(16, 1))
+    #color = fields.Char(related='plantationtest_id.color')        
 
     @api.depends('rubbertestbydate_id.ngay')
     def _compute_ngay(self):

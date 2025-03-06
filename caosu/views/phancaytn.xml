@@ -77,7 +77,8 @@
               <field name='toname' invisible='1'/>
               <field name="employee_id" domain="[('name','like',toname),('department_id','=',to)]" attrs="{'readonly': [('to','=',False)]}"/>
               <field name="giong" optional='show'/>
-              <field name='tyle' optional='show'/>              
+              <field name="vanhcay" optional='show'/>
+              <!--<field name="color" optional='show'/>         -->         
               <field name='namtrong' optional='show'/>
               <field name='nammomieng' optional='show'/>
               <field name='namcaoup' optional='show'/>            

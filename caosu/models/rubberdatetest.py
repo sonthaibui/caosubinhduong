@@ -106,5 +106,5 @@ class RubberTestByDate(models.Model):
     @api.onchange('ctktup')
     def _onchange_ctktup(self):
         for line in self.rubbertest_line_ids:
-            if not line.occtktup:
+            if line.ctktup !="Chưa bôi":
                 line.ctktup = self.ctktup

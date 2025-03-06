@@ -35,12 +35,26 @@
         <field name="model">rubber.test</field>
         <field name="arch" type="xml">
           <tree string="Rubber Test Tree View" create="0" multi_edit="1" default_order="ngay desc" decoration-bf="kichthich == True" decoration-warning="(miengcao =='2 miệng') or (miengcao =='Miệng ngửa cũ')" decoration-primary="miengcao =='Miệng ngửa mới'">
+            <!-- <field name="color" optional="hide"/>-->
             <field name="id" optional="hide"/>
             <field name="plantestname" optional="show"/>
             <field name="ngay"/>
             <field name="lo" optional="hide"/>
             <field name="rubbertestbydate_id" widget="open_tab" optional="hide"/>                                            
-            <field name="mu_up" />
+            <field name="mu_up"/>
+            <!--<attribute name="widget">char</attribute>
+                    <attribute name="class">
+                        <t t-set="color_class">
+                            <t t-if="record.color.raw_value == 'green'">oe_list_field_green</t>
+                            <t t-if="record.color.raw_value == 'red'">oe_list_field_red</t>
+                            <t t-if="record.color.raw_value == 'yellow'">oe_list_field_yellow</t>
+                            <t t-if="not record.color.raw_value">oe_list_field_default</t>
+                        </t>
+                        <t t-esc="color_class"/>
+                    </attribute>
+            </field>
+            <field name="mu_up" t-attf-class="oe_list_field #{record.color.raw_value or 'default'}"/>-->
+           
             <field name="mulantruoc_up" optional="show"/>
             <field name="do_up" />
             <field name="quykho_up" optional="hide"/>
@@ -77,8 +91,7 @@
         <field name="arch" type="xml">
             <pivot string="Sản lượng mũ thí nghiệm" sample="1">
               <field name="ngay" type="row"/>
-              <field name="mu_up" type="measure" string="Úp"/>
-              <field name="mu_ngua" type="measure" string="Ngửa"/>
+              <field name="mu_up" type="measure" digits="(42,0)" string="Úp"/>              
               <field name="plantestname" type="col"/>
             </pivot>
         </field>

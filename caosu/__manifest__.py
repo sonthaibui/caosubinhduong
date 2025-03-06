@@ -25,9 +25,15 @@
         'views/xetthuong.xml',
         'views/xetai.xml',
         'views/phieuluong.xml',
+        #'data/update_color.xml',  # Include the update script
         #'views/assets.xml',
         'report/rubber_salary_report.xml',],
-    
+    '''assets': {
+        'web.assets_backend': [
+            #'caosu/static/src/js/pivot_widget.js',
+            #'caosu/static/src/css/color.css',
+        ],
+    },'''
     'demo': [],
     'application': True,
     'installable': True,
