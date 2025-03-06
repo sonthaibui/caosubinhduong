@@ -34,10 +34,11 @@
         <field name="name">rubbertest.tree</field>
         <field name="model">rubber.test</field>
         <field name="arch" type="xml">
-          <tree string="Rubber Test Tree View" create="0" multi_edit="1" default_order="ngay" decoration-bf="kichthich == True" decoration-warning="(miengcao =='2 miệng') or (miengcao =='Miệng ngửa cũ')" decoration-primary="miengcao =='Miệng ngửa mới'">
+          <tree string="Rubber Test Tree View" create="0" multi_edit="1" default_order="ngay desc" decoration-bf="kichthich == True" decoration-warning="(miengcao =='2 miệng') or (miengcao =='Miệng ngửa cũ')" decoration-primary="miengcao =='Miệng ngửa mới'">
             <field name="id" optional="hide"/>
+            <field name="plantestname" optional="show"/>
             <field name="ngay"/>
-            <field name="lo" optional="show"/>
+            <field name="lo" optional="hide"/>
             <field name="rubbertestbydate_id" widget="open_tab" optional="hide"/>                                            
             <field name="mu_up" />
             <field name="mulantruoc_up" optional="show"/>

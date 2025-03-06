@@ -23,17 +23,17 @@ class RubberTest(models.Model):
     _rec_name = 'empname'
 
     active = fields.Boolean('Active', default=True)   
-    do_up = fields.Float('Độ', default='0', digits='One Decimal')
-    do_up3 = fields.Float('Độ-3N', digits='One Decimal', compute='_compute_do3')
-    do_up6 = fields.Float('Độ-6N', digits='One Decimal', compute='_compute_do6')
-    do_ngua = fields.Float('Độ', digits='One Decimal')
-    do_bo = fields.Float('Độ', digits='One Decimal') #test thu    
+    do_up = fields.Float('Độ', default='0', digits=(16, 1))
+    do_up3 = fields.Float('Độ-3N', digits=(16, 1), compute='_compute_do3')
+    do_up6 = fields.Float('Độ-6N', digits=(16, 1), compute='_compute_do6')
+    do_ngua = fields.Float('Độ', digits=(16, 1))
+    do_bo = fields.Float('Độ', digits=(16, 1)) #test thu    
     
-    mu_up = fields.Float('Úp', default='0', digits='Product Unit of Measure')
-    mu_up3 = fields.Float('Úp-3N', default='0', digits='Product Unit of Measure')
-    mu_up6 = fields.Float('Úp-6N', default='0', digits='Product Unit of Measure')
-    mu_ngua = fields.Float('Ngửa', default='0', digits='Product Unit of Measure')
-    mu_bo = fields.Float('Bợ', default='0', digits='Product Unit of Measure')     
+    mu_up = fields.Float('Úp', default='0', digits=(16, 0))
+    mu_up3 = fields.Float('Úp-3N', default='0', digits=(16, 0))
+    mu_up6 = fields.Float('Úp-6N', default='0', digits=(16, 0))
+    mu_ngua = fields.Float('Ngửa', default='0', digits=(16, 0))
+    mu_bo = fields.Float('Bợ', default='0', digits=(16, 0))     
 
     ghichu = fields.Char('Ghi chú')
     kichthich = fields.Boolean('KT-U', store=True, readonly=False) #Son sua
@@ -60,20 +60,20 @@ class RubberTest(models.Model):
     to = fields.Char('Tổ', compute='_compute_to', store=True, readonly=False) #Son them
     miengcao = fields.Char('Miệng cạo', store=True, readonly=False) #Son them
     thoitiet = fields.Char('Thời tiết', compute='_compute_thoitiet', store=True, readonly=False) #Son them
-    lan_kt_up = fields.Integer('Lần KTU', default='0',store=True, digits='Product Unit of Measure')#son them 23.6.24
-    dao_kt_up = fields.Integer('Dao KTU', default='0',store=True, digits='Product Unit of Measure')
-    lan_kt_ngua = fields.Integer('Lần KTN', default='0',store=True, digits='Product Unit of Measure')#son them 23.6.24
-    dao_kt_ngua = fields.Integer('Dao KTN', default='0',store=True, digits='Product Unit of Measure')
-    mulantruoc_up = fields.Float('Lần trước U', default='0',store=True, digits='Product Unit of Measure')
-    mulantruoc_ngua = fields.Float('Lần trước N', default='0',store=True, digits='Product Unit of Measure')    
-    mudaotruoc_up = fields.Float('Dao trước U', default='0',store=True, digits='Product Unit of Measure')
-    mudaotruoc_ngua = fields.Float('Dao trước N', default='0',store=True, digits='Product Unit of Measure')
-    chenhlechkho_up = fields.Float('Khô U +/-', default='0',store=True, digits='Product Unit of Measure')
+    lan_kt_up = fields.Integer('Lần KTU', default='0',store=True)#son them 23.6.24
+    dao_kt_up = fields.Integer('Dao KTU', default='0',store=True)
+    lan_kt_ngua = fields.Integer('Lần KTN', default='0',store=True)#son them 23.6.24
+    dao_kt_ngua = fields.Integer('Dao KTN', default='0',store=True)
+    mulantruoc_up = fields.Float('Lần trước U', default='0',store=True, digits=(16, 0))
+    mulantruoc_ngua = fields.Float('Lần trước N', default='0',store=True, digits=(16, 0))    
+    mudaotruoc_up = fields.Float('Dao trước U', default='0',store=True, digits=(16, 0))
+    mudaotruoc_ngua = fields.Float('Dao trước N', default='0',store=True, digits=(16, 0))
+    chenhlechkho_up = fields.Float('Khô U +/-', default='0',store=True, digits=(16, 1))
     chenhlechkho_up_state = fields.Boolean('CLKU', default=True,store=True)
-    chenhlechkho_ngua = fields.Float('Khô N +/-', default='0',store=True, digits='Product Unit of Measure')
+    chenhlechkho_ngua = fields.Float('Khô N +/-', default='0',store=True, digits=(16, 1))
     chenhlechkho_ngua_state = fields.Boolean('CLKN', default=True,store=True)
-    quykho_up = fields.Float('Quy Khô U', default='0',store=True, digits='One Decimal')#son them 23.6.24
-    quykho_ngua = fields.Float('Quy Khô N', default='0',store=True, digits='One Decimal')
+    quykho_up = fields.Float('Quy Khô U', default='0',store=True, digits=(16, 1))#son them 23.6.24
+    quykho_ngua = fields.Float('Quy Khô N', default='0',store=True, digits=(16, 1))
 
     @api.depends('rubbertestbydate_id.ngay')
     def _compute_ngay(self):
