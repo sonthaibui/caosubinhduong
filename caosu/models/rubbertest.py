@@ -36,12 +36,12 @@ class RubberTest(models.Model):
     mu_bo = fields.Float('Bợ', default='0', digits=(16, 0))     
 
     ghichu = fields.Char('Ghi chú')
-    kichthich = fields.Boolean('KT-U', store=True, readonly=False) #Son sua
+    kichthich = fields.Boolean('KT-U', store=True, readonly=False, compute='_compute_kichthich') #Son sua
     kichthichngua = fields.Boolean('KT-N', store=True, readonly=False) #Son sua
     congthuc_kt = fields.Char('Công thức', store=True, readonly=False) #Son them
     ctktup = fields.Many2one('ctkt', string='CT úp', default=lambda self: self._default_ctkt())
     ctktngua = fields.Many2one('ctkt', string='CT ngửa')
-    occtktup = fields.Boolean('OC CT úp', default=False, store=True)
+    occtktup = fields.Boolean('OC CT úp', default = False, store=True)
     rubbertestbydate_id = fields.Many2one('rubber.test.by.date', string='Sản lượng thí nghiệm')
     kt_daoup = fields.Integer('KTU', default='0', digits='Product Unit of Measure', store=True, readonly=False)
     kt_daongua = fields.Integer('KTN', default='0', digits='Product Unit of Measure', store=True, readonly=False)
@@ -78,6 +78,13 @@ class RubberTest(models.Model):
     vanhcay = fields.Integer(related='plantationtest_id.vanhcay')
     matcao = fields.Char(related='plantationtest_id.matcao.name')        
 
+    @api.depends('ctktup') # Add the appropriate dependencies
+    def _compute_kichthich(self):
+        for rec in self:
+            if rec.ctktup and rec.ctktup.name != "Chưa bôi":
+                rec.kichthich = True
+            else: rec.kichthich = False            
+
     @api.depends('rubbertestbydate_id.ngay')
     def _compute_ngay(self):
         for rec in self:            
@@ -109,15 +116,25 @@ class RubberTest(models.Model):
                 rec.do_up6 = rec.mu_up * rec.do_up / rec.mu_up6
     @api.model
     def _default_ctkt(self):
-        if self.rubbertestbydate_id.ctktup and not self.occtktup: # phai lay gia tri cuar rubberbydate chu khong cho on change, neu ko thi bi gan Chua boi va doi sua ctktup cua rubberbydate moi tinh lai
-            default_ctkt = self.rubbertestbydate_id.ctktup
-        else:            
-            default_ctkt = self.env['ctkt'].search([('name', '=', 'Chưa bôi')], limit=1)
-            if not default_ctkt:
-            # Create a default ctkt record if none exist
-                default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})        
-        return default_ctkt.id if default_ctkt else None
+        for rec in self:        
+            if rec.rubbertestbydate_id.ctktup : 
+            # phai lay gia tri cuar rubberbydate chu khong cho on change, neu ko thi bi gan Chua boi va phai sua ctktup cua rubberbydate moi tinh lai
+                default_ctkt = rec.rubbertestbydate_id.ctktup
+            else:            
+                default_ctkt = self.env['ctkt'].search([('name', '=', 'Chưa bôi')], limit=1)
+                if not default_ctkt:
+                # Create a default ctkt record if none exist
+                    default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})        
+            return default_ctkt.id if default_ctkt else None
     @api.onchange('ctktup')
     def _onchange_ctktup(self):
         self.occtktup = True            
-
+        return {
+            'value': {
+                'occtktup': True
+            }
+        }
+    '''@api.depends('ctktup')
+    def _compute_occtktup(self):
+        for record in self:
+            record.occtktup = bool(record.ctktup)  # True if ctktup is set'''   

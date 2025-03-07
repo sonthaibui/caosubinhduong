@@ -36,8 +36,8 @@
                         </page>
                         
                         <page string="Sản lượng mũ cạo">
-                          <field name="rubbertest_line_ids" options="{'limit': 17}">
-                            <tree editable="bottom" create="0" delete="0" default_order ="plantestname" >
+                          <field name="rubbertest_line_ids">
+                            <tree editable="bottom" create="0" delete="0" default_order ="plantestname" options="{'limit': 17}">
                               <field name="plantestname" readonly="1" string="Cây" style="border-top-style: solid !important;border-width: 1px !important"/>      
                               <field name="mu_up" style="border-top-style: solid !important;border-width: 1px !important;"/>
                               <field name="mulantruoc_up" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
@@ -62,6 +62,8 @@
                               <field name="kichthich" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                               <field name="kichthichngua" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                               <field name="ctktup" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                              <field name="occtktup" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/> 
+                              <!--occtktup phai xuat hien o day thi onchange ctktup moi tac dong duoc-->
                               <field name="ctktngua" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>                              
                               <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important"/>
                             </tree>

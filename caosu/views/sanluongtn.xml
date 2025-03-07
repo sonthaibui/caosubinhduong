@@ -62,6 +62,7 @@
             <field name="chenhlechkho_up_state" optional="hide"/>
             <field name="kt_daoup" optional="hide"/>
             <field name="ctktup" optional="show"/>
+            <field name="occtktup" optional="hide "/>
             <field name="dao_kt_up" optional="show"/>
             <field name="lan_kt_up" optional="show"/>
             <field name="mu_ngua" optional="show"/>
