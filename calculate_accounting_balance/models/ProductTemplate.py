@@ -12,3 +12,4 @@ class ProductTemplate(models.Model):
     Si = fields.Float(string = 'SiO2', digits=(16, 2))
     OM = fields.Float(string = 'OM', digits=(16, 2))
     Humic = fields.Float(string = 'Humic', digits=(16, 2))
+    color = fields.Integer(string="Color Index", default=0)
