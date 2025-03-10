@@ -1,0 +1,4 @@
+/* Define the custom background color */
+.o_data_row.decoration-ligh_tblue {
+    background-color: rgb(185, 248, 253) !important;
+}

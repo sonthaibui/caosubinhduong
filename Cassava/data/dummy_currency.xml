@@ -1,0 +1,10 @@
+<odoo>
+    <data noupdate="1">
+        <record id="dummy_currency_kg" model="res.currency">
+            <field name="name">KG</field>
+            <field name="symbol">kg</field>
+            <field name="rounding">0.01</field>
+            <field name="decimal_places">2</field>
+        </record>
+    </data>
+</odoo>

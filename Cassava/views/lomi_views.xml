@@ -1,0 +1,349 @@
+<odoo>
+    <data>
+        <!-- Lomi Tree View -->
+        <record id="view_lomi_tree" model="ir.ui.view">
+            <field name="name">lomi.tree</field>
+            <field name="model">lomi</field>
+            <field name="arch" type="xml">
+                <tree string="Lomi">
+                    <field name="tenlo" optional="show"/>
+                    <field name="sohang" optional="show"/>
+                    <field name="soluongmi" optional="show"/>
+                    <field name="ngaytrong" optional="show"/>
+                    <field name="ngaytuoi" optional="show"/>
+                    <field name="sohom" optional="show"/>
+                    <field name="N" optional="show"/>
+                    <field name="P" optional="show"/>
+                    <field name="K" optional="show"/>
+                    <field name="OM" optional="show"/>
+                    <field name="giong" optional="show"/>
+                    <field name="kieutrong" optional="show"/>
+                </tree>
+            </field>
+        </record>        
+        <!-- Lomi Form View -->        
+        <record id="view_lomi_form" model="ir.ui.view">
+            <field name="name">lomi.form</field>
+            <field name="model">lomi</field>
+            <field name="arch" type="xml">
+                <form string="Lomi">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="tenlo"/>                            
+                                <field name="sohang"/>
+                                <field name="soluongmi" invisible="1"/>
+                                <field name="ngaytrong"/>
+                                <field name="ngaytuoi"/>
+                                <field name="sohom"/>
+                                <field name="giong"/>
+                                <field name="kieutrong"/>
+                            </group>
+                            <group>
+                                <div>
+                                    <table class="o_group_table" style="border: 0.5px solid #ccc; border-collapse: collapse;">
+                                        <thead>
+                                            <tr>
+                                                <th style="min-width:80px; text-align:center; font-weight:bold; border: 0.5px solid #ccc;">Loại phân</th>
+                                                <th style="min-width:80px; text-align:center; border: 0.5px solid #ccc;">Nhu cầu</th>
+                                                <th style="min-width:80px; text-align:center; border: 0.5px solid #ccc;">Đã bón</th>
+                                                <th style="min-width:80px; text-align:center; border: 0.5px solid #ccc;">Còn thiếu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><span style="font-weight: bold;">N</span></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="N_need"/></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="N"/></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="N_add"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><span style="font-weight: bold;">P</span></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="P_need"/></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="P"/></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="P_add"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><span style="font-weight: bold;">K</span></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="K_need"/></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="K"/></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"><field name="K_add"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Phân lót</td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="phanlot"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="money_lot"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Phân thúc 1</td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="phanthuc1"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="money_thuc1"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </group>
+                            
+                        </group>
+                        <field name="hangmi_ids">
+                            <tree editable="bottom">
+                                <field name="kieuhang_id" width="100"/>
+                                <field name="tenhang" width="100"/>
+                                <field name="sohang" width="80"/>
+                                <field name="soluongmi" width="80"/>
+                                <field name="giong_id" width="50"/>
+                                <field name="ngaytrong" width="100"/>
+                                <field name="ngaytuoi" width="80"/>
+                                <field name="kc_hom" width="50"/>
+                                <field name="kieutrong_id" width="80"/>
+                                <field name="cd_hang" width="80"/>
+                                <field name="cr_ro" width="80"/>
+                                <field name="sohom" width="80"/>
+                            </tree>
+                        </field>
+                        <field name="bonphan_line_ids" domain="[('lomi_ids', 'in', id)]">
+                            <tree delete="false" editable="0">
+                                <field name="giaidoan_id"/>
+                                <!--This assure it show tenhang not how many records-->
+                                <field name="hangmi_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="abbre" width="80"/>
+                                <field name="soluong" string="Tổng(kg)" width="60" sum="soluong"/>
+                                <field name="tyle_day" width="60" optional="hide"/>
+                                <field name="tyle_mat" width="60" optional="hide"/>
+                                <field name="kg_hang" string="1hàng(kg)" width="80"/>
+                                <field name="kg_day" string="Lótđáy(kg)" width="50"/>
+                                <field name="kg_mat" string="Lótcuốc(kg)" width="50"/>
+                                <field name="kg_hom" string="1hố(g)" width="50"/>
+                                <field name="N" width="80" sum="N" attrs="{'invisible': [('N', '=', 0)]}"/>
+                                <field name="P" width="80" sum="P" attrs="{'invisible': [('P', '=', 0)]}"/>
+                                <field name="K" width="80" sum="K" attrs="{'invisible': [('K', '=', 0)]}"/>
+                                <field name="Ca" width="80" sum="Ca" attrs="{'invisible': [('Ca', '=', 0)]}"/>
+                                <field name="Mg" width="80" sum="Mg" attrs="{'invisible': [('Mg', '=', 0)]}"/>
+                                <field name="Si" width="80" sum="Si" attrs="{'invisible': [('Si', '=', 0)]}"/>
+                                <field name="OM" width="80" sum="OM" attrs="{'invisible': [('OM', '=', 0)]}"/>
+                                <field name="Humic" width="80" sum="Humic" attrs="{'invisible': [('Humic', '=', 0)]}"/>
+                            </tree>
+                        </field>
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_hangmi_form" model="ir.ui.view">
+            <field name="name">hangmi.form</field>
+            <field name="model">hangmi</field>
+            <field name="arch" type="xml">
+                <form string="Hàng mì">
+                    <group>
+                        <field name="kieuhang_id"/>
+                        <field name="tenhang"/>
+                        <field name="sohang"/>
+                        <field name="soluongmi"/>
+                        <field name="giong_id"/>
+                        <field name="ngaytrong"/>
+                        <field name="ngaytuoi"/>
+                        <field name="kc_hom"/>
+                        <field name="kieutrong_id"/>
+                        <field name="cd_hang"/>
+                        <field name="cr_ro"/>
+                        <field name="sohom"/>
+                    </group>
+                    <field name="bonphan_line_ids" domain="[('hangmi_ids', 'in', id)]">
+                        <tree editable="bottom">
+                            <field name="giaidoan_id"/>
+                            <field name="phan_id"/>
+                            <field name="soluong"/>
+                            <field name="tyle_day"/>
+                            <field name="tyle_mat"/>
+                            <field name="kg_hang"/>
+                            <field name="kg_day"/>
+                            <field name="kg_mat"/>
+                            <field name="kg_hom"/>
+                            <field name="N"/>
+                            <field name="P"/>
+                            <field name="K"/>
+                            <field name="Ca"/>
+                            <field name="Mg"/>
+                            <field name="Si"/>
+                            <field name="OM"/>
+                            <field name="Humic"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+        <!-- Hangmi Tree View -->
+        <record id="view_hangmi_tree" model="ir.ui.view">
+            <field name="name">hangmi.tree</field>
+            <field name="model">hangmi</field>
+            <field name="arch" type="xml">
+            <tree string="Hàng mì">
+                <field name="kieuhang_id"/>
+                <field name="tenhang"/>
+                <field name="sohang"/>
+                <field name="soluongmi"/>
+                <field name="giong_id"/>
+                <field name="ngaytrong"/>
+                <field name="ngaytuoi"/>
+                <field name="kc_hom"/>
+                <field name="kieutrong_id"/>
+                <field name="cd_hang"/>
+                <field name="cr_ro"/>
+                <field name="sohom"/>
+            </tree>
+            </field>
+        </record>        
+        <!-- Kieuhang Form View --> 
+        <record id="view_kieuhang_form" model="ir.ui.view">
+            <field name="name">kieuhang.form</field>
+            <field name="model">kieuhang</field>
+            <field name="arch" type="xml">
+            <form string="Kiểu hàng">
+                <sheet>
+                <group>
+                    <field name="name"/>
+                </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        <!-- Kieuhang Tree View -->
+        <record id="view_kieuhang_tree" model="ir.ui.view">
+            <field name="name">kieuhang.tree</field>
+            <field name="model">kieuhang</field>
+            <field name="arch" type="xml">
+            <tree string="Kiểu hàng">
+                <field name="name"/>
+            </tree>
+            </field>
+        </record>
+        <!-- Kieutrong Form View -->
+        <record id="view_kieutrong_form" model="ir.ui.view">
+            <field name="name">kieutrong.form</field>
+            <field name="model">kieutrong</field>
+            <field name="arch" type="xml">
+                <form string="Kiểu trồng">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Kieutrong Tree View -->
+        <record id="view_kieutrong_tree" model="ir.ui.view">
+            <field name="name">kieutrong.tree</field>
+            <field name="model">kieutrong</field>
+            <field name="arch" type="xml">
+                <tree string="Kiểu trồng">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <!-- Kieuro Form View -->
+        <record id="view_kieuro_form" model="ir.ui.view">
+            <field name="name">kieuro.form</field>
+            <field name="model">kieuro</field>
+            <field name="arch" type="xml">
+                <form string="Kiểu đổ rò">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Kieuro Tree View -->
+        <record id="view_kieuro_tree" model="ir.ui.view">
+            <field name="name">kieuro.tree</field>
+            <field name="model">kieuro</field>
+            <field name="arch" type="xml">
+                <tree string="Kiểu đổ rò">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <!-- Giongmi Form View -->
+        <record id="view_giongmi_form" model="ir.ui.view">
+            <field name="name">giongmi.form</field>
+            <field name="model">giongmi</field>
+            <field name="arch" type="xml">
+                <form string="Giống mì">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Giongmi Tree View -->
+        <record id="view_giongmi_tree" model="ir.ui.view">
+            <field name="name">giongmi.tree</field>
+            <field name="model">giongmi</field>
+            <field name="arch" type="xml">
+                <tree string="Giống mì">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        
+        <!-- Actions -->
+        <record id="action_lomi" model="ir.actions.act_window">
+            <field name="name">Lomi</field>
+            <field name="res_model">lomi</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_hangmi" model="ir.actions.act_window">
+            <field name="name">Hàng mì</field>
+            <field name="res_model">hangmi</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_kieutrong" model="ir.actions.act_window">
+            <field name="name">Kiểu trồng</field>
+            <field name="res_model">kieutrong</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_kieuro" model="ir.actions.act_window">
+            <field name="name">Kiểu đổ rò</field>
+            <field name="res_model">kieuro</field>
+            <field name="view_mode">tree,form</field>
+        </record>        
+        <record id="action_kieuhang" model="ir.actions.act_window">
+            <field name="name">Kiểu hàng</field>
+            <field name="res_model">kieuhang</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_giongmi" model="ir.actions.act_window">
+            <field name="name">Giống mì</field>
+            <field name="res_model">giongmi</field>
+            <field name="view_mode">tree,form</field>
+        </record>    
+
+        <!-- Menus -->
+        <menuitem id="menu_cassava_root" name="TRỒNG MÌ" sequence="0" />
+        <menuitem id="menu_lomi_root" name="LÔ MÌ" parent="menu_cassava_root" action="action_lomi" sequence="1"/>
+        <menuitem id="menu_hangmi_root" name="HÀNG MÌ" parent="menu_cassava_root" sequence="2"/>
+        <menuitem id="menu_bonphan_root" name="BÓN PHÂN" parent="menu_cassava_root" sequence="3" />
+        <menuitem id="menu_bonphan" name="Bón phân" parent="menu_bonphan_root" action="action_bonphan" sequence="1"/>
+        <menuitem id="menu_bonphan_line" name="Bón phân Line" parent="menu_bonphan_root" action="action_bonphan_line" sequence="2"/>
+        <menuitem id="menu_hangmi" name="Hàng mì" parent="menu_hangmi_root" action="action_hangmi" sequence="1"/>
+        <menuitem id="menu_kieutrong" name="Kiểu trồng" parent="menu_hangmi_root" action="action_kieutrong" sequence="2"/>
+        <menuitem id="menu_kieuro" name="Kiểu đổ rò" parent="menu_hangmi_root" action="action_kieuro" sequence="3"/>
+        <menuitem id="menu_giongmi" name="Giống mì" parent="menu_hangmi_root" action="action_giongmi" sequence="4"/>
+        <menuitem id="menu_kieuhang" name="Kiểu hàng" parent="menu_hangmi_root" action="action_kieuhang" sequence="5"/>
+    </data>
+</odoo>

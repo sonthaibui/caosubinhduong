@@ -1,0 +1,77 @@
+<odoo>
+    <record id="view_bonphan_form" model="ir.ui.view">
+        <field name="name">bonphan.form</field>
+        <field name="model">bonphan</field>
+        <field name="arch" type="xml">
+            <form string="Bon Phan">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="lomi_ids" widget="many2many_tags"/>                        
+                            <field name="giaidoan_id"/>                       
+                            <field name="ngay"/>
+                        </group>
+                        <group>
+                            <field name="hang_avg"/>
+                            <field name="hang_actual"/>
+                            <field name="sohom_avg"/>
+                            <field name="sohom_actual"/>
+                        </group>
+                        <field name="loaiphan_line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="phan_id"/>
+                                <field name="soluong"/>
+                                <field name="abbre"/>
+                                <field name="donvi"/>
+                            </tree>
+                        </field>
+                        
+                    </group>
+                    <notebook>
+                        <page string="Bonphan Lines">
+                            <field name="bonphan_line_ids">
+                                <tree editable="bottom">
+                                    <field name="lomi_ids" widget="many2many_tags"/>
+                                    <field name="hangmi_ids" widget="many2many_tags"/>                                    
+                                    <field name="giaidoan_id"/>
+                                    <field name="abbre"/>
+                                    <field name="soluong"/>
+                                    <field name="kg_hang"/>
+                                    <!--<field name="kg_hang_display"/>-->
+                                    <field name="tyle_mat"/>
+                                    <field name="kg_mat"/>
+                                    <field name="tyle_day"/>
+                                    <field name="kg_day"/>
+                                    <field name="kg_hom"/>
+
+
+                                    <!-- Add other fields here -->
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bonphan_tree" model="ir.ui.view">
+        <field name="name">bonphan.tree</field>
+        <field name="model">bonphan</field>
+        <field name="arch" type="xml">
+            <tree string="Bon Phan">
+                <field name="lomi_ids"/>                
+                <field name="giaidoan_id"/>                
+                <field name="ngay"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_bonphan" model="ir.actions.act_window">
+        <field name="name">Bón phân</field>
+        <field name="res_model">bonphan</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    
+</odoo>

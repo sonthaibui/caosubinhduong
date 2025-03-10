@@ -1,0 +1,74 @@
+<odoo>
+    <data>
+        <!-- Bonphan Line Form View -->
+        <record id="view_bonphan_line_form" model="ir.ui.view">
+            <field name="name">bonphan.line.form</field>
+            <field name="model">bonphan.line</field>
+            <field name="arch" type="xml">
+            <form string="Bón phân Line">
+                <sheet>
+                <group>
+                    <field name="hangmi_ids" widget="many2many_tags"/>
+                    <field name="lomi_ids" widget="many2many_tags"/>
+                    <field name="giaidoan_id"/>
+                    <field name="phan_id"/>
+                    <field name="soluong"/>
+                    <field name="tyle_day"/>
+                    <field name="tyle_mat"/>
+                    <field name="kg_hang"/>
+                    <field name="kg_day"/>
+                    <field name="kg_mat"/>
+                    <field name="kg_hom"/>
+                    <field name="N"/>
+                    <field name="P"/>
+                    <field name="K"/>
+                    <field name="Ca"/>
+                    <field name="Mg"/>
+                    <field name="Si"/>
+                    <field name="OM"/>
+                    <field name="Humic"/>            
+                    
+                </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+
+        <!-- Bonphan Line Tree View -->
+        <record id="view_bonphan_line_tree" model="ir.ui.view">
+            <field name="name">bonphan.line.tree</field>
+            <field name="model">bonphan.line</field>
+            <field name="arch" type="xml">
+                <tree string="Bón phân Line">
+                    <field name="hangmi_ids" widget="many2many_tags"/>
+                    <field name="lomi_ids" widget="many2many_tags"/>
+                    <field name="giaidoan_id"/>
+                    <field name="phan_id"/>
+                    <field name="soluong"/>
+                    <field name="tyle_day"/>
+                    <field name="tyle_mat"/>
+                    <field name="kg_hang"/>
+                    <field name="kg_day"/>
+                    <field name="kg_mat"/>
+                    <field name="kg_hom"/>
+                    <field name="N"/>
+                    <field name="P"/>
+                    <field name="K"/>
+                    <field name="Ca"/>
+                    <field name="Mg"/>
+                    <field name="Si"/>
+                    <field name="OM"/>
+                    <field name="Humic"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Actions -->
+        <record id="action_bonphan_line" model="ir.actions.act_window">
+            <field name="name">Bón phân Line</field>
+            <field name="res_model">bonphan.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>        
+        
+    </data>
+</odoo>
