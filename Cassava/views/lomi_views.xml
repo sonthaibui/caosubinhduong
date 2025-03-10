@@ -71,23 +71,21 @@
                                             </tr>
                                             <tr>
                                                 <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Phân lót</td>
-                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                <td colspan="2" style="text-align: center; border: 0.5px solid #ccc;">
                                                     <field name="phanlot"/>
                                                 </td>
                                                 <td style="text-align: center; border: 0.5px solid #ccc;">
                                                     <field name="money_lot"/>
                                                 </td>
-                                                <td style="text-align: center; border: 0.5px solid #ccc;"></td>
                                             </tr>
                                             <tr>
                                                 <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Phân thúc 1</td>
-                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                <td colspan="2" style="text-align: center; border: 0.5px solid #ccc;">
                                                     <field name="phanthuc1"/>
                                                 </td>
                                                 <td style="text-align: center; border: 0.5px solid #ccc;">
                                                     <field name="money_thuc1"/>
                                                 </td>
-                                                <td style="text-align: center; border: 0.5px solid #ccc;"></td>
                                             </tr>
                                         </tbody>
                                     </table>

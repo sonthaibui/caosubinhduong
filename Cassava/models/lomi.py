@@ -57,7 +57,7 @@ class Lomi(models.Model):
                         seen.add(line.phan_id.id)
                         total += (line.soluong_lo or 0) * (line.phan_id.standard_price or 0)
             record.money_thuc1 = total
-            
+
     @api.depends("bonphan_line_ids")
     def _compute_phanlot(self):
         for record in self:
