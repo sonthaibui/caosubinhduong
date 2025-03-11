@@ -76,6 +76,7 @@ class Giongmi(models.Model):
     _description = 'Giống mì'
 
     name = fields.Char(string="Tên giống mì")
+    color = fields.Integer(string='Color')
 
 class Kieuhang(models.Model):
     _name = 'kieuhang'

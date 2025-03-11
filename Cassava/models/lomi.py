@@ -33,7 +33,16 @@ class Lomi(models.Model):
     money_lot = fields.Float(string="Tiền phân lót", compute='_compute_money_lot', digits=(16, 0))
     phanthuc1 = fields.Html(string="Phân Thúc 1", compute="_compute_phanthuc1")
     money_thuc1 = fields.Float(string="Tiền phân thúc1", compute='_compute_money_thuc1', digits=(16, 0))
-    
+    theodoi=fields.Html(string="Theo dõi")
+    # ... existing fields ...
+    note_ids = fields.Many2many(
+        comodel_name='note.note',
+        relation='lomi_note_rel',
+        column1='lomi_id',
+        column2='note_id',
+        string="Notes"
+    )
+
     @api.depends('bonphan_line_ids')
     def _compute_money_lot(self):
         for record in self:

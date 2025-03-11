@@ -7,16 +7,18 @@
             <field name="arch" type="xml">
                 <tree string="Lomi">
                     <field name="tenlo" optional="show"/>
-                    <field name="sohang" optional="show"/>
-                    <field name="soluongmi" optional="show"/>
-                    <field name="ngaytrong" optional="show"/>
+                    <field name="giong" optional="show" widget="many2one_tags" options="{'color_field': 'color'}"/>
+                    <field name="sohang" optional="hide"/>
+                    <field name="soluongmi" optional="hide"/>
+                    <field name="ngaytrong" optional="hide"/>
                     <field name="ngaytuoi" optional="show"/>
-                    <field name="sohom" optional="show"/>
-                    <field name="N" optional="show"/>
-                    <field name="P" optional="show"/>
-                    <field name="K" optional="show"/>
-                    <field name="OM" optional="show"/>
-                    <field name="giong" optional="show"/>
+                    <field name="sohom" optional="hide"/>
+                    <field name="N" optional="hide"/>
+                    <field name="P" optional="hide"/>
+                    <field name="K" optional="hide"/>
+                    <field name="OM" optional="hide"/>
+                    <field name="phanlot" optional="show"/>
+                    <field name="phanthuc1" optional="show"/>
                     <field name="kieutrong" optional="show"/>
                 </tree>
             </field>
@@ -132,7 +134,18 @@
                                 <field name="Humic" width="80" sum="Humic" attrs="{'invisible': [('Humic', '=', 0)]}"/>
                             </tree>
                         </field>
+                        <group nolabel="1">
+                            <field name="theodoi"></field>
+                        </group>
                         
+                        <!--<field>
+                            <field name="note_ids">
+                                <tree editable="bottom">
+                                    <field name="memo"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </field>-->
                     </sheet>
                 </form>
             </field>
@@ -282,6 +295,7 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="color" widget ="color"/>
                         </group>
                     </sheet>
                 </form>
