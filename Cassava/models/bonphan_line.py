@@ -7,7 +7,9 @@ class BonphanLine(models.Model):
     giaidoan_id = fields.Many2one('giaidoan', string="Giai đoạn", store=True)    
     phan_id = fields.Many2one('product.template', string="Phân", domain="[('categ_id.name', '=', 'VẬT TƯ PHÂN BÓN')]")
     abbre = fields.Char(string="Tên phân", related='phan_id.abbre', store=True)
+    ngaybon = fields.Date(string="Ngày bón", required=True)
     kieuhang_id = fields.Many2one('kieuhang', string="Kiểu hàng", required=True)  # Add this field
+    kieubon_id = fields.Many2one('kieubon', string="Kiểu bón")
     soluong_lo = fields.Float(string="SLG lô", digits=(16, 0))
     soluong = fields.Float(string="SLG", compute='_compute_kg', digits=(16, 0))
     tyle_day = fields.Float(string="TL đáy", digits=(16, 2), store=True)
@@ -21,6 +23,9 @@ class BonphanLine(models.Model):
     N = fields.Float(string="N", compute='_compute_phan', digits=(16, 0))
     P = fields.Float(string="P", compute='_compute_phan', digits=(16, 0))
     K = fields.Float(string="K", compute='_compute_phan', digits=(16, 0))
+    N_add = fields.Float(string="N+", compute='_compute_phan', digits=(16, 0))
+    P_add = fields.Float(string="P+", compute='_compute_phan', digits=(16, 0))
+    K_add = fields.Float(string="K+", compute='_compute_phan', digits=(16, 0))
     Ca = fields.Float(string="Ca", compute='_compute_phan', digits=(16, 0))
     Mg = fields.Float(string="Mg", compute='_compute_phan', digits=(16, 0))
     Si = fields.Float(string="Si", compute='_compute_phan', digits=(16, 0))
@@ -56,7 +61,7 @@ class BonphanLine(models.Model):
             if record.phan_id:
                 record.N = record.soluong * record.phan_id.N
                 record.P = record.soluong * record.phan_id.P
-                record.K = record.soluong * record.phan_id.K
+                record.K = record.soluong * record.phan_id.K                
                 record.Ca = record.soluong * record.phan_id.Ca
                 record.Mg = record.soluong * record.phan_id.Mg
                 record.Si = record.soluong * record.phan_id.Si
@@ -83,4 +88,8 @@ class BonphanLine(models.Model):
             else:
                 record.soluong = 0
                          
-            
+class Kieubon(models.Model):
+    _name = 'kieubon'
+    _description = 'Kiểu bón'
+
+    name = fields.Char(string="Tên kiểu bón")            

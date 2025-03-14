@@ -40,6 +40,8 @@
                                 <field name="sohom"/>
                                 <field name="giong"/>
                                 <field name="kieutrong"/>
+                                <field name="lo_type"/>
+                                <field name="to"/>
                             </group>
                             <group>
                                 <div>
@@ -97,25 +99,40 @@
                         </group>
                         <field name="hangmi_ids">
                             <tree editable="bottom">
-                                <field name="kieuhang_id" width="100"/>
-                                <field name="tenhang" width="100"/>
-                                <field name="sohang" width="80"/>
-                                <field name="soluongmi" width="80"/>
-                                <field name="giong_id" width="50"/>
-                                <field name="ngaytrong" width="100"/>
-                                <field name="ngaytuoi" width="80"/>
-                                <field name="kc_hom" width="50"/>
-                                <field name="kieutrong_id" width="80"/>
-                                <field name="cd_hang" width="80"/>
-                                <field name="cr_ro" width="80"/>
-                                <field name="sohom" width="80"/>
+                                <field name="kieuhang_id" width="100" optional="show"/>
+                                <field name="STT" width="80" attrs="{'invisible': [('hide', '=', 0)]}" optional="hide"/>
+                                <field name="tenhang" width="100" optional="hide"/>                                
+                                <field name="hide" optional="hide"/>
+                                <field name="sohang" width="80" optional="show" attrs="{'invisible': [('hide', '=', 1)]}"/>
+                                <field name="soluongmi" width="80" optional="show" attrs="{'invisible': [('hide', '=', 1)]}"/>
+                                <field name="giong_id" width="50" optional="show"/>
+                                <field name="ngaytrong" width="100" optional="hide"/>
+                                <field name="ngaytuoi" width="80" optional="show"/>
+                                <field name="kc_hom" width="50" optional="show"/>
+                                <field name="kieutrong_id" width="80" optional="show"/>
+                                <field name="cd_hang" width="80" optional="show"/>
+                                <field name="cr_ro" width="80" optional="show"/>
+                                <field name="sohom" width="80" optional="show"/>
+                                <field name="N" width="80" optional="hide"/>
+                                <field name="P" width="80" optional="hide"/>
+                                <field name="K" width="80" optional="hide"/>
+                                <field name="N_add" width="80" optional="hide" />
+                                <field name="P_add" width="80" optional="hide" />
+                                <field name="K_add" width="80" optional="hide" />
+                                <field name="phanlot" optional="show" />
+                                <field name="phanthuc1" optional="show" />
+                                <field name="money_lot" optional="show" />
+                                <field name="money_thuc1" optional="show" />
+
                             </tree>
                         </field>
                         <field name="bonphan_line_ids" domain="[('lomi_ids', 'in', id)]">
                             <tree delete="false" editable="0">
                                 <field name="giaidoan_id"/>
+                                <field name="kieuhang_id" optional="hide" />
+                                <field name="kieubon_id"/>
                                 <!--This assure it show tenhang not how many records-->
-                                <field name="hangmi_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="hangmi_ids" widget="many2many_tags" options="{'no_create': True}" optional ="hide"/>
                                 <field name="abbre" width="80"/>
                                 <field name="soluong" string="Tổng(kg)" width="60" sum="soluong"/>
                                 <field name="tyle_day" width="60" optional="hide"/>
@@ -124,14 +141,14 @@
                                 <field name="kg_day" string="Lótđáy(kg)" width="50"/>
                                 <field name="kg_mat" string="Lótcuốc(kg)" width="50"/>
                                 <field name="kg_hom" string="1hố(g)" width="50"/>
-                                <field name="N" width="80" sum="N" attrs="{'invisible': [('N', '=', 0)]}"/>
-                                <field name="P" width="80" sum="P" attrs="{'invisible': [('P', '=', 0)]}"/>
-                                <field name="K" width="80" sum="K" attrs="{'invisible': [('K', '=', 0)]}"/>
-                                <field name="Ca" width="80" sum="Ca" attrs="{'invisible': [('Ca', '=', 0)]}"/>
-                                <field name="Mg" width="80" sum="Mg" attrs="{'invisible': [('Mg', '=', 0)]}"/>
-                                <field name="Si" width="80" sum="Si" attrs="{'invisible': [('Si', '=', 0)]}"/>
-                                <field name="OM" width="80" sum="OM" attrs="{'invisible': [('OM', '=', 0)]}"/>
-                                <field name="Humic" width="80" sum="Humic" attrs="{'invisible': [('Humic', '=', 0)]}"/>
+                                <field name="N" width="80" sum="N" attrs="{'invisible': [('N', '=', 0)]}" optional="hide" />
+                                <field name="P" width="80" sum="P" attrs="{'invisible': [('P', '=', 0)]}" optional="hide" />                                
+                                <field name="K" width="80" sum="K" attrs="{'invisible': [('K', '=', 0)]}" optional="hide" />                                
+                                <field name="Ca" width="80" sum="Ca" attrs="{'invisible': [('Ca', '=', 0)]}" optional ="hide"/>
+                                <field name="Mg" width="80" sum="Mg" attrs="{'invisible': [('Mg', '=', 0)]}" optional ="hide"/>
+                                <field name="Si" width="80" sum="Si" attrs="{'invisible': [('Si', '=', 0)]}" optional ="hide"/>
+                                <field name="OM" width="80" sum="OM" attrs="{'invisible': [('OM', '=', 0)]}" optional ="hide"/>
+                                <field name="Humic" width="80" sum="Humic" attrs="{'invisible': [('Humic', '=', 0)]}" optional ="hide"/>
                             </tree>
                         </field>
                         <group nolabel="1">
@@ -154,7 +171,30 @@
             <field name="name">hangmi.form</field>
             <field name="model">hangmi</field>
             <field name="arch" type="xml">
-                <form string="Hàng mì">
+                <form string="Hàng mì">                    
+                    <field name="bonphan_line_ids" domain="[('hangmi_ids', 'in', id)]">
+                        <tree editable="bottom">
+                            <field name="giaidoan_id"/>
+                            <field name="ngaybon"/>
+                            <field name="kieubon_id"/>
+                            <field name="abbre"/>
+                            <field name="soluong"/>
+                            <field name="tyle_day" optional="hide"/>
+                            <field name="tyle_mat" optional="hide"/>
+                            <field name="kg_hang" optional="hide"/>
+                            <field name="kg_day"/>
+                            <field name="kg_mat"/>
+                            <field name="kg_hom"/>
+                            <field name="N" optional="hide"/>
+                            <field name="P" optional="hide"/>
+                            <field name="K" optional="hide"/>
+                            <field name="Ca" optional="hide"/>
+                            <field name="Mg" optional="hide"/>
+                            <field name="Si" optional="hide"/>
+                            <field name="OM" optional="hide"/>
+                            <field name="Humic" optional="hide"/>
+                        </tree>
+                    </field>
                     <group>
                         <field name="kieuhang_id"/>
                         <field name="tenhang"/>
@@ -168,52 +208,57 @@
                         <field name="cd_hang"/>
                         <field name="cr_ro"/>
                         <field name="sohom"/>
+                        <field name="quycach"/>
+                        <field name="theodoi"/>
                     </group>
-                    <field name="bonphan_line_ids" domain="[('hangmi_ids', 'in', id)]">
-                        <tree editable="bottom">
-                            <field name="giaidoan_id"/>
-                            <field name="phan_id"/>
-                            <field name="soluong"/>
-                            <field name="tyle_day"/>
-                            <field name="tyle_mat"/>
-                            <field name="kg_hang"/>
-                            <field name="kg_day"/>
-                            <field name="kg_mat"/>
-                            <field name="kg_hom"/>
-                            <field name="N"/>
-                            <field name="P"/>
-                            <field name="K"/>
-                            <field name="Ca"/>
-                            <field name="Mg"/>
-                            <field name="Si"/>
-                            <field name="OM"/>
-                            <field name="Humic"/>
-                        </tree>
-                    </field>
                 </form>
             </field>
         </record>
         <!-- Hangmi Tree View -->
-        <record id="view_hangmi_tree" model="ir.ui.view">
-            <field name="name">hangmi.tree</field>
-            <field name="model">hangmi</field>
+        <record id="view_hangmi_tree" model="ir.ui.view">            
             <field name="arch" type="xml">
-            <tree string="Hàng mì">
-                <field name="kieuhang_id"/>
-                <field name="tenhang"/>
-                <field name="sohang"/>
-                <field name="soluongmi"/>
-                <field name="giong_id"/>
-                <field name="ngaytrong"/>
-                <field name="ngaytuoi"/>
-                <field name="kc_hom"/>
-                <field name="kieutrong_id"/>
-                <field name="cd_hang"/>
-                <field name="cr_ro"/>
-                <field name="sohom"/>
+            <tree string="Hàng mì" multi_edit="1">
+                <field name="kieuhang_id" width="100" optional="hide"/>
+                <field name="STT" width="80" optional="show" attrs="{'invisible': [('hide', '=', 0)]}"/>
+                <field name="tenhang" width="100" optional="hide"/>                                
+                <field name="hide" optional="hide" />
+                <field name="sohang" width="80" optional="hide"/>
+                <field name="soluongmi" width="80" optional="hide"/>
+                <field name="giong_id" width="50" optional="hide"/>
+                <field name="ngaytrong" width="100" optional="hide"/>
+                <field name="ngaytuoi" width="80"/>
+                <field name="kc_hom" width="50" optional="hide"/>
+                <field name="kieutrong_id" width="80" optional="hide"/>
+                <field name="cd_hang" width="80" optional="hide"/>
+                <field name="cr_ro" width="80" optional="hide"/>
+                <field name="sohom" width="80" optional="hide"/>
+                <field name="phanlot" width="200" optional="show"/>
+                <field name="phanthuc1" width="200" optional="show"/>
+                <field name="quycach" width="200" optional="show"/>
+                <field name="theodoi" width="200" optional="show"/>
+                <field name="money_lot" width="200"/>
+                <field name="money_thuc1" width="200"/>
+                <field name="N" width="80" optional="hide"/>
+                <field name="P" width="80" optional="hide"/>
+                <field name="K" width="80" optional="hide"/>
+                <field name="N_add" width="80" optional="hide"/>
+                <field name="P_add" width="80" optional="hide"/>
+                <field name="K_add" width="80" optional="hide"/>
             </tree>
             </field>
-        </record>        
+        </record>
+        <record id="view_hangmi_search" model="ir.ui.view">
+            <field name="name">hangmi.search</field>
+            <field name="model">hangmi</field>
+            <field name="arch" type="xml">                
+                <search>                    
+                    <group expand="0" string="Group By">
+                        <filter name="lomi" string="Lo Mi" context="{'group_by': 'lomi_id'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <!-- Kieuhang Form View --> 
         <record id="view_kieuhang_form" model="ir.ui.view">
             <field name="name">kieuhang.form</field>
@@ -323,6 +368,7 @@
             <field name="name">Hàng mì</field>
             <field name="res_model">hangmi</field>
             <field name="view_mode">tree,form</field>
+             <field name="context">{"search_default_lomi":1,}</field>
         </record>
         <record id="action_kieutrong" model="ir.actions.act_window">
             <field name="name">Kiểu trồng</field>
@@ -352,8 +398,9 @@
         <menuitem id="menu_bonphan_root" name="BÓN PHÂN" parent="menu_cassava_root" sequence="3" />
         <menuitem id="menu_bonphan" name="Bón phân" parent="menu_bonphan_root" action="action_bonphan" sequence="1"/>
         <menuitem id="menu_bonphan_line" name="Bón phân Line" parent="menu_bonphan_root" action="action_bonphan_line" sequence="2"/>
+        <menuitem id="menu_kieubon" name="Kiểu bón" parent="menu_bonphan_root" action="action_kieubon" sequence="3"/>
         <menuitem id="menu_hangmi" name="Hàng mì" parent="menu_hangmi_root" action="action_hangmi" sequence="1"/>
-        <menuitem id="menu_kieutrong" name="Kiểu trồng" parent="menu_hangmi_root" action="action_kieutrong" sequence="2"/>
+        <menuitem id="menu_kieutrong" name="Kiểu trồng" parent="menu_hangmi_root" action="action_kieutrong" sequence="2"/>        
         <menuitem id="menu_kieuro" name="Kiểu đổ rò" parent="menu_hangmi_root" action="action_kieuro" sequence="3"/>
         <menuitem id="menu_giongmi" name="Giống mì" parent="menu_hangmi_root" action="action_giongmi" sequence="4"/>
         <menuitem id="menu_kieuhang" name="Kiểu hàng" parent="menu_hangmi_root" action="action_kieuhang" sequence="5"/>

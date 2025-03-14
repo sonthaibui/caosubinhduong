@@ -19,10 +19,12 @@
                         </group>
                         <field name="loaiphan_line_ids" nolabel="1">
                             <tree editable="bottom">
+                                <field name="ngaybon"/>
                                 <field name="phan_id"/>
                                 <field name="soluong"/>
                                 <field name="abbre"/>
                                 <field name="donvi"/>
+                                <field name="kieubon_id"/>
                             </tree>
                         </field>
                         
@@ -31,18 +33,20 @@
                         <page string="Bonphan Lines">
                             <field name="bonphan_line_ids">
                                 <tree editable="bottom">
-                                    <field name="lomi_ids" widget="many2many_tags"/>
-                                    <field name="hangmi_ids" widget="many2many_tags"/>                                    
-                                    <field name="giaidoan_id"/>
-                                    <field name="abbre"/>
-                                    <field name="soluong"/>
-                                    <field name="kg_hang"/>
+                                    <field name="lomi_ids" widget="many2many_tags" optional="show"/>
+                                    <field name="hangmi_ids" widget="many2many_tags" optional="show"/>                                    
+                                    <field name="ngaybon" optional="show"/>
+                                    <field name="giaidoan_id" optional="show"/>
+                                    <field name="kieubon_id" optional="show"/>
+                                    <field name="abbre" optional="show"/>
+                                    <field name="soluong" optional="show"/>
+                                    <field name="kg_hang" optional="show"/>
                                     <!--<field name="kg_hang_display"/>-->
-                                    <field name="tyle_mat"/>
-                                    <field name="kg_mat"/>
-                                    <field name="tyle_day"/>
-                                    <field name="kg_day"/>
-                                    <field name="kg_hom"/>
+                                    <field name="tyle_mat" optional="show"/>
+                                    <field name="kg_mat" optional="show"/>
+                                    <field name="tyle_day" optional="show"/>
+                                    <field name="kg_day" optional="show"/>
+                                    <field name="kg_hom" optional="show"/>
 
 
                                     <!-- Add other fields here -->

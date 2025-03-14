@@ -5,12 +5,13 @@ class Lomi(models.Model):
     _name = 'lomi'
     _description = 'Lô mì'
 
-    #to = fields.Many2one('hr.department', string='Tổ', domain=[('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22')], required=True)
+    to = fields.Many2one('hr.department', string='Tổ', domain=[('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22')])
+    lo_type = fields.Char(string="Loại lô", default='Mì')
     tenlo = fields.Char(string="Lô")
     sohang = fields.Integer(string="Số hàng", compute='_compute_sohang')
     soluongmi = fields.Integer(string="Số luồng", compute='_compute_soluongmi')
-    ngaytrong = fields.Date(string="Ngày trồng", compute='_compute_ngaytrong')
-    ngaytuoi = fields.Integer(string="Ngày tuổi", compute='_compute_ngaytuoi')
+    ngaytrong = fields.Char(string="Ngày trồng", compute='_compute_ngay')
+    ngaytuoi = fields.Char(string="Ngày tuổi", compute='_compute_ngay')
     sohom = fields.Integer(string="Số lượng hom", compute='_compute_sohom')
     N = fields.Float(string="N", compute='_compute_phan', digits=(16, 0))
     P = fields.Float(string="P", compute='_compute_phan', digits=(16, 0))
@@ -21,7 +22,6 @@ class Lomi(models.Model):
     N_add = fields.Float(string="N Thiếu", compute='_compute_npk_add', digits=(16, 0))
     P_add = fields.Float(string="P Thiếu", compute='_compute_npk_add', digits=(16, 0))
     K_add = fields.Float(string="K Thiếu", compute='_compute_npk_add', digits=(16, 0))  
-
     Ca = fields.Float(string="Ca", compute='_compute_phan', digits=(16, 0))
     OM = fields.Float(string="OM", compute='_compute_phan', digits=(16, 0))
     giong = fields.Char(string="Giống", compute='_compute_giong')
@@ -42,7 +42,15 @@ class Lomi(models.Model):
         column2='note_id',
         string="Notes"
     )
-
+    @api.onchange('lo_type')
+    def _onchange_lo_type(self):
+        if self.lo_type != 'Mì TN':
+            for hangmi in self.hangmi_ids:
+                hangmi.hide = True
+        else:
+            for hangmi in self.hangmi_ids:
+                hangmi.hide = False
+    
     @api.depends('bonphan_line_ids')
     def _compute_money_lot(self):
         for record in self:
@@ -124,19 +132,54 @@ class Lomi(models.Model):
             record.soluongmi = sum((line.soluongmi or 0) for line in record.hangmi_ids)
 
     @api.depends('hangmi_ids.ngaytrong')
-    def _compute_ngaytrong(self):
+    def _compute_ngay(self):
         for record in self:
-            ngaytrong_dates = [line.ngaytrong for line in record.hangmi_ids if line.ngaytrong]
-            if ngaytrong_dates:
-                record.ngaytrong = min(ngaytrong_dates)
-            else:
-                record.ngaytrong = False
+            ngaytrong_dates = []
+            for line in record.hangmi_ids:
+                if line.ngaytrong:
+                    if isinstance(line.ngaytrong, date):
+                        date_str = line.ngaytrong.strftime("%d.%m")
+                    else:
+                        try:
+                            dt = fields.Date.from_string(line.ngaytrong)
+                            date_str = dt.strftime("%d.%m")
+                        except Exception:
+                            date_str = line.ngaytrong
+                    if date_str not in ngaytrong_dates:
+                        ngaytrong_dates.append(date_str)
+            record.ngaytrong = " & ".join(ngaytrong_dates) if ngaytrong_dates else ""
+            
+            ngaytuoi_list = []
+            unique_ngaytuoi = []
+            for line in record.hangmi_ids:
+                if line.ngaytrong:
+                    try:
+                        dt = fields.Date.from_string(line.ngaytrong)
+                        age_str = str((date.today() - dt).days)
+                        kieutrong = line.kieutrong_id.name if line.kieutrong_id else "Chưa xác định"
+                        computed_val = f"{age_str} ({kieutrong})"
+                    except Exception:
+                        kieutrong = line.kieutrong_id.name if line.kieutrong_id else "Chưa xác định"
+                        computed_val = f"Invalid ({kieutrong})"
+                    if computed_val not in unique_ngaytuoi:
+                        unique_ngaytuoi.append(computed_val)
+            record.ngaytuoi = " & ".join(unique_ngaytuoi) if unique_ngaytuoi else ""
 
     @api.depends('ngaytrong')
     def _compute_ngaytuoi(self):
         for record in self:
-            if record.ngaytrong:
-                record.ngaytuoi = (date.today() - record.ngaytrong).days
+            unique_dates = []
+            for line in record.hangmi_ids:
+                if line.ngaytrong:
+                    try:
+                        dt = fields.Date.from_string(line.ngaytrong)
+                        if dt not in unique_dates:
+                            unique_dates.append(dt)
+                    except Exception:
+                        continue
+            if unique_dates:
+                # If multiple unique dates exist, take the first one to compute the age
+                record.ngaytuoi = (date.today() - unique_dates[0]).days
             else:
                 record.ngaytuoi = 0
 

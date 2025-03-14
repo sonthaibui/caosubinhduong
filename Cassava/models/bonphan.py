@@ -16,12 +16,13 @@ class Loaiphan(models.Model):
     _name = 'loaiphan'
     _description = 'Loại Phân'
 
+    ngaybon = fields.Date(string="Ngày bón", required=True)
     phan_id = fields.Many2one('product.template', string="Phân", domain="[('categ_id.name', '=', 'VẬT TƯ PHÂN BÓN')]")
     abbre = fields.Char(string="Phân", related='phan_id.abbre')
     soluong = fields.Float(string="Số lượng", digits=(16, 0))
     donvi = fields.Many2one('uom.uom', string="Đơn vị", related='phan_id.uom_id', store=True)
     bonphan_id = fields.Many2one('bonphan', string="Bón phân", required=True, ondelete='cascade')
-    
+    kieubon_id = fields.Many2one('kieubon', string="Kiểu bón")
 class BonPhan(models.Model):
     _name = 'bonphan'
     _description = 'Bon Phan'
@@ -86,7 +87,9 @@ class BonPhan(models.Model):
                     existing_line.write({
                         'lomi_ids': [(6, 0, self.lomi_ids.ids)],
                         'hangmi_ids': [(6, 0, hangmi_ids)],
-                        'soluong_lo': line.soluong  # Ensure this field is updated correctly
+                        'soluong_lo': line.soluong,  # Ensure this field is updated correctly
+                        'kieubon_id': line.kieubon_id.id,
+                        'ngaybon': line.ngaybon
                     })
                 else:
                     bonphan_line_obj.create({
@@ -96,7 +99,9 @@ class BonPhan(models.Model):
                         'lomi_ids': [(6, 0, self.lomi_ids.ids)],
                         'hangmi_ids': [(6, 0, hangmi_ids)],
                         'kieuhang_id': kieuhang.id,
-                        'soluong_lo': line.soluong  # Ensure this field is set correctly
+                        'soluong_lo': line.soluong,  # Ensure this field is set correctly
+                        'kieubon_id': line.kieubon_id.id,
+                        'ngaybon': line.ngaybon
                         # Add other fields and formulas here
                     })
 

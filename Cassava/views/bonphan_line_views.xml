@@ -11,6 +11,7 @@
                     <field name="hangmi_ids" widget="many2many_tags"/>
                     <field name="lomi_ids" widget="many2many_tags"/>
                     <field name="giaidoan_id"/>
+                    <field name="kieubon_id"/>
                     <field name="phan_id"/>
                     <field name="soluong"/>
                     <field name="tyle_day"/>
@@ -43,6 +44,7 @@
                     <field name="hangmi_ids" widget="many2many_tags"/>
                     <field name="lomi_ids" widget="many2many_tags"/>
                     <field name="giaidoan_id"/>
+                    <field name="kieubon_id"/>
                     <field name="phan_id"/>
                     <field name="soluong"/>
                     <field name="tyle_day"/>
@@ -62,8 +64,35 @@
                 </tree>
             </field>
         </record>
+        <record id="view_kieubon_form" model="ir.ui.view">
+            <field name="name">kieubon.form</field>
+            <field name="model">kieubon</field>
+            <field name="arch" type="xml">
+            <form string="Kieubon">
+                <sheet>
+                <group>
+                    <!-- Add your kieubon form fields here -->
+                </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
 
-        <!-- Actions -->
+        <record id="view_kieubon_tree" model="ir.ui.view">
+            <field name="name">kieubon.tree</field>
+            <field name="model">kieubon</field>
+            <field name="arch" type="xml">
+            <tree string="Kieubon">
+                <!-- Add your kieubon tree columns here -->
+            </tree>
+            </field>
+        </record>
+
+        <record id="action_kieubon" model="ir.actions.act_window">
+            <field name="name">Kieubon</field>
+            <field name="res_model">kieubon</field>
+            <field name="view_mode">tree,form</field>
+        </record>
         <record id="action_bonphan_line" model="ir.actions.act_window">
             <field name="name">Bón phân Line</field>
             <field name="res_model">bonphan.line</field>
