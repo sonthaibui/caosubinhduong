@@ -1,8 +1,8 @@
 {
     'name': 'General',
     'version': '1.0.0',
-    'sequence': -10,
-    'category': 'Custom',
+    'sequence': -101,
+    'category': 'Extended Apps',
     'author': 'Son Bui',
     'website': 'https://www.facebook.com/trinhtannguyen19',
     'summary': 'Modify core app',

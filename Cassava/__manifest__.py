@@ -1,7 +1,8 @@
 {
-    'name': 'Cassava',
+    'name': 'Quản lý Lô Mì',
     'version': '1.0',
-    'category': 'Custom',
+    'sequence': -102,
+    'category': 'Cassava',
     'summary': 'Management of Cassava',
     'description': """
         This module manages Lô mì with related information such as bón phân, giống mì, kiểu trồng, etc.

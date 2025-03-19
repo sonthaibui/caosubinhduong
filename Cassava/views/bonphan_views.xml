@@ -64,7 +64,7 @@
         <field name="model">bonphan</field>
         <field name="arch" type="xml">
             <tree string="Bon Phan">
-                <field name="lomi_ids"/>                
+                <field name="lomi_ids" widget="many2many_tags"/>                
                 <field name="giaidoan_id"/>                
                 <field name="ngay"/>
             </tree>
