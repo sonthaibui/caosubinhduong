@@ -19,6 +19,6 @@ access_giaidoan_user,access_giaidoan_user,model_giaidoan,group_cassava_user,1,0,
 access_giaidoan_admin,access_giaidoan_admin,model_giaidoan,group_cassava_admin,1,1,1,1
 access_loaiphan_user,access_loaiphan_user,model_loaiphan,group_cassava_user,1,0,0,0
 access_loaiphan_admin,access_loaiphan_admin,model_loaiphan,group_cassava_admin,1,1,1,1
-access_kieubon_user,access_kieubon_user,model_kieubon,group_cassava_user,1,0,0,0git
+access_kieubon_user,access_kieubon_user,model_kieubon,group_cassava_user,1,0,0,0
 access_kieubon_admin,access_kieubon_admin,model_kieubon,group_cassava_admin,1,1,1,1
 
