@@ -1,0 +1,39 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Define the Cassava User Group -->
+        <record id="group_cassava_user" model="res.groups">
+            <field name="name">Cassava User</field>
+            <field name="category_id" ref="base.module_category_cassava"/>
+        </record>
+
+        <!-- Define the Cassava Admin Group -->
+        <record id="group_cassava_admin" model="res.groups">
+            <field name="name">Cassava Admin</field>
+            <field name="category_id" ref="base.module_category_cassava"/>
+        </record>
+
+        <!-- Record rule for Cassava User: Only allow editing own records -->
+        <record id="cassava_user_rule" model="ir.rule">
+            <field name="name">Cassava User: Own Records</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_cassava_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <!-- Record rule for Cassava Admin: Full access -->
+        <record id="cassava_admin_rule" model="ir.rule">
+            <field name="name">Cassava Admin: Full Access</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_cassava_admin'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+</odoo>

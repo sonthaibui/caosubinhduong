@@ -14,6 +14,7 @@
         'views/bonphan_line_views.xml',
         'views/lomi_views.xml',                
         'security/ir.model.access.csv',
+        'security/groups.xml',
     ],
     'installable': True,
     'application': True,
