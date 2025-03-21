@@ -43,6 +43,7 @@ class Plantation(models.Model):
     treeline_line_ids = fields.One2many('tree.line', 'plantation_id', string='Hàng Cây')
     ghi_chu = fields.Text('Ghi Chú')
     note = fields.Html('Note')
+    nhom = fields.Char('Nhóm')
 
     """ @api.constrains('nongtruong','lo','to','sttcn')
     def _check_plantation_unique(self):

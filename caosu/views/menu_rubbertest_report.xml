@@ -1,0 +1,17 @@
+<odoo>  
+    
+    <record id="action_rubbertest_report_controller" model="ir.actions.act_url">
+        <field name="name">Theo dõi mũ cạo thí nghiệm</field>
+        <field name="url">/rubbertest/report?nhom=all&amp;lo=a&amp;compare_field=mu_up</field>
+        <field name="target">self</field>
+    </record>
+
+    
+    <!-- Root menu (Reports) without an action -->
+    <menuitem id="menu_report_root" name="Reports" sequence="10"/>           
+    
+    <menuitem id="menu_rubbertest_html_report" name="Rubbertest Report" 
+              parent="menu_report_root" 
+              action="action_rubbertest_report_controller" sequence="1"/>
+    
+</odoo>

@@ -29,3 +29,4 @@ access.rubber.test.date,access_rubber_test_date,caosu.model_rubber_test_date,bas
 access.rubber.tree,access_rubber_tree,caosu.model_rubber_tree,base.group_user,1,1,1,1
 access.ctkt,access_ctkt,caosu.model_ctkt,base.group_user,1,1,1,1
 access.matcao,access_matcao,caosu.model_matcao,base.group_user,1,1,1,1
+access.rubbertest.report.wizard,access_rubbertest_report_wizard,caosu.model_rubbertest_report_wizard,base.group_user,1,1,1,1

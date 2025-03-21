@@ -28,7 +28,7 @@
         <record id="cassava_admin_rule" model="ir.rule">
             <field name="name">Cassava Admin: Full Access</field>
             <field name="model_id" ref="base.model_res_users"/>
-            <field name="domain_force">['|', ('create_uid', '=', user.id), ('create_uid', '=', 43)]</field>
+            <field name="domain_force">[(1, '=', 1)]</field>
             <field name="groups" eval="[(4, ref('group_cassava_admin'))]"/>
             <field name="perm_read" eval="1"/>
             <field name="perm_write" eval="1"/>

@@ -61,6 +61,17 @@ class PlantationTest(models.Model):
     rubbertest_line_ids = fields.One2many('rubber.test', 'plantationtest_id', string='Sản lượng mũ cạo thí nghiệm')
     vanhcay = fields.Integer('Vành Cây', default=0)
     matcao = fields.Many2one('matcao', string='Mặt cạo', required=True, store=True)
+    nhom = fields.Selection([
+        ('red', 'Red'),
+        ('blue', 'Blue'),
+        ('lblue', 'Light Blue'),
+        ('orange', 'Orange'),
+        ('purple', 'Purple'),
+        ('pink', 'Pink'),
+        ('green', 'Green'),
+        ('black', 'Black'),
+        ('brown', 'Brown')
+    ], string='Nhóm', store=True)
     '''color = fields.Selection([
         ('red', 'Red'), 
         ('blue', 'Blue'), 

@@ -1,0 +1,13 @@
+<odoo>
+    <!-- Define an act_url action that calls the rubber report controller -->
+    <record id="action_rubber_report_controller" model="ir.actions.act_url">
+        <field name="name">Rubber Report</field>
+        <!-- Passing default parameters; adjust as needed -->
+        <field name="url">/rubber/report?nhom=all&amp;lo=a&amp;compare_field=mu_up&amp;detail_field=none&amp;sort_order=desc&amp;dao_kt_up=</field>
+        <field name="target">self</field>
+    </record>   
+   
+    
+    <menuitem id="menu_rubber_report" name="Rubber Report" parent="menu_report_root"
+              action="action_rubber_report_controller" sequence="2"/>
+</odoo>

@@ -77,6 +77,7 @@ class RubberTest(models.Model):
     #color = fields.Char(related='plantationtest_id.color')
     vanhcay = fields.Integer(related='plantationtest_id.vanhcay')
     matcao = fields.Char(related='plantationtest_id.matcao.name')        
+    
 
     @api.depends('ctktup') # Add the appropriate dependencies
     def _compute_kichthich(self):
