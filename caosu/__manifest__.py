@@ -39,8 +39,8 @@
         'report/rubber_report.xml',
         'views/report_rubber_template.xml',
         'views/menu_rubbertest_report.xml',
-        'views/menu_rubber_report.xml',    
-            
+        'views/menu_rubber_report.xml',
+        'views/rubbertest_report_wizard_view.xml',                
         ],
     '''assets': {
         'web.assets_backend': [

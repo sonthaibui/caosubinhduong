@@ -1,7 +1,7 @@
 <odoo>
     <template id="rubbertest_report_template">
         <t t-call="web.layout">
-            <div class="page">
+            <div class="page" style="font-size: 13px;">
                 <h2>Rubber Test Report Grouped by Date</h2>
                 <form action="/rubbertest/report" method="get">
                     <div>
@@ -86,21 +86,21 @@
                 <table class="table table-sm o_list_view" style="border-collapse: collapse;">
                     <thead>
                         <tr style="text-align: center; position: sticky; top: 0; background: #f2f2f2; z-index: 2;">
-                            <th style="text-align: center; border-right: 0.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;">
+                            <th style="width: 40px; text-align: center; border-right: 0.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;">
                                 Cây
                             </th>
                             <t t-foreach="cols" t-as="col">
-                                <th style="text-align: center; border-right: 0.5px solid #ccc; width:20px;">
+                                <th style="text-align: center; border-right: 0.5px solid #ccc; width:30px;">
                                     <t t-esc="col['name']"/>
                                 </th>
                             </t>
                         </tr>
                         <tr style="text-align: center; font-weight: normal; border-bottom: 1.5px solid #ccc; position: sticky; top: 15px; background: #fff; z-index: 2;">
-                            <td style="border-right: 0.5px solid #ccc; border-bottom: 1.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;">
+                            <td style="width:40px; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;">
                                 Vanh
                             </td>
                             <t t-foreach="cols" t-as="col">
-                                <td style="text-align: center; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid black; width:20px;" 
+                                <td style="text-align: center; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid black; width:30px;" 
                                     t-esc="col['vanhcay'] or '-'"/>
                             </t>
                         </tr>
@@ -109,10 +109,10 @@
                         <t t-foreach="docs" t-as="group">
                             <!-- Primary Row -->
                             <tr>
-                                <td style="width:1%; white-space: nowrap; text-align: center; border-right: 1.5px solid black; position: sticky; left: 0; background: #f2f2f2; z-index: 1;" 
+                                <td style="width:40px; white-space: nowrap; text-align: center; border-right: 1.5px solid black; position: sticky; left: 0; background: #f2f2f2; z-index: 1;" 
                                     t-esc="group.get('name')"/>
                                 <t t-foreach="cols" t-as="col">
-                                    <td style="border-right: 0.5px solid #ccc; width:20px;">
+                                    <td style="border-right: 0.5px solid #ccc; width:30px;">
                                         <div style="text-align: center; padding: 5px;"
                                              t-att-style="'background-color:' +
                                                 ( group.get('group_values', {}).get(col['id'], {}).get('ctktup') == 'Rub-latex'
@@ -128,7 +128,7 @@
                                                 </span>
                                             </t>
                                             <t t-else="">
-                                                <span style="display: block; text-align: center;">
+                                                <span style="display: block; text-align: center; font-family: 'Courier New', monospace;">
                                                     <t t-esc="cell.get('value') if cell.get('value') not in [0, '', None] else '-'"/>
                                                 </span>
                                             </t>
@@ -139,14 +139,14 @@
                             <!-- Optional Detail Row (if detail_field != 'none' and not 'kichthich') -->
                             <t t-if="detail_field != 'none' and detail_field != 'kichthich'">
                                 <tr>
-                                    <td style="white-space: nowrap; font-style: italic; text-align: center; border-right: 0.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 1;">
+                                    <td style="width: 40px; white-space: nowrap; font-style: italic; text-align: center; border-right: 0.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 1;">
                                         <t t-esc="detail_field_label"/>
                                     </td>
                                     <t t-foreach="cols" t-as="col">
-                                        <td style="border-right: 0.5px solid #ccc; width:20px;">
+                                        <td style="border-right: 0.5px solid #ccc; width:30px;">
                                             <div style="text-align: center; padding: 5px;">
                                                 <t t-set="detail_cell" t-value="group.get('group_detail_values', {}).get(col['id'], {})"/>
-                                                <span style="display: block; text-align: center;">
+                                                <span style="display: block; text-align: center; font-family: 'Courier New', monospace;">
                                                     <t t-esc="detail_cell.get('value') if detail_cell.get('value') not in [0, '', None] else '-'"/>
                                                 </span>
                                             </div>

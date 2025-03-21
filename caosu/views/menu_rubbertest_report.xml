@@ -1,4 +1,12 @@
 <odoo>  
+    <!-- Report Action: Generates the Rubber Test Report in HTML -->
+    <record id="action_report_rubbertest" model="ir.actions.report">
+        <field name="name">Rubber Test Report</field>
+        <field name="model">rubber.test</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">caosu.rubbertest_report_template</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
     
     <record id="action_rubbertest_report_controller" model="ir.actions.act_url">
         <field name="name">Theo dõi mũ cạo thí nghiệm</field>
@@ -6,12 +14,23 @@
         <field name="target">self</field>
     </record>
 
-    
-    <!-- Root menu (Reports) without an action -->
+    <!-- Report Action: Generates the Rubber Report in HTML -->
+    <record id="action_report_rubbertest" model="ir.actions.report">
+        <field name="name">Rubber Report</field>
+        <field name="model">rubber.test</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">caosu.rubbertest_report_template</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+
+    <!-- Root menu (Reports) -->
     <menuitem id="menu_report_root" name="Reports" sequence="10"/>           
     
+    <!-- Menu Item linked to the Rubbertest Report Action -->
     <menuitem id="menu_rubbertest_html_report" name="Rubbertest Report" 
               parent="menu_report_root" 
-              action="action_rubbertest_report_controller" sequence="1"/>
+              action="action_report_rubbertest" sequence="1"/>
+    
+   
     
 </odoo>

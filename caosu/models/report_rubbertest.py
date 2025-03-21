@@ -7,39 +7,34 @@ class ReportRubberTest(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        # Get parameters from wizard-data.
+        data = data or {}
+        # Retrieve parameters from wizard-data. Cast to string where needed.
         selected_nhom = data.get('nhom', 'all')
         compare_field = data.get('compare_field', 'mu_up')
         detail_field = data.get('detail_field', 'none')
         sort_order = data.get('sort_order', 'desc')
-        # New filters for plantation.test.
-        # For many2one, the value is expected to be an ID (or empty).
-        selected_to = data.get('to', '')
-        # For lo, we expect a key from the selection options.
-        selected_lo = data.get('lo', 'a')
-        # New filtering criteria from wizard:
-        dao_kt_up = data.get('dao_kt_up', '')
+        selected_to = str(data.get('to', ''))
+        selected_lo = str(data.get('lo', 'a'))
+        dao_kt_up = str(data.get('dao_kt_up', ''))
 
-        # Map field keys to human-readable labels.
+        # Field label mapping.
         field_labels = {
             'mu_up': 'Mũ Cạo Up',
             'do_up': 'Đỏ Cạo Up',
             'mu_ngua': 'Mũ Ngửa',
             'do_ngua': 'Đỏ Ngửa',
-            'kichthich': 'Kichthich',
+            'kichthich': 'Kích Thích',
             'none': 'None',
         }
         compare_field_label = field_labels.get(compare_field, compare_field)
         detail_field_label = field_labels.get(detail_field, detail_field)
 
         # Build domain for plantation.test records.
-        # If selected_nhom equals "all", skip filtering by nhom.
         domain = []
         if selected_nhom and selected_nhom != 'all':
             domain.append(('nhom', '=', selected_nhom))
         if selected_to and selected_to.strip():
             try:
-                # Try converting to int (for many2one)
                 to_val = int(selected_to)
             except ValueError:
                 to_val = selected_to
@@ -47,30 +42,27 @@ class ReportRubberTest(models.AbstractModel):
         if selected_lo and selected_lo.strip():
             domain.append(('lo', '=', selected_lo))
 
-        # Retrieve plantation.test records based on domain, ordered by socay.
+        # Retrieve plantation.test records ordered by socay.
         plantation_cols = self.env['plantation.test'].search(domain, order='socay')
-        # Build dynamic column headers.
         cols = []
         for pt in plantation_cols:
             cols.append({
                 'id': pt.id,
                 'name': pt.socay.name,
-                'vanhcay': pt.vanhcay  # Ensure this field exists on plantation.test
+                'vanhcay': pt.vanhcay,  # Make sure this field exists on plantation.test
             })
-            
+
         # Retrieve rubber.test records for those plantations.
         plantation_ids = [pt.id for pt in plantation_cols]
         rubber_domain = [('plantationtest_id', 'in', plantation_ids)]
-        # Add filter for dao_kt_up if provided.
-        if dao_kt_up:
+        if dao_kt_up and dao_kt_up.strip():
             try:
                 dao_kt_up_val = int(dao_kt_up)
             except ValueError:
                 dao_kt_up_val = dao_kt_up
             rubber_domain.append(('dao_kt_up', '=', dao_kt_up_val))
-        
         rubber_tests = self.env['rubber.test'].search(rubber_domain)
-        
+
         # Group rubber.test records by their rubbertestbydate.
         grouped = {}
         for rec in rubber_tests:
@@ -100,7 +92,7 @@ class ReportRubberTest(models.AbstractModel):
                 'value': int(getattr(rec, compare_field, 0)),
                 'kichthich': bool(getattr(rec, 'kichthich', False)),
                 'ctktup': getattr(rec, 'ctktup').name if getattr(rec, 'ctktup', False) else '',
-                'ghichu': getattr(rec, 'ghichu', ''),  # Add this line to include the note field
+                'ghichu': getattr(rec, 'ghichu', ''),
             }
             grouped[group_key]['group_values'][plant_id] = cell_data
             if detail_field != 'none':
@@ -116,36 +108,29 @@ class ReportRubberTest(models.AbstractModel):
                     except Exception:
                         detail_val = raw_val
                 grouped[group_key]['group_detail_values'][plant_id] = {'value': detail_val}
-        
-        # Sort rows by ngay.
+
         rows = sorted(
             list(grouped.values()),
             key=lambda g: g.get('date_value') or datetime.min,
             reverse=(sort_order == 'desc')
         )
-        
-        # Load available options for "to" and "lo".
+
+        # Load available filter options.
         available_to = self.env['hr.department'].search([('name','ilike','TỔ')], order='name')
         available_lo = self.env['plantation.test'].fields_get(['lo'])['lo']['selection']
-        
-        # Get distinct nhom values from plantation.test, include "all" as a default option.
         available_nhom_group = self.env['plantation.test'].read_group([], ['nhom'], ['nhom'])
         available_nhom = [{'id': 'all', 'name': 'All'}]
         for group in available_nhom_group:
             value = group.get('nhom')
-            if value:  # filter out empty
+            if value:
                 available_nhom.append({'id': value, 'name': value.capitalize()})
 
-        # Get distinct dao_kt_up values from rubber.test
         available_dao_group = self.env['rubber.test'].read_group([], ['dao_kt_up'], ['dao_kt_up'])
         available_dao = [{'id': '', 'name': '-- All --'}]
         for grp in available_dao_group:
             dao_val = grp.get('dao_kt_up')
             if dao_val not in (False, None):
-                available_dao.append({
-                    'id': dao_val,
-                    'name': str(dao_val)
-                })
+                available_dao.append({'id': dao_val, 'name': str(dao_val)})
 
         return {
             'docs': rows,
@@ -158,9 +143,9 @@ class ReportRubberTest(models.AbstractModel):
             'sort_order': sort_order,
             'available_to': available_to,
             'available_lo': available_lo,
-            'selected_to': selected_to,      # Add these to preserve the user's selection
-            'selected_lo': selected_lo,      # Add these to preserve the user's selection
-            'available_nhom': available_nhom, # Add this to include available nhom options
-            'available_dao': available_dao,  # Add this to include available dao_kt_up options
+            'selected_to': selected_to,
+            'selected_lo': selected_lo,
+            'available_nhom': available_nhom,
+            'available_dao': available_dao,
             'dao_kt_up': dao_kt_up,
         }

@@ -25,3 +25,15 @@ class RubberTestReportWizard(models.TransientModel):
             'compare_field': self.compare_field,
         }
         return self.env.ref('caosu.action_report_rubbertest').report_action(self, data=data)
+
+    def print_report(self):
+        wizard_data = {
+            'nhom': self.nhom,
+            'lo': self.lo,
+            'compare_field': self.compare_field,
+            'detail_field': self.detail_field,
+            'sort_order': self.sort_order,
+            'dao_kt_up': self.dao_kt_up,
+        }
+        # This will call the report action and render the report as HTML.
+        return self.env.ref('caosu.action_report_rubbertest').report_action(self, data=wizard_data)
