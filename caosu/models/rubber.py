@@ -15,7 +15,12 @@ class Rubber(models.Model):
     do = fields.Float('Độ', default='0', digits='One Decimal', store=True)
     do_phancay = fields.Float('Độ CN', compute='_compute_do_phancay', digits='One Decimal', store=True)
     ghichu = fields.Char('Ghi chú')
-    kichthich = fields.Boolean('KT', default=False)#, related='rubberbydate_id.kichthich', store=True, readonly=False) #Son sua
+    kichthich = fields.Boolean('KT-U', store=True, readonly=False, compute='_compute_kichthich') #Son sua
+    ctktup = fields.Many2one('ctkt', string='CT úp', default=lambda self: self._default_ctkt())
+    occtktup = fields.Boolean('OC CT úp', default = False, store=True)
+    congthuc_kt = fields.Selection(related='rubberbydate_id.congthuc_kt', store=True, readonly=False) #Son them
+    lan_kt = fields.Integer('Lần KT', related='rubberbydate_id.lan_kt',store=True, digits='Product Unit of Measure')#son them 23.6.24
+    dao_kt = fields.Integer('Dao KT', related='rubberbydate_id.dao_kt',store=True, digits='Product Unit of Measure')
     muday = fields.Float('Dây', default='0', digits='One Decimal')
     mudong = fields.Float('Đông', default='0', digits='One Decimal')
     muchen = fields.Float('Chén', default='0', digits='One Decimal')
@@ -48,9 +53,7 @@ class Rubber(models.Model):
     to = fields.Char('Tổ', related='rubberbydate_id.to.name', store=True, readonly=False) #Son them
     miengcao = fields.Char('Miệng cạo', related='rubberbydate_id.miengcao', store=True, readonly=False) #Son them
     thoitiet = fields.Char('Thời tiết', related='rubberbydate_id.thoitiet', store=True, readonly=False) #Son them
-    congthuc_kt = fields.Selection(related='rubberbydate_id.congthuc_kt', store=True, readonly=False) #Son them
-    lan_kt = fields.Integer('Lần KT', related='rubberbydate_id.lan_kt',store=True, digits='Product Unit of Measure')#son them 23.6.24
-    dao_kt = fields.Integer('Dao KT', related='rubberbydate_id.dao_kt',store=True, digits='Product Unit of Measure')
+    
     mulantruoc = fields.Float('Lần trước', default='0',store=True, digits='Product Unit of Measure')
     chenhlechmu = fields.Float('Mũ +/-', default='0', store=True, digits='Product Unit of Measure')
     chenhlechmu_state = fields.Boolean('CLM', default=True,store=True)
@@ -65,6 +68,33 @@ class Rubber(models.Model):
     ], string='Nghỉ', default='ko', required=True)
     caoxa = fields.Boolean('Cạo xả', default=True, readonly=True)
     
+    @api.depends('ctktup') # Add the appropriate dependencies
+    def _compute_kichthich(self):
+        for rec in self:
+            if rec.ctktup and rec.ctktup.name != "Chưa bôi":
+                rec.kichthich = True
+            else: rec.kichthich = False
+    @api.onchange('ctktup')
+    def _onchange_ctktup(self):
+        self.occtktup = True            
+        return {
+            'value': {
+                'occtktup': True
+            }
+        }
+    @api.model
+    def _default_ctkt(self):
+        for rec in self:        
+            if rec.rubberbydate_id.ctktup : 
+            # phai lay gia tri cuar rubberbydate chu khong cho on change, neu ko thi bi gan Chua boi va phai sua ctktup cua rubberbydate moi tinh lai
+                default_ctkt = rec.rubberbydate_id.ctktup
+            else:            
+                default_ctkt = self.env['ctkt'].search([('name', '=', 'Chưa bôi')], limit=1)
+                if not default_ctkt:
+                # Create a default ctkt record if none exist
+                    default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})        
+            return default_ctkt.id if default_ctkt else None
+        
     @api.onchange('mutap1')
     def _onchange_mutap1(self):
         for rec in self:

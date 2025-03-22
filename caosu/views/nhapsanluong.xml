@@ -389,6 +389,7 @@
                                 <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}"/>
                                 <field name="to" attrs="{'readonly': [('recorded','=',True)]}" widget="selection"/>
                                 <field name="to_name" invisible="1"/>
+                                <field name="ctktup"/>
                                 <field name="congthuc_kt" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}"/>
                                 <field name="caoxa" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}"/>
                               </group>
@@ -428,6 +429,7 @@
                               <field name="mudong" string="Đông" style="border-top-style: solid !important;border-width: 1px !important;" sum="mudong" optional="show"/>
                               <field name="muday" string="Dây" style="border-top-style: solid !important;border-width: 1px !important;" sum="muday" optional="show"/>
                               <field name="muchen" string="Chén" style="border-top-style: solid !important;border-width: 1px !important;" sum="muchen" optional="show"/>
+                              <field name="ctktup" optional="show"/>
                               <field name="kichthich" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                               <field name="caoxa" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                               <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>

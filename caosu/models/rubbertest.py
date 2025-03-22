@@ -6,6 +6,12 @@ class CTKT(models.Model):
     _rec_name = "name"
 
     name = fields.Char(string='Name', required=True, copy=False)
+    background = fields.Char(
+        string='Background',
+        default='#ffffff',
+        help='Pick a background color',
+        widget='colorpicker'
+    )
     congthuc = fields.Html(string='Công thức')
 
     '''def __init__(self, pool, cr):

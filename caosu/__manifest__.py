@@ -33,14 +33,13 @@
         'report/salary_office_report.xml',
         'report/salary_officer_report.xml',        
         'report/salaryboard_report.xml',
-        #'views/rubbertest_wizard_view.xml',
-        'views/report_rubbertest_template.xml',
-        'views/report_rubbertest_action.xml',
         'report/rubber_report.xml',
+        #'views/rubbertest_wizard_view.xml',
+        'views/report_rubbertest_template.xml',       
         'views/report_rubber_template.xml',
         'views/menu_rubbertest_report.xml',
         'views/menu_rubber_report.xml',
-        'views/rubbertest_report_wizard_view.xml',                
+                        
         ],
     '''assets': {
         'web.assets_backend': [
@@ -48,8 +47,7 @@
             #'caosu/static/src/css/color.css',
         ],
     },'''
-    'controllers': [
-        'caosu/controllers/rubbertest_report_controller.py',
+    'controllers': [        
         'caosu/controllers/rubber_report_controller.py',
     ],
     'demo': [],

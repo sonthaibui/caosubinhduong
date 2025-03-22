@@ -30,6 +30,20 @@ class Matcao(models.Model):
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char(string='Name', required=True, copy=False, default='Binh thuong')
+
+class RubberTestNhom(models.Model):
+    _name = 'rubber.test.nhom'
+    _description = 'Nhóm for Rubber Test Report'
+
+    name = fields.Char(string="Name", required=True)
+    plantationtest_ids = fields.Many2many(
+        'plantation.test',
+        'plantation_test_nhom_rel',
+        'rubber_test_nhom_id',   # this model's id field
+        'plantationtest_id',     # target model's id field
+        string='Plantation Tests',
+        store=True
+    )
 class PlantationTest(models.Model):
     _name = 'plantation.test'
     _description = 'Plantation Test Model'
@@ -61,17 +75,15 @@ class PlantationTest(models.Model):
     rubbertest_line_ids = fields.One2many('rubber.test', 'plantationtest_id', string='Sản lượng mũ cạo thí nghiệm')
     vanhcay = fields.Integer('Vành Cây', default=0)
     matcao = fields.Many2one('matcao', string='Mặt cạo', required=True, store=True)
-    nhom = fields.Selection([
-        ('red', 'Red'),
-        ('blue', 'Blue'),
-        ('lblue', 'Light Blue'),
-        ('orange', 'Orange'),
-        ('purple', 'Purple'),
-        ('pink', 'Pink'),
-        ('green', 'Green'),
-        ('black', 'Black'),
-        ('brown', 'Brown')
-    ], string='Nhóm', store=True)
+    # New model for Nhóm
+    nhom_ids = fields.Many2many(
+        'rubber.test.nhom',
+        'plantation_test_nhom_rel',
+        'plantationtest_id',       # this model's id field
+        'rubber_test_nhom_id',     # target model's id field
+        string='Nhóm',
+        store=True
+    )
     '''color = fields.Selection([
         ('red', 'Red'), 
         ('blue', 'Blue'), 

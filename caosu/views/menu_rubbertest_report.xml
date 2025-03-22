@@ -1,20 +1,5 @@
-<odoo>  
-    <!-- Report Action: Generates the Rubber Test Report in HTML -->
-    <record id="action_report_rubbertest" model="ir.actions.report">
-        <field name="name">Rubber Test Report</field>
-        <field name="model">rubber.test</field>
-        <field name="report_type">qweb-html</field>
-        <field name="report_name">caosu.rubbertest_report_template</field>
-        <field name="attachment_use" eval="False"/>
-    </record>
-    
-    <record id="action_rubbertest_report_controller" model="ir.actions.act_url">
-        <field name="name">Theo dõi mũ cạo thí nghiệm</field>
-        <field name="url">/rubbertest/report?nhom=all&amp;lo=a&amp;compare_field=mu_up</field>
-        <field name="target">self</field>
-    </record>
-
-    <!-- Report Action: Generates the Rubber Report in HTML -->
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>            
     <record id="action_report_rubbertest" model="ir.actions.report">
         <field name="name">Rubber Report</field>
         <field name="model">rubber.test</field>
@@ -25,12 +10,12 @@
 
     <!-- Root menu (Reports) -->
     <menuitem id="menu_report_root" name="Reports" sequence="10"/>           
-    
-    <!-- Menu Item linked to the Rubbertest Report Action -->
+
+    <!-- Menu Item linked directly to the report action with default context -->
     <menuitem id="menu_rubbertest_html_report" name="Rubbertest Report" 
-              parent="menu_report_root" 
-              action="action_report_rubbertest" sequence="1"/>
-    
-   
-    
+                parent="menu_report_root" 
+                action="action_report_rubbertest" 
+                sequence="1">
+        
+    </menuitem>    
 </odoo>

@@ -10,6 +10,7 @@ class RubberByDate(models.Model):
 
     active = fields.Boolean('Active', default=True)
     congthuc_kt = fields.Selection([('1', 'CT1'),('2', 'CT2'),('3', 'CT3'),('4', 'CT4'),('5', 'CT5'),('10', 'Nutri')], string="Công thức", default='10')
+    ctktup = fields.Many2one('ctkt', string='CT úp', default=lambda self: self._default_ctkt())
     daily_day = fields.Many2one('res.partner', string='Đại lý dây', domain=[('is_customer', '=', 'True')])
     daily_dong = fields.Many2one('res.partner', string='Đại lý đông', domain=[('is_customer', '=', 'True')])
     daily_tap = fields.Many2one('res.partner', string='Đại lý tạp', domain=[('is_customer', '=', 'True')])
@@ -518,3 +519,17 @@ class RubberByDate(models.Model):
         rubberdate_counts = self.search_count([('to','=',self.to.id),('ngay','=',self.ngay),('lo','=',self.lo),('id','!=',self.id)])
         if rubberdate_counts > 0:
             raise ValidationError("Nhập sản lượng " + self.to.name.lower() + " ngày " + str(datetime.strptime(str(self.ngay),'%Y-%m-%d').strftime('%d/%m/%Y')) + " lô " + self.lo.upper() + " đã tồn tại.")
+        
+    @api.model
+    def _default_ctkt(self):
+        default_ctkt = self.env['ctkt'].search([('name','=','Chưa bôi')], limit=1)
+        if not default_ctkt:
+            # Create a default ctkt record if none exist
+            default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})
+        return default_ctkt.id
+    
+    @api.onchange('ctktup')
+    def _onchange_ctktup(self):
+        for line in self.rubber_line_ids:
+            if not line.occtktup:
+                line.ctktup = self.ctktup

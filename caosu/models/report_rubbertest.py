@@ -8,16 +8,25 @@ class ReportRubberTest(models.AbstractModel):
     @api.model
     def _get_report_values(self, docids, data=None):
         data = data or {}
-        # Retrieve parameters from wizard-data. Cast to string where needed.
+        data.setdefault('lo', 'a')
+        data.setdefault('nhom', 'all')
+        # Get the department record with name TỔ 140 and return its id
+        if not data.get('to'):
+            department = self.env['hr.department'].search([('name', '=', 'TỔ 140')], limit=1)
+            data['to'] = department.id if department else ''
+        data.setdefault('dao_kt_up', 'all')
+        data.setdefault('compare_field', 'mu_up')
+        data.setdefault('detail_field', 'none')
+
+        # Use empty strings when parameter is not provided
         selected_nhom = data.get('nhom', 'all')
         compare_field = data.get('compare_field', 'mu_up')
         detail_field = data.get('detail_field', 'none')
         sort_order = data.get('sort_order', 'desc')
         selected_to = str(data.get('to', ''))
-        selected_lo = str(data.get('lo', 'a'))
-        dao_kt_up = str(data.get('dao_kt_up', ''))
+        selected_lo = data.get('lo', '')
+        dao_kt_up = data.get('dao_kt_up', 'all')
 
-        # Field label mapping.
         field_labels = {
             'mu_up': 'Mũ Cạo Up',
             'do_up': 'Đỏ Cạo Up',
@@ -29,41 +38,40 @@ class ReportRubberTest(models.AbstractModel):
         compare_field_label = field_labels.get(compare_field, compare_field)
         detail_field_label = field_labels.get(detail_field, detail_field)
 
-        # Build domain for plantation.test records.
+        # Build domain for plantation.test based on parameters.
         domain = []
         if selected_nhom and selected_nhom != 'all':
-            domain.append(('nhom', '=', selected_nhom))
+            try:
+                nhom_id = int(selected_nhom)
+                # Filter where the many2many field nhom_ids includes the selected nhom.
+                domain.append(('nhom_ids', 'in', [nhom_id]))
+            except ValueError:
+                pass
         if selected_to and selected_to.strip():
             try:
                 to_val = int(selected_to)
             except ValueError:
                 to_val = selected_to
             domain.append(('to', '=', to_val))
-        if selected_lo and selected_lo.strip():
+        if selected_lo:
             domain.append(('lo', '=', selected_lo))
 
-        # Retrieve plantation.test records ordered by socay.
         plantation_cols = self.env['plantation.test'].search(domain, order='socay')
         cols = []
         for pt in plantation_cols:
             cols.append({
                 'id': pt.id,
                 'name': pt.socay.name,
-                'vanhcay': pt.vanhcay,  # Make sure this field exists on plantation.test
+                'vanhcay': pt.vanhcay,
             })
 
-        # Retrieve rubber.test records for those plantations.
         plantation_ids = [pt.id for pt in plantation_cols]
         rubber_domain = [('plantationtest_id', 'in', plantation_ids)]
-        if dao_kt_up and dao_kt_up.strip():
-            try:
-                dao_kt_up_val = int(dao_kt_up)
-            except ValueError:
-                dao_kt_up_val = dao_kt_up
+        if dao_kt_up and dao_kt_up.strip() and dao_kt_up.isdigit():
+            dao_kt_up_val = int(dao_kt_up)
             rubber_domain.append(('dao_kt_up', '=', dao_kt_up_val))
         rubber_tests = self.env['rubber.test'].search(rubber_domain)
 
-        # Group rubber.test records by their rubbertestbydate.
         grouped = {}
         for rec in rubber_tests:
             if not rec.rubbertestbydate_id:
@@ -71,11 +79,8 @@ class ReportRubberTest(models.AbstractModel):
             group_key = rec.rubbertestbydate_id.id
             if group_key not in grouped:
                 try:
-                    if hasattr(rec.rubbertestbydate_id.ngay, 'strftime'):
-                        date_value = rec.rubbertestbydate_id.ngay
-                    else:
-                        date_value = datetime.strptime(rec.rubbertestbydate_id.ngay, '%Y-%m-%d')
-                    long_date = date_value.strftime('%d.%m.%y')
+                    date_value = rec.rubbertestbydate_id.ngay
+                    long_date = date_value.strftime('%d.%m.%y') if hasattr(date_value, 'strftime') else date_value
                 except Exception:
                     long_date = rec.rubbertestbydate_id.ngay or 'No Name'
                     date_value = datetime.min
@@ -91,15 +96,12 @@ class ReportRubberTest(models.AbstractModel):
             cell_data = {
                 'value': int(getattr(rec, compare_field, 0)),
                 'kichthich': bool(getattr(rec, 'kichthich', False)),
-                'ctktup': getattr(rec, 'ctktup').name if getattr(rec, 'ctktup', False) else '',
+                'background': getattr(rec, 'ctktup').background if getattr(rec, 'ctktup', False) else '',
                 'ghichu': getattr(rec, 'ghichu', ''),
             }
             grouped[group_key]['group_values'][plant_id] = cell_data
             if detail_field != 'none':
-                try:
-                    raw_val = getattr(rec, detail_field, '')
-                except Exception:
-                    raw_val = ''
+                raw_val = getattr(rec, detail_field, '')
                 if detail_field == 'kichthich':
                     detail_val = 'Yes' if raw_val else 'No'
                 else:
@@ -115,19 +117,17 @@ class ReportRubberTest(models.AbstractModel):
             reverse=(sort_order == 'desc')
         )
 
-        # Load available filter options.
-        available_to = self.env['hr.department'].search([('name','ilike','TỔ')], order='name')
-        available_lo = self.env['plantation.test'].fields_get(['lo'])['lo']['selection']
-        available_nhom_group = self.env['plantation.test'].read_group([], ['nhom'], ['nhom'])
+        # Build available options.
         available_nhom = [{'id': 'all', 'name': 'All'}]
-        for group in available_nhom_group:
-            value = group.get('nhom')
-            if value:
-                available_nhom.append({'id': value, 'name': value.capitalize()})
-
-        available_dao_group = self.env['rubber.test'].read_group([], ['dao_kt_up'], ['dao_kt_up'])
+        for nhom in self.env['rubber.test.nhom'].search([]):
+            available_nhom.append({'id': nhom.id, 'name': nhom.name})
+        available_to = self.env['hr.department'].search(
+            [('name', 'in', ["TỔ 1", "TỔ 106", "TỔ 140", "TỔ 2", "TỔ 8"])],
+            order='name'
+        )
+        available_lo = self.env['plantation.test'].fields_get(['lo'])['lo']['selection']
         available_dao = [{'id': '', 'name': '-- All --'}]
-        for grp in available_dao_group:
+        for grp in self.env['rubber.test'].read_group([], ['dao_kt_up'], ['dao_kt_up']):
             dao_val = grp.get('dao_kt_up')
             if dao_val not in (False, None):
                 available_dao.append({'id': dao_val, 'name': str(dao_val)})
@@ -141,11 +141,11 @@ class ReportRubberTest(models.AbstractModel):
             'detail_field_label': detail_field_label,
             'selected_nhom': selected_nhom,
             'sort_order': sort_order,
+            'available_nhom': available_nhom,
             'available_to': available_to,
             'available_lo': available_lo,
             'selected_to': selected_to,
             'selected_lo': selected_lo,
-            'available_nhom': available_nhom,
-            'available_dao': available_dao,
             'dao_kt_up': dao_kt_up,
+            'available_dao': available_dao,
         }
