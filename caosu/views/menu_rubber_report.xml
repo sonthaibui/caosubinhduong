@@ -8,6 +8,6 @@
     </record>   
    
     
-    <menuitem id="menu_rubber_report" name="Rubber Report" parent="menu_report_root"
+    <menuitem id="menu_rubber_report" name="Mũ Công nhân" parent="menu_report_root"
               action="action_rubber_report_controller" sequence="2"/>
 </odoo>

@@ -9,10 +9,10 @@
     </record>
 
     <!-- Root menu (Reports) -->
-    <menuitem id="menu_report_root" name="Reports" sequence="10"/>           
+    <menuitem id="menu_report_root" name="Xem báo cáo" sequence="10"/>           
 
     <!-- Menu Item linked directly to the report action with default context -->
-    <menuitem id="menu_rubbertest_html_report" name="Rubbertest Report" 
+    <menuitem id="menu_rubbertest_html_report" name="Mũ thí nghiệm" 
                 parent="menu_report_root" 
                 action="action_report_rubbertest" 
                 sequence="1">

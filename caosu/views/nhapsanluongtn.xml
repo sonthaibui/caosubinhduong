@@ -121,6 +121,7 @@
                     <group>
                         <field name="name"/>                        
                         <field name="congthuc"/>
+                        <field name="background" widget="color"/>
                     </group>
                 </sheet>
             </form>
