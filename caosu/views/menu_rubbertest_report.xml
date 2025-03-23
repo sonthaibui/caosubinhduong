@@ -15,7 +15,7 @@
     <menuitem id="menu_rubbertest_html_report" name="Mũ thí nghiệm" 
                 parent="menu_report_root" 
                 action="action_report_rubbertest" 
-                sequence="1">
+                sequence="2">
         
     </menuitem>    
 </odoo>

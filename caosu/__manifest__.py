@@ -34,12 +34,11 @@
         'report/salary_officer_report.xml',        
         'report/salaryboard_report.xml',
         'report/rubber_report.xml',
-        #'views/rubbertest_wizard_view.xml',
         'views/report_rubbertest_template.xml',       
-        'views/report_rubber_template.xml',
+        'views/report_rubber_template.xml',        
+        'views/rubber_config_views.xml',
         'views/menu_rubbertest_report.xml',
-        'views/menu_rubber_report.xml',
-                        
+        'views/menu_rubber_report.xml',                        
         ],
     '''assets': {
         'web.assets_backend': [
@@ -55,4 +54,5 @@
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'post_init_hook': 'post_init_hook',
 }

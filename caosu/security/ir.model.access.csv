@@ -30,4 +30,5 @@ access.rubber.tree,access_rubber_tree,caosu.model_rubber_tree,base.group_user,1,
 access.ctkt,access_ctkt,caosu.model_ctkt,base.group_user,1,1,1,1
 access.matcao,access_matcao,caosu.model_matcao,base.group_user,1,1,1,1
 access.rubber.test.nhom,access_rubber_test_nhom,caosu.model_rubber_test_nhom,base.group_user,1,1,1,1
-
+access.rubber.department.config,access_rubber_department_config,caosu.model_rubber_department_config,base.group_user,1,1,1,1
+access.rubbertest.department.config,access_rubbertest_department_config,caosu.model_rubbertest_department_config,base.group_user,1,1,1,1

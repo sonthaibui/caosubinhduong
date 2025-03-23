@@ -1,89 +1,80 @@
 <odoo>
     <template id="rubber_report_template">
-        <t t-call="web.layout">
-            <div class="page">
-                <h2>Rubber Report Grouped by Date</h2>
-                <form action="/rubber/report" method="get">
-                    <div>
-                        <label for="nhom">Nhóm:</label>
-                        <select name="nhom" id="nhom">
-                            <t t-foreach="available_nhom" t-as="nhom_rec">
-                                <option t-att-value="nhom_rec['id']" 
-                                        t-esc="nhom_rec['name']" 
-                                        t-att-selected="selected_nhom == nhom_rec['id'] and 'selected' or ''"/>
-                            </t>
-                        </select>
+        <!-- Use html_container like rubbertest does -->
+        <t t-call="web.html_container">
+            <t t-set="disable_header" t-value="True"/>
+            <t t-set="disable_logo" t-value="True"/>
+            <t t-set="disable_commercial_header" t-value="True"/>
+            <div class="page" style="font-size: 13px;">
+                <h2>THEO DÕI SẢN LƯỢNG CÔNG NHÂN</h2>
+                <!-- Update form action to match rubbertest pattern -->
+                <form action="/report/html/caosu.rubber_report_template" method="get">
+                    <div style="display: flex; gap: 20px;">
+                        <!-- Left column: to, lo, dao_kt -->
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 10px;">
+                                <label for="to">Tổ:</label>
+                                <select name="to" id="to">
+                                    <option value="">-- All --</option>
+                                    <t t-raw="to_options_html"/>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <label for="lo">Lô:</label>
+                                <select name="lo" id="lo">
+                                    <t t-raw="lo_options_html"/>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <label for="dao_kt">Dao KT:</label>
+                                <select name="dao_kt" id="dao_kt">
+                                    <t t-raw="dao_options_html"/>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Right column: nhom, compare_field, detail_field -->
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 10px;">
+                                <label for="nhom">Nhóm:</label>
+                                <select name="nhom" id="nhom">
+                                    <t t-raw="nhom_options_html"/>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <label for="compare_field">Mũ:</label>
+                                <select name="compare_field" id="compare_field">
+                                    <t t-raw="compare_options_html"/>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <label for="detail_field">Độ:</label>
+                                <select name="detail_field" id="detail_field">
+                                    <t t-raw="detail_options_html"/>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label for="compare_field">Primary Field:</label>
-                        <select name="compare_field" id="compare_field">
-                            <option t-att-value="'cong'" t-att-selected="compare_field=='mu_up' and 'selected' or false">Mũ</option>                         
-                                                        
-                        </select>
+                    <div style="text-align: left; margin-top: 5px;">
+                        <button type="submit" class="btn btn-primary">Xem kết quả</button>
                     </div>
-                    <div>
-                        <label for="detail_field">Detail Field:</label>
-                        <select name="detail_field" id="detail_field">
-                            <option t-att-value="'none'" t-att-selected="detail_field=='none' and 'selected' or false">None</option>
-                            <option t-att-value="'kichthich'" t-att-selected="detail_field=='kichthich' and 'selected' or false">Kichthich</option>                            
-                            <option t-att-value="'do_phancay'" t-att-selected="detail_field=='do_phancay' and 'selected' or false">Độ</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="to">Tổ:</label>
-                        <select name="to" id="to">
-                            <option t-att-value="''">-- All --</option>
-                            <t t-foreach="available_to" t-as="to_rec">
-                                <option t-att-value="to_rec.id" 
-                                        t-esc="to_rec.name" 
-                                        t-att-selected="selected_to and int(selected_to)==to_rec.id and 'selected' or ''"/>
-                            </t>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="lo">Lô:</label>
-                        <select name="lo" id="lo">
-                            <option t-att-value="''">-- All --</option>
-                            <t t-foreach="available_lo" t-as="lo_opt">
-                                <option t-att-value="lo_opt[0]"
-                                    t-esc="lo_opt[1]"
-                                    t-att-selected="selected_lo == lo_opt[0] and 'selected' or ''"/>
-                            </t>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="dao_kt">Dao KT:</label>
-                        <select name="dao_kt" id="dao_kt">
-                            <t t-foreach="available_dao" t-as="dao">
-                                <option t-att-value="dao['id']"
-                                        t-att-selected="dao['id'] == (dao_kt or '') and 'selected' or ''">
-                                    <t t-esc="dao['name']"/>
-                                </option>
-                            </t>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="sort_order">Sort by Ngày:</label>
-                        <button type="submit" name="sort_order" value="asc"
-                            t-att-class="sort_order=='asc' and 'btn btn-primary' or 'btn btn-default'">
-                            Ascending
-                        </button>
-                        <button type="submit" name="sort_order" value="desc"
-                            t-att-class="sort_order=='desc' and 'btn btn-primary' or 'btn btn-default'">
-                            Descending
-                        </button>
-                    </div>
-                    <button type="submit">Refresh Report</button>
                 </form>
                 <br/>
-                <p>
-                    Selected Nhóm: <t t-esc="selected_nhom or 'N/A'"/>
-                    Primary Field: <t t-esc="compare_field_label or compare_field"/>
-                    Detail Field: <t t-esc="detail_field_label or detail_field"/>
-                </p>
-                <table class="table table-sm o_list_view" style="border-collapse: collapse;">
+                <!--<p style="background-color: #f8f9fa; padding: 10px; border: 1px solid #ddd;">
+                    Debug: selected_nhom=<t t-esc="selected_nhom"/> |
+                    selected_to=<t t-esc="selected_to"/> | 
+                    selected_to_int=<t t-esc="selected_to_int"/> | 
+                    selected_lo=<t t-esc="selected_lo"/> |
+                    compare_field=<t t-esc="compare_field"/> |
+                    detail_field=<t t-esc="detail_field"/> |
+                    dao_kt=<t t-esc="dao_kt"/> |
+                    avai_to=<t t-esc="available_to"/> |
+                    avai_lo=<t t-esc="available_lo"/> |
+                    avai_dao=<t t-esc="available_dao"/> |
+                </p>-->
+                <table class="table table-sm o_list_view report-table" style="border-collapse: collapse;">
                     <thead>
-                        <tr style="text-align: center; font-weight: normal; border-bottom: 1.5px solid #ccc; position: sticky; top: 15px; background: #fff; z-index: 2;">
+                        <tr style="text-align: center; font-weight: bold; border-bottom: 1.5px solid #ccc; position: sticky; top: 30px; background: #fff; z-index: 2;">
                             <td style="width: 40px; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;">
                                 STT
                             </td>
@@ -95,32 +86,25 @@
                         </tr>
                         <tr style="text-align: center; position: sticky; top: 0; background: #f2f2f2; z-index: 2;">
                             <td style="width: 40px; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;">
-                                Ten
+                                TÊN
                             </td>
                             <t t-foreach="cols" t-as="col">
                                 <td style="text-align: center; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid black; width:20px;" 
                                     t-esc="col['CN'] or '-'"/>
                             </t>
                         </tr>
-                        
                     </thead>
                     <tbody>
                         <t t-foreach="docs" t-as="group">
                             <!-- Primary Row -->
                             <tr>
-                                <td style="width: 40px; white-space: nowrap; text-align: center; border-right: 1.5px solid black; position: sticky; left: 0; background: #f2f2f2; z-index: 1;" 
+                                <td style="width: 40px; white-space: nowrap; font-weight: bold; text-align: center; border-right: 1.5px solid black; position: sticky; left: 0; background: #f2f2f2; z-index: 1;" 
                                     t-esc="group.get('name')"/>
                                 <t t-foreach="cols" t-as="col">
                                     <td style="border-right: 0.5px solid #ccc; width:20px;">
+                                        <t t-set="cell" t-value="group.get('group_values', {}).get(col['id'], {})"/>
                                         <div style="text-align: center; padding: 5px;"
-                                             t-att-style="'background-color:' +
-                                                ( group.get('group_values', {}).get(col['id'], {}).get('congthuc_kt') == 'Rub-latex'
-                                                   and '#FCB51D'
-                                                   or group.get('group_values', {}).get(col['id'], {}).get('congthuc_kt') == 'Nutri'
-                                                   and '#2EE92B'
-                                                   or group.get('group_values', {}).get(col['id'], {}).get('congthuc_kt') == 'CT1'
-                                                   and '#ABF0F7' or '' )">
-                                            <t t-set="cell" t-value="group.get('group_values', {}).get(col['id'], {})"/>
+                                            t-att-style="'background-color:' + (cell.get('background') or '')">                                    
                                             <t t-if="cell.get('kichthich')">
                                                 <span style="font-weight: bold; display: block; text-align: center; font-family: 'Courier New', monospace;">
                                                     <t t-esc="cell.get('value') if cell.get('value') not in [0, '', None] else '-'"/>
@@ -145,7 +129,7 @@
                                         <td style="border-right: 0.5px solid #ccc; width:20px;">
                                             <div style="text-align: center; padding: 5px;">
                                                 <t t-set="detail_cell" t-value="group.get('group_detail_values', {}).get(col['id'], {})"/>
-                                                <span style="display: block; text-align: center;">
+                                                <span class="detail-value" style="display: block; text-align: center;">
                                                     <t t-esc="detail_cell.get('value') if detail_cell.get('value') not in [0, '', None] else '-'"/>
                                                 </span>
                                             </div>
@@ -156,7 +140,19 @@
                         </t>
                     </tbody>
                 </table>
+                <!-- Move the style inside the template -->
+                <style>
+                    .report-table td {
+                        font-size: 13px !important;
+                        text-align: right;
+                    }
+                    .detail-value, .compare-value {
+                        font-size: 13px !important;
+                        white-space: nowrap;
+                    }
+                </style>
             </div>
         </t>
     </template>
+    
 </odoo>

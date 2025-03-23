@@ -1,0 +1,135 @@
+<odoo>
+    <!-- ============ VIEWS ============ -->
+    <!-- Form view for rubber config -->
+    <record id="rubber_department_config_form_view" model="ir.ui.view">
+        <field name="name">rubber.department.config.form</field>
+        <field name="model">rubber.department.config</field>
+        <field name="arch" type="xml">
+            <form string="Rubber Department Configuration">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Departments">
+                            <field name="department_ids" domain="[('name', 'ilike', 'TỔ')]">
+                                <tree>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                            <div class="text-muted">
+                                Select the departments that should be available in Rubber Reports
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Form view for rubbertest config -->
+    <record id="rubbertest_department_config_form_view" model="ir.ui.view">
+        <field name="name">rubbertest.department.config.form</field>
+        <field name="model">rubbertest.department.config</field>
+        <field name="arch" type="xml">
+            <form string="Rubber Test Department Configuration">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Departments">
+                            <field name="department_ids" domain="[('name', 'ilike', 'TỔ')]">
+                                <tree>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                            <div class="text-muted">
+                                Select the departments that should be available in Rubber Test Reports
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view for rubber config -->
+    <record id="rubber_department_config_tree_view" model="ir.ui.view">
+        <field name="name">rubber.department.config.tree</field>
+        <field name="model">rubber.department.config</field>
+        <field name="arch" type="xml">
+            <tree string="Rubber Department Configurations">
+                <field name="name"/>
+                <field name="active"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Tree view for rubbertest config -->
+    <record id="rubbertest_department_config_tree_view" model="ir.ui.view">
+        <field name="name">rubbertest.department.config.tree</field>
+        <field name="model">rubbertest.department.config</field>
+        <field name="arch" type="xml">
+            <tree string="Rubber Test Department Configurations">
+                <field name="name"/>
+                <field name="active"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ============ ACTIONS ============ -->
+    <!-- Action for rubber configuration -->
+    <record id="action_rubber_department_config" model="ir.actions.act_window">
+        <field name="name">Rubber Departments</field>
+        <field name="res_model">rubber.department.config</field>
+        <field name="view_mode">tree,form</field>  <!-- Changed to tree,form -->
+        <field name="target">current</field>
+    </record>
+
+    <!-- Action for rubbertest configuration -->
+    <record id="action_rubbertest_department_config" model="ir.actions.act_window">
+        <field name="name">Rubber Test Departments</field>
+        <field name="res_model">rubbertest.department.config</field>
+        <field name="view_mode">tree,form</field>  <!-- Changed to tree,form -->
+        <field name="target">current</field>
+    </record>
+
+    <!-- ============ MENUS ============ -->
+    <!-- Configuration menus for rubber -->
+    <menuitem id="menu_report_config" 
+              name="Configuration" 
+              parent="menu_report_root" 
+              sequence="100"/>
+
+    <menuitem id="menu_rubber_department_config" 
+              name="Rubber Report Departments" 
+              parent="menu_report_config" 
+              action="action_rubber_department_config" 
+              sequence="1"/>    
+
+    <menuitem id="menu_rubbertest_department_config" 
+              name="Rubber Test Departments" 
+              parent="menu_report_config" 
+              action="action_rubbertest_department_config" 
+              sequence="2"/>
+
+    <!-- ============ DEFAULT DATA (noupdate) ============ -->
+    <data noupdate="1">
+        <record id="default_rubber_department_config" model="rubber.department.config">
+            <field name="name">Default Department Configuration</field>
+            <field name="active">True</field>
+            <!-- Initial department IDs will be set via code -->
+        </record>
+        
+        <record id="default_rubbertest_department_config" model="rubbertest.department.config">
+            <field name="name">Default Rubber Test Configuration</field>
+            <field name="active">True</field>
+            <!-- Initial department IDs will be set via code -->
+        </record>
+    </data>
+</odoo>

@@ -8,100 +8,54 @@
             <div class="page" style="font-size: 13px;">
                 <h2>Theo dõi mũ thí nghiệm</h2>
                 <form action="/report/html/caosu.rubbertest_report_template" method="get">
-                    <div style="display: flex; flex-wrap: wrap;">
-                        <div style="flex: 0 0 50%; padding-right: 10px;">
-                            <div>
-                                <label for="nhom">Nhóm:</label>
-                                <select name="nhom" id="nhom">
-                                    <t t-foreach="available_nhom" t-as="nhom_rec">
-                                        <option t-att-value="nhom_rec['id']"
-                                                t-att-selected="selected_nhom == nhom_rec['id'] and 'selected' or ''">
-                                            <t t-esc="nhom_rec['name']"/>
-                                        </option>
-                                    </t>
-                                </select>
-                            </div>
-                            <div>
+                    <div style="display: flex; gap: 20px;">
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 10px;">
                                 <label for="to">Tổ:</label>
                                 <select name="to" id="to">
-                                    <option t-att-value="''" t-att-selected="selected_to=='' and 'selected' or ''">-- All --</option>
-                                    <t t-foreach="available_to" t-as="to_rec">
-                                        <option t-att-value="to_rec.id" t-att-selected="selected_to == to_rec.name and 'selected' or ''">
-                                            <t t-esc="to_rec.name"/>
-                                        </option>
-                                    </t>
+                                    <option value="">-- All --</option>
+                                    <t t-raw="to_options_html"/>
                                 </select>
                             </div>
-                            <div>
+                            <div style="margin-bottom: 10px;">
                                 <label for="lo">Lô:</label>
                                 <select name="lo" id="lo">
-                                    <option t-att-value="''" t-att-selected="selected_lo=='' and 'selected' or ''">-- All --</option>
-                                    <t t-foreach="available_lo" t-as="lo_opt">
-                                        <option t-att-value="lo_opt[0]"
-                                                t-esc="lo_opt[1]"
-                                                t-att-selected="selected_lo == lo_opt[0] and 'selected' or ''"/>
-                                    </t>
+                                    <t t-raw="lo_options_html"/>
                                 </select>
                             </div>
-                            <div>
-                                <label for="dao_kt_up">Dao úp:</label>
+                            <div style="margin-bottom: 10px;">
+                                <label for="dao_kt_up">Dao KT:</label>
                                 <select name="dao_kt_up" id="dao_kt_up">
-                                    <t t-foreach="available_dao" t-as="dao">
-                                        <option t-att-value="dao['id']"
-                                                t-att-selected="dao['id'] == (dao_kt_up or '') and 'selected' or ''">
-                                            <t t-esc="dao['name']"/>
-                                        </option>
-                                    </t>
+                                    <t t-raw="dao_options_html"/>
                                 </select>
                             </div>
                         </div>
-                        <div style="flex: 0 0 50%; padding-left: 10px;">                            
-                            <div>
-                                <label for="compare_field">Dòng chính:</label>
-                                <select name="compare_field" id="compare_field">
-                                    <option t-att-value="'mu_up'" t-att-selected="compare_field=='mu_up' and 'selected' or ''">
-                                        Mũ Úp
-                                    </option>                            
-                                    <option t-att-value="'mu_ngua'" t-att-selected="compare_field=='mu_ngua' and 'selected' or ''">
-                                        Mũ Ngửa
-                                    </option>                            
+                        
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 10px;">
+                                <label for="nhom">Nhóm:</label>
+                                <select name="nhom" id="nhom">
+                                    <t t-raw="nhom_options_html"/>
                                 </select>
                             </div>
-                            <div>
-                                <label for="detail_field">Dòng phụ:</label>
-                                <select name="detail_field" id="detail_field">
-                                    <option t-att-value="'none'" t-att-selected="detail_field=='none' and 'selected' or ''">
-                                        Không hiện
-                                    </option>
-                                    <option t-att-value="'kichthich'" t-att-selected="detail_field=='kichthich' and 'selected' or ''">
-                                        Kichthich
-                                    </option>
-                                    <option t-att-value="'mu_ngua'" t-att-selected="detail_field=='mu_ngua' and 'selected' or ''">
-                                        Mũ Ngửa
-                                    </option>
-                                    <option t-att-value="'do_up'" t-att-selected="detail_field=='do_up' and 'selected' or ''">
-                                        Độ úp
-                                    </option>
-                                    <option t-att-value="'do_ngua'" t-att-selected="detail_field=='do_ngua' and 'selected' or ''">
-                                        Độ ngửa
-                                    </option>
+                            <div style="margin-bottom: 10px;">
+                                <label for="compare_field">Compare:</label>
+                                <select name="compare_field" id="compare_field">
+                                    <t t-raw="compare_options_html"/>
                                 </select>
-                            </div>                            
-                            <div>
-                                <label for="sort_order">Sort by Ngày:</label>
-                                <button type="submit" name="sort_order" value="asc"
-                                    t-att-class="sort_order=='asc' and 'btn btn-primary' or 'btn btn-default'">
-                                    Ascending
-                                </button>
-                                <button type="submit" name="sort_order" value="desc"
-                                    t-att-class="sort_order=='desc' and 'btn btn-primary' or 'btn btn-default'">
-                                    Descending
-                                </button>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <label for="detail_field">Detail:</label>
+                                <select name="detail_field" id="detail_field">
+                                    <t t-raw="detail_options_html"/>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <br/>
-                    <button type="submit">Xem kết quả</button>
+                    
+                    <div style="text-align: left; margin-top: 5px;">
+                        <button type="submit" class="btn btn-primary">Xem kết quả</button>
+                    </div>
                 </form>
                 <br/>
                 <table class="table table-sm o_list_view" style="border-collapse: collapse;">
