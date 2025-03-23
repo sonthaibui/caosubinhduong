@@ -1,5 +1,8 @@
 from odoo import api, models
 from datetime import datetime
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class ReportRubber(models.AbstractModel):
     _name = 'report.caosu.rubber_report_template'
@@ -74,7 +77,13 @@ class ReportRubber(models.AbstractModel):
         # Build dynamic column headers.
         cols = []
         for pt in plantation_objs:
-            employee_name = pt.employee_id.name
+            try:
+                employee_name = pt.employee_id.name
+                employee_address = pt.employee_id.diachi if hasattr(pt.employee_id, 'diachi') else ''
+            except Exception as e:
+                employee_name = "N/A"
+                employee_address = ""
+                _logger.warning(f"Error accessing employee data: {e}")
             if ('-' in employee_name):
                 employee_name = employee_name.split('-')[0].strip()
             cols.append({
