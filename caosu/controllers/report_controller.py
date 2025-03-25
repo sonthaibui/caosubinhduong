@@ -61,3 +61,41 @@ class ReportController(http.Controller):
         except Exception as e:
             _logger.exception(f"Error updating rubber test ghichu: {str(e)}")
             return {'success': False, 'error': str(e)}
+
+    @http.route('/report/update_rubber_ghichu', type='json', auth="user")
+    def update_rubber_ghichu(self):
+        try:
+            # Get data from the request
+            data = request.jsonrequest
+            _logger.info(f"Received data: {data}")
+            
+            rubberbydate_id = data.get('rubberbydate_id')
+            plantation_id = data.get('plantation_id')
+            ghichu = data.get('ghichu', '')
+            
+            if not rubberbydate_id or not plantation_id:
+                _logger.warning("Missing required parameters")
+                return {'success': False, 'error': 'Missing required parameters'}
+            
+            # Find the rubber record
+            domain = [
+                ('rubberbydate_id', '=', int(rubberbydate_id)),
+                ('plantation_id', '=', int(plantation_id)),
+            ]
+            
+            _logger.info(f"Searching with domain: {domain}")
+            rubber = request.env['rubber'].search(domain, limit=1)
+            
+            if not rubber:
+                _logger.warning(f"No record found with domain: {domain}")
+                return {'success': False, 'error': 'Record not found'}
+            
+            # Update the ghichu field
+            _logger.info(f"Found record ID {rubber.id}, updating ghichu to: {ghichu}")
+            result = rubber.write({'ghichu': ghichu})
+            _logger.info(f"Update result: {result}")
+            
+            return {'success': True}
+        except Exception as e:
+            _logger.exception(f"Error updating rubber ghichu: {str(e)}")
+            return {'success': False, 'error': str(e)}

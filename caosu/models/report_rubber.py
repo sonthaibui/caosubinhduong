@@ -135,6 +135,8 @@ class ReportRubber(models.AbstractModel):
                     'id': group_key,
                     'name': long_date,
                     'date_value': date_value,
+                    'do_giao': rec.rubberbydate_id.do_giao or 0,  # Add this line
+                    'tongmu': rec.rubberbydate_id.tongmu or 0,    # Add this line
                     'group_values': {col['id']: {'value': 0, 'kichthich': False, 'background': ''} for col in cols},
                 }
                 if detail_field != 'none':
@@ -197,6 +199,61 @@ class ReportRubber(models.AbstractModel):
                 
                 grouped[group_key]['group_detail_values'][plant_id] = {'value': detail_val}
         
+        # In your _get_report_values method, add these values to each group
+        for rec in rubber_objs:
+            # Process each rubber record
+            group_key = rec.rubberbydate_id.id
+            
+            if group_key not in grouped:
+                # Format the date for display
+                date_value = rec.rubberbydate_id.ngay
+                try:
+                    if hasattr(date_value, 'strftime'):
+                        long_date = date_value.strftime('%A, %d %B %Y')
+                    else:
+                        date_obj = datetime.strptime(date_value, '%Y-%m-%d')
+                        long_date = date_obj.strftime('%A, %d %B %Y')
+                except Exception as e:
+                    long_date = date_value
+                
+                # Get do_giao and tongmu values from rubberbydate_id
+                do_giao_val = rec.rubberbydate_id.do_giao or 0
+                do_giao_formatted = f"{float(do_giao_val):.1f}" if do_giao_val else '-'
+                
+                tongmu_val = rec.rubberbydate_id.tongmu or 0
+                tongmu_formatted = f"{int(tongmu_val)}" if tongmu_val else '-'
+                
+                grouped[group_key] = {
+                    'id': group_key,
+                    'name': long_date,
+                    'date_value': date_value,
+                    'do_giao': do_giao_formatted,   # Add formatted do_giao
+                    'tongmu': tongmu_formatted,     # Add formatted tongmu
+                    'group_values': {},
+                    'group_detail_values': {},
+                }
+
+        # Calculate total_tongmu for the header if needed
+        total_tongmu = 0
+        for group in grouped.values():
+            tongmu_val = group.get('tongmu')
+            if tongmu_val and tongmu_val != '-':
+                try:
+                    if isinstance(tongmu_val, str):
+                        tongmu_val = tongmu_val.replace(',', '')
+                    num_value = int(float(tongmu_val))
+                except (ValueError, TypeError):
+                    num_value = 0
+                total_tongmu += num_value
+        # After processing all groups, convert total_tongmu to Tấn (divide by 1000) and no decimals
+        try:
+            total_tongmu = int(total_tongmu)  # Ensure total_tongmu is an integer
+        except (ValueError, TypeError):
+            total_tongmu = 0  # Default to 0 if conversion fails
+        
+        # After processing all groups, convert total_tongmu to Tấn (divide by 1000) and no decimals
+        total_tongmu = f"{total_tongmu // 1000} Tấn"
+
         # Sort rows by ngay.
         rows = sorted(
             list(grouped.values()),
@@ -314,6 +371,33 @@ class ReportRubber(models.AbstractModel):
                 else:
                     column_totals[col_id] = int(total)
 
+        # Replace the current total_tongmu calculation with this new approach
+        # Look for the section after calculating column_totals
+
+        # Calculate total_tongmu based on sum of all column totals if compare_field is one of the specified fields
+        total_tongmu = 0
+        summing_fields = ['quykho', 'cong', 'congnuoc', 'congtap', 'mudong', 'muchen', 'muday']
+
+        if compare_field in summing_fields:
+            # Sum up all non-dash column totals
+            for col_id, total in column_totals.items():
+                if total != '-':
+                    try:
+                        # Convert to float first to handle decimal strings
+                        total_tongmu += float(total)
+                    except (ValueError, TypeError):
+                        pass
+            
+            # Format as "X Tấn" - divided by 1000 and rounded to whole number
+            if total_tongmu > 0:
+                tons = int(total_tongmu / 1000)
+                total_tongmu = f"{tons} Tấn"
+            else:
+                total_tongmu = "0 Tấn"
+        else:
+            # For other compare fields, don't show a sum total
+            total_tongmu = '-'
+
         # Add to the return values
         return {
             'docs': rows,
@@ -343,4 +427,5 @@ class ReportRubber(models.AbstractModel):
             'compare_options_html': compare_options,
             'thang_options_html': thang_options,
             'nam_options_html': nam_options,
+            'total_tongmu': total_tongmu,  # Add the total
         }
