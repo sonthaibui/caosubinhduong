@@ -194,15 +194,12 @@
                                              t-att-style="'background-color:' + (cell.get('background') or '')">
                                             <span style="display: block; text-align: center;">
                                                 <t t-esc="cell.get('value') if cell.get('value') not in [0, '', None] else '-'"/>
-                                            </span>
+                                            </span>                                            
                                             
-                                            <!-- Add edit icon -->
-                                            <t t-if="user.id == 43">
-                                                <i class="fa fa-pencil edit-ghichu" 
-                                                   t-att-data-group-id="group.get('id')"
-                                                   t-att-data-plant-id="col['id']"
-                                                   t-att-data-ghichu="cell.get('ghichu', '')"></i>
-                                            </t>
+                                            <i class="fa fa-pencil edit-ghichu" 
+                                                t-att-data-group-id="group.get('id')"
+                                                t-att-data-plant-id="col['id']"
+                                                t-att-data-ghichu="cell.get('ghichu', '')"></i>                                            
                                         </div>
                                         
                                         <!-- Tooltip content -->
