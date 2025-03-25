@@ -129,13 +129,11 @@
                                             </t>
                                             
                                             <!-- Add edit icon for users with permission -->
-                                            <t t-if="user.id == 43">
-                                                <i class="fa fa-pencil edit-ghichu" 
-                                                   t-att-data-group-id="group.get('id')"
-                                                   t-att-data-plant-id="col['id']"
-                                                   t-att-data-ghichu="cell.get('ghichu', '')"
-                                                   style="position: absolute; bottom: 1px; left: 1px; font-size: 5px; color: #007bff; cursor: pointer; opacity: 0.1;"></i>
-                                            </t>
+                                            <i class="fa fa-pencil edit-ghichu" 
+                                                t-att-data-group-id="group.get('id')"
+                                                t-att-data-plant-id="col['id']"
+                                                t-att-data-ghichu="cell.get('ghichu', '')"
+                                                style="position: absolute; bottom: 1px; left: 1px; font-size: 10px; color: #007bff; cursor: pointer; opacity: 0.2;"></i>
                                         </div>
                                         
                                         <!-- Tooltip content -->

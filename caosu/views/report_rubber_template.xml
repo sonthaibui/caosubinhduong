@@ -190,30 +190,21 @@
                                     
                                     <td style="border-right: 0.5px solid #ccc; width:20px;" 
                                         t-attf-class="table-cell-tooltip {{ cell.get('ghichu') and 'note-cell' or '' }}">
-                                        
                                         <div style="text-align: center; padding: 5px; position: relative;"
-                                             t-att-style="'background-color:' + (cell.get('background') or '')">                                    
-                                            <t t-if="cell.get('kichthich')">
-                                                <span style="font-weight: bold; display: block; text-align: center; font-family: 'Courier New', monospace;">
-                                                    <t t-esc="cell.get('value') if cell.get('value') not in [0, '', None] else '-'"/>
-                                                </span>
-                                            </t>
-                                            <t t-else="">
-                                                <span style="display: block; text-align: center; font-family: 'Courier New', monospace;">
-                                                    <t t-esc="cell.get('value') if cell.get('value') not in [0, '', None] else '-'"/>
-                                                </span>
-                                            </t>
+                                             t-att-style="'background-color:' + (cell.get('background') or '')">
+                                            <span style="display: block; text-align: center;">
+                                                <t t-esc="cell.get('value') if cell.get('value') not in [0, '', None] else '-'"/>
+                                            </span>
                                             
-                                            <!-- Make the edit icon more visible -->
+                                            <!-- Add edit icon -->
                                             <t t-if="user.id == 43">
                                                 <i class="fa fa-pencil edit-ghichu" 
                                                    t-att-data-group-id="group.get('id')"
                                                    t-att-data-plant-id="col['id']"
-                                                   t-att-data-ghichu="cell.get('ghichu', '')"
-                                                   style="position: absolute; bottom: 1px; left: 1px; font-size: 9px; color: #007bff; cursor: pointer; opacity: 0.1;"></i>
+                                                   t-att-data-ghichu="cell.get('ghichu', '')"></i>
                                             </t>
                                         </div>
-
+                                        
                                         <!-- Tooltip content -->
                                         <t t-if="cell.get('ghichu')">
                                             <div class="tooltip-content">
@@ -296,78 +287,6 @@
     font-size: 10px !important;
   }
   
-  /* Tooltip Styles */
-  .table-cell-tooltip {
-    position: relative;
-  }
-  .tooltip-content {
-    display: none;
-    position: absolute;
-    background-color: #ffffc7;
-    border: 1px solid #767676;
-    padding: 5px 8px;
-    z-index: 1000;
-    font-size: 12px;
-    white-space: normal;
-    text-align: left;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    width: 200px;
-  }
-  .table-cell-tooltip:hover .tooltip-content {
-    display: block;
-  }
-  
-  /* Mobile Tooltip Styles */
-  .mobile-tooltip {
-    display: none;
-    position: fixed;
-    left: 10px;
-    right: 10px;
-    bottom: 20%;
-    background-color: #ffffc7;
-    border: 1px solid #767676;
-    padding: 10px;
-    z-index: 1000;
-    font-size: 14px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    max-width: 90%;
-    margin: 0 auto;
-    border-radius: 8px;
-  }
-  .close-tooltip {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  /* Note Indicator Styles */
-  .note-icon {
-    font-size: 10px !important;
-    margin-left: 2px;
-    color: #007bff;
-    cursor: pointer;
-  }
-  .table-cell-tooltip.note-cell {
-    position: relative !important;
-    overflow: visible !important;
-  }
-  .table-cell-tooltip.note-cell::after {
-    content: '' !important;
-    position: absolute !important;
-    top: 3px !important;
-    right: 3px !important;
-    width: 4px !important;
-    height: 4px !important;
-    background-color: green !important;
-    border-radius: 50% !important;
-    z-index: 10 !important;
-    pointer-events: none !important;
-  }
-  
   /* Dynamic width for do_giao and tongmu columns */
   .do-giao-col,
   .tongmu-col {
@@ -435,80 +354,92 @@
     overflow-x: auto !important;
     width: 100% !important;
   }
-                
-                </style>
-                <!-- Add this div at the bottom of your page for the mobile tooltip -->
-                <div id="mobile-tooltip" class="mobile-tooltip">
-                    <span class="close-tooltip" onclick="closeTooltip()">×</span>
-                    <div id="tooltip-content"></div>
-                </div>
-                <!-- Add JavaScript at the end of your template -->
-                <script>                   
-                    
-                    // Only keep the mobile tooltip functionality
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Check if this is a touch device
-                        var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-                        
-                        if (isTouchDevice) {
-                            // Get all cells with title attributes
-                            var cells = document.querySelectorAll('td[title]');
-                            cells.forEach(function(cell) {
-                                cell.addEventListener('click', function() {
-                                    showMobileTooltip(this.getAttribute('title'));
-                                });
-                            });
-                        }
-                    });
-                    
-                    function showMobileTooltip(content) {
-                        if (!content) return;
-                        
-                        var tooltip = document.getElementById('mobile-tooltip');
-                        var tooltipContent = document.getElementById('tooltip-content');
-                        
-                        tooltipContent.innerHTML = content; // Changed from textContent to innerHTML to support formatted notes
-                        tooltip.style.display = 'block';
-                    }
-                    
-                    function closeTooltip() {
-                        document.getElementById('mobile-tooltip').style.display = 'none';
-                    }
-                    
-                    // Close tooltip when tapping outside
-                    document.addEventListener('click', function(event) {
-                        if (event.target.closest('.mobile-tooltip') || 
-                            event.target.hasAttribute('title')) return;
-                            
-                        closeTooltip();
-                    });
-                    
-                    // Update the event handlers to pass ghichu data
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Check if this is a touch device
-                        var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-                        
-                        if (isTouchDevice) {
-                            // Get all cells with title attributes (for header rows)
-                            var headerCells = document.querySelectorAll('td[title]');
-                            headerCells.forEach(function(cell) {
-                                cell.addEventListener('click', function() {
-                                    showMobileTooltip(this.getAttribute('title'));
-                                });
-                            });
-                            
-                            // Get all data cells with tooltips
-                            var dataCells = document.querySelectorAll('.table-cell-tooltip');
-                            dataCells.forEach(function(cell) {
-                                cell.addEventListener('click', function() {
-                                    var tooltipContent = this.querySelector('.tooltip-content');
-                                    if (tooltipContent) {
-                                        showMobileTooltip(tooltipContent.innerHTML);
-                                    }
-                                });
-                            });
-                        }
-                    });
+/* Tooltip Styling - Modified for centered display */
+.table-cell-tooltip {
+    position: relative;
+}
+.tooltip-content {
+    display: none; /* Hidden initially but used as content source */
+}
+
+/* Mobile tooltip styles modified to work on all devices as a centered modal */
+.mobile-tooltip {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    z-index: 2000;
+    font-size: 14px;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    width: 80%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.close-tooltip {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Note indicator dot */
+.note-cell {
+    position: relative;
+}
+.note-cell::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 5px;
+    height: 5px;
+    background-color: green;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+/* Tooltip Title */
+.tooltip-title {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    padding-right: 20px;
+}
+
+/* Edit pencil icon */
+.edit-ghichu {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 3px;
+    opacity: 0.2;
+    font-size: 8px;
+    color: #007bff;
+    cursor: pointer;
+}
+.edit-ghichu:hover {
+    opacity: 0.8;
+}
+</style>
+
+<!-- Add this to the bottom of your page before the closing </div> tag -->
+<div id="mobile-tooltip" class="mobile-tooltip">
+  <span class="close-tooltip" onclick="closeTooltip()">×</span>
+  <h3 class="tooltip-title">Note</h3>
+  <div id="tooltip-content"></div>
+</div>
+
+<!-- Add JavaScript at the end of your template -->
+<script>                   
                     
                     //<![CDATA[
     document.addEventListener('DOMContentLoaded', function() {
@@ -699,9 +630,203 @@
         });
         
         // Your existing mobile tooltip code...
+        // Check if this is a touch device
+        var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        if (isTouchDevice) {
+            // For mobile tooltips
+            var tooltipCells = document.querySelectorAll('.table-cell-tooltip');
+            tooltipCells.forEach(function(cell) {
+                cell.addEventListener('click', function(e) {
+                    var tooltipContent = this.querySelector('.tooltip-content');
+                    if (tooltipContent) {
+                        showMobileTooltip(tooltipContent.innerHTML);
+                        e.stopPropagation();
+                    }
+                });
+            });
+            
+            // For header cell tooltips
+            var headerCells = document.querySelectorAll('td[title]');
+            headerCells.forEach(function(cell) {
+                cell.addEventListener('click', function() {
+                    if (this.getAttribute('title')) {
+                        showMobileTooltip(this.getAttribute('title'));
+                    }
+                });
+            });
+        }
+        
+        // Set up pencil editing
+        var editIcons = document.querySelectorAll('.edit-ghichu');
+        editIcons.forEach(function(icon) {
+            icon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                var groupId = this.getAttribute('data-group-id');
+                var plantId = this.getAttribute('data-plant-id');
+                var currentValue = this.getAttribute('data-ghichu') || '';
+                
+                // Handle the edit - create a popup
+                var popup = document.createElement('div');
+                popup.className = 'mobile-tooltip';
+                popup.style.display = 'block';
+                popup.style.backgroundColor = 'white';
+                popup.style.padding = '15px';
+                popup.style.textAlign = 'left';
+                popup.style.zIndex = '2000';
+                
+                // Add a title
+                var title = document.createElement('h3');
+                title.style.margin = '0 0 10px 0';
+                title.style.fontSize = '16px';
+                title.textContent = 'Edit Note';
+                popup.appendChild(title);
+                
+                // Add close button
+                var closeBtn = document.createElement('span');
+                closeBtn.className = 'close-tooltip';
+                closeBtn.innerHTML = '&times;';
+                closeBtn.onclick = function() {
+                    document.body.removeChild(popup);
+                };
+                popup.appendChild(closeBtn);
+                
+                // Add textarea
+                var textarea = document.createElement('textarea');
+                textarea.value = currentValue;
+                textarea.style.width = '100%';
+                textarea.style.height = '100px';
+                textarea.style.padding = '8px';
+                textarea.style.border = '1px solid #ddd';
+                textarea.style.borderRadius = '4px';
+                textarea.style.marginBottom = '10px';
+                textarea.style.fontSize = '14px';
+                popup.appendChild(textarea);
+                
+                // Add save button
+                var saveButton = document.createElement('button');
+                saveButton.textContent = 'Save';
+                saveButton.style.padding = '8px 12px';
+                saveButton.style.backgroundColor = '#28a745';
+                saveButton.style.color = 'white';
+                saveButton.style.border = 'none';
+                saveButton.style.borderRadius = '4px';
+                saveButton.style.cursor = 'pointer';
+                saveButton.style.width = '100%';
+                popup.appendChild(saveButton);
+                
+                // Add to document
+                document.body.appendChild(popup);
+                
+                // Focus the textarea
+                textarea.focus();
+                
+                // Handle save button click
+                saveButton.onclick = function() {
+                    var newValue = textarea.value.trim();
+                    
+                    // Send AJAX request
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/report/update_rubber_ghichu', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                // Update the data attribute
+                                icon.setAttribute('data-ghichu', newValue);
+                                
+                                // Update cell class for the indicator
+                                var cell = icon.closest('td');
+                                if (newValue) {
+                                    cell.classList.add('note-cell');
+                                } else {
+                                    cell.classList.remove('note-cell');
+                                }
+                                
+                                // Update or add tooltip content
+                                var tooltipContent = cell.querySelector('.tooltip-content');
+                                if (tooltipContent) {
+                                    tooltipContent.textContent = newValue;
+                                } else if (newValue) {
+                                    var newTooltip = document.createElement('div');
+                                    newTooltip.className = 'tooltip-content';
+                                    newTooltip.textContent = newValue;
+                                    cell.appendChild(newTooltip);
+                                }
+                                
+                                // Show success message
+                                var successMsg = document.createElement('div');
+                                successMsg.textContent = 'Saved!';
+                                successMsg.style.position = 'fixed';
+                                successMsg.style.top = '20px';
+                                successMsg.style.left = '50%';
+                                successMsg.style.transform = 'translateX(-50%)';
+                                successMsg.style.background = '#28a745';
+                                successMsg.style.color = 'white';
+                                successMsg.style.padding = '10px 20px';
+                                successMsg.style.borderRadius = '4px';
+                                successMsg.style.zIndex = '3000';
+                                document.body.appendChild(successMsg);
+                                
+                                // Remove success message after 2 seconds
+                                setTimeout(function() {
+                                    document.body.removeChild(successMsg);
+                                }, 2000);
+                            } else {
+                                alert('Failed to save note. Please try again.');
+                            }
+                            
+                            // Close the popup
+                            document.body.removeChild(popup);
+                        }
+                    };
+                    
+                    xhr.send(JSON.stringify({
+                        rubberbydate_id: groupId,
+                        plantation_id: plantId,
+                        ghichu: newValue
+                    }));
+                };
+                
+                // Handle enter key
+                textarea.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        e.preventDefault();
+                        saveButton.click();
+                    }
+                });
+            });
+        });
     });
+
+// Function to show mobile tooltip
+function showMobileTooltip(content) {
+  if (!content) return;
+  
+  var tooltip = document.getElementById('mobile-tooltip');
+  var tooltipContent = document.getElementById('tooltip-content');
+  
+  tooltipContent.innerHTML = content;
+  tooltip.style.display = 'block';
+}
+
+// Function to close mobile tooltip
+function closeTooltip() {
+  document.getElementById('mobile-tooltip').style.display = 'none';
+}
+
+// Close tooltip when clicking outside
+document.addEventListener('click', function(event) {
+  var tooltip = document.getElementById('mobile-tooltip');
+  if (tooltip.style.display === 'block' &&
+      !event.target.closest('.mobile-tooltip') &&
+      !event.target.closest('.table-cell-tooltip')) {
+    closeTooltip();
+  }
+});
 //]]>
-                </script>
+</script>
             </div>
         </t>
     </template>
