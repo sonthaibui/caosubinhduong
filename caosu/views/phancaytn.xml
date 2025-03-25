@@ -16,6 +16,7 @@
                     <field name='hangso'/>
                     <field name="to"/>
                     <field name="lo"/>
+                    <field name="somu"/>
                     <field name='toname' invisible='1'/>
                     <field name='sttcn'/>
                     <field name='socay'/>
@@ -76,6 +77,7 @@
               <field name="to_name"/>             
               <field name='toname' invisible='1'/>
               <field name="employee_id" domain="[('name','like',toname),('department_id','=',to)]" attrs="{'readonly': [('to','=',False)]}"/>
+              <field name="somu"/>
               <field name="giong" optional='show'/>
               <field name="vanhcay" optional='show'/>
               <field name="matcao" optional='show'/>

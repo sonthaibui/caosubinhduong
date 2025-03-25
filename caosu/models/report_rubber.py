@@ -10,28 +10,24 @@ class ReportRubber(models.AbstractModel):
     
     @api.model
     def _get_report_values(self, docids, data=None):
-        data = data or {}
-        # Use setdefault like in rubbertest
-        data.setdefault('lo', 'a')
-        data.setdefault('nhom', 'all')
-        data.setdefault('compare_field', 'cong')
-        data.setdefault('detail_field', 'none')
-        data.setdefault('sort_order', 'desc')
-        data.setdefault('dao_kt', '')        
-        # For the 'to' field, use the same approach as rubbertest
-        if not data.get('to'):
-            # Set default department
+        data = data or {}        
+        # Get all parameters with defaults
+        selected_lo = data.get('lo', 'a')
+        selected_nhom = data.get('nhom', 'all')
+        compare_field = data.get('compare_field', 'cong')
+        detail_field = data.get('detail_field', 'none')
+        sort_order = data.get('sort_order', 'desc')
+        dao_kt = data.get('dao_kt', '')
+        selected_nam = data.get('nam', 'Tất cả')
+        selected_thang = data.get('thang', 'Tất cả')
+        show_tree_count = data.get('show_tree_count', False)
+
+        # For the 'to' field, special handling with default
+        if 'to' not in data:
             department = self.env['hr.department'].search([('name', '=', 'TỔ 70-25')], limit=1)
-            data['to'] = department.id if department else ''
-        
-        # Extract parameters
-        selected_nhom = data.get('nhom')
-        compare_field = data.get('compare_field')
-        detail_field = data.get('detail_field')
-        sort_order = data.get('sort_order')
-        selected_lo = data.get('lo')
-        selected_to = data.get('to')
-        dao_kt = data.get('dao_kt')
+            selected_to = department.id if department else ''
+        else:
+            selected_to = data.get('to')
         
         # Convert selected_to to int for comparisons
         selected_to_int = False
@@ -92,12 +88,29 @@ class ReportRubber(models.AbstractModel):
                 'CN': employee_name  # Trimmed name, removed characters to the right of '-'
             })
         
+        # Add this after defining your columns but before processing the rows
+        # Create a map of plantation IDs to their tree counts
+        tree_counts = {}
+        if show_tree_count:
+            # Get all plantation IDs from your columns
+            plantation_ids = [col['id'] for col in cols]
+            # Fetch tree count data efficiently with a single query
+            plantations = self.env['plantation'].browse(plantation_ids).read(['caycao'])
+            # Create a mapping of ID to tree count
+            tree_counts = {p['id']: p['caycao'] or 0 for p in plantations}
+        
         # Retrieve rubber records for those plantations.
         plantation_ids = [pt.id for pt in plantation_objs]
         rubber_domain = [('plantation_id', 'in', plantation_ids)]
         # Add filter for dao_kt if provided.
         if dao_kt and dao_kt != 'all':
             rubber_domain.append(('dao_kt', '=', dao_kt))
+        # Add filter for year if selected
+        if selected_nam and selected_nam != 'Tất cả':
+            rubber_domain.append(('rubberbydate_id.nam_kt', '=', selected_nam))
+        # Add filter for month if selected
+        if selected_thang and selected_thang != 'Tất cả':
+            rubber_domain.append(('rubberbydate_id.thang', '=', selected_thang))
         # Add filter for rubberbydate_id.cong > 0
         rubber_domain.append(('rubberbydate_id.tongmu', '>', 0))
         rubber_objs = self.env['rubber'].search(rubber_domain)
@@ -132,19 +145,18 @@ class ReportRubber(models.AbstractModel):
             # Get the raw value
             raw_value = getattr(rec, compare_field, 0)
 
-            # Format the value based on field type
-            if compare_field in ('quykho', 'do_phancay', 'muday'):
-                try:
-                    # Convert to float and format with one decimal place
+            try:
+                # Check for zero value first
+                if float(raw_value) == 0:
+                    formatted_value = '-'
+                elif compare_field in ('quykho', 'do_phancay', 'muday'):
+                    # Format with one decimal place for specific fields
                     formatted_value = f"{float(raw_value):.1f}"
-                except (ValueError, TypeError):
-                    formatted_value = raw_value
-            else:
-                try:
-                    # For other fields, use integer formatting
+                else:
+                    # Integer formatting for other fields
                     formatted_value = int(raw_value)
-                except (ValueError, TypeError):
-                    formatted_value = raw_value
+            except (ValueError, TypeError):
+                formatted_value = raw_value
 
             cell_data = {
                 'value': formatted_value,
@@ -153,6 +165,7 @@ class ReportRubber(models.AbstractModel):
                 'ghichu': getattr(rec, 'ghichu', ''),
             }
             grouped[group_key]['group_values'][plant_id] = cell_data
+            
             if detail_field != 'none':
                 try:
                     raw_val = getattr(rec, detail_field, '')
@@ -166,14 +179,21 @@ class ReportRubber(models.AbstractModel):
                     try:
                         # Convert to float and format with one decimal place
                         float_val = float(raw_val)
-                        detail_val = f"{float_val:.1f}"
+                        if float_val == 0:
+                            detail_val = '-'
+                        else:
+                            detail_val = f"{float_val:.1f}"
                     except (ValueError, TypeError):
-                        detail_val = raw_val
+                        detail_val = '-' if raw_val == 0 or raw_val == '0' else raw_val
                 else:
                     try:
-                        detail_val = int(raw_val)
+                        val = float(raw_val)
+                        if val == 0:
+                            detail_val = '-'
+                        else:
+                            detail_val = int(val)
                     except Exception:
-                        detail_val = raw_val
+                        detail_val = '-' if raw_val == 0 or raw_val == '0' else raw_val
                 
                 grouped[group_key]['group_detail_values'][plant_id] = {'value': detail_val}
         
@@ -205,11 +225,34 @@ class ReportRubber(models.AbstractModel):
             selected = "selected" if str(dao_kt) == str(dao['id']) else ""
             dao_options += f'<option value="{dao["id"]}" {selected}>{dao["name"]}</option>'
 
+        # Get available months from rubber.date records
+        thang_groups = self.env['rubber.date'].read_group([], ['thang'], ['thang'])
+        thang_options = '<option value="Tất cả" ' + ("selected" if selected_thang == "Tất cả" else "") + '>Tất cả</option>'
+        for thang in thang_groups:
+            thang_val = thang.get('thang')
+            if thang_val:
+                selected = "selected" if str(selected_thang) == str(thang_val) else ""
+                thang_options += f'<option value="{thang_val}" {selected}>{thang_val}</option>'
+                
+        # Get available years from rubber.date records
+        nam_groups = self.env['rubber.date'].read_group([], ['nam_kt'], ['nam_kt'])
+        nam_options = '<option value="Tất cả" ' + ("selected" if selected_nam == "Tất cả" else "") + '>Tất cả</option>'
+        for nam in nam_groups:
+            nam_val = nam.get('nam_kt')
+            if nam_val:
+                selected = "selected" if str(selected_nam) == str(nam_val) else ""
+                nam_options += f'<option value="{nam_val}" {selected}>{nam_val}</option>'
+
         detail_field_options = [
-            ('none', 'hông chọn'),
+            ('none', 'Không chọn'),
             ('kichthich', 'Kichthich'),
             ('do_phancay', 'Độ'),
             ('quykho', 'Quy khô'),
+            ('congnuoc', 'Cộng nước'),
+            ('congtap', 'Cộng tạp'),
+            ('muday', 'Mũ dây'),
+            ('muchen', 'Mũ chén'),
+            ('mudong', 'Mũ đông'),
         ]
         detail_options = ""
         for detail_opt in detail_field_options:
@@ -219,6 +262,7 @@ class ReportRubber(models.AbstractModel):
         compare_field_options = [
             ('cong', 'Cộng'),
             ('quykho', 'Quy khô'),
+            ('do_phancay', 'Độ'),
             ('congnuoc', 'Cộng nước'),
             ('congtap', 'Cộng tạp'),
             ('muday', 'Mũ dây'),
@@ -230,10 +274,53 @@ class ReportRubber(models.AbstractModel):
             selected = "selected" if compare_field == comp_opt[0] else ""
             compare_options += f'<option value="{comp_opt[0]}" {selected}>{comp_opt[1]}</option>'
         
-        # Return all options HTML
+        # Calculate column totals or averages based on compare_field
+        column_totals = {}
+        for col in cols:
+            col_id = col['id']
+            values = []
+            
+            # Collect all non-dash values for this column from all rows
+            for row in rows:
+                if col_id in row['group_values']:
+                    val = row['group_values'][col_id]['value']
+                    # Only process numeric values
+                    if val != '-':
+                        try:
+                            values.append(float(val))
+                        except (ValueError, TypeError):
+                            pass
+            
+            # Calculate total or average based on compare_field
+            if not values:
+                column_totals[col_id] = '-'
+            elif compare_field == 'do_phancay':
+                # Calculate average for non-zero values
+                non_zero_values = [v for v in values if v != 0]
+                if non_zero_values:
+                    avg = sum(non_zero_values) / len(non_zero_values)
+                    # Format with one decimal place if specific field
+                    column_totals[col_id] = f"{avg:.1f}" if avg != 0 else '-'
+                else:
+                    column_totals[col_id] = '-'
+            else:
+                # Calculate sum for other fields
+                total = sum(values)
+                if total == 0:
+                    column_totals[col_id] = '-'
+                # Format with one decimal place for specific fields
+                elif compare_field in ('do_phancay', 'muday'):
+                    column_totals[col_id] = f"{total:.1f}"
+                else:
+                    column_totals[col_id] = int(total)
+
+        # Add to the return values
         return {
             'docs': rows,
             'cols': cols,
+            'column_totals': column_totals,
+            'tree_counts': tree_counts,
+            'show_tree_count': show_tree_count,
             'compare_field': compare_field,            
             'detail_field': detail_field,            
             'selected_nhom': selected_nhom,
@@ -246,10 +333,14 @@ class ReportRubber(models.AbstractModel):
             'available_nhom': available_nhom,
             'available_dao': available_dao,
             'dao_kt': dao_kt,
+            'selected_thang': selected_thang,
+            'selected_nam': selected_nam,
             'to_options_html': to_options,
             'lo_options_html': lo_options,
             'nhom_options_html': nhom_options,
             'dao_options_html': dao_options,
             'detail_options_html': detail_options,
             'compare_options_html': compare_options,
+            'thang_options_html': thang_options,
+            'nam_options_html': nam_options,
         }

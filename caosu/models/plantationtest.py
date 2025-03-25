@@ -75,6 +75,7 @@ class PlantationTest(models.Model):
     rubbertest_line_ids = fields.One2many('rubber.test', 'plantationtest_id', string='Sản lượng mũ cạo thí nghiệm')
     vanhcay = fields.Integer('Vành Cây', default=0)
     matcao = fields.Many2one('matcao', string='Mặt cạo', required=True, store=True)
+    somu = fields.Html('So Mũ', store=True)
     # New model for Nhóm
     nhom_ids = fields.Many2many(
         'rubber.test.nhom',

@@ -2,6 +2,7 @@
     <template id="rubbertest_report_template">
         <!-- Use correct external layout in report -->
         <t t-call="web.html_container">
+            <!-- Optionally disable header/logo if needed -->
             <t t-set="disable_header" t-value="True"/>
             <t t-set="disable_logo" t-value="True"/>
             <t t-set="disable_commercial_header" t-value="True"/>
@@ -30,7 +31,6 @@
                                 </select>
                             </div>
                         </div>
-                        
                         <div style="flex: 1;">
                             <div style="margin-bottom: 10px;">
                                 <label for="nhom">Nhóm:</label>
@@ -52,31 +52,56 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <t t-if="user.id == 43">
+                        <div style="margin-bottom: 15px;">
+                            <label for="selected_plantation_tests">Chọn Cây So Sánh:</label>
+                            <select name="selected_plantation_tests" id="selected_plantation_tests" multiple="multiple" class="form-control" style="height: 150px">
+                                <option value="" disabled="disabled" t-if="not available_plantation_tests">Không có cây phù hợp</option>
+                                <t t-foreach="available_plantation_tests" t-as="pt">
+                                    <option t-att-value="pt.id" 
+                                            t-att-selected="pt.id in selected_plantation_tests and 'selected'">
+                                        <t t-esc="pt.socay.name"/> - <t t-if="pt.vanhcay">Vanh: <t t-esc="pt.vanhcay"/></t>
+                                    </option>
+                                </t>
+                            </select>
+                            <!--<small class="text-muted">Giữ CTRL để chọn nhiều cây. Không chọn sẽ hiển thị tất cả.</small>-->
+                        </div>
+                    </t>
                     <div style="text-align: left; margin-top: 5px;">
                         <button type="submit" class="btn btn-primary">Xem kết quả</button>
                     </div>
+                    <t t-if="user.id != 43">
+                        <input type="hidden" name="selected_plantation_tests" value=""/>
+                    </t>
                 </form>
-                <br/>
+                <br/>                
                 <table class="table table-sm o_list_view" style="border-collapse: collapse;">
                     <thead>
-                        <tr style="text-align: center; position: sticky; top: 0; background: #f2f2f2; z-index: 2;">
+                        <!-- First header row -->
+                        <tr style="text-align: center; position: sticky; top: 0; background: #f2f2f2; z-index: 2;">                            
                             <th style="width: 40px; text-align: center; border-right: 0.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;">
                                 Cây
                             </th>
+                            <!-- For each plantation test column -->
                             <t t-foreach="cols" t-as="col">
-                                <th style="text-align: center; border-right: 0.5px solid #ccc; width:30px;">
+                                <th style="text-align: center; border-right: 0.5px solid #ccc; width:30px; position: relative;"
+                                    t-att-title="col.get('somu') or ''"
+                                    t-attf-class="{{ col.get('somu') and 'has-tooltip' or '' }}">
                                     <t t-esc="col['name']"/>
                                 </th>
                             </t>
                         </tr>
+                        <!-- Second header row -->
                         <tr style="text-align: center; font-weight: normal; border-bottom: 1.5px solid #ccc; position: sticky; top: 30px; background: #fff; z-index: 2;">
-                            <td style="width:40px; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;">
+                            <td style="width:40px; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 3;"
+                                title="Chu vi vành cây (cm)">
                                 Vanh
                             </td>
                             <t t-foreach="cols" t-as="col">
-                                <td style="text-align: center; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid black; width:30px;" 
-                                    t-esc="col['vanhcay'] or '-'"/>
+                                <td style="text-align: center; border-right: 0.5px solid #ccc; border-bottom: 1.5px solid black; width:30px;"
+                                    t-att-title="col.get('vanhcay') or ''">
+                                    <t t-esc="col['vanhcay'] or '-'"/>
+                                </td>
                             </t>
                         </tr>
                     </thead>
@@ -84,13 +109,14 @@
                         <t t-foreach="docs" t-as="group">
                             <!-- Primary Row -->
                             <tr>
-                                <td style="width:40px; white-space: nowrap; text-align: center; border-right: 1.5px solid black; position: sticky; left: 0; background: #f2f2f2; z-index: 1;" 
+                                <td style="width:40px; white-space: nowrap; text-align: center; border-right: 1.5px solid black; position: sticky; left: 0; background: #f2f2f2; z-index: 1;"
                                     t-esc="group.get('name')"/>
                                 <t t-foreach="cols" t-as="col">
-                                    <td style="border-right: 0.5px solid #ccc; width:30px;">
-                                        <t t-set="cell" t-value="group.get('group_values', {}).get(col['id'], {})"/>
-                                        <div style="text-align: center; padding: 5px;"
-                                            t-att-style="'background-color:' + (cell.get('background') or '')">
+                                    <t t-set="cell" t-value="group.get('group_values', {}).get(col['id'], {})"/>
+                                    <td style="border-right: 0.5px solid #ccc; width:30px;"
+                                        t-attf-class="table-cell-tooltip {{ cell.get('ghichu') and 'note-cell' or '' }}">
+                                        <div style="text-align: center; padding: 5px; position: relative;"
+                                             t-att-style="'background-color:' + (cell.get('background') or '')">
                                             <t t-if="cell.get('kichthich')">
                                                 <span style="font-weight: bold; display: block; text-align: center;">
                                                     <t t-esc="cell.get('value') if cell.get('value') not in [0, '', None] else '-'"/>
@@ -101,21 +127,37 @@
                                                     <t t-esc="cell.get('value') if cell.get('value') not in [0, '', None] else '-'"/>
                                                 </span>
                                             </t>
+                                            
+                                            <!-- Add edit icon for users with permission -->
+                                            <t t-if="user.id == 43">
+                                                <i class="fa fa-pencil edit-ghichu" 
+                                                   t-att-data-group-id="group.get('id')"
+                                                   t-att-data-plant-id="col['id']"
+                                                   t-att-data-ghichu="cell.get('ghichu', '')"
+                                                   style="position: absolute; bottom: 1px; left: 1px; font-size: 5px; color: #007bff; cursor: pointer; opacity: 0.1;"></i>
+                                            </t>
                                         </div>
+                                        
+                                        <!-- Tooltip content -->
+                                        <t t-if="cell.get('ghichu')">
+                                            <div class="tooltip-content">
+                                                <t t-esc="cell.get('ghichu')"/>
+                                            </div>
+                                        </t>
                                     </td>
                                 </t>
                             </tr>
                             <!-- Optional Detail Row -->
                             <t t-if="detail_field != 'none' and detail_field != 'kichthich'">
                                 <tr>
-                                    <td style="width: 40px; white-space: nowrap; font-style: italic; text-align: center; border-right: 0.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 1;">
+                                    <td style="width: 40px; white-space: nowrap; font-style: italic; text-align: center; border-right: 0.5px solid #ccc; position: sticky; left: 0; background: #f2f2f2; z-index: 1; color: grey;">
                                         <t t-esc="detail_field_label"/>
                                     </td>
                                     <t t-foreach="cols" t-as="col">
-                                        <td style="border-right: 0.5px solid #ccc; width:30px;">
+                                        <td style="border-right: 0.5px solid #ccc; width:30px; color: grey;">
                                             <div style="text-align: center; padding: 5px;">
                                                 <t t-set="detail_cell" t-value="group.get('group_detail_values', {}).get(col['id'], {})"/>
-                                                <span style="display: block; text-align: center; font-family: 'Courier New', monospace;">
+                                                <span style="display: block; text-align: center; font-family: 'Courier New', monospace; color: grey;">
                                                     <t t-esc="detail_cell.get('value') if detail_cell.get('value') not in [0, '', None] else '-'"/>
                                                 </span>
                                             </div>
@@ -126,13 +168,517 @@
                         </t>
                     </tbody>
                 </table>
+                <!-- CSS styles -->
                 <style>
-                    @media screen and (max-width: 600px) {
+                   /* Basic Table Styling */
+  
+  .report-table td {
+    font-size: 13px !important;
+    text-align: right;
+  } 
+ 
+  /* Specific Value Styling */
+  .detail-value,
+  .compare-value {
+    font-size: 12px !important;
+    white-space: nowrap;
+  }
+  
+  
+  
+  
+                   @media screen and (max-width: 600px) {
                         .hide-mobile {
                             display: none !important;
                         }
                     }
+                    /* Data cell tooltip container */
+                    .table-cell-tooltip {
+                        position: relative;
+                    }
+                    .tooltip-content {
+                        display: none;
+                    }
+                    /* Note indicator for cells with ghichu */
+                    .table-cell-tooltip.note-cell {
+                        position: relative !important;
+                        overflow: visible !important;
+                    }
+                    .table-cell-tooltip.note-cell::after {
+                        content: '' !important;
+                        position: absolute !important;
+                        top: 3px !important;
+                        right: 3px !important;
+                        width: 4px !important;
+                        height: 4px !important;
+                        background-color: green !important;
+                        border-radius: 50% !important;
+                        z-index: 10 !important;
+                        pointer-events: none !important;
+                    }
+                    /* Header tooltip indicators (only for cells with a title that are not the first "Cây" cell) */
+                    th[title]:not([title=""]) {
+                        position: relative !important;
+                        overflow: visible !important;
+                    }
+                    th[title]:not([title=""])::after {
+                        content: '' !important;
+                        position: absolute !important;
+                        top: 3px !important;
+                        right: 3px !important;
+                        width: 4px !important;
+                        height: 4px !important;
+                        background-color: #0066cc !important;
+                        border-radius: 50% !important;
+                        z-index: 10 !important;
+                        pointer-events: none !important;
+                    }
+                    /* For any element with the 'has-tooltip' class */
+                    .has-tooltip {
+                        position: relative !important;
+                        overflow: visible !important;
+                    }
+                    .has-tooltip::after {
+                        content: '' !important;
+                        position: absolute !important;
+                        top: 3px !important;
+                        right: 3px !important;
+                        width: 6px !important;
+                        height: 6px !important;
+                        background-color: #0066cc !important;
+                        border-radius: 50% !important;
+                        z-index: 10 !important;
+                        pointer-events: none !important;
+                    }
+                    /* Mobile tooltip container */
+                    .mobile-tooltip {
+                        display: none;
+                        position: fixed;
+                        left: 10px;
+                        right: 10px;
+                        bottom: 20%;
+                        background-color: #ffffc7;
+                        border: 1px solid #767676;
+                        padding: 10px;
+                        z-index: 1000;
+                        font-size: 14px;
+                        text-align: center;
+                        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+                        max-width: 50%;
+                        margin: 0 auto;
+                        border-radius: 8px;
+                    }
+                    .close-tooltip {
+                        position: absolute;
+                        right: 10px;
+                        top: 10px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        font-weight: bold;
+                    }
+                    /* Touch-friendly select styles */
+                    .touch-friendly-select label {
+                        display: block;
+                        margin: 0;
+                        width: 100%;
+                    }
+                    .touch-friendly-select input[type="checkbox"] {
+                        margin-right: 8px;
+                    }
                 </style>
+                <!-- Mobile tooltip container -->
+                <div id="mobile-tooltip" class="mobile-tooltip">
+                    <span class="close-tooltip" onclick="closeTooltip()">×</span>
+                    <div id="tooltip-content"></div>
+                </div>
+          
+                <script>
+//<![CDATA[
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle multi-select form submission
+        var form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                // Don't submit yet
+                e.preventDefault();
+                
+                // Get the select element
+                var select = document.getElementById('selected_plantation_tests');
+                
+                // Skip if not found
+                if (!select) {
+                    form.submit();
+                    return;
+                }
+                
+                // Get all selected values
+                var selected = [];
+                for (var i = 0; i < select.options.length; i++) {
+                    if (select.options[i].selected) {
+                        selected.push(select.options[i].value);
+                    }
+                }
+                
+                // Clear any existing hidden inputs
+                var existingInputs = form.querySelectorAll('input[name="selected_plantation_tests"]');
+                existingInputs.forEach(function(input) {
+                    input.remove();
+                });
+                
+                // Create a single hidden input with all values as a comma-separated string
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selected_plantation_tests';
+                input.value = selected.join(',');
+                form.appendChild(input);
+                
+                // Disable the original select to prevent it from submitting
+                select.name = '';
+                
+                // Now submit the form
+                form.submit();
+            });
+        }
+        
+        // Tooltip elements
+        var tooltip = document.getElementById('mobile-tooltip');
+        var tooltipContent = document.getElementById('tooltip-content');
+        
+        // Check if this is a touch device
+        var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Function to show tooltip
+        function showTooltip(content, event) {
+            if (!content) return;
+            
+            tooltipContent.innerHTML = content;
+            tooltip.style.display = 'block';
+            
+            // Position tooltip for desktop devices
+            if (!isTouchDevice && event) {
+                tooltip.style.position = 'absolute';
+                tooltip.style.top = (event.pageY + 15) + 'px';
+                tooltip.style.left = (event.pageX + 15) + 'px';
+            }
+        }
+        
+        // Add event listeners for header cells (with title attribute)
+        document.querySelectorAll('th[title], td[title]').forEach(function(cell) {
+            if (isTouchDevice) {
+                cell.addEventListener('click', function(e) {
+                    showTooltip(this.getAttribute('title'), e);
+                });
+            } else {
+                cell.addEventListener('mouseover', function(e) {
+                    showTooltip(this.getAttribute('title'), e);
+                });
+                cell.addEventListener('mouseout', function() {
+                    tooltip.style.display = 'none';
+                });
+            }
+        });
+        
+        // Add event listeners for data cells (with tooltip-content)
+        document.querySelectorAll('.table-cell-tooltip').forEach(function(cell) {
+            if (isTouchDevice) {
+                cell.addEventListener('click', function(e) {
+                    var content = this.querySelector('.tooltip-content');
+                    if (content) showTooltip(content.innerHTML, e);
+                });
+            } else {
+                cell.addEventListener('mouseover', function(e) {
+                    var content = this.querySelector('.tooltip-content');
+                    if (content) showTooltip(content.innerHTML, e);
+                });
+                cell.addEventListener('mouseout', function() {
+                    tooltip.style.display = 'none';
+                });
+            }
+        });
+        
+        // Close tooltip function
+        window.closeTooltip = function() {
+            tooltip.style.display = 'none';
+        };
+        
+        // Close tooltip when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.mobile-tooltip') && 
+                !event.target.closest('.table-cell-tooltip') && 
+                !event.target.hasAttribute('title')) {
+                tooltip.style.display = 'none';
+            }
+        });
+
+        // Check if we're on a touch device
+        var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Get the plantationtest select element
+        var select = document.getElementById('selected_plantation_tests');
+        
+        if (select && isTouchDevice) {
+            // Create a mobile-friendly multi-select alternative
+            createTouchFriendlySelect(select);
+        }
+        
+        function createTouchFriendlySelect(select) {
+            // Create container for our custom select
+            var container = document.createElement('div');
+            container.className = 'touch-friendly-select';
+            container.style.cssText = 'border: 1px solid #ccc; max-height: 200px; overflow-y: auto; padding: 8px;';
+            
+            // Create checkboxes for each option
+            for (var i = 0; i < select.options.length; i++) {
+                var option = select.options[i];
+                
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = option.value;
+                checkbox.id = 'touch-option-' + i;
+                checkbox.checked = option.selected;
+                
+                var label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(' ' + option.text));
+                
+                var div = document.createElement('div');
+                div.style.cssText = 'padding: 8px 4px; border-bottom: 1px solid #eee;';
+                div.appendChild(label);
+                
+                container.appendChild(div);
+            }
+            
+            // Add helper text
+            var helperText = document.createElement('div');
+            helperText.className = 'text-muted';
+            helperText.style.cssText = 'margin-top: 8px; font-size: 12px;';
+            helperText.textContent = 'Tap to select multiple items. Swipe to scroll.';
+            
+            // Insert the custom select after the original one
+            select.parentNode.insertBefore(container, select.nextSibling);
+            select.parentNode.insertBefore(helperText, container.nextSibling);
+            
+            // Hide the original select
+            select.style.display = 'none';
+            
+            // Update the original select when checkboxes change
+            container.addEventListener('change', function(e) {
+                if (e.target.type === 'checkbox') {
+                    var value = e.target.value;
+                    var index = -1;
+                    
+                    // Find matching option in original select
+                    for (var i = 0; i < select.options.length; i++) {
+                        if (select.options[i].value === value) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    
+                    if (index >= 0) {
+                        select.options[index].selected = e.target.checked;
+                    }
+                }
+            });
+            
+            // Handle form submission - make sure selected values are included
+            var form = select.closest('form');
+            if (form) {
+                form.addEventListener('submit', function() {
+                    // The original select is already updated via the change events
+                    // No additional work needed
+                });
+            }
+        }
+        
+        // Setup ghichu editing
+        var editIcons = document.querySelectorAll('.edit-ghichu');
+        
+        editIcons.forEach(function(icon) {
+            icon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                var groupId = this.getAttribute('data-group-id');
+                var plantId = this.getAttribute('data-plant-id');
+                var currentValue = this.getAttribute('data-ghichu') || '';
+                
+                // Create a textarea for editing
+                var textarea = document.createElement('textarea');
+                textarea.value = currentValue;
+                textarea.style.width = '120px';
+                textarea.style.height = '60px';
+                textarea.style.position = 'absolute';
+                textarea.style.top = '0';
+                textarea.style.left = '0';
+                textarea.style.zIndex = '1000';
+                textarea.style.padding = '5px';
+                textarea.style.border = '1px solid #ccc';
+                
+                // Add a button to save
+                var saveButton = document.createElement('button');
+                saveButton.innerText = 'Save';
+                saveButton.style.position = 'absolute';
+                saveButton.style.top = '65px';
+                saveButton.style.left = '0';
+                saveButton.style.zIndex = '1000';
+                saveButton.style.padding = '2px 5px';
+                saveButton.style.fontSize = '12px';
+                saveButton.style.backgroundColor = '#28a745';
+                saveButton.style.color = 'white';
+                saveButton.style.border = 'none';
+                saveButton.style.cursor = 'pointer';
+                
+                // Create a container for the editor
+                var editorContainer = document.createElement('div');
+                editorContainer.style.position = 'relative';
+                editorContainer.appendChild(textarea);
+                editorContainer.appendChild(saveButton);
+                
+                // Find the cell and add the editor
+                var cell = this.closest('td');
+                cell.style.position = 'relative';
+                cell.appendChild(editorContainer);
+                
+                // Hide the edit icon
+                this.style.display = 'none';
+                
+                // Focus the textarea
+                textarea.focus();
+                
+                // Function to save changes
+                function saveChanges() {
+                    var newValue = textarea.value.trim();
+                    
+                    // Send AJAX request to update the value
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/report/update_rubbertest_ghichu', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                try {
+                                    console.log("Raw response:", xhr.responseText);
+                                    
+                                    // More robust JSON parsing
+                                    var result;
+                                    try {
+                                        result = JSON.parse(xhr.responseText);
+                                    } catch (parseError) {
+                                        console.log("Parse error, using default success");
+                                        // If we can't parse JSON but got a 200 status, consider it success
+                                        result = { success: true };
+                                    }
+                                    
+                                    // Treat any 200 response as success unless explicitly marked as failure
+                                    if (!result || result.success !== false) {
+                                        // Update the data attribute
+                                        icon.setAttribute('data-ghichu', newValue);
+                                        
+                                        // Update cell class for the indicator
+                                        if (newValue) {
+                                            cell.classList.add('note-cell');
+                                        } else {
+                                            cell.classList.remove('note-cell');
+                                        }
+                                        
+                                        // Update or add tooltip content
+                                        var tooltipContent = cell.querySelector('.tooltip-content');
+                                        if (tooltipContent) {
+                                            tooltipContent.textContent = newValue;
+                                        } else if (newValue) {
+                                            var newTooltip = document.createElement('div');
+                                            newTooltip.className = 'tooltip-content';
+                                            newTooltip.textContent = newValue;
+                                            cell.appendChild(newTooltip);
+                                        }
+                                        
+                                        // Show a brief success message
+                                        var successMsg = document.createElement('div');
+                                        successMsg.textContent = '✓';
+                                        successMsg.style.position = 'absolute';
+                                        successMsg.style.top = '5px';
+                                        successMsg.style.right = '5px';
+                                        successMsg.style.color = 'green';
+                                        successMsg.style.fontWeight = 'bold';
+                                        successMsg.style.fontSize = '12px';
+                                        cell.appendChild(successMsg);
+                                        
+                                        // Remove success message after 2 seconds
+                                        setTimeout(function() {
+                                            if (cell.contains(successMsg)) {
+                                                cell.removeChild(successMsg);
+                                            }
+                                        }, 2000);
+                                    } else {
+                                        console.error("Error from server:", result.error);
+                                        alert('Error: ' + (result.error || 'Unknown error'));
+                                    }
+                                } catch (e) {
+                                    // If any error in our handling, still consider it a success
+                                    // since we know the server saved it
+                                    console.error("Error in response handling:", e);
+                                    
+                                    // Update UI anyway
+                                    icon.setAttribute('data-ghichu', newValue);
+                                    
+                                    if (newValue) {
+                                        cell.classList.add('note-cell');
+                                    } else {
+                                        cell.classList.remove('note-cell');
+                                    }
+                                }
+                            } else {
+                                console.error("HTTP error:", xhr.status);
+                                alert('Failed to update note');
+                            }
+                            
+                            // Always clean up the editor
+                            if (cell.contains(editorContainer)) {
+                                cell.removeChild(editorContainer);
+                            }
+                            icon.style.display = '';
+                        }
+                    };
+                    
+                    xhr.send(JSON.stringify({
+                        rubbertestbydate_id: groupId,
+                        plantation_test_id: plantId,
+                        ghichu: newValue
+                    }));
+                }
+                
+                // Event listeners for saving
+                saveButton.addEventListener('click', saveChanges);
+                textarea.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        e.preventDefault();
+                        saveChanges();
+                    }
+                });
+                
+                // Cancel on ESC or clicking outside
+                textarea.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        cell.removeChild(editorContainer);
+                        icon.style.display = '';
+                    }
+                });
+                
+                document.addEventListener('click', function clickOutside(e) {
+                    if (!editorContainer.contains(e.target) && e.target !== icon) {
+                        document.removeEventListener('click', clickOutside);
+                        if (cell.contains(editorContainer)) {
+                            cell.removeChild(editorContainer);
+                            icon.style.display = '';
+                        }
+                    }
+                });
+            });
+        });
+    });
+//]]>
+</script>
             </div>
         </t>
     </template>

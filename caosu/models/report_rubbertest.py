@@ -8,28 +8,24 @@ class ReportRubberTest(models.AbstractModel):
     @api.model
     def _get_report_values(self, docids, data=None):
         data = data or {}
-        data.setdefault('lo', 'a')
-        data.setdefault('nhom', 'all')
+        
         # Get the department record with name TỔ 140 and return its id
         if not data.get('to'):
             department = self.env['hr.department'].search([('name', '=', 'TỔ 140')], limit=1)
             data['to'] = department.id if department else ''
-        data.setdefault('dao_kt_up', 'all')
-        data.setdefault('compare_field', 'mu_up')
-        data.setdefault('detail_field', 'none')
-        data.setdefault('sort_order', 'desc')
+         
 
         # Add this list at the top of the _get_report_values method (after parameters are extracted)
         decimal_fields = ['do_up', 'do_ngua', 'do_bo', 'quykho_up', 'quykho_ngua', 'do_up3', 'do_up6', 'chenhlechkho_up', 'chenhlechkho_ngua']
 
         # Use empty strings when parameter is not provided
-        selected_nhom = data.get('nhom')
-        compare_field = data.get('compare_field')
-        detail_field = data.get('detail_field')
-        sort_order = data.get('sort_order')        
-        selected_lo = str(data.get('lo'))
+        selected_nhom = data.get('nhom', 'all')
+        compare_field = data.get('compare_field', 'mu_up')
+        detail_field = data.get('detail_field', 'none')
+        sort_order = data.get('sort_order', 'desc')        
+        selected_lo = str(data.get('lo', 'a'))
         selected_to = data.get('to')
-        dao_kt_up = data.get('dao_kt_up')
+        dao_kt_up = data.get('dao_kt_up', 'all')
         
         # Convert selected_to to int for comparisons
         selected_to_int = False
@@ -60,13 +56,108 @@ class ReportRubberTest(models.AbstractModel):
         if selected_lo:
             domain.append(('lo', '=', selected_lo))
 
-        plantation_cols = self.env['plantation.test'].search(domain, order='socay')
+        # Build a single domain for plantation tests (removed duplicate code)
+        plantation_filter_domain = []
+
+        # Only add filters if we have values
+        if selected_nhom and selected_nhom != 'all':
+            try:
+                nhom_id = int(selected_nhom)
+                # Only filter on nhom if it's a valid ID
+                if nhom_id > 0:
+                    plantation_filter_domain.append(('nhom_ids', 'in', [nhom_id]))
+            except (ValueError, TypeError):
+                pass
+
+        if selected_to:
+            try:
+                to_val = int(selected_to)
+                # Add to_val as integer if conversion succeeded
+                plantation_filter_domain.append(('to', '=', to_val))
+            except (ValueError, TypeError):
+                # Otherwise use the original string value
+                plantation_filter_domain.append(('to', '=', selected_to))
+
+        if selected_lo and selected_lo != '':
+            plantation_filter_domain.append(('lo', '=', selected_lo))
+
+        # Get all plantation tests if no filters are provided
+        if not plantation_filter_domain:
+            available_plantation_tests = self.env['plantation.test'].search([], order='socay', limit=100)
+        else:
+            available_plantation_tests = self.env['plantation.test'].search(plantation_filter_domain, order='socay')
+
+        # For debugging - log or print these values
+        #_logger.info(f"Plantation filter domain: {plantation_filter_domain}")
+        #_logger.info(f"Available plantation tests: {len(available_plantation_tests)}")
+
+        # Modify this section for processing selected plantation tests
+        selected_plantation_tests = []
+        sel_pt_raw = data.get('selected_plantation_tests')
+
+        # Enable debugging to see what format we're receiving
+        #_logger.info(f"Raw selected plantation tests: {sel_pt_raw} (type: {type(sel_pt_raw)})")
+
+        # Handle all possible formats of selected_plantation_tests
+        if sel_pt_raw:
+            # Case 1: Value is already a list
+            if isinstance(sel_pt_raw, list):
+                for item in sel_pt_raw:
+                    try:
+                        selected_plantation_tests.append(int(item))
+                    except (ValueError, TypeError):
+                        pass
+            
+            # Case 2: Value is a string that might contain multiple values
+            elif isinstance(sel_pt_raw, str):
+                # Try parsing as JSON array first
+                if sel_pt_raw.startswith('[') and sel_pt_raw.endswith(']'):
+                    try:
+                        import json
+                        values = json.loads(sel_pt_raw)
+                        if isinstance(values, list):
+                            for item in values:
+                                try:
+                                    selected_plantation_tests.append(int(item))
+                                except (ValueError, TypeError):
+                                    pass
+                    except:
+                        pass
+                
+                # Try as comma-separated string
+                elif ',' in sel_pt_raw:
+                    for item in sel_pt_raw.split(','):
+                        try:
+                            selected_plantation_tests.append(int(item.strip()))
+                        except (ValueError, TypeError):
+                            pass
+                
+                # Try as single value
+                else:
+                    try:
+                        selected_plantation_tests.append(int(sel_pt_raw))
+                    except (ValueError, TypeError):
+                        pass
+
+        #_logger.info(f"Processed selected plantation tests: {selected_plantation_tests}")
+
+        # Build domain for fetching cols
+        # Use either selected plantation tests or the filtered domain
+        if selected_plantation_tests:
+            # Use only the selected plantation tests
+            plantation_cols = self.env['plantation.test'].search([('id', 'in', selected_plantation_tests)], order='socay')
+        else:
+            # Use all plantation tests matching the filter domain
+            plantation_cols = self.env['plantation.test'].search(plantation_filter_domain, order='socay')
+
+        # Convert to your existing cols format
         cols = []
-        for pt in plantation_cols:
+        for rec in plantation_cols:
             cols.append({
-                'id': pt.id,
-                'name': pt.socay.name,
-                'vanhcay': pt.vanhcay,
+                'id': rec.id,
+                'name': rec.socay.name,
+                'vanhcay': rec.vanhcay,
+                'somu': rec.somu,
             })
 
         plantation_ids = [pt.id for pt in plantation_cols]
@@ -116,8 +207,9 @@ class ReportRubberTest(models.AbstractModel):
                 except (ValueError, TypeError):
                     formatted_value = raw_value
 
+            # 1. For compare_field values - update the cell_data creation:
             cell_data = {
-                'value': formatted_value,
+                'value': formatted_value if formatted_value not in [0, '0', '0.0', 0.0] else '-',
                 'kichthich': bool(getattr(rec, 'kichthich', False)),
                 'background': selection_label,
                 'ghichu': getattr(rec, 'ghichu', ''),
@@ -144,6 +236,11 @@ class ReportRubberTest(models.AbstractModel):
                         detail_val = int(raw_val)
                     except Exception:
                         detail_val = raw_val
+                
+                # 2. For detail_field values - update after detail_val is calculated:
+                # Convert zero values to '-' (place after all the detail_val calculations)
+                if detail_val in [0, '0', '0.0', 0.0]:
+                    detail_val = '-'
                 
                 grouped[group_key]['group_detail_values'][plant_id] = {'value': detail_val}
 
@@ -177,7 +274,8 @@ class ReportRubberTest(models.AbstractModel):
 
         nhom_options = ""
         for nhom_rec in available_nhom:
-            selected = "selected" if selected_nhom == nhom_rec['id'] else ""
+            # Convert both values to strings for proper comparison
+            selected = "selected" if str(selected_nhom) == str(nhom_rec['id']) else ""
             nhom_options += f'<option value="{nhom_rec["id"]}" {selected}>{nhom_rec["name"]}</option>'
 
         dao_options = '<option value="" ' + ("selected" if not dao_kt_up else "") + '>-- All --</option>'
@@ -234,6 +332,8 @@ class ReportRubberTest(models.AbstractModel):
             'selected_lo': selected_lo,
             'dao_kt_up': dao_kt_up,
             'available_dao': available_dao,
+            'available_plantation_tests': available_plantation_tests,
+            'selected_plantation_tests': selected_plantation_tests,
             
             # New HTML options
             'to_options_html': to_options,
