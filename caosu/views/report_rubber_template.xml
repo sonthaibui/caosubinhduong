@@ -7,6 +7,60 @@
             <t t-set="disable_commercial_header" t-value="True"/>
             <div class="page" style="font-size: 13px;">
                 <h2>THEO DÕI SẢN LƯỢNG CÔNG NHÂN</h2>
+                <!-- Add this right after your h2 heading -->
+                <div class="mobile-compatibility-notice" style="margin-bottom: 15px; padding: 10px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 4px;">
+                    <div style="font-weight: bold; margin-bottom: 5px;">Having trouble viewing this report?</div>
+                    <div style="margin-bottom: 10px;">Try one of these options:</div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <a href="/report/pdf/caosu.rubber_report_template" class="btn btn-primary" style="width: 100%; padding: 10px;">
+                            <i class="fa fa-file-pdf-o"></i> Download PDF Version
+                        </a>
+                        <button id="basic-mode-toggle" class="btn btn-info" style="width: 100%; padding: 10px;">
+                            <i class="fa fa-mobile"></i> Switch to Basic View
+                        </button>
+                    </div>
+                </div>
+                <!-- Add this fallback right after your compatibility notice -->
+                <noscript>
+                    <div style="padding: 15px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; margin-bottom: 15px;">
+                        <p><strong>JavaScript is disabled.</strong> This report requires JavaScript for full functionality.</p>
+                        <p>Please use the PDF version below:</p>
+                        <a href="/report/pdf/caosu.rubber_report_template" class="btn btn-danger" style="width: 100%; padding: 10px; margin-top: 10px;">
+                            <i class="fa fa-file-pdf-o"></i> Download PDF Report
+                        </a>
+                    </div>
+                </noscript>
+                <!-- Add this immediate-loading basic view that will show even if JavaScript fails -->
+                <div id="basic-mode-content" style="display: none; margin-top: 15px;">
+                    <h3>Basic View - Rubber Report</h3>
+                    <p>This is a simplified view compatible with all devices.</p>
+                    
+                    <table class="table table-bordered" style="width: 100%; max-width: 100%; table-layout: fixed;">
+                        <thead>
+                            <tr style="background-color: #f2f2f2;">
+                                <th style="width: 40%;">Name</th>
+                                <th style="width: 30%;">Date</th>
+                                <th style="width: 30%;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="group" t-if="group_index &lt; 20">
+                                <tr>
+                                    <td style="word-break: break-word;"><t t-esc="group.get('name')"/></td>
+                                    <td><t t-esc="group.get('date')"/></td>
+                                    <td><t t-esc="group.get('tongmu') if group.get('tongmu') not in [0, '0', '0.0', 0.0, '', None] else '-'"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 15px; text-align: center;">
+                        <p>Total: <strong><t t-esc="total_tongmu if total_tongmu else '0'"/></strong></p>
+                        <button id="return-to-full-view" class="btn btn-secondary" style="padding: 10px;">
+                            Return to Full View
+                        </button>
+                    </div>
+                </div>
                 <!-- Add this near the top of your form -->
                 <div style="margin-bottom: 15px;">
                     <a href="/report/pdf/caosu.rubber_report_template" class="btn btn-secondary">
@@ -833,6 +887,39 @@ document.addEventListener('click', function(event) {
       !event.target.closest('.table-cell-tooltip')) {
     closeTooltip();
   }
+});
+
+// Add this to the beginning of your script section
+document.addEventListener('DOMContentLoaded', function() {
+    // Basic mode toggle
+    var basicModeButton = document.getElementById('basic-mode-toggle');
+    var fullContent = document.querySelector('.report-table');
+    var basicContent = document.getElementById('basic-mode-content');
+    var filterForm = document.querySelector('form');
+    var returnButton = document.getElementById('return-to-full-view');
+    
+    if (basicModeButton && fullContent && basicContent && filterForm) {
+        basicModeButton.addEventListener('click', function() {
+            fullContent.style.display = 'none';
+            filterForm.style.display = 'none';
+            basicContent.style.display = 'block';
+        });
+        
+        if (returnButton) {
+            returnButton.addEventListener('click', function() {
+                basicContent.style.display = 'none';
+                filterForm.style.display = 'block';
+                fullContent.style.display = 'table';
+            });
+        }
+    }
+    
+    // Auto-switch to basic mode if we detect a problematic browser
+    var isProblematicBrowser = /Android 4\.|Android 5\.0|SM-G531H|SM-J200|SM-J250F/i.test(navigator.userAgent);
+    if (isProblematicBrowser && basicModeButton) {
+        console.log("Problematic browser detected, switching to basic mode");
+        basicModeButton.click();
+    }
 });
 //]]>
 </script>
