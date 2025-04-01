@@ -2,6 +2,8 @@
     <template id="rubber_report_template">
         <!-- Use html_container like rubbertest does -->
         <t t-call="web.html_container">
+            <!-- Add mobile viewport configuration -->
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <t t-set="disable_header" t-value="True"/>
             <t t-set="disable_logo" t-value="True"/>
             <t t-set="disable_commercial_header" t-value="True"/>
@@ -426,6 +428,35 @@
 .edit-ghichu:hover {
     opacity: 0.8;
 }
+
+/* Mobile optimization */
+@media (max-width: 767px) {
+  /* Ensure the page can scroll horizontally */
+  .page {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-width: 100% !important;
+    padding: 5px !important;
+  }
+  
+  /* Make form controls more tap-friendly */
+  select, button, input {
+    height: 35px !important;
+    font-size: 16px !important;
+    padding: 5px !important;
+  }
+  
+  /* Ensure table doesn't break layout */
+  .report-table {
+    font-size: 11px !important;
+    min-width: 800px !important; /* Force minimum width to ensure content is visible */
+  }
+  
+  /* Improve tooltip tap target size */
+  .edit-ghichu {
+    opacity: 0.6 !important;
+  }
+}
 </style>
 
 <!-- Add this to the bottom of your page before the closing </div> tag -->
@@ -824,6 +855,36 @@ document.addEventListener('click', function(event) {
 });
 //]]>
 </script>
+
+<!-- Add this to your existing JavaScript -->
+<script>
+//<![CDATA[
+// Detect mobile devices and optimize layout
+document.addEventListener('DOMContentLoaded', function() {
+  var isMobile = window.innerWidth < 768;
+  if (isMobile) {
+    // Add a hint for users on mobile
+    var mobileHint = document.createElement('div');
+    mobileHint.style.backgroundColor = '#fff3cd';
+    mobileHint.style.padding = '8px';
+    mobileHint.style.marginBottom = '10px';
+    mobileHint.style.textAlign = 'center';
+    mobileHint.innerHTML = 'Scroll horizontally to see all data columns →';
+    
+    var table = document.querySelector('.report-table');
+    if (table && table.parentNode) {
+      table.parentNode.insertBefore(mobileHint, table);
+    }
+  }
+});
+//]]>
+</script>
+<!-- Add fallback content for when JavaScript fails -->
+<noscript>
+  <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border: 1px solid #f5c6cb;">
+    This report requires JavaScript. Please enable JavaScript in your browser settings.
+  </div>
+</noscript>
             </div>
         </t>
     </template>
