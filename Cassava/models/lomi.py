@@ -33,6 +33,17 @@ class Lomi(models.Model):
     money_lot = fields.Float(string="Tiền phân lót", compute='_compute_money_lot', digits=(16, 0))
     phanthuc1 = fields.Html(string="Phân Thúc 1", compute="_compute_phanthuc1")
     money_thuc1 = fields.Float(string="Tiền phân thúc1", compute='_compute_money_thuc1', digits=(16, 0))
+    phanthuc2 = fields.Html(string="Phân Thúc 2", compute="_compute_phanthuc2")
+    money_thuc2 = fields.Float(string="Tiền phân thúc2", compute='_compute_money_thuc2', digits=(16, 0))
+    phanthuc3 = fields.Html(string="Phân Thúc 3", compute="_compute_phanthuc3")
+    money_thuc3 = fields.Float(string="Tiền phân thúc3", compute='_compute_money_thuc3', digits=(16, 0))
+    bonla1 = fields.Html(string="Bón lá 1", compute="_compute_bonla1")
+    money_bonla1 = fields.Float(string="Tiền bón lá 1", compute='_compute_money_bonla1', digits=(16, 0))
+    bonla2 = fields.Html(string="Bón lá 2", compute="_compute_bonla2")
+    money_bonla2 = fields.Float(string="Tiền bón lá 2", compute='_compute_money_bonla2', digits=(16, 0))
+    bonla3 = fields.Html(string="Bón lá 3", compute="_compute_bonla3")
+    money_bonla3 = fields.Float(string="Tiền bón lá 3", compute='_compute_money_bonla3', digits=(16, 0))
+    money_total = fields.Float(string="Tổng tiền phân", compute='_compute_money_total', digits=(16, 0))
     theodoi=fields.Html(string="Theo dõi")
     # ... existing fields ...
     note_ids = fields.Many2many(
@@ -54,26 +65,49 @@ class Lomi(models.Model):
     @api.depends('bonphan_line_ids')
     def _compute_money_lot(self):
         for record in self:
-            seen = set()
             total = 0
             for line in record.bonphan_line_ids:
                 if line.giaidoan_id and line.giaidoan_id.name == "Bón lót" and line.phan_id:
-                    if line.phan_id.id not in seen:
-                        seen.add(line.phan_id.id)
-                        total += (line.soluong_lo or 0) * (line.phan_id.standard_price or 0)
+                    total += (line.soluong or 0) * (line.phan_id.standard_price or 0)
             record.money_lot = total
 
     @api.depends('bonphan_line_ids')
     def _compute_money_thuc1(self):
         for record in self:
-            seen = set()
             total = 0
             for line in record.bonphan_line_ids:
                 if line.giaidoan_id and line.giaidoan_id.name == "Bón thúc 1" and line.phan_id:
-                    if line.phan_id.id not in seen:
-                        seen.add(line.phan_id.id)
-                        total += (line.soluong_lo or 0) * (line.phan_id.standard_price or 0)
+                    total += (line.soluong or 0) * (line.phan_id.standard_price or 0)
             record.money_thuc1 = total
+
+    @api.depends('bonphan_line_ids')
+    def _compute_money_thuc2(self):
+        for record in self:
+            total = 0
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón thúc 2" and line.phan_id:
+                    total += (line.soluong or 0) * (line.phan_id.standard_price or 0)
+            record.money_thuc2 = total
+
+    @api.depends('bonphan_line_ids')
+    def _compute_money_thuc3(self):
+        for record in self:
+            total = 0
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón thúc 3" and line.phan_id:
+                    total += (line.soluong or 0) * (line.phan_id.standard_price or 0)
+            record.money_thuc3 = total
+
+    @api.depends('money_lot', 'money_thuc1', 'money_thuc2', 'money_thuc3', 'money_bonla1', 'money_bonla2', 'money_bonla3')
+    def _compute_money_total(self):
+        for record in self:
+            record.money_total = (record.money_lot or 0) + \
+                                (record.money_thuc1 or 0) + \
+                                (record.money_thuc2 or 0) + \
+                                (record.money_thuc3 or 0) + \
+                                (record.money_bonla1 or 0) + \
+                                (record.money_bonla2 or 0) + \
+                                (record.money_bonla3 or 0)
 
     @api.depends("bonphan_line_ids")
     def _compute_phanlot(self):
@@ -102,6 +136,100 @@ class Lomi(models.Model):
                         color = line.phan_id.color or "#000000"
                         parts.append(f"<span style='color: {color};'><strong>{line.phan_id.abbre}</strong></span> {line.soluong_lo:,.0f}kg")
             record.phanthuc1 = " & ".join(parts)
+
+    @api.depends("bonphan_line_ids")
+    def _compute_phanthuc2(self):
+        for record in self:
+            seen = set()
+            parts = []
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón thúc 2":
+                    if line.phan_id.id not in seen:
+                        seen.add(line.phan_id.id)
+                        # Get the color from product.template; fallback to a default color if not set
+                        color = line.phan_id.color or "#000000"
+                        parts.append(f"<span style='color: {color};'><strong>{line.phan_id.abbre}</strong></span> {line.soluong_lo:,.0f}kg")
+            record.phanthuc2 = " & ".join(parts)
+
+    @api.depends("bonphan_line_ids")
+    def _compute_phanthuc3(self):
+        for record in self:
+            seen = set()
+            parts = []
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón thúc 3":
+                    if line.phan_id.id not in seen:
+                        seen.add(line.phan_id.id)
+                        # Get the color from product.template; fallback to a default color if not set
+                        color = line.phan_id.color or "#000000"
+                        parts.append(f"<span style='color: {color};'><strong>{line.phan_id.abbre}</strong></span> {line.soluong_lo:,.0f}kg")
+            record.phanthuc3 = " & ".join(parts)
+
+    @api.depends("bonphan_line_ids")
+    def _compute_bonla1(self):
+        for record in self:
+            seen = set()
+            parts = []
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón lá 1":
+                    if line.phan_id.id not in seen:
+                        seen.add(line.phan_id.id)
+                        color = line.phan_id.color or "#000000"
+                        parts.append(f"<span style='color: {color};'><strong>{line.phan_id.abbre}</strong></span> {line.soluong_lo:,.0f}kg")
+            record.bonla1 = " & ".join(parts)
+
+    @api.depends('bonphan_line_ids')
+    def _compute_money_bonla1(self):
+        for record in self:
+            total = 0
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón lá 1" and line.phan_id:
+                    total += (line.soluong or 0) * (line.phan_id.standard_price or 0)
+            record.money_bonla1 = total
+
+    @api.depends("bonphan_line_ids")
+    def _compute_bonla2(self):
+        for record in self:
+            seen = set()
+            parts = []
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón lá 2":
+                    if line.phan_id.id not in seen:
+                        seen.add(line.phan_id.id)
+                        color = line.phan_id.color or "#000000"
+                        parts.append(f"<span style='color: {color};'><strong>{line.phan_id.abbre}</strong></span> {line.soluong_lo:,.0f}kg")
+            record.bonla2 = " & ".join(parts)
+
+    @api.depends('bonphan_line_ids')
+    def _compute_money_bonla2(self):
+        for record in self:
+            total = 0
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón lá 2" and line.phan_id:
+                    total += (line.soluong or 0) * (line.phan_id.standard_price or 0)
+            record.money_bonla2 = total
+
+    @api.depends("bonphan_line_ids")
+    def _compute_bonla3(self):
+        for record in self:
+            seen = set()
+            parts = []
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón lá 3":
+                    if line.phan_id.id not in seen:
+                        seen.add(line.phan_id.id)
+                        color = line.phan_id.color or "#000000"
+                        parts.append(f"<span style='color: {color};'><strong>{line.phan_id.abbre}</strong></span> {line.soluong_lo:,.0f}kg")
+            record.bonla3 = " & ".join(parts)
+
+    @api.depends('bonphan_line_ids')
+    def _compute_money_bonla3(self):
+        for record in self:
+            total = 0
+            for line in record.bonphan_line_ids:
+                if line.giaidoan_id and line.giaidoan_id.name == "Bón lá 3" and line.phan_id:
+                    total += (line.soluong or 0) * (line.phan_id.standard_price or 0)
+            record.money_bonla3 = total
 
     def name_get(self):
         result = []

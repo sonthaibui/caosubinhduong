@@ -19,7 +19,17 @@
                     <field name="OM" optional="hide"/>
                     <field name="phanlot" optional="show"/>
                     <field name="phanthuc1" optional="show"/>
+                    <field name="phanthuc2" widget="html"/>
+                    <field name="money_thuc1" optional="show"/>
+                    <field name="money_thuc2" sum="Total"/>
                     <field name="kieutrong" optional="show"/>
+                    <field name="money_total" sum="Total" widget="monetary"/>
+                    <field name="bonla1" optional="show"/>
+                    <field name="bonla2" optional="show"/>
+                    <field name="bonla3" optional="show"/>
+                    <field name="money_bonla1" optional="hide" sum="Total"/>
+                    <field name="money_bonla2" optional="hide" sum="Total"/>
+                    <field name="money_bonla3" optional="hide" sum="Total"/>
                 </tree>
             </field>
         </record>        
@@ -91,6 +101,58 @@
                                                     <field name="money_thuc1"/>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Phân thúc 2</td>
+                                                <td colspan="2" style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="phanthuc2" widget="html"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="money_thuc2" widget="monetary"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Phân thúc 3</td>
+                                                <td colspan="2" style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="phanthuc3" widget="html"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="money_thuc3" widget="monetary"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Bón lá 1</td>
+                                                <td colspan="2" style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="bonla1" widget="html"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="money_bonla1" widget="monetary"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Bón lá 2</td>
+                                                <td colspan="2" style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="bonla2" widget="html"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="money_bonla2" widget="monetary"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold;">Bón lá 3</td>
+                                                <td colspan="2" style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="bonla3" widget="html"/>
+                                                </td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc;">
+                                                    <field name="money_bonla3" widget="monetary"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; font-weight: bold; background-color: #f2f2f2;">Tổng tiền</td>
+                                                <td colspan="2" style="text-align: center; border: 0.5px solid #ccc;"></td>
+                                                <td style="text-align: center; border: 0.5px solid #ccc; background-color: #f2f2f2; font-weight: bold;">
+                                                    <field name="money_total" widget="monetary"/>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -121,9 +183,10 @@
                                 <field name="K_add" width="80" optional="hide" />
                                 <field name="phanlot" optional="show" />
                                 <field name="phanthuc1" optional="show" />
+                                <field name="phanthuc2" widget="html"/>
                                 <field name="money_lot" optional="show" />
                                 <field name="money_thuc1" optional="show" />
-
+                                <field name="money_thuc2" sum="Total"/>
                             </tree>
                         </field>
                         <field name="bonphan_line_ids" domain="[('lomi_ids', 'in', id)]">
@@ -234,16 +297,24 @@
                 <field name="sohom" width="80" optional="hide"/>
                 <field name="phanlot" width="200" optional="show"/>
                 <field name="phanthuc1" width="200" optional="show"/>
+                <field name="phanthuc2" widget="html"/>
                 <field name="quycach" width="200" optional="show"/>
                 <field name="theodoi" width="200" optional="show"/>
                 <field name="money_lot" width="200"/>
                 <field name="money_thuc1" width="200"/>
+                <field name="money_thuc2" width="200"/>
                 <field name="N" width="80" optional="hide"/>
                 <field name="P" width="80" optional="hide"/>
                 <field name="K" width="80" optional="hide"/>
                 <field name="N_add" width="80" optional="hide"/>
                 <field name="P_add" width="80" optional="hide"/>
                 <field name="K_add" width="80" optional="hide"/>
+                <field name="bonla1" width="200" optional="show"/>
+                <field name="bonla2" width="200" optional="show"/>
+                <field name="bonla3" width="200" optional="show"/>
+                <field name="money_bonla1" width="200" optional="hide"/>
+                <field name="money_bonla2" width="200" optional="hide"/>
+                <field name="money_bonla3" width="200" optional="hide"/>
             </tree>
             </field>
         </record>
