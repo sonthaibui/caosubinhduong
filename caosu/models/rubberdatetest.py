@@ -96,11 +96,15 @@ class RubberTestByDate(models.Model):
     
     @api.model
     def _default_ctkt(self):
-        default_ctkt = self.env['ctkt'].search([('name','=','Chưa bôi')], limit=1)
-        if not default_ctkt:
-            # Create a default ctkt record if none exist
-            default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})
-        return default_ctkt.id
+        try:
+            default_ctkt = self.env['ctkt'].search([('name','=','Chưa bôi')], limit=1)
+            if not default_ctkt:
+                # Create a default ctkt record if none exist
+                default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})
+            return default_ctkt.id
+        except Exception:
+            # Return False if the ctkt table doesn't exist yet
+            return False
         
     
     @api.onchange('ctktup')

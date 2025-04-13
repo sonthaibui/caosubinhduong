@@ -123,16 +123,16 @@ class RubberTest(models.Model):
                 rec.do_up6 = rec.mu_up * rec.do_up / rec.mu_up6
     @api.model
     def _default_ctkt(self):
-        for rec in self:        
-            if rec.rubbertestbydate_id.ctktup : 
-            # phai lay gia tri cuar rubberbydate chu khong cho on change, neu ko thi bi gan Chua boi va phai sua ctktup cua rubberbydate moi tinh lai
-                default_ctkt = rec.rubbertestbydate_id.ctktup
-            else:            
-                default_ctkt = self.env['ctkt'].search([('name', '=', 'Chưa bôi')], limit=1)
-                if not default_ctkt:
+        try:
+            # Try to find the default 'Chưa bôi' entry
+            default_ctkt = self.env['ctkt'].search([('name', '=', 'Chưa bôi')], limit=1)
+            if not default_ctkt:
                 # Create a default ctkt record if none exist
-                    default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})        
+                default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})
             return default_ctkt.id if default_ctkt else None
+        except Exception:
+            # Handle errors that might occur if the table doesn't exist yet
+            return None
     @api.onchange('ctktup')
     def _onchange_ctktup(self):
         self.occtktup = True            
