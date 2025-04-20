@@ -27,6 +27,8 @@ class RubberByDate(models.Model):
     lo = fields.Selection([('a', 'A'), ('b', 'B'), ('c', 'C')], string='Lô', default='a', required=True, tracking=True, store=True)
     miengcao = fields.Char('Miệng cạo')
     ngay = fields.Date('Ngày', default=fields.Datetime.now(), required=True, tracking=True, store=True)
+    currency_id = fields.Many2one('res.currency', string='Currency', 
+        default=lambda self: self.env.company.currency_id)
     # Mu nuoc
     nuoc_thu = fields.Float('Mũ nước cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     nuoc_giao = fields.Float('Mũ nước thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
@@ -83,10 +85,17 @@ class RubberByDate(models.Model):
     chen_haohut = fields.Float('Mũ chén hao hụt', store=True, compute='_compute_chenhh', tracking=True, digits='One Decimal')
     chen_tlhh = fields.Float('Tỷ lệ chén hao hụt', store=True, compute='_compute_chenhh', tracking=True, digits='One Decimal')
     #
-    do_tb = fields.Float('Độ trung bình CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
+    do_tb = fields.Float('Độ CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     do_ban = fields.Float('Độ bán', digits='One Decimal')
     do_giao = fields.Float('Độ thực tế', digits='One Decimal', store=True)
     do_haohut = fields.Float('Độ hao hụt %', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
+    dolech = fields.Float(
+        string="Độ lệch", 
+        compute="_compute_dolech", 
+        store=True,
+        help="Độ lệch giữa độ giao và độ trung bình",
+        digits='One Decimal'
+    )
     thoitiet = fields.Char('Thời tiết')
     thoigian_cao = fields.Char('Thời gian cạo')
     thoigian_trut = fields.Char('Thời gian trút')
@@ -101,20 +110,31 @@ class RubberByDate(models.Model):
     deliver_line_ids = fields.One2many('rubber.deliver', 'rubberbydate_id', string='Mũ giao', tracking=True)
     kichthich = fields.Boolean('KT', default=False)
     recorded = fields.Boolean('recorded', default=False, compute='_compute_recorded')
-    quykho = fields.Float('Quy Khô', default='0',store=True, digits='Zero Decimal')
+    quykho = fields.Float('Quy Khô', compute='_compute_quykho', store=True, digits='Zero Decimal')
     lan_kt = fields.Integer('Lần kt', default='0',store=True, digits='Product Unit of Measure')
     dao_kt = fields.Integer('Dao kt', default='0',store=True, digits='Product Unit of Measure')
-    mulantruoc = fields.Float('Lần trước', default='0',store=True, digits='Product Unit of Measure')
-    chenhlechmu = fields.Float('Mũ +/-', default='0',store=True, digits='Product Unit of Measure')
-    chenhlechmu_state = fields.Boolean('CLM', default=True,store=True)
+    mulantruoc = fields.Float('Lần trước', compute='_compute_mulantruoc', store=True, digits='Product Unit of Measure')
+    chenhlechmu = fields.Float('Mũ +/-', compute='_compute_chenhlechmu', store=True, digits='Product Unit of Measure')    
     mudaotruoc = fields.Float('Dao trước', default='0',store=True, digits='Product Unit of Measure')
-    chenhlechkho = fields.Float('Khô +/-', default='0',store=True, digits='One Decimal')
-    chenhlechkho_state = fields.Boolean('CLK', default=True,store=True)
+    chenhlechkho = fields.Float('Khô +/-', compute='_compute_chenhlechkho', store=True)   
     nam_kt = fields.Char('Năm khai thác', compute='_compute_ngay', store=True)
     dotap = fields.Float('Độ tạp ban đầu', digits='One Decimal', default=35)
     ngaygiao = fields.Date('Ngày giao')
     caoxa = fields.Boolean('Cạo xả', default=False)
     thongbao = fields.Char(compute='_compute_thongbao', string='Thông báo', default='', readonly=True)
+    giaday = fields.Monetary('Giá mũ dây', digits='Zero Decimal', compute='_compute_rubber_prices', store=True)
+    gianuoc = fields.Monetary('Giá mũ nước', digits='Zero Decimal', compute='_compute_rubber_prices', store=True)
+    tien = fields.Monetary(
+        string="Tiền", 
+        compute="_compute_tien", 
+        store=True, 
+        currency_field='currency_id',
+        digits='Product Price'
+    )
+    giatap = fields.Monetary('Giá mũ tạp', digits='Zero Decimal', compute='_compute_rubber_prices', store=True)
+    giadong = fields.Monetary('Giá mũ đông', digits='Zero Decimal', compute='_compute_rubber_prices', store=True)
+    giachen = fields.Monetary('Giá mũ chén', digits='Zero Decimal', compute='_compute_rubber_prices', store=True)
+    kholantruoc = fields.Float('Khô lần trước', compute='_compute_kholantruoc', store=True, digits='Product Unit of Measure')
     
     @api.depends('nuoc_thu', 'ke', 'mutrangthung', 'do_giao', 'rubber_line_ids')
     def _compute_thongbao(self):
@@ -514,6 +534,19 @@ class RubberByDate(models.Model):
                     rec.chen_haohut = 0
                     rec.chennkk = 0
 
+    @api.depends('do_giao', 'tongmu')
+    def _compute_quykho(self):
+        for record in self:
+            if record.do_giao > 0:
+                record.quykho = record.tongmu * (record.do_giao - 3) / 100
+            else:
+                record.quykho = 0
+
+    @api.depends('do_giao', 'do_tb')
+    def _compute_dolech(self):
+        for rec in self:
+            rec.dolech = rec.do_giao - rec.do_tb
+
     @api.constrains('to','ngay','lo')
     def _check_rubberdate_unique(self):
         rubberdate_counts = self.search_count([('to','=',self.to.id),('ngay','=',self.ngay),('lo','=',self.lo),('id','!=',self.id)])
@@ -533,3 +566,227 @@ class RubberByDate(models.Model):
         for line in self.rubber_line_ids:
             if not line.occtktup:
                 line.ctktup = self.ctktup
+
+    @api.depends('daily_day', 'daily_nuoc', 'daily_tap', 'daily_dong', 'ngay', 'to')
+    def _compute_rubber_prices(self):
+        RubberPrice = self.env['rubber.price']
+        ProductTemplate = self.env['product.template']
+        ResPartner = self.env['res.partner']
+        
+        # Find the relevant product IDs once
+        day_product = ProductTemplate.search([
+            '|', ('name', 'ilike', 'mũ dây'), ('name', '=', 'Mũ dây')
+        ], limit=1)
+        
+        nuoc_product = ProductTemplate.search([
+            '|', ('name', 'ilike', 'mũ nước'), ('name', '=', 'Mũ nước')
+        ], limit=1)
+        
+        tap_product = ProductTemplate.search([
+            '|', ('name', 'ilike', 'mũ tạp'), ('name', '=', 'Mũ tạp')
+        ], limit=1)
+        
+        dong_product = ProductTemplate.search([
+            '|', ('name', 'ilike', 'mũ đông'), ('name', '=', 'Mũ đông')
+        ], limit=1)
+        
+        chen_product = ProductTemplate.search([
+            '|', ('name', 'ilike', 'mũ chén'), ('name', '=', 'Mũ chén')
+        ], limit=1)
+        
+        # Find the "Đại lý xe tải" partner
+        xetai_partner = ResPartner.search([('name', '=', 'Đại lý xe tải')], limit=1)
+        
+        for rec in self:
+            # For mũ dây
+            if day_product:
+                # Try to find price for the daily_day if available
+                if rec.daily_day and rec.to:
+                    rec.giaday = RubberPrice.get_price(day_product.id, rec.to.id, rec.daily_day.id, rec.ngay)
+                # If no daily_day or price is 0, try using "Đại lý xe tải"
+                if not rec.daily_day or rec.giaday == 0:
+                    if xetai_partner and rec.to:
+                        rec.giaday = RubberPrice.get_price(day_product.id, rec.to.id, xetai_partner.id, rec.ngay)
+                    else:
+                        rec.giaday = 0
+                    
+            # For mũ nước
+            if nuoc_product:
+                # Try to find price for the daily_nuoc if available
+                if rec.daily_nuoc and rec.to:
+                    rec.gianuoc = RubberPrice.get_price(nuoc_product.id, rec.to.id, rec.daily_nuoc.id, rec.ngay)
+                # If no daily_nuoc or price is 0, try using "Đại lý xe tải"
+                if not rec.daily_nuoc or rec.gianuoc == 0:
+                    if xetai_partner and rec.to:
+                        rec.gianuoc = RubberPrice.get_price(nuoc_product.id, rec.to.id, xetai_partner.id, rec.ngay)
+                    else:
+                        rec.gianuoc = 0
+            
+            # For mũ tạp
+            if tap_product:
+                # Try to find price for the daily_tap if available
+                if rec.daily_tap and rec.to:
+                    rec.giatap = RubberPrice.get_price(tap_product.id, rec.to.id, rec.daily_tap.id, rec.ngay)
+                # If no daily_tap or price is 0, try using "Đại lý xe tải"
+                if not rec.daily_tap or rec.giatap == 0:
+                    if xetai_partner and rec.to:
+                        rec.giatap = RubberPrice.get_price(tap_product.id, rec.to.id, xetai_partner.id, rec.ngay)
+                    else:
+                        rec.giatap = 0
+            
+            # For mũ đông
+            if dong_product:
+                # Try to find price for the daily_dong if available
+                if rec.daily_dong and rec.to:
+                    rec.giadong = RubberPrice.get_price(dong_product.id, rec.to.id, rec.daily_dong.id, rec.ngay)
+                # If no daily_dong or price is 0, try using "Đại lý xe tải"
+                if not rec.daily_dong or rec.giadong == 0:
+                    if xetai_partner and rec.to:
+                        rec.giadong = RubberPrice.get_price(dong_product.id, rec.to.id, xetai_partner.id, rec.ngay)
+                    else:
+                        rec.giadong = 0
+            
+            # For mũ chén
+            if chen_product:
+                # Default dealer for mũ chén is usually the same as mũ nước
+                dealer_id = rec.daily_nuoc.id if rec.daily_nuoc else None
+                
+                if dealer_id and rec.to:
+                    rec.giachen = RubberPrice.get_price(chen_product.id, rec.to.id, dealer_id, rec.ngay)
+                # If no dealer or price is 0, try using "Đại lý xe tải"
+                if not dealer_id or rec.giachen == 0:
+                    if xetai_partner and rec.to:
+                        rec.giachen = RubberPrice.get_price(chen_product.id, rec.to.id, xetai_partner.id, rec.ngay)
+                    else:
+                        rec.giachen = 0
+
+    @api.depends('nuoc_thu', 'day_thu', 'tap_thu', 'dong_thu', 'chen_thu', 
+                'gianuoc', 'giaday', 'giadong', 'giachen', 'giatap', 
+                'do_giao', 'do_tb')
+    def _compute_tien(self):
+        for rec in self:
+            # If do_giao is not set, use average degree
+            do = rec.do_tb if rec.do_giao == 0 else rec.do_giao
+            
+            # Calculate money for each rubber type
+            money_nuoc = rec.nuoc_thu * do * rec.gianuoc 
+            money_chen = rec.chen_thu * do * rec.giachen
+            money_tap = rec.tap_thu * do * rec.giatap
+            money_dong = rec.dong_thu * do * rec.giadong
+            money_day = rec.day_thu * rec.giaday  # No percentage for day rubber
+            
+            # Sum all values
+            rec.tien = money_nuoc + money_chen + money_tap + money_dong + money_day
+
+    def update_rubber_prices(self):
+        """Manually update rubber prices based on the latest price data"""
+        for record in self:
+            record._compute_rubber_prices()
+            record.write({
+                'giaday': record.giaday,
+                'gianuoc': record.gianuoc,
+                'giachen': record.giaday,
+                'giadong': record.giadong,
+                'giatap': record.giatap,
+            })
+
+    @api.depends('to_name', 'lo', 'nam_kt', 'ngay', 'thang', 'lan_kt', 'dao_kt')
+    def _compute_mulantruoc(self):
+        for record in self:
+            rbd = self.env['rubber.date'].search([
+                ('to_name', '=', record.to_name),
+                ('lo', '=', record.lo),
+                ('nam_kt', '=', record.nam_kt),
+                ('ngay', '<', record.ngay),
+                ('lan_kt', '<', record.lan_kt),
+                ('dao_kt', '=', record.dao_kt)
+            ], order="ngay desc", limit=1)
+            
+            rbd = rbd.filtered(lambda r: r.thang != "02")
+            #rbd = rbd.filtered(lambda r: r.thang != "01") # tháng 1 tính của năm trước
+            #rbd = rbd.filtered(lambda r: r.thang != "02") # tháng 2 tính của năm trước
+            
+            if rbd:  # Không phải dao đầu tiên của năm khai thác
+                record.mulantruoc = rbd[0].tongmu
+            else:
+                record.mulantruoc = 0
+
+    @api.depends('tongmu', 'mulantruoc')
+    def _compute_chenhlechmu(self):
+        for record in self:
+            record.chenhlechmu = record.tongmu - record.mulantruoc
+
+    @api.depends('quykho', 'kholantruoc')
+    def _compute_chenhlechkho(self):
+        for record in self:
+            if record.kholantruoc != 0:
+                record.chenhlechkho = (record.quykho - record.kholantruoc) / record.kholantruoc  
+            else:
+                record.chenhlechkho = 0
+
+    @api.depends('to_name', 'lo', 'nam_kt', 'ngay', 'thang', 'lan_kt', 'dao_kt')
+    def _compute_kholantruoc(self):
+        for record in self:
+            rbd = self.env['rubber.date'].search([
+                ('to_name', '=', record.to_name),
+                ('lo', '=', record.lo),
+                ('nam_kt', '=', record.nam_kt),
+                ('ngay', '<', record.ngay),
+                ('lan_kt', '<', record.lan_kt),
+                ('dao_kt', '=', record.dao_kt)
+            ], order="ngay desc", limit=1)
+            
+            rbd = rbd.filtered(lambda r: r.thang != "02")
+            
+            if rbd:  # Không phải dao đầu tiên của năm khai thác
+                record.kholantruoc = rbd[0].quykho
+            else:
+                record.kholantruoc = 0
+
+    def recompute_calculated_fields(self):
+        """Recompute all calculated fields for selected records"""
+        for record in self:
+            # Force recomputation of all fields
+            record._compute_quykho()
+            record._compute_mulantruoc()
+            record._compute_kholantruoc()
+            record._compute_chenhlechmu()
+            record._compute_chenhlechkho()
+            
+            # Update the database with new values
+            record.write({
+                'quykho': record.quykho,
+                'mulantruoc': record.mulantruoc,
+                'kholantruoc': record.kholantruoc,
+                'chenhlechmu': record.chenhlechmu,
+                'chenhlechkho': record.chenhlechkho
+            })
+        return True
+
+    @api.model
+    def recompute_all_records(self):
+        """Recompute calculated fields for all rubber date records"""
+        # Process in batches to avoid memory issues
+        batch_size = 100
+        total = self.search_count([])
+        processed = 0
+        
+        while processed < total:
+            records = self.search([], limit=batch_size, offset=processed)
+            if not records:
+                break
+                
+            records.recompute_calculated_fields()
+            processed += len(records)
+            self.env.cr.commit()  # Commit after each batch
+            
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Recomputation Complete'),
+                'message': f'Recomputed fields for {processed} records',
+                'type': 'success',
+                'sticky': False,
+            }
+        }

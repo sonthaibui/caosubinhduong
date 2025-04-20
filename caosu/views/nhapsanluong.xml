@@ -9,6 +9,10 @@
                 <sheet>
                   <header>
                     <field name="thongbao" decoration-danger="1" nolabel="1" decoration-bf="1"/>
+                    <button name="recompute_calculated_fields" 
+                            string="Recompute Fields" 
+                            type="object"
+                            class="oe_highlight"/>
                   </header>
                   <field name="ngaygiao" invisible="1"/>
                     <notebook>
@@ -31,7 +35,7 @@
                                       <group>
                                         <field name="soluong" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
                                         <field name="do" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
-                                        <field name="quykho"/>
+                                        <field name="quykho" digits = "[42,0]" />
                                         <button name="giaomu" string="GIAO" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['luu','giao','nhan'])]}"/>
                                         <button name="chuagiao" string="SỬA LẠI" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['luu','chua','nhan'])]}"/>
                                       </group>
@@ -45,7 +49,7 @@
                                   <field name="sanpham"/>
                                   <field name="soluong"/>
                                   <field name="do"/>
-                                  <field name="quykho"/>
+                                  <field name="quykho" digits = "[42,0]" />
                                   <field name="state"/>
                                 </tree>
                               </field>
@@ -404,6 +408,7 @@
                             <group>
                               <field name="ghi_chu" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}"/>
                             </group>
+                            <button name="update_rubber_prices" string="Update Prices" type="object" class="oe_highlight"/>
                           </sheet>
                         </page>
                         <page string="Sản lượng mũ cạo" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}">
@@ -420,10 +425,9 @@
                               <field name="mutap2" style="border-top-style: solid !important;border-width: 1px !important;" optional="show"/>
                               <field name="congnuoc" style="border-top-style: solid !important;border-width: 1px !important;" sum="congnuoc" optional="show"/>
                               <field name="congtap" style="border-top-style: solid !important;border-width: 1px !important;" sum="congtap" optional="show"/>
-                              <field name="cong" style="border-top-style: solid !important;border-width: 1px !important;" sum="cong" optional="show"/>
-                              <field name="chenhlechmu_state" optional="hide"/>
-                              <field name="chenhlechmu" style="border-top-style: solid !important;border-width: 1px !important;" decoration-success="chenhlechmu_state == True" decoration-danger="chenhlechmu_state == False" optional="show"/>                                                            
-                              <field name="mulantruoc" style="border-top-style: solid !important;border-width: 1px !important;" optional="show"/>
+                              <field name="cong" style="border-top-style: solid !important;border-width: 1px !important;" sum="cong" optional="show"/>                              
+                              <field name="chenhlechmu" style="border-top-style: solid !important;border-width: 1px !important;" digits = "[42,0]" decoration-success="chenhlechmu >= 0" decoration-danger="chenhlechmu &lt; 0" optional="show"/>
+                              <field name="mulantruoc" style="border-top-style: solid !important;border-width: 1px !important;" digits = "[42,0]" optional="show"/>
                               <field name="mudaotruoc" style="border-top-style: solid !important;border-width: 1px !important;" optional="show"/> 
                               <field name="do" style="border-top-style: solid !important;border-width: 1px !important;" optional="show"/>
                               <field name="mudong" string="Đông" style="border-top-style: solid !important;border-width: 1px !important;" sum="mudong" optional="show"/>
@@ -473,20 +477,26 @@
             <field name="dong_thu" optional="hide"/>
             <field name="day_ban" optional="hide"/>
             <field name="tongmu"/>
-            <field name="mulantruoc" optional="show"/>
-            <field name="chenhlechmu_state" optional="hide"/>
-            <field name="chenhlechmu" decoration-success="chenhlechmu_state == True" decoration-danger="chenhlechmu_state == False" optional="show"/>                                                            
+            <field name="mulantruoc" digits = "[42,0]" optional="show"/>            
+            <field name="chenhlechmu" digits = "[42,0]" decoration-success="chenhlechmu >= 0" decoration-danger="chenhlechmu &lt; 0" optional="show"/>
             <field name="mudaotruoc" optional="show"/> 
+            <field name="do_tb"/>
             <field name="do_giao"/>
-            <field name="quykho" optional="show"/>
-            <field name="chenhlechkho" decoration-success="chenhlechkho_state == True" decoration-danger="chenhlechkho_state == False" optional="show" widget="percentage"/>
-            <field name="chenhlechkho_state" optional="hide"/>                  
+            <field name="dolech" decoration-success="dolech > 0" decoration-danger="dolech &lt; 0"/>
+            <field name="quykho" digits = "[42,0]" optional="show"/>
+            <field name="kholantruoc" digits = "[42,0]" optional="show"/>
+            <field name="chenhlechkho" digits = "[42,0]" decoration-success="chenhlechkho >= 0" decoration-danger="chenhlechkho &lt; 0" optional="show" widget="percentage"/>
             <field name="daoup" optional="hide"/>
             <field name="miengcao" optional="hide"/> 
             <field name="dao_kt"/> 
             <field name="lan_kt"/> 
             <field name="kichthich"/>
-            <field name="congthuc_kt" optional="show"/>
+            <field name="congthuc_kt" optional="show"/>            
+            <field name="gianuoc" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
+            <field name="giatap" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
+            <field name="giaday" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
+            <field name="giachen" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
+            <field name="tien" digits="[42,0]" groups="base.group_erp_manager"/>
             <field name="thoitiet" optional="show"/>                                  
             <field name="ghi_chu" optional="hide"/>
           </tree>

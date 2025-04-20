@@ -1,32 +1,7 @@
 from datetime import datetime
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-
-class RubberPrice(models.Model):
-    _name = 'rubber.price'
-    _description = 'Rubber Price Model'
-    _rec_name = 'name'
-    
-    to = fields.Many2one('hr.department', string='Tổ', domain=[('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22')], required=True,
-            default=lambda self: self.env['hr.department'].search([('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22')], limit=1))
-    daily = fields.Many2one('res.partner', string='Đại lý', domain=[('is_customer', '=', 'True')], required=True,
-                default=lambda self: self.env['res.partner'].search([('is_customer', '=', 'True')], limit=1))
-    mu = fields.Selection([
-        ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông')
-    ], string='Mũ', default='nuoc')
-    gia = fields.Float('Giá', digits='Product Price')
-    name = fields.Char(compute='_compute_name', string='name')
-    
-    @api.depends('to', 'daily', 'mu')
-    def _compute_name(self):
-        for rec in self:
-            rec.name = rec.to.name + '_' + rec.daily.name + '_' + rec.mu
-
-    @api.constrains('to', 'daily', 'mu')
-    def _check_rubberdate_unique(self):
-        companytruck_counts = self.search_count([('to','=',self.to.id),('daily','=',self.daily.id),('mu','=',self.mu),('id','!=',self.id)])
-        if companytruck_counts > 0:
-            raise ValidationError(self.to.name + " đại lý " + self.daily.name + " " + self.mu + " đã có giá.")
+from .rubberprice import RubberPrice  # Import the RubberPrice class from the new file
 
 class RubberHarvest(models.Model):
     _name = 'rubber.harvest'

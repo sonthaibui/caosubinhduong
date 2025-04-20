@@ -38,7 +38,8 @@
         'views/report_rubber_template.xml',        
         'views/rubber_config_views.xml',
         'views/menu_rubbertest_report.xml',
-        'views/menu_rubber_report.xml',                        
+        'views/menu_rubber_report.xml',
+        'views/rubber_price_views.xml',                        
         ],
     '''assets': {
         'web.assets_backend': [

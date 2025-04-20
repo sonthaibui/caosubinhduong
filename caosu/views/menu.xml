@@ -82,13 +82,6 @@
         sequence="2"/>
 
     <menuitem
-        id="xetaibanmu_menu"
-        name="Giá mũ"
-        action="action_xetaibanmu"
-        parent="sanluong_menu"
-        sequence="3"/>
-
-    <menuitem
         id="nhapphancaytn_menu"
         name="Nhập cây thí nghiệm"
         action="action_nhapphancaytn"
