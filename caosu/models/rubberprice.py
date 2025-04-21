@@ -8,10 +8,12 @@ class RubberPrice(models.Model):
     _rec_name = 'name'
     _order = "ngay_hieuluc desc, create_date desc"
     
-    to = fields.Many2one('hr.department', string='Tổ', 
+    to = fields.Many2many('hr.department', string='Tổ', 
+        relation='rubber_price_hr_department_rel',
+        column1='price_id',
+        column2='department_id',
         domain=[('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22'), ('name', 'not ilike', 'Tổ mì')], 
-        required=True, ondelete='restrict',
-        default=lambda self: self.env['hr.department'].search([('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22'), ('name', 'not ilike', 'Tổ mì')], limit=1))
+        required=True)
     
     daily = fields.Many2one('res.partner', string='Đại lý', 
         domain=[('is_customer', '=', 'True')], 
@@ -37,7 +39,11 @@ class RubberPrice(models.Model):
     @api.depends('to', 'daily', 'mu', 'ngay_hieuluc', 'gia')
     def _compute_name(self):
         for rec in self:
-            rec.name = f"{rec.daily.name}_{rec.mu}_{rec.to.name}_{rec.ngay_hieuluc.strftime('%d/%m/%Y')}_{rec.gia:,.0f}"
+            to_names = ", ".join(rec.to.mapped('name')) if rec.to else "All"
+            mu_name = rec.mu.name if rec.mu else ""
+            daily_name = rec.daily.name if rec.daily else ""
+            date_str = rec.ngay_hieuluc.strftime('%d/%m/%Y') if rec.ngay_hieuluc else ""
+            rec.name = f"{daily_name}_{mu_name}_{to_names}_{date_str}_{rec.gia:,.0f}"
 
     @api.constrains('to', 'daily', 'mu', 'ngay_hieuluc')
     def _check_rubberdate_unique(self):
@@ -46,14 +52,14 @@ class RubberPrice(models.Model):
                 continue  # Skip validation if any required field is missing
                 
             dublicate_price = self.search([
-                ('to', '=', record.to.id),
+                ('to', 'in', record.to.ids),
                 ('daily', '=', record.daily.id),
                 ('mu', '=', record.mu.id),  # Changed from record.mu to record.mu.id for Many2one
                 ('ngay_hieuluc', '=', record.ngay_hieuluc),
                 ('id', '!=', record.id)
             ])
             if dublicate_price:
-                raise ValidationError(f"Giá cho {record.to.name} đại lý {record.daily.name} loại {record.mu.name} đã tồn tại cho ngày {record.ngay_hieuluc.strftime('%d/%m/%Y')}!")
+                raise ValidationError(f"Giá cho {', '.join(record.to.mapped('name'))} đại lý {record.daily.name} loại {record.mu.name} đã tồn tại cho ngày {record.ngay_hieuluc.strftime('%d/%m/%Y')}!")
     
     @api.constrains('macdinh', 'mu', 'to')
     def _check_default(self):
@@ -62,7 +68,7 @@ class RubberPrice(models.Model):
             if rec.macdinh:
                 other_defaults = self.search([
                     ('id', '!=', rec.id),
-                    ('to', '=', rec.to.id),
+                    ('to', 'in', rec.to.ids),
                     ('mu', '=', rec.mu),
                     ('macdinh', '=', True)
                 ])
@@ -71,14 +77,14 @@ class RubberPrice(models.Model):
                     other_defaults.write({'macdinh': False})
     
     @api.model
-    def get_price(self, mu, to_id, daily_id=False, ngay=False):
+    def get_price(self, mu, to_ids, daily_id=False, ngay=False):
         """Lấy giá áp dụng cho đại lý vào một ngày cụ thể"""
         if not ngay:
             ngay = fields.Date.today()
             
         domain = [
             ('mu', '=', mu),
-            ('to', '=', to_id),
+            ('to', 'in', to_ids),
             ('ngay_hieuluc', '<=', ngay)
         ]
         
@@ -124,7 +130,7 @@ class RubberPrice(models.Model):
             # Find all records from the effective date onward with matching team and product type
             domain = [
                 ('ngay', '>=', price.ngay_hieuluc),
-                ('to', '=', price.to.id)
+                ('to', 'in', price.to.ids)
             ]
             
             # Determine which field needs updating based on the product

@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <tree string="Giá Mủ Cao Su">
                     <field name="ngay_hieuluc"/>
-                    <field name="to"/>
-                    <field name="daily"/>
+                    <field name="to" widget ="many2many"/>
+                    <field name="daily" widget ="many2many"/>
                     <field name="mu"/>
                     <field name="gia" sum="Tổng"/>
                     <field name="macdinh"/>
