@@ -122,8 +122,8 @@ class RubberByDate(models.Model):
     ngaygiao = fields.Date('Ngày giao')
     caoxa = fields.Boolean('Cạo xả', default=False)
     thongbao = fields.Char(compute='_compute_thongbao', string='Thông báo', default='', readonly=True)
-    giaday = fields.Monetary('Giá mũ dây', digits='Zero Decimal', store=True) #, compute='_compute_rubber_prices'
-    gianuoc = fields.Monetary('Giá mũ nước', digits='Zero Decimal', store=True) #, compute='_compute_rubber_prices'
+    giaday = fields.Monetary('Giá mũ dây', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
+    gianuoc = fields.Monetary('Giá mũ nước', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
     tien = fields.Monetary(
         string="Tiền", 
         compute="_compute_tien", 
@@ -131,9 +131,9 @@ class RubberByDate(models.Model):
         currency_field='currency_id',
         digits='Product Price'
     )
-    giatap = fields.Monetary('Giá mũ tạp', digits='Zero Decimal',  store=True) #compute='_compute_rubber_prices',
-    giadong = fields.Monetary('Giá mũ đông', digits='Zero Decimal', store=True) #, compute='_compute_rubber_prices'
-    giachen = fields.Monetary('Giá mũ chén', digits='Zero Decimal', store=True) #, compute='_compute_rubber_prices'
+    giatap = fields.Monetary('Giá mũ tạp', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
+    giadong = fields.Monetary('Giá mũ đông', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
+    giachen = fields.Monetary('Giá mũ chén', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
     kholantruoc = fields.Float('Khô lần trước', compute='_compute_kholantruoc', store=True, digits='Product Unit of Measure')
     
     @api.depends('nuoc_thu', 'ke', 'mutrangthung', 'do_giao', 'rubber_line_ids')
@@ -567,7 +567,7 @@ class RubberByDate(models.Model):
             if not line.occtktup:
                 line.ctktup = self.ctktup
 
-    '''@api.depends('daily_day', 'daily_nuoc', 'daily_tap', 'daily_dong', 'ngay', 'to')
+    @api.depends('daily_day', 'daily_nuoc', 'daily_tap', 'daily_dong', 'ngay', 'to')
     def _compute_rubber_prices(self):
         RubberPrice = self.env['rubber.price']
         ProductTemplate = self.env['product.template']
@@ -658,7 +658,7 @@ class RubberByDate(models.Model):
                     if xetai_partner and rec.to:
                         rec.giachen = RubberPrice.get_price(chen_product.id, rec.to.id, xetai_partner.id, rec.ngay)
                     else:
-                        rec.giachen = 0'''
+                        rec.giachen = 0
 
     @api.depends('nuoc_thu', 'day_thu', 'tap_thu', 'dong_thu', 'chen_thu', 
                 'gianuoc', 'giaday', 'giadong', 'giachen', 'giatap', 
@@ -678,7 +678,7 @@ class RubberByDate(models.Model):
             # Sum all values
             rec.tien = money_nuoc + money_chen + money_tap + money_dong + money_day
 
-    '''def update_rubber_prices(self):
+    def update_rubber_prices(self):
         """Manually update rubber prices based on the latest price data"""
         for record in self:
             record._compute_rubber_prices()
@@ -688,7 +688,7 @@ class RubberByDate(models.Model):
                 'giachen': record.giaday,
                 'giadong': record.giadong,
                 'giatap': record.giatap,
-            })'''
+            })
 
     @api.depends('to_name', 'lo', 'nam_kt', 'ngay', 'thang', 'lan_kt', 'dao_kt')
     def _compute_mulantruoc(self):

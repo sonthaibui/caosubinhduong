@@ -5,7 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class RubberPrice(models.Model):
     _name = 'rubber.price'
     _description = 'Rubber Price Model'
-    '''_rec_name = 'name'
+    _rec_name = 'name'
     _order = "ngay_hieuluc desc, create_date desc"
     
     to = fields.Many2many('hr.department', string='Tổ', 
@@ -207,4 +207,4 @@ class RubberPrice(models.Model):
                 'default_to_ids': self.to.ids if self.to else [],
                 'default_ngay_hieuluc': fields.Date.today(),
             },
-        }'''
+        }
