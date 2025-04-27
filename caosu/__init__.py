@@ -1,6 +1,7 @@
 from . import models
 from . import controllers
 from . import wizard
+from . import reports
 
 def post_init_hook(cr, registry):
     from odoo import api, SUPERUSER_ID

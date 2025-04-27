@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_rubber_price_wizard_form" model="ir.ui.view">
+        <field name="name">rubber.price.wizard.form</field>
+        <field name="model">rubber.price.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cập nhật giá mủ hàng loạt">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Cập nhật giá mủ</h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="daily_id"/>
+                            <field name="to_ids" widget="many2many_tags"/>
+                            <field name="ngay_hieuluc"/>
+                        </group>
+                        <group>
+                            <field name="macdinh"/>
+                            <field name="ghi_chu"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Giá mủ">
+                            <field name="price_line_ids">
+                                <tree editable="bottom" decoration-success="changed==True">
+                                    <field name="product_id" required="1"/>
+                                    <field name="old_price" readonly="1"/>
+                                    <field name="new_price"/>
+                                    <field name="to_id"/>
+                                    <field name="daily_id"/>
+                                    <field name="ngay_hieuluc"/>
+                                    <field name="macdinh"/>
+                                    <field name="changed" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="save_prices" string="Lưu giá" type="object" class="btn-primary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rubber_price_wizard" model="ir.actions.act_window">
+        <field name="name">Cập nhật giá mủ</field>
+        <field name="res_model">rubber.price.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    
+    <menuitem id="menu_rubber_price_wizard"
+              name="Cập nhật giá mủ"
+              parent="caosu.sanluong_menu"
+              action="action_rubber_price_wizard"
+              sequence="6"/>
+</odoo>

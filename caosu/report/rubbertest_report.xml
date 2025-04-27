@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_rubbertest_pdf" model="ir.actions.report">
+        <field name="name">Rubber Test Report</field>
+        <field name="model">rubber.test</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">caosu.rubbertest_report_pdf_template</field>
+        <field name="report_file">caosu.rubbertest_report_pdf_template</field>
+        <field name="binding_model_id" ref="model_rubber_test"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

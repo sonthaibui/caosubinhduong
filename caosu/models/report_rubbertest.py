@@ -1,5 +1,11 @@
 from odoo import api, models
 from datetime import datetime
+import io
+import xlsxwriter
+from odoo.http import content_disposition, request
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class ReportRubberTest(models.AbstractModel):
     _name = 'report.caosu.rubbertest_report_template'
@@ -343,3 +349,111 @@ class ReportRubberTest(models.AbstractModel):
             'detail_options_html': detail_options,
             'compare_options_html': compare_options,
         }
+
+    def create_excel_report(self, data):
+        """Create Excel report based on the report data"""
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('Rubber Test Report')
+
+        # Add formatting
+        header_format = workbook.add_format({
+            'bold': True,
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color': '#f8f9fa',
+            'border': 1
+        })
+
+        data_format = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1
+        })
+
+        vanh_format = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1,
+            'italic': True,
+            'bg_color': '#f2f2f2'
+        })
+
+        # Get report values
+        report_values = self._get_report_values(None, data)
+        cols = report_values.get('cols', [])
+        docs = report_values.get('docs', [])  # Changed from grouped to docs
+
+        # Write first header row - Cay numbers
+        worksheet.write(0, 0, 'Ngày', header_format)
+        for col_idx, col in enumerate(cols, 1):
+            worksheet.write(0, col_idx, col['name'], header_format)
+
+        # Write second header row - Vanh values
+        worksheet.write(1, 0, 'Vanh', vanh_format)
+        for col_idx, col in enumerate(cols, 1):
+            worksheet.write(1, col_idx, col['vanhcay'], vanh_format)
+
+        # Write data rows starting from row 2
+        for row_idx, group in enumerate(docs, 2):  # Changed from grouped.values() to docs
+            # Write date
+            worksheet.write(row_idx, 0, group['name'], data_format)
+            
+            # Write values for each column
+            for col_idx, col in enumerate(cols, 1):
+                cell_data = group['group_values'].get(col['id'], {})
+                value = cell_data.get('value', '-')
+                
+                # Create a new format for this cell to include background color if present
+                cell_format = workbook.add_format({
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'border': 1
+                })
+                
+                # Add background color if present
+                if cell_data.get('background'):
+                    cell_format.set_bg_color(cell_data['background'])
+                
+                # Add bold if kichthich is True
+                if cell_data.get('kichthich'):
+                    cell_format.set_bold(True)
+                
+                worksheet.write(row_idx, col_idx, value, cell_format)
+
+        # Set column widths
+        worksheet.set_column(0, 0, 20)  # Date column
+        worksheet.set_column(1, len(cols), 15)  # Data columns
+        
+        # Freeze panes for better viewing
+        worksheet.freeze_panes(2, 1)  # Freeze the first two rows and first column
+
+        workbook.close()
+        output.seek(0)
+
+        return output.getvalue()
+
+    def create_pdf_report(self, data):
+        """Create PDF report based on the report data"""
+        # Get report values with the same structure as Excel
+        report_values = self._get_report_values(None, data)
+        
+        # Get the report action
+        report = self.env.ref('caosu.action_report_rubbertest_pdf')
+        if not report:
+            raise ValueError("PDF Report template not found")
+        
+        # Create a dummy record to render with
+        dummy_record = self.env['rubber.test'].new({})
+        
+        # Generate PDF using the report action
+        pdf_content = report._render([dummy_record.id], {
+            'docs': report_values.get('docs', []),
+            'cols': report_values.get('cols', []),
+            'compare_field': report_values.get('compare_field'),
+            'detail_field': report_values.get('detail_field'),
+            'doc_model': 'rubber.test',
+            'doc_ids': []
+        })[0]
+        
+        return pdf_content

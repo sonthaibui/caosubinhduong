@@ -5,7 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class RubberPrice(models.Model):
     _name = 'rubber.price'
     _description = 'Rubber Price Model'
-    _rec_name = 'name'
+    '''_rec_name = 'name'
     _order = "ngay_hieuluc desc, create_date desc"
     
     to = fields.Many2many('hr.department', string='Tổ', 
@@ -193,3 +193,18 @@ class RubberPrice(models.Model):
                     if hasattr(record, '_compute_tien'):
                         record._compute_tien()
                         record.write({'tien': record.tien})
+
+    def action_open_price_wizard(self):
+        """Open the rubber price wizard"""
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Cập nhật giá mủ'),
+            'res_model': 'rubber.price.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_daily_id': self.daily.id if self.daily else False,
+                'default_to_ids': self.to.ids if self.to else [],
+                'default_ngay_hieuluc': fields.Date.today(),
+            },
+        }'''

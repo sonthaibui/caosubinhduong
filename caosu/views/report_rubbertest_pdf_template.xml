@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="rubbertest_report_pdf_template">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <h3 class="text-center mb-4">Theo dõi mũ thí nghiệm</h3>
+                
+                <table class="table table-sm table-bordered" style="font-size: 10px;">
+                    <thead>
+                        <!-- Tree Numbers Row -->
+                        <tr>
+                            <th class="text-center">Ngày</th>
+                            <t t-foreach="cols" t-as="col">
+                                <th class="text-center" t-esc="col['name']"/>
+                            </t>
+                        </tr>
+                        <!-- Vanh Values Row -->
+                        <tr style="background-color: #f2f2f2;">
+                            <th class="text-center">Vanh</th>
+                            <t t-foreach="cols" t-as="col">
+                                <th class="text-center" style="font-style: italic;" t-esc="col['vanhcay']"/>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as="doc">
+                            <tr>
+                                <td class="text-center" t-esc="doc['name']"/>
+                                <t t-foreach="cols" t-as="col">
+                                    <t t-set="cell" t-value="doc['group_values'].get(col['id'], {})"/>
+                                    <td t-attf-style="text-align: center; #{cell.get('background') and 'background-color: ' + cell['background'] + ';' or ''}">
+                                        <t t-if="cell.get('kichthich')">
+                                            <strong t-esc="cell.get('value', '-')"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="cell.get('value', '-')"/>
+                                        </t>
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>

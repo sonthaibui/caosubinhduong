@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>            
+<odoo>
+    
+
+    <!-- Report action definition -->
     <record id="action_report_rubbertest" model="ir.actions.report">
-        <field name="name">Rubber Report</field>
+        <field name="name">Rubber Test Report</field>
         <field name="model">rubber.test</field>
         <field name="report_type">qweb-html</field>
         <field name="report_name">caosu.rubbertest_report_template</field>
-        <field name="attachment_use" eval="False"/>
+        <field name="report_file">caosu.rubbertest_report_template</field>
+        <field name="binding_model_id" ref="model_rubber_test"/>
+        <field name="binding_type">report</field>
     </record>
 
-    <!-- Root menu (Reports) -->
-    <menuitem id="menu_report_root" name="Xem báo cáo" sequence="10"/>           
+    <!-- Root menu for Reports -->
+    <menuitem id="menu_report_root" 
+              name="Xem báo cáo" 
+              sequence="10"/>
+    <!-- Report menu item -->
+    <menuitem id="menu_rubbertest_html_report" 
+              name="Mũ thí nghiệm" 
+              parent="menu_report_root" 
+              action="action_report_rubbertest" 
+              sequence="2"/>
 
-    <!-- Menu Item linked directly to the report action with default context -->
-    <menuitem id="menu_rubbertest_html_report" name="Mũ thí nghiệm" 
-                parent="menu_report_root" 
-                action="action_report_rubbertest" 
-                sequence="2">
-        
-    </menuitem>    
+   
+    
 </odoo>

@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from odoo import http
-from odoo.http import request
+from odoo.http import request, content_disposition
 import logging
+import io
+import xlsxwriter
+from datetime import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -99,3 +102,116 @@ class ReportController(http.Controller):
         except Exception as e:
             _logger.exception(f"Error updating rubber ghichu: {str(e)}")
             return {'success': False, 'error': str(e)}
+
+    @http.route('/caosu/excel', type='http', auth="user", website=True)
+    def export_excel_rubbertest(self, **kw):
+        try:
+            # Get report data using the same method as HTML report
+            ReportRubberTest = request.env['report.caosu.rubbertest_report_template']
+            
+            # Initialize data dictionary with required fields
+            data = {
+                'compare_field': kw.get('compare_field', 'cong'),
+                'detail_field': kw.get('detail_field', 'none')
+            }
+            
+            # Handle to parameter carefully
+            if kw.get('to'):
+                try:
+                    if kw.get('to') != 'all':
+                        data['to'] = int(kw.get('to'))
+                except (ValueError, TypeError):
+                    data['to'] = kw.get('to')  # Keep original value if not convertible to int
+            
+            # Handle other parameters
+            if kw.get('lo'):
+                data['lo'] = kw.get('lo')  # Keep as string
+                
+            if kw.get('dao_kt_up'):
+                try:
+                    if kw.get('dao_kt_up') != 'all':
+                        data['dao_kt_up'] = int(kw.get('dao_kt_up'))
+                except (ValueError, TypeError):
+                    pass
+                
+            if kw.get('nhom'):
+                try:
+                    if kw.get('nhom') != 'all':
+                        data['nhom'] = int(kw.get('nhom'))
+                except (ValueError, TypeError):
+                    pass
+
+            # Get Excel binary data
+            excel_data = ReportRubberTest.create_excel_report(data)
+            
+            filename = f'rubber_test_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx'
+            
+            headers = [
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', content_disposition(filename))
+            ]
+            
+            return request.make_response(excel_data, headers=headers)
+
+        except Exception as e:
+            _logger.error("Excel export error: %s", str(e), exc_info=True)
+            return "Error generating Excel file: " + str(e)
+
+    @http.route('/caosu/pdf', type='http', auth="user", website=True)
+    def export_pdf_rubbertest(self, **kw):
+        try:
+            # Get report data using the same method as HTML report
+            ReportRubberTest = request.env['report.caosu.rubbertest_report_template']
+            
+            # Initialize data dictionary with required fields
+            data = {
+                'compare_field': kw.get('compare_field', 'cong'),
+                'detail_field': kw.get('detail_field', 'none')
+            }
+            
+            # Handle to parameter carefully
+            if kw.get('to'):
+                try:
+                    if kw.get('to') != 'all':
+                        data['to'] = int(kw.get('to'))
+                except (ValueError, TypeError):
+                    data['to'] = kw.get('to')
+            
+            # Handle other parameters
+            if kw.get('lo'):
+                data['lo'] = kw.get('lo')
+                
+            if kw.get('dao_kt_up'):
+                try:
+                    if kw.get('dao_kt_up') != 'all':
+                        data['dao_kt_up'] = int(kw.get('dao_kt_up'))
+                except (ValueError, TypeError):
+                    pass
+                    
+            if kw.get('nhom'):
+                try:
+                    if kw.get('nhom') != 'all':
+                        data['nhom'] = int(kw.get('nhom'))
+                except (ValueError, TypeError):
+                    pass
+
+            # Get PDF binary data
+            pdf_data = ReportRubberTest.create_pdf_report(data)
+            
+            filename = f'rubber_test_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pdf'
+            
+            return request.make_response(
+                pdf_data,
+                headers=[
+                    ('Content-Type', 'application/pdf'),
+                    ('Content-Disposition', content_disposition(filename))
+                ]
+            )
+
+        except Exception as e:
+            _logger.error("PDF export error: %s", str(e), exc_info=True)
+            return f"Error generating PDF file: {str(e)}"
+
+    @http.route('/caosu/test', type='http', auth="user")
+    def test_controller(self, **kw):
+        return "Controller is working"

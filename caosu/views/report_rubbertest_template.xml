@@ -8,6 +8,31 @@
             <t t-set="disable_commercial_header" t-value="True"/>
             <div class="page" style="font-size: 13px;">
                 <h2>Theo dõi mũ thí nghiệm</h2>
+                <!-- Add export buttons at the top -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <a t-att-href="'/caosu/excel?to=' + str(to or '') + 
+                                       '&amp;lo=' + str(lo or '') + 
+                                       '&amp;dao_kt_up=' + str(dao_kt_up or '') + 
+                                       '&amp;nhom=' + str(nhom or '') +
+                                       '&amp;compare_field=' + str(compare_field or '') +
+                                       '&amp;detail_field=' + str(detail_field or '')" 
+                           class="btn btn-primary" 
+                           target="_blank">
+                            <i class="fa fa-file-excel-o"/> Excel
+                        </a>
+                        <a t-att-href="'/caosu/pdf?to=' + str(to or '') + 
+                                       '&amp;lo=' + str(lo or '') + 
+                                       '&amp;dao_kt_up=' + str(dao_kt_up or '') + 
+                                       '&amp;nhom=' + str(nhom or '') +
+                                       '&amp;compare_field=' + str(compare_field or '') +
+                                       '&amp;detail_field=' + str(detail_field or '')" 
+                           class="btn btn-secondary ml-2" 
+                           target="_blank">
+                            <i class="fa fa-file-pdf-o"/> PDF
+                        </a>
+                    </div>
+                </div>
                 <form action="/report/html/caosu.rubbertest_report_template" method="get">
                     <div style="display: flex; gap: 20px;">
                         <div style="flex: 1;">
@@ -282,6 +307,37 @@
                     }
                     .touch-friendly-select input[type="checkbox"] {
                         margin-right: 8px;
+                    }
+                    
+                    /* Mobile-friendly form styles */
+                    @media screen and (max-width: 768px) {
+                        /* Make selection boxes full width on mobile */
+                        select {
+                            width: 100% !important;
+                            min-height: 35px !important;
+                            margin-bottom: 10px !important;
+                            font-size: 16px !important; /* Prevents iOS zoom on focus */
+                        }
+                        
+                        /* Increase label size and spacing */
+                        label {
+                            display: block !important;
+                            margin-bottom: 5px !important;
+                            font-size: 14px !important;
+                        }
+                        
+                        /* Adjust flex layout for mobile */
+                        div[style*="display: flex"] {
+                            flex-direction: column !important;
+                        }
+                        
+                        /* Make submit button more prominent */
+                        button[type="submit"] {
+                            width: 100% !important;
+                            padding: 10px !important;
+                            margin-top: 15px !important;
+                            font-size: 16px !important;
+                        }
                     }
                 </style>
                 <!-- Mobile tooltip container -->

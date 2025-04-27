@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+    <!--<data>
         
         <record id="rubber_price_tree" model="ir.ui.view">
             <field name="name">rubber.price.tree</field>
             <field name="model">rubber.price</field>
             <field name="arch" type="xml">
                 <tree string="Giá Mủ Cao Su">
+                     
+                    <header>
+                        <button name="%(action_rubber_price_wizard)d" 
+                                string="Cập nhật nhiều giá mủ" 
+                                type="action" 
+                                class="btn-primary"/>
+                    </header>
+                    
                     <field name="ngay_hieuluc"/>
-                    <field name="to" widget ="many2many"/>
-                    <field name="daily" widget ="many2many"/>
+                    <field name="to" widget="many2many_tags"/>
+                    <field name="daily"/>
                     <field name="mu"/>
                     <field name="gia" sum="Tổng"/>
                     <field name="macdinh"/>
@@ -23,6 +31,12 @@
             <field name="model">rubber.price</field>
             <field name="arch" type="xml">
                 <form string="Giá Mủ Cao Su">
+                    <header>
+                        <button name="action_open_price_wizard" 
+                                string="Cập nhật nhiều giá mủ" 
+                                type="object" 
+                                class="oe_highlight"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
@@ -83,5 +97,5 @@
                   parent="sanluong_menu"
                   action="action_rubber_price"
                   sequence="3"/>
-    </data>
+    </data>-->
 </odoo>

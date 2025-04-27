@@ -7,7 +7,10 @@
     'website': 'https://www.caosubinhduong.com',
     'summary': 'Nhập sản lượng cao su công nhân cạo hằng ngày',
     'description': """Nhập sản lượng cao su công nhân cạo hằng ngày""",
-    'depends': ['hr', 'mail', 'base', 'web'],
+    'depends': [
+        'hr', 'mail', 'base', 'web',
+        'report_xlsx',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
@@ -34,13 +37,16 @@
         'report/salary_officer_report.xml',        
         'report/salaryboard_report.xml',
         'report/rubber_report.xml',
+        'report/rubbertest_report.xml',  # Add this if not already present
         'views/report_rubbertest_template.xml',       
-        'views/report_rubber_template.xml',        
-        'views/rubber_config_views.xml',
+        'views/report_rubber_template.xml',       
         'views/menu_rubbertest_report.xml',
         'views/menu_rubber_report.xml',
-        'views/rubber_price_views.xml',                        
-        ],
+        'views/rubber_config_views.xml',
+        'views/rubber_price_wizard_views.xml',  # Load wizard views FIRST
+        'views/rubber_price_views.xml',         # Then load price views that reference it
+        'views/report_rubbertest_pdf_template.xml',
+    ],
     '''assets': {
         'web.assets_backend': [
             #'caosu/static/src/js/pivot_widget.js',
@@ -48,7 +54,7 @@
         ],
     },'''
     'controllers': [        
-        'caosu/controllers/rubber_report_controller.py',
+        'caosu/controllers/report_controller.py',
     ],
     'demo': [],
     'application': True,
