@@ -408,7 +408,7 @@
                             <group>
                               <field name="ghi_chu" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}"/>
                             </group>
-                            <button name="update_rubber_prices" string="Update Prices" type="object" class="oe_highlight"/>
+                            <!--<button name="update_rubber_prices" string="Update Prices" type="object" class="oe_highlight"/>-->
                           </sheet>
                         </page>
                         <page string="Sản lượng mũ cạo" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}">
