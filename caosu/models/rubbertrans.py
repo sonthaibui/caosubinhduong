@@ -1,7 +1,7 @@
 from datetime import datetime
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from .rubberprice import RubberPrice  # Import the RubberPrice class from the new file
+#from .rubberprice import RubberPrice  # Import the RubberPrice class from the new file
 
 class RubberHarvest(models.Model):
     _name = 'rubber.harvest'

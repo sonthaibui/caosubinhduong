@@ -1,7 +1,8 @@
 <odoo>
     <template id="rubbertest_report_template">
-        <!-- Use correct external layout in report -->
         <t t-call="web.html_container">
+            <!-- Add viewport meta tag -->
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
             <!-- Optionally disable header/logo if needed -->
             <t t-set="disable_header" t-value="True"/>
             <t t-set="disable_logo" t-value="True"/>
