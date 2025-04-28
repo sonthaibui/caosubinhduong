@@ -1,7 +1,0 @@
-<odoo>
-    <template id="assets_backend_inherit" name="custom_module assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/custom_module/static/src/js/custom_sum.js"/>
-        </xpath>
-    </template>
-</odoo>

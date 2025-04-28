@@ -1,0 +1,13 @@
+.o_list_view {
+    .o_data_cell[name="to_name"] {
+        min-width: 150px !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+    }
+    
+    .o_data_cell[name="nam_kt"] {
+        min-width: 100px !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+    }
+}

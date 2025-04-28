@@ -9,9 +9,16 @@
     'description': """Nhập sản lượng cao su công nhân cạo hằng ngày""",
     'depends': [
         'hr', 'mail', 'base', 'web',
-        'report_xlsx','odb_sale_management'
+        'report_xlsx', 'odb_sale_management'
     ],
-    # odb_sale_management is_customer
+    
+    'assets': {
+        'web.assets_backend': [            
+            'caosu/static/src/js/custom_date_widget.js',
+            'caosu/static/src/xml/custom_date_widget.xml',
+        ],
+    },
+    
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
@@ -31,7 +38,7 @@
         'views/phieuluong.xml',
         
         #'data/update_color.xml',  # Include the update script
-        #'views/assets.xml',
+        
         'report/reward_bymonth_report.xml',
         'report/rubber_salary_report.xml',
         'report/salary_office_report.xml',
@@ -39,7 +46,8 @@
         'report/salaryboard_report.xml',
         'report/rubber_report.xml',
         'report/rubbertest_report.xml',  # Add this if not already present               
-        'views/report_rubber_template.xml',       
+        'views/report_rubber_template.xml',
+        'views/report_rubbertest_template.xml',       
         'views/menu_rubbertest_report.xml',
         'views/menu_rubber_report.xml',
         'views/rubber_config_views.xml',
@@ -47,12 +55,6 @@
         'views/rubber_price_views.xml',         # Then load price views that reference it
         
     ],
-    '''assets': {
-        'web.assets_backend': [
-            #'caosu/static/src/js/pivot_widget.js',
-            #'caosu/static/src/css/color.css',
-        ],
-    },'''
     'controllers': [        
         'caosu/controllers/report_controller.py',
     ],

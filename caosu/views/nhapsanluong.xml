@@ -390,7 +390,7 @@
                               <group>
                                 <field name="recorded" invisible="1"/>
                                 <field name="lo" attrs="{'readonly': [('recorded','=',True)]}"/>
-                                <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}"/>
+                                <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}" widget="custom_date"/>
                                 <field name="to" attrs="{'readonly': [('recorded','=',True)]}" widget="selection"/>
                                 <field name="to_name" invisible="1"/>
                                 <field name="ctktup"/>
@@ -408,7 +408,7 @@
                             <group>
                               <field name="ghi_chu" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}"/>
                             </group>
-                            <button name="update_rubber_prices" string="Update Prices" type="object" class="oe_highlight"/>
+                            <!--<button name="update_rubber_prices" string="Update Prices" type="object" class="oe_highlight"/>-->
                           </sheet>
                         </page>
                         <page string="Sản lượng mũ cạo" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}">
@@ -462,24 +462,28 @@
         <field name="name">rubberbydate.tree</field>
         <field name="model">rubber.date</field>
         <field name="arch" type="xml">
-          <tree string="Rubber By Date Tree View" multi_edit="1" default_order="ngay desc" decoration-bf="kichthich == True" decoration-warning="(miengcao =='2 miệng') or (miengcao =='Miệng ngửa cũ')" decoration-info="miengcao =='Miệng ngửa mới'">
+          <tree string="Rubber By Date Tree View" multi_edit="1" default_order="ngay desc" 
+                decoration-bf="kichthich == True" 
+                decoration-warning="(miengcao =='2 miệng') or (miengcao =='Miệng ngửa cũ')" 
+                decoration-info="miengcao =='Miệng ngửa mới'">
             <field name="rubber_line_ids" optional="hide"/>
-            <field name="to_name" optional="hide"/>
+            <field name="to_name" optional="hide" class="o_data_cell_wide"/>
             <field name="id" optional="hide"/>
             <field name="recorded" invisible="1"/>
-            <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}"/>
+            <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}" widget="custom_date"/>
             <field name="lo" attrs="{'readonly': [('recorded','=',True)]}"/>
-            <field name="nam_kt" optional="show"/>
+            <field name="tongmu" string="TỔNG" optional="show"/>
+            <field name="nam_kt" optional="hide"/>
             <field name="nuoc_thu" optional="hide"/>
             <field name="tap_thu" optional="hide"/>
             <field name="day_thu" optional="hide"/>
             <field name="chen_thu" optional="hide"/>
             <field name="dong_thu" optional="hide"/>
             <field name="day_ban" optional="hide"/>
-            <field name="tongmu"/>
+            
             <field name="mulantruoc" digits = "[42,0]" optional="show"/>            
             <field name="chenhlechmu" digits = "[42,0]" decoration-success="chenhlechmu >= 0" decoration-danger="chenhlechmu &lt; 0" optional="show"/>
-            <field name="mudaotruoc" optional="show"/> 
+            <field name="mudaotruoc" optional="hide"/> 
             <field name="do_tb"/>
             <field name="do_giao"/>
             <field name="dolech" decoration-success="dolech > 0" decoration-danger="dolech &lt; 0"/>
@@ -489,7 +493,10 @@
             <field name="daoup" optional="hide"/>
             <field name="miengcao" optional="hide"/> 
             <field name="dao_kt"/> 
-            <field name="lan_kt"/> 
+            <field name="lan_kt"/>
+            <field name="nuoc_ban" digits="[42, 0]" string="Nước bán" optional="hide"/>
+            <field name="tap_ban" digits="[42, 0]" string="Tạp bán" optional="hide"/>
+            <field name="day_ban" digits="[42, 1]" string="Dây bán" optional="hide"/> 
             <field name="kichthich"/>
             <field name="congthuc_kt" optional="show"/>            
             <field name="gianuoc" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
@@ -497,6 +504,7 @@
             <field name="giaday" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
             <field name="giachen" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
             <field name="tien" digits="[42,0]" groups="base.group_erp_manager"/>
+            
             <field name="thoitiet" optional="show"/>                                  
             <field name="ghi_chu" optional="hide"/>
           </tree>
@@ -512,8 +520,12 @@
                 <field name="daongua" />
                 <field name="kt_daoup" />
                 <filter name="2024" string="2024" domain="[('ngay','&lt;=',time.strftime('2025-01-31')),('ngay','&gt;=',time.strftime('2024-02-01'))]"/>
+                <filter name="2023" string="2023" domain="[('nam_kt','=','2023')]"/>
+                <filter name="2025" string="2025" domain="[('nam_kt','=','2025')]"/>
                 <group expand="0" string="Group By">
                     <filter name="to_name" string="Tổ" context="{'group_by': 'to_name'}" />
+                    <filter name="namkt" string="NămKT" context="{'group_by': 'nam_kt'}" />
+                    <filter name="thang" string="Tháng" context="{'group_by': 'ngay'}" />
                 </group>
             </search>
         </field>
@@ -524,7 +536,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">rubber.date</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{"search_default_to_name":1, "search_default_2024":1,}</field>
+        <field name="context">{"search_default_to_name":1,"search_default_namkt":1,}</field>
         <field name="help" type="html">
             <p>
                 Nhập sản lượng công nhân cạo hằng ngày.
