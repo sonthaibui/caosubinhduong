@@ -22,16 +22,6 @@
                            target="_blank">
                             <i class="fa fa-file-excel-o"/> Excel
                         </a>
-                        <a t-att-href="'/caosu/pdf?to=' + str(to or '') + 
-                                       '&amp;lo=' + str(lo or '') + 
-                                       '&amp;dao_kt_up=' + str(dao_kt_up or '') + 
-                                       '&amp;nhom=' + str(nhom or '') +
-                                       '&amp;compare_field=' + str(compare_field or '') +
-                                       '&amp;detail_field=' + str(detail_field or '')" 
-                           class="btn btn-secondary ml-2" 
-                           target="_blank">
-                            <i class="fa fa-file-pdf-o"/> PDF
-                        </a>
                     </div>
                 </div>
                 <form action="/report/html/caosu.rubbertest_report_template" method="get">

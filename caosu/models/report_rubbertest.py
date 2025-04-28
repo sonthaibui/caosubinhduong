@@ -430,30 +430,4 @@ class ReportRubberTest(models.AbstractModel):
 
         workbook.close()
         output.seek(0)
-
         return output.getvalue()
-
-    def create_pdf_report(self, data):
-        """Create PDF report based on the report data"""
-        # Get report values with the same structure as Excel
-        report_values = self._get_report_values(None, data)
-        
-        # Get the report action
-        report = self.env.ref('caosu.action_report_rubbertest_pdf')
-        if not report:
-            raise ValueError("PDF Report template not found")
-        
-        # Create a dummy record to render with
-        dummy_record = self.env['rubber.test'].new({})
-        
-        # Generate PDF using the report action
-        pdf_content = report._render([dummy_record.id], {
-            'docs': report_values.get('docs', []),
-            'cols': report_values.get('cols', []),
-            'compare_field': report_values.get('compare_field'),
-            'detail_field': report_values.get('detail_field'),
-            'doc_model': 'rubber.test',
-            'doc_ids': []
-        })[0]
-        
-        return pdf_content

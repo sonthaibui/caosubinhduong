@@ -9,8 +9,9 @@
     'description': """Nhập sản lượng cao su công nhân cạo hằng ngày""",
     'depends': [
         'hr', 'mail', 'base', 'web',
-        'report_xlsx',
+        'report_xlsx','odb_sale_management'
     ],
+    # odb_sale_management is_customer
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
@@ -37,15 +38,14 @@
         'report/salary_officer_report.xml',        
         'report/salaryboard_report.xml',
         'report/rubber_report.xml',
-        'report/rubbertest_report.xml',  # Add this if not already present
-        'views/report_rubbertest_template.xml',       
+        'report/rubbertest_report.xml',  # Add this if not already present               
         'views/report_rubber_template.xml',       
         'views/menu_rubbertest_report.xml',
         'views/menu_rubber_report.xml',
         'views/rubber_config_views.xml',
         'views/rubber_price_wizard_views.xml',  # Load wizard views FIRST
         'views/rubber_price_views.xml',         # Then load price views that reference it
-        'views/report_rubbertest_pdf_template.xml',
+        
     ],
     '''assets': {
         'web.assets_backend': [
