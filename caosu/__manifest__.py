@@ -12,13 +12,6 @@
         'report_xlsx', 'odb_sale_management'
     ],
     
-    'assets': {
-        'web.assets_backend': [            
-            'caosu/static/src/js/custom_date_widget.js',
-            'caosu/static/src/xml/custom_date_widget.xml',
-        ],
-    },
-    
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
@@ -64,4 +57,5 @@
     'auto_install': False,
     'license': 'LGPL-3',
     'post_init_hook': 'post_init_hook',
+    
 }

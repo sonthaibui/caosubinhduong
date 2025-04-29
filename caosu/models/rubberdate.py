@@ -27,6 +27,15 @@ class RubberByDate(models.Model):
     lo = fields.Selection([('a', 'A'), ('b', 'B'), ('c', 'C')], string='Lô', default='a', required=True, tracking=True, store=True)
     miengcao = fields.Char('Miệng cạo')
     ngay = fields.Date('Ngày', default=fields.Datetime.now(), required=True, tracking=True, store=True)
+    ngay_format = fields.Char(string='Ngày', compute='_compute_ngay_format', store=True)
+
+    @api.depends('ngay')
+    def _compute_ngay_format(self):
+        for record in self:
+            if record.ngay:
+                record.ngay_format = datetime.strptime(str(record.ngay), '%Y-%m-%d').strftime('%d . %m')
+            else:
+                record.ngay_format = ''
     currency_id = fields.Many2one('res.currency', string='Currency', 
         default=lambda self: self.env.company.currency_id)
     # Mu nuoc

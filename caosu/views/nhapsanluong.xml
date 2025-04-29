@@ -390,7 +390,7 @@
                               <group>
                                 <field name="recorded" invisible="1"/>
                                 <field name="lo" attrs="{'readonly': [('recorded','=',True)]}"/>
-                                <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}" widget="custom_date"/>
+                                <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}"/>                                
                                 <field name="to" attrs="{'readonly': [('recorded','=',True)]}" widget="selection"/>
                                 <field name="to_name" invisible="1"/>
                                 <field name="ctktup"/>
@@ -466,11 +466,13 @@
                 decoration-bf="kichthich == True" 
                 decoration-warning="(miengcao =='2 miệng') or (miengcao =='Miệng ngửa cũ')" 
                 decoration-info="miengcao =='Miệng ngửa mới'">
+            <field name="ngay_format"/>
             <field name="rubber_line_ids" optional="hide"/>
-            <field name="to_name" optional="hide" class="o_data_cell_wide"/>
+            <field name="to_name" optional="hide" />
             <field name="id" optional="hide"/>
             <field name="recorded" invisible="1"/>
-            <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}" widget="custom_date"/>
+            <field name="ngay" attrs="{'readonly': [('recorded','=',True)]}" invisible="1"/>
+             
             <field name="lo" attrs="{'readonly': [('recorded','=',True)]}"/>
             <field name="tongmu" string="TỔNG" optional="show"/>
             <field name="nam_kt" optional="hide"/>
