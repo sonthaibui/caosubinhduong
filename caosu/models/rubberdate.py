@@ -279,7 +279,7 @@ class RubberByDate(models.Model):
                     rec.tap_thu = x + l
                     rec.chen_thu = k - l
                 rec.nuoc_thu = y
-                rec.tongmu = x + y
+                rec.tongmu = x + y + i + k
                 rec.dong_thu = i
                 rec.day_thu = j
                 rec.nuoc_giao = y - rec.ke - rec.mutrangthung

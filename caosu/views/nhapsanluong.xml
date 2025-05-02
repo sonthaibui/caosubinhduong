@@ -19,6 +19,12 @@
                         <page string="Giao mũ" name="giaomu" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}">
                           <sheet>
                             <group>
+                              <group string = "TỔ TRƯỞNG NHẬP">
+                                <field name="do_giao"/>
+                                <field name="ke"/>
+                                <field name="mutrangthung"/>
+                                <field name="xe"/>
+                              </group>
                               <field name="deliver_line_ids" nolabel="1">
                                 <form>
                                   <sheet>
@@ -76,311 +82,64 @@
                                 <field name="day_ton"/>
                               </group> -->
                             </group>
-                            <div>
-                              <div class="container">
-                                <h4>MŨ</h4>            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Mũ ké</th>
-                                      <th>Mũ tráng thùng</th>
-                                      <th>Mũ tạp xe</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="ke" nolabel="1"/></td>
-                                      <td><field name="mutrangthung" nolabel="1"/></td>
-                                      <td><field name="xe" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
+                            
+                            <div class="container" style="margin-top: 16px;">
+                                <h4 style="text-align:center;">TỔNG HỢP MŨ</h4>
+                                <table class="table table-bordered" style="text-align: center; min-width: 500px;">
+                                    <thead>
+                                        <tr style="background-color: gainsboro;">
+                                            <th></th>
+                                            <th>THU</th>
+                                            <th>THỰC TẾ</th>
+                                            <th>BÁN</th>
+                                            <th>TỒN</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>MŨ NƯỚC</strong></td>
+                                            <td><field name="nuoc_thu" nolabel="1"/></td>
+                                            <td><field name="nuoc_giao" nolabel="1"/></td>
+                                            <td><field name="nuoc_ban" nolabel="1"/></td>
+                                            <td><field name="nuoc_ton" nolabel="1"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ĐỘ</strong></td>
+                                            <td><field name="do_tb" nolabel="1"/></td>
+                                            <td><field name="do_giao" nolabel="1" readonly="1"/></td>
+                                            <td><field name="do_ban" nolabel="1" readonly="1"/></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>MŨ TẠP</strong></td>
+                                            <td><field name="tap_thu" nolabel="1"/></td>
+                                            <td><field name="tap_giao" nolabel="1"/></td>
+                                            <td><field name="tap_ban" nolabel="1"/></td>
+                                            <td><field name="tap_ton" nolabel="1"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>MŨ DÂY</strong></td>
+                                            <td><field name="day_thu" nolabel="1"/></td>
+                                            <td><field name="day_giao" nolabel="1"/></td>
+                                            <td><field name="day_ban" nolabel="1"/></td>
+                                            <td><field name="day_ton" nolabel="1"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>MŨ ĐÔNG</strong></td>
+                                            <td><field name="dong_thu" nolabel="1"/></td>
+                                            <td><field name="dong_giao" nolabel="1"/></td>
+                                            <td><field name="dong_ban" nolabel="1"/></td>
+                                            <td><field name="dong_ton" nolabel="1"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>MŨ CHÉN</strong></td>
+                                            <td><field name="chen_thu" nolabel="1"/></td>
+                                            <td><field name="chen_giao" nolabel="1"/></td>
+                                            <td><field name="chen_ban" nolabel="1"/></td>
+                                            <td><field name="chen_ton" nolabel="1"/></td>
+                                        </tr>
+                                    </tbody>
                                 </table>
-                              </div>
-                              <div class="container">
-                                <h4>MŨ NƯỚC</h4>          
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Độ TT</th>
-                                      <th>Độ TBCN</th>
-                                      <th>Cân CN</th>
-                                      <th>Thực tế</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="do_giao" nolabel="1"/></td>
-                                      <td><field name="do_tb" nolabel="1"/></td>
-                                      <td><field name="nuoc_thu" nolabel="1"/></td>
-                                      <td><field name="nuoc_giao" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Giao xe</th>
-                                      <th>Giao ĐL</th>
-                                      <th>Tồn</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="nuoc_ban" nolabel="1"/></td>
-                                      <td><field name="nuoc_daily" nolabel="1"/></td>
-                                      <td><field name="nuoc_ton" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Tồn KK</th>
-                                      <th>Ngày KKLK</th>
-                                      <th>Kiểm kê</th>
-                                      <th>Hao hụt</th>
-                                      <th>TL hao hụt</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="nuoc_tonkk" nolabel="1"/></td>
-                                      <td><field name="nuocnkk" nolabel="1"/></td>
-                                      <td><field name="nuockk" nolabel="1"/></td>
-                                      <td><field name="nuoc_haohut" nolabel="1"/></td>
-                                      <td><field name="nuoc_tlhh" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">
-                                <h4>MŨ TẠP</h4>          
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Cân CN</th>
-                                      <th>Thực tế</th>
-                                      <th>Độ ban đầu</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="tap_thu" nolabel="1"/></td>
-                                      <td><field name="tap_giao" nolabel="1"/></td>
-                                      <td><field name="dotap" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Giao xe</th>
-                                      <th>Giao ĐL</th>
-                                      <th>Tồn</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="tap_ban" nolabel="1"/></td>
-                                      <td><field name="tap_daily" nolabel="1"/></td>
-                                      <td><field name="tap_ton" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Tồn KK</th>
-                                      <th>Ngày KKLK</th>
-                                      <th>Kiểm kê</th>
-                                      <th>Hao hụt</th>
-                                      <th>TL hao hụt</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="tap_tonkk" nolabel="1"/></td>
-                                      <td><field name="tapnkk" nolabel="1"/></td>
-                                      <td><field name="tapkk" nolabel="1"/></td>
-                                      <td><field name="tap_haohut" nolabel="1"/></td>
-                                      <td><field name="tap_tlhh" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">
-                                <h4>MŨ DÂY</h4>          
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Cân CN</th>
-                                      <th>Thực tế</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="day_thu" nolabel="1"/></td>
-                                      <td><field name="day_giao" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Giao xe</th>
-                                      <th>Giao ĐL</th>
-                                      <th>Tồn</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="day_ban" nolabel="1"/></td>
-                                      <td><field name="day_daily" nolabel="1"/></td>
-                                      <td><field name="day_ton" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Tồn KK</th>
-                                      <th>Kiểm kê</th>
-                                      <th>Hao hụt</th>
-                                      <th>TL hao hụt</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="day_tonkk" nolabel="1"/></td>
-                                      <td><field name="daykk" nolabel="1"/></td>
-                                      <td><field name="day_haohut" nolabel="1"/></td>
-                                      <td><field name="day_tlhh" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">
-                                <h4>MŨ ĐÔNG</h4>          
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Cân CN</th>
-                                      <th>Thực tế</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="dong_thu" nolabel="1"/></td>
-                                      <td><field name="dong_giao" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Giao xe</th>
-                                      <th>Giao ĐL</th>
-                                      <th>Tồn</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="dong_ban" nolabel="1"/></td>
-                                      <td><field name="dong_daily" nolabel="1"/></td>
-                                      <td><field name="dong_ton" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Tồn KK</th>
-                                      <th>Kiểm kê</th>
-                                      <th>Hao hụt</th>
-                                      <th>TL hao hụt</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="dong_tonkk" nolabel="1"/></td>
-                                      <td><field name="dongkk" nolabel="1"/></td>
-                                      <td><field name="dong_haohut" nolabel="1"/></td>
-                                      <td><field name="dong_tlhh" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">
-                                <h4>MŨ CHÉN</h4>          
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Cân CN</th>
-                                      <th>Thực tế</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="chen_thu" nolabel="1"/></td>
-                                      <td><field name="chen_giao" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Giao xe</th>
-                                      <th>Giao ĐL</th>
-                                      <th>Tồn</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="chen_ban" nolabel="1"/></td>
-                                      <td><field name="chen_daily" nolabel="1"/></td>
-                                      <td><field name="chen_ton" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div class="container">            
-                                <table class="table table-bordered" style="text-align: center;">
-                                  <thead>
-                                    <tr style="background-color: gainsboro;">
-                                      <th>Tồn KK</th>
-                                      <th>Kiểm kê</th>
-                                      <th>Hao hụt</th>
-                                      <th>TL hao hụt</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td><field name="chen_tonkk" nolabel="1"/></td>
-                                      <td><field name="chenkk" nolabel="1"/></td>
-                                      <td><field name="chen_haohut" nolabel="1"/></td>
-                                      <td><field name="chen_tlhh" nolabel="1"/></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
                             </div>
                           </sheet>
                         </page>
@@ -394,7 +153,7 @@
                                 <field name="to" attrs="{'readonly': [('recorded','=',True)]}" widget="selection"/>
                                 <field name="to_name" invisible="1"/>
                                 <field name="ctktup"/>
-                                <field name="congthuc_kt" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}"/>
+                                <!--<field name="congthuc_kt" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}"/>-->
                                 <field name="caoxa" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}"/>
                               </group>
                               <group>
@@ -500,7 +259,7 @@
             <field name="tap_ban" digits="[42, 0]" string="Tạp bán" optional="hide"/>
             <field name="day_ban" digits="[42, 1]" string="Dây bán" optional="hide"/> 
             <field name="kichthich"/>
-            <field name="congthuc_kt" optional="show"/>            
+            <field name="ctktup" optional="show"/>            
             <field name="gianuoc" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
             <field name="giatap" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
             <field name="giaday" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
