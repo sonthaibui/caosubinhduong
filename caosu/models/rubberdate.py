@@ -208,6 +208,20 @@ class RubberByDate(models.Model):
             elif rec.do_giao < 0:
                 raise UserError("Độ thực tế không được nhỏ hơn 0.")
 
+    @api.onchange('kichthich')
+    def _onchange_kichthich(self):
+        for rec in self:
+            if rec.recorded == True:
+                if len(rec.rubber_line_ids) > 0:
+                    for line in rec.rubber_line_ids:
+                        line.kichthich = rec.kichthich
+    
+    @api.onchange('nuoc_tonkk','tap_tonkk','day_tonkk','dong_tonkk','chen_tonkk')
+    def _onchange_tonkk(self):
+        for rec in self:
+            if rec.nuoc_tonkk < 0 or rec.tap_tonkk < 0 or rec.day_tonkk < 0 or rec.dong_tonkk < 0 or rec.chen_tonkk < 0:
+                raise UserError("Tồn phải lớn hơn hoặc bằng 0. Nhập lại tồn.")
+    
     @api.depends('ngay')
     def _compute_ngay(self):
         for rec in self:
@@ -222,13 +236,7 @@ class RubberByDate(models.Model):
                 else:
                     rec.nam_kt = rec.nam
 
-    @api.onchange('kichthich')
-    def _onchange_kichthich(self):
-        for rec in self:
-            if rec.recorded == True:
-                if len(rec.rubber_line_ids) > 0:
-                    for line in rec.rubber_line_ids:
-                        line.kichthich = rec.kichthich
+    
 
     def _compute_recorded(self):
         for rec in self:
@@ -296,13 +304,8 @@ class RubberByDate(models.Model):
                 if y > 0:
                     rec.do_tb = z / y
                     rec.do_haohut = rec.do_tb - rec.do_giao
-
-    @api.onchange('nuoc_tonkk','tap_tonkk','day_tonkk','dong_tonkk','chen_tonkk')
-    def _onchange_tonkk(self):
-        for rec in self:
-            if rec.nuoc_tonkk < 0 or rec.tap_tonkk < 0 or rec.day_tonkk < 0 or rec.dong_tonkk < 0 or rec.chen_tonkk < 0:
-                raise UserError("Tồn phải lớn hơn hoặc bằng 0. Nhập lại tồn.")
     
+    #Tinh mu giao
     @api.depends('deliver_line_ids')
     def _compute_nuocgiao(self):
         for rec in self:
@@ -386,17 +389,9 @@ class RubberByDate(models.Model):
                         elif line.daily.name != 'Xe tải nhà' and line.sanpham == 'chen':
                             daily_chen += line.soluong
                 rec.chen_ban = giaoxe_chen
-                rec.chen_daily = daily_chen
-
-    @api.depends('do_ban','do_giao')
-    def _compute_dohaohut(self):
-        for rec in self:
-            if rec.recorded == True:
-                if rec.do_ban == 0:
-                    rec.do_haohut = rec.do_giao - rec.do_tb
-                else:
-                    rec.do_haohut = rec.do_ban - rec.do_tb
+                rec.chen_daily = daily_chen    
     
+    #Tinh mu ton
     @api.depends('nuoc_giao','nuoc_ban','nuoc_daily', 'nuoc_tonkk', 'nuockk', 'nuoc_haohut')
     def _compute_nuocton(self):
         for rec in self:
@@ -487,6 +482,30 @@ class RubberByDate(models.Model):
                 else:
                     rec.chen_ton = rec.chen_tonkk if rec.chenkk else prev_chen_ton + rec.chen_giao - rec.chen_ban - rec.chen_daily
 
+    #Tinh mu hao hut
+    @api.depends('nuoc_giao', 'nuoc_ban', 'nuoc_daily',
+                 'tap_giao', 'tap_ban', 'tap_daily',
+                 'day_giao', 'day_ban', 'day_daily',
+                 'dong_giao', 'dong_ban', 'dong_daily',
+                 'chen_giao', 'chen_ban', 'chen_daily')
+    def _compute_haohut(self):
+        for rec in self:
+            rec.nuoc_haohut = rec.nuoc_giao - rec.nuoc_ban - rec.nuoc_daily
+            rec.tap_haohut = rec.tap_giao - rec.tap_ban - rec.tap_daily
+            rec.day_haohut = rec.day_giao - rec.day_ban - rec.day_daily
+            rec.dong_haohut = rec.dong_giao - rec.dong_ban - rec.dong_daily
+            rec.chen_haohut = rec.chen_giao - rec.chen_ban - rec.chen_daily
+
+    @api.depends('do_ban','do_giao')
+    def _compute_dohaohut(self):
+        for rec in self:
+            if rec.recorded == True:
+                if rec.do_ban == 0:
+                    rec.do_haohut = rec.do_giao - rec.do_tb
+                else:
+                    rec.do_haohut = rec.do_ban - rec.do_tb
+
+    #Tinh mu hao hut kiem ke
     @api.depends('nuockk','nuoc_ton','nuoc_tonkk')
     def _compute_nuochh(self):
         for rec in self:
@@ -880,6 +899,36 @@ class RubberByDate(models.Model):
             }
         }
 
+    @api.model
+    def recompute_all_ban(self):
+        """Recompute *_ban fields for all records"""
+        batch_size = 100
+        total = self.search_count([])
+        processed = 0
+
+        while processed < total:
+            records = self.search([], limit=batch_size, offset=processed)
+            if not records:
+                break
+            records._compute_nuocgiao()
+            records._compute_tapgiao()
+            records._compute_daygiao()
+            records._compute_donggiao()
+            records._compute_chengiao()
+            processed += len(records)
+            self.env.cr.commit()  # Commit after each batch
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Recomputation Complete'),
+                'message': f'Recomputed *_ban fields for {processed} records',
+                'type': 'success',
+                'sticky': False,
+            }
+        }
+   
     def write(self, vals):
         # Prevent infinite recursion by using a context flag
         if self.env.context.get('skip_nuocton_propagation'):
@@ -941,20 +990,6 @@ class RubberByDate(models.Model):
                     if lr.chenkk or lr.chennkk:
                         break'''
         return res
-
-    @api.depends('nuoc_giao', 'nuoc_ban', 'nuoc_daily',
-                 'tap_giao', 'tap_ban', 'tap_daily',
-                 'day_giao', 'day_ban', 'day_daily',
-                 'dong_giao', 'dong_ban', 'dong_daily',
-                 'chen_giao', 'chen_ban', 'chen_daily')
-    def _compute_haohut(self):
-        for rec in self:
-            rec.nuoc_haohut = rec.nuoc_giao - rec.nuoc_ban - rec.nuoc_daily
-            rec.tap_haohut = rec.tap_giao - rec.tap_ban - rec.tap_daily
-            rec.day_haohut = rec.day_giao - rec.day_ban - rec.day_daily
-            rec.dong_haohut = rec.dong_giao - rec.dong_ban - rec.dong_daily
-            rec.chen_haohut = rec.chen_giao - rec.chen_ban - rec.chen_daily
-
     def get_tylehaohut(self, field_code, date):
         """Return the latest tylehaohut1, tylehaohut2, color1, color2, color3 for a field_code and date"""
         rec = self.env['tylehaohut.mu'].search([
