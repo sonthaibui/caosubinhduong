@@ -46,7 +46,8 @@
         'views/rubber_config_views.xml',
         'views/rubber_price_wizard_views.xml',  # Load wizard views FIRST
         'views/rubber_price_views.xml',         # Then load price views that reference it
-        
+        'data/server_actions.xml',
+        'views/tylehaohut_mu_views.xml',
     ],
     'controllers': [        
         'caosu/controllers/report_controller.py',

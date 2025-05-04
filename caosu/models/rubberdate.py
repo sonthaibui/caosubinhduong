@@ -47,8 +47,9 @@ class RubberByDate(models.Model):
     nuoc_tonkk = fields.Float('Mũ nước tồn kiểm kê', store=True, digits='One Decimal')
     nuocnkk = fields.Date('Ngày KKLK', readonly=True)
     nuockk = fields.Boolean('Kiểm kê')
-    nuoc_haohut = fields.Float('Mũ nước hao hụt', store=True, compute='_compute_nuochh', tracking=True, digits='One Decimal')
+    nuoc_haohut = fields.Float('Mũ nước hao hụt', compute='_compute_haohut', store=True)
     nuoc_tlhh = fields.Float('Tỷ lệ nước hao hụt', store=True, compute='_compute_nuochh', tracking=True, digits='One Decimal')
+    nuoc_hhkk = fields.Float('Mũ nước hao hụt kiểm kê', store=True, compute='_compute_nuochh', tracking=True, digits='One Decimal')
     # Mu tap
     tap_thu = fields.Float('Mũ tạp cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     tap_giao = fields.Float('Mũ tạp thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
@@ -58,8 +59,9 @@ class RubberByDate(models.Model):
     tap_tonkk = fields.Float('Mũ nước tồn kiểm kê', store=True, digits='One Decimal')
     tapkk = fields.Boolean('Kiểm kê')
     tapnkk = fields.Date('Ngày KKLK', readonly=True)
-    tap_haohut = fields.Float('Mũ tạp hao hụt', store=True, compute='_compute_taphh', tracking=True, digits='One Decimal')
+    tap_haohut = fields.Float('Mũ tạp hao hụt', compute='_compute_haohut', store=True)
     tap_tlhh = fields.Float('Tỷ lệ tạp hao hụt', store=True, compute='_compute_taphh', tracking=True, digits='One Decimal')
+    tap_hhkk = fields.Float('Mũ tạp hao hụt kiểm kê', store=True, compute='_compute_taphh', tracking=True, digits='One Decimal')
     # Mu day
     day_thu = fields.Float('Mũ dây cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     day_giao = fields.Float('Mũ dây thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
@@ -69,8 +71,9 @@ class RubberByDate(models.Model):
     day_tonkk = fields.Float('Mũ dây tồn kiểm kê', store=True, digits='One Decimal')
     daykk = fields.Boolean('Kiểm kê')
     daynkk = fields.Date('Ngày KKLK', readonly=True)
-    day_haohut = fields.Float('Mũ dây hao hụt', store=True, compute='_compute_dayhh', tracking=True, digits='One Decimal')
+    day_haohut = fields.Float('Mũ dây hao hụt', compute='_compute_haohut', store=True)
     day_tlhh = fields.Float('Tỷ lệ dây hao hụt', store=True, compute='_compute_dayhh', tracking=True, digits='One Decimal')
+    day_hhkk = fields.Float('Mũ dây hao hụt kiểm kê', store=True, compute='_compute_dayhh', tracking=True, digits='One Decimal')
     # Mu dong
     dong_thu = fields.Float('Mũ đông cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     dong_giao = fields.Float('Mũ đông thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
@@ -80,8 +83,9 @@ class RubberByDate(models.Model):
     dong_tonkk = fields.Float('Mũ đông tồn kiểm kê', store=True, digits='One Decimal')
     dongkk = fields.Boolean('Kiểm kê')
     dongnkk = fields.Date('Ngày KKLK', readonly=True)
-    dong_haohut = fields.Float('Mũ đông hao hụt', store=True, compute='_compute_donghh', tracking=True, digits='One Decimal')
+    dong_haohut = fields.Float('Mũ đông hao hụt', compute='_compute_haohut', store=True)
     dong_tlhh = fields.Float('Tỷ lệ đông hao hụt', store=True, compute='_compute_donghh', tracking=True, digits='One Decimal')
+    dong_hhkk = fields.Float('Mũ đông hao hụt kiểm kê', store=True, compute='_compute_donghh', tracking=True, digits='One Decimal')
     # Mu chen
     chen_thu = fields.Float('Mũ chén cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     chen_giao = fields.Float('Mũ chén thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
@@ -91,8 +95,16 @@ class RubberByDate(models.Model):
     chen_tonkk = fields.Float('Mũ chén tồn kiểm kê', store=True, digits='One Decimal')
     chenkk = fields.Boolean('Kiểm kê')
     chennkk = fields.Date('Ngày KKLK', readonly=True)
-    chen_haohut = fields.Float('Mũ chén hao hụt', store=True, compute='_compute_chenhh', tracking=True, digits='One Decimal')
+    chen_haohut = fields.Float('Mũ chén hao hụt', compute='_compute_haohut', store=True)
     chen_tlhh = fields.Float('Tỷ lệ chén hao hụt', store=True, compute='_compute_chenhh', tracking=True, digits='One Decimal')
+    chen_hhkk = fields.Float('Mũ chén hao hụt kiểm kê', store=True, compute='_compute_chenhh', tracking=True, digits='One Decimal')
+    
+    tyle_nuoc_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
+    tyle_tap_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
+    tyle_day_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
+    tyle_dong_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
+    tyle_chen_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
+    tyle_do_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
     #
     do_tb = fields.Float('Độ CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     do_ban = fields.Float('Độ bán', digits='One Decimal')
@@ -254,13 +266,7 @@ class RubberByDate(models.Model):
     def _compute_thu(self):
         for rec in self:
             if rec.recorded == True:
-                y = 0
-                x = 0
-                z = 0
-                i = 0
-                j = 0
-                k = 0
-                l = 0
+                y = x = z = i = j = k = l = 0
                 for line in rec.rubber_line_ids:
                     line.cong = line.munuoc1 + line.munuoc2 + line.munuoc3 + line.mutap1 + line.mutap2
                     line.caoxa = rec.caoxa
@@ -391,112 +397,106 @@ class RubberByDate(models.Model):
                 else:
                     rec.do_haohut = rec.do_ban - rec.do_tb
     
-    @api.depends('nuoc_giao','nuoc_ban','nuoc_daily')
+    @api.depends('nuoc_giao','nuoc_ban','nuoc_daily', 'nuoc_tonkk', 'nuockk', 'nuoc_haohut')
     def _compute_nuocton(self):
         for rec in self:
-            if rec.recorded == True:
-                rds = rec.env['rubber.date'].search([('ngay','<', rec.ngay),('to_name','=',rec.to_name)])
-                rds = rds.sorted(key=lambda r: r.ngay)
-                nuoc_ton = 0
-                nuockk = False
-                nuoc_tonkk = 0
-                if len(rds) > 0:
-                    nuoc_ton = rds[len(rds) - 1].nuoc_ton
-                    nuockk = rds[len(rds) - 1].nuockk
-                    nuoc_tonkk = rds[len(rds) - 1].nuoc_tonkk
-                if nuockk == True:
-                    rec.nuoc_ton = nuoc_tonkk + rec.nuoc_giao - rec.nuoc_ban - rec.nuoc_daily
+            if rec.recorded:
+                rds = rec.env['rubber.date'].search([
+                    ('ngay', '<', rec.ngay),
+                    ('to_name', '=', rec.to_name)
+                ], order='ngay')
+                prev_nuoc_ton = 0
+                if rds:
+                    prev_nuoc_ton = rds[-1].nuoc_ton
+                tyle1, tyle2 = rec.get_tylehaohut('nuoc_haohut', rec.ngay)[:2]
+                val = rec.nuoc_haohut / rec.nuoc_giao * 100 if rec.nuoc_giao else 0
+                if tyle2 is not None and val < tyle2:
+                    rec.nuoc_ton = rec.nuoc_tonkk if rec.nuockk else prev_nuoc_ton
                 else:
-                    rec.nuoc_ton = nuoc_ton + rec.nuoc_giao - rec.nuoc_ban - rec.nuoc_daily
+                    rec.nuoc_ton = rec.nuoc_tonkk if rec.nuockk else prev_nuoc_ton + rec.nuoc_giao - rec.nuoc_ban - rec.nuoc_daily
 
-    @api.depends('tap_giao','tap_ban','tap_daily')
+    @api.depends('tap_giao','tap_ban','tap_daily', 'tap_tonkk', 'tapkk', 'tap_haohut')
     def _compute_tapton(self):
         for rec in self:
-            if rec.recorded == True:
-                rds = rec.env['rubber.date'].search([('ngay','<', rec.ngay),('to_name','=',rec.to_name)])
-                rds = rds.sorted(key=lambda r: r.ngay)
-                tap_ton = 0
-                tapkk = False
-                tap_tonkk = 0
-                if len(rds) > 0:
-                    tap_ton = rds[len(rds) - 1].tap_ton
-                    tapkk = rds[len(rds) - 1].tapkk
-                    tap_tonkk = rds[len(rds) - 1].tap_tonkk
-                if tapkk == True:
-                    rec.tap_ton = tap_tonkk + rec.tap_giao - rec.tap_ban - rec.tap_daily
+            if rec.recorded:
+                rds = rec.env['rubber.date'].search([
+                    ('ngay', '<', rec.ngay),
+                    ('to_name', '=', rec.to_name)
+                ], order='ngay')
+                prev_tap_ton = 0
+                if rds:
+                    prev_tap_ton = rds[-1].tap_ton
+                tyle1, tyle2 = rec.get_tylehaohut('tap_haohut', rec.ngay)[:2]
+                val = rec.tap_haohut / rec.tap_giao * 100 if rec.tap_giao else 0
+                if tyle2 is not None and val < tyle2:
+                    rec.tap_ton = rec.tap_tonkk if rec.tapkk else prev_tap_ton
                 else:
-                    rec.tap_ton = tap_ton + rec.tap_giao - rec.tap_ban - rec.tap_daily
+                    rec.tap_ton = rec.tap_tonkk if rec.tapkk else prev_tap_ton + rec.tap_giao - rec.tap_ban - rec.tap_daily
 
-    @api.depends('day_giao','day_ban','day_daily')
+    @api.depends('day_giao','day_ban','day_daily', 'day_tonkk', 'daykk', 'day_haohut')
     def _compute_dayton(self):
         for rec in self:
-            if rec.recorded == True:
-                rds = rec.env['rubber.date'].search([('ngay','<', rec.ngay),('to_name','=',rec.to_name)])
-                rds = rds.sorted(key=lambda r: r.ngay)
-                day_ton = 0
-                daykk = False
-                day_tonkk = 0
-                if len(rds) > 0:
-                    day_ton = rds[len(rds) - 1].day_ton
-                    daykk = rds[len(rds) - 1].daykk
-                    day_tonkk = rds[len(rds) - 1].day_tonkk
-                if daykk == True:
-                    rec.day_ton = day_tonkk + rec.day_giao - rec.day_ban - rec.day_daily
+            if rec.recorded:
+                rds = rec.env['rubber.date'].search([
+                    ('ngay', '<', rec.ngay),
+                    ('to_name', '=', rec.to_name)
+                ], order='ngay')
+                prev_day_ton = 0
+                if rds:
+                    prev_day_ton = rds[-1].day_ton
+                tyle1, tyle2 = rec.get_tylehaohut('day_haohut', rec.ngay)[:2]
+                val = rec.day_haohut / rec.day_giao * 100 if rec.day_giao else 0
+                if tyle2 is not None and val < tyle2:
+                    rec.day_ton = rec.day_tonkk if rec.daykk else prev_day_ton
                 else:
-                    rec.day_ton = day_ton + rec.day_giao - rec.day_ban - rec.day_daily
+                    rec.day_ton = rec.day_tonkk if rec.daykk else prev_day_ton + rec.day_giao - rec.day_ban - rec.day_daily
 
-    @api.depends('dong_giao','dong_ban','dong_daily')
+    @api.depends('dong_giao','dong_ban','dong_daily', 'dong_tonkk', 'dongkk', 'dong_haohut')
     def _compute_dongton(self):
         for rec in self:
-            if rec.recorded == True:
-                rds = rec.env['rubber.date'].search([('ngay','<', rec.ngay),('to_name','=',rec.to_name)])
-                rds = rds.sorted(key=lambda r: r.ngay)
-                dong_ton = 0
-                dongkk = False
-                dong_tonkk = 0
-                if len(rds) > 0:
-                    dong_ton = rds[len(rds) - 1].dong_ton
-                    dongkk = rds[len(rds) - 1].dongkk
-                    dong_tonkk = rds[len(rds) - 1].dong_tonkk
-                if dongkk == True:
-                    rec.dong_ton = dong_tonkk + rec.dong_giao - rec.dong_ban - rec.dong_daily
+            if rec.recorded:
+                rds = rec.env['rubber.date'].search([
+                    ('ngay', '<', rec.ngay),
+                    ('to_name', '=', rec.to_name)
+                ], order='ngay')
+                prev_dong_ton = 0
+                if rds:
+                    prev_dong_ton = rds[-1].dong_ton
+                tyle1, tyle2 = rec.get_tylehaohut('dong_haohut', rec.ngay)[:2]
+                val = rec.dong_haohut / rec.dong_giao * 100 if rec.dong_giao else 0
+                if tyle2 is not None and val < tyle2:
+                    rec.dong_ton = rec.dong_tonkk if rec.dongkk else prev_dong_ton
                 else:
-                    rec.dong_ton = dong_ton + rec.dong_giao - rec.dong_ban - rec.dong_daily
+                    rec.dong_ton = rec.dong_tonkk if rec.dongkk else prev_dong_ton + rec.dong_giao - rec.dong_ban - rec.dong_daily
 
-    @api.depends('chen_giao','chen_ban','chen_daily')
+    @api.depends('chen_giao','chen_ban','chen_daily', 'chen_tonkk', 'chenkk', 'chen_haohut')
     def _compute_chenton(self):
         for rec in self:
-            if rec.recorded == True:
-                rds = rec.env['rubber.date'].search([('ngay','<', rec.ngay),('to_name','=',rec.to_name)])
-                rds = rds.sorted(key=lambda r: r.ngay)
-                chen_ton = 0
-                chenkk = False
-                chen_tonkk = 0
-                if len(rds) > 0:
-                    chen_ton = rds[len(rds) - 1].chen_ton
-                    chenkk = rds[len(rds) - 1].chenkk
-                    chen_tonkk = rds[len(rds) - 1].chen_tonkk
-                if chenkk == True:
-                    rec.chen_ton = chen_tonkk + rec.chen_giao - rec.chen_ban - rec.chen_daily
+            if rec.recorded:
+                rds = rec.env['rubber.date'].search([
+                    ('ngay', '<', rec.ngay),
+                    ('to_name', '=', rec.to_name)
+                ], order='ngay')
+                prev_chen_ton = 0
+                if rds:
+                    prev_chen_ton = rds[-1].chen_ton
+                tyle1, tyle2 = rec.get_tylehaohut('chen_haohut', rec.ngay)[:2]
+                val = rec.chen_haohut / rec.chen_giao * 100 if rec.chen_giao else 0
+                if tyle2 is not None and val < tyle2:
+                    rec.chen_ton = rec.chen_tonkk if rec.chenkk else prev_chen_ton
                 else:
-                    rec.chen_ton = chen_ton + rec.chen_giao - rec.chen_ban - rec.chen_daily
+                    rec.chen_ton = rec.chen_tonkk if rec.chenkk else prev_chen_ton + rec.chen_giao - rec.chen_ban - rec.chen_daily
 
     @api.depends('nuockk','nuoc_ton','nuoc_tonkk')
     def _compute_nuochh(self):
         for rec in self:
             if rec.recorded == True:
-                """ rds = rec.env['rubber.date'].search([('ngay','<', rec.ngay),('to_name','=',rec.to_name)])
-                rds = rds.sorted(key=lambda r: r.ngay)
-                y = 0
-                for x in range(1, 31):
-                    if rds[len(rds) - x + 1].nuockk == True:
-                        y = x
-                        break """
+
                 if rec.nuockk == True:
-                    rec.nuoc_haohut = rec.nuoc_ton - rec.nuoc_tonkk
+                    rec.nuoc_hhkk = rec.nuoc_ton - rec.nuoc_tonkk                    
                     rec.nuocnkk = rec.ngay
-                else:
-                    rec.nuoc_haohut = 0
+                else:                   
+                    rec.nuoc_hhkk = 0
                     rec.nuockk = False
 
     @api.depends('tapkk','tap_ton','tap_tonkk')
@@ -504,10 +504,10 @@ class RubberByDate(models.Model):
         for rec in self:
             if rec.recorded == True:
                 if rec.tapkk == True:
-                    rec.tap_haohut = rec.tap_ton - rec.tap_tonkk
+                    rec.tap_hhkk = rec.tap_ton - rec.tap_tonkk                    
                     rec.tapnkk = rec.ngay
-                else:
-                    rec.tap_haohut = 0
+                else:                    
+                    rec.tap_hhkk = 0
                     rec.tapnkk = False
 
     @api.depends('daykk','day_ton','day_tonkk')
@@ -515,10 +515,10 @@ class RubberByDate(models.Model):
         for rec in self:
             if rec.recorded == True:
                 if rec.daykk == True:
-                    rec.day_haohut = rec.day_ton - rec.day_tonkk
+                    rec.day_hhkk = rec.day_ton - rec.day_tonkk                    
                     rec.daynkk = rec.ngay
-                else:
-                    rec.day_haohut = 0
+                else:                    
+                    rec.day_hhkk = 0
                     rec.daynkk = False
 
     @api.depends('dongkk','dong_ton','dong_tonkk')
@@ -526,10 +526,10 @@ class RubberByDate(models.Model):
         for rec in self:
             if rec.recorded == True:
                 if rec.dongkk == True:
-                    rec.dong_haohut = rec.dong_ton - rec.dong_tonkk
+                    rec.dong_hhkk = rec.dong_ton - rec.dong_tonkk                    
                     rec.dongnkk = rec.ngay
-                else:
-                    rec.dong_haohut = 0
+                else:                    
+                    rec.dong_hhkk = 0
                     rec.dongnkk = 0
 
     @api.depends('chenkk','chen_ton','chen_tonkk')
@@ -537,10 +537,10 @@ class RubberByDate(models.Model):
         for rec in self:
             if rec.recorded == True:
                 if rec.chenkk == True:
-                    rec.chen_haohut = rec.chen_ton - rec.chen_tonkk
+                    rec.chen_hhkk = rec.chen_ton - rec.chen_tonkk                    
                     rec.chennkk = rec.ngay
-                else:
-                    rec.chen_haohut = 0
+                else:                    
+                    rec.chen_hhkk = 0
                     rec.chennkk = 0
 
     @api.depends('do_giao', 'tongmu')
@@ -799,3 +799,247 @@ class RubberByDate(models.Model):
                 'sticky': False,
             }
         }
+
+    @api.model
+    def recompute_nuoc_giao_all(self):
+        """Recompute nuoc_giao, tap_giao, day_giao, dong_giao, chen_giao for all records"""
+        batch_size = 100
+        total = self.search_count([])
+        processed = 0
+
+        while processed < total:
+            records = self.search([], limit=batch_size, offset=processed)
+            if not records:
+                break
+            for rec in records:
+                # Recompute *_giao
+                y = x = i = j = k = l = 0
+                for line in rec.rubber_line_ids:
+                    if hasattr(line, 'cong'):
+                        line.cong = getattr(line, 'munuoc1', 0) + getattr(line, 'munuoc2', 0) + getattr(line, 'munuoc3', 0) + getattr(line, 'mutap1', 0) + getattr(line, 'mutap2', 0)
+                    if hasattr(line, 'caoxa'):
+                        line.caoxa = rec.caoxa
+                    if getattr(line, 'congnuoc', 0) == 0 and getattr(line, 'muchen', 0) > 0:
+                        l += getattr(line, 'muchen', 0)
+                    y += getattr(line, 'congnuoc', 0)
+                    x += getattr(line, 'congtap', 0)
+                    i += getattr(line, 'mudong', 0)
+                    j += getattr(line, 'muday', 0)
+                    k += getattr(line, 'muchen', 0)
+                rec.nuoc_giao = y - (rec.ke or 0) - (rec.mutrangthung or 0)
+                rec.tap_giao = x + (rec.ke or 0) + (rec.mutrangthung or 0) + (rec.xe or 0)
+                rec.chen_giao = k 
+                rec.dong_giao = i 
+                rec.day_giao = j                 
+
+                rec.write({
+                    'nuoc_giao': rec.nuoc_giao,
+                    'tap_giao': rec.tap_giao,
+                    'day_giao': rec.day_giao,
+                    'dong_giao': rec.dong_giao,
+                    'chen_giao': rec.chen_giao,
+                    
+                })
+            processed += len(records)
+            self.env.cr.commit()  # Commit after each batch
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Recomputation Complete'),
+                'message': f'Recomputed nuoc_giao and related fields for {processed} records',
+                'type': 'success',
+                'sticky': False,
+            }
+        }
+
+    @api.model
+    def recompute_haohut_all(self):
+        """Recompute *_haohut for all records"""
+        batch_size = 100
+        total = self.search_count([])
+        processed = 0
+
+        while processed < total:
+            records = self.search([], limit=batch_size, offset=processed)
+            if not records:
+                break
+            records._compute_haohut()
+            processed += len(records)
+            self.env.cr.commit()  # Commit after each batch
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Recomputation Complete'),
+                'message': f'Recomputed *_haohut fields for {processed} records',
+                'type': 'success',
+                'sticky': False,
+            }
+        }
+
+    def write(self, vals):
+        # Prevent infinite recursion by using a context flag
+        if self.env.context.get('skip_nuocton_propagation'):
+            return super().write(vals)
+        res = super().write(vals)
+        '''# nuoc_ton propagation
+        if 'nuockk' in vals or 'nuoc_tonkk' in vals:
+            for rec in self:
+                later_records = self.env['rubber.date'].search([
+                    ('to_name', '=', rec.to_name),
+                    ('ngay', '>', rec.ngay)
+                ], order='ngay')
+                for lr in later_records:
+                    lr.with_context(skip_nuocton_propagation=True)._compute_nuocton()
+                    if lr.nuockk or lr.nuocnkk:
+                        break
+        # tap_ton propagation
+        if 'tapkk' in vals or 'tap_tonkk' in vals:
+            for rec in self:
+                later_records = self.env['rubber.date'].search([
+                    ('to_name', '=', rec.to_name),
+                    ('ngay', '>', rec.ngay)
+                ], order='ngay')
+                for lr in later_records:
+                    lr.with_context(skip_nuocton_propagation=True)._compute_tapton()
+                    if lr.tapkk or lr.tapnkk:
+                        break
+        # day_ton propagation
+        if 'daykk' in vals or 'day_tonkk' in vals:
+            for rec in self:
+                later_records = self.env['rubber.date'].search([
+                    ('to_name', '=', rec.to_name),
+                    ('ngay', '>', rec.ngay)
+                ], order='ngay')
+                for lr in later_records:
+                    lr.with_context(skip_nuocton_propagation=True)._compute_dayton()
+                    if lr.daykk or lr.daynkk:
+                        break
+        # dong_ton propagation
+        if 'dongkk' in vals or 'dong_tonkk' in vals:
+            for rec in self:
+                later_records = self.env['rubber.date'].search([
+                    ('to_name', '=', rec.to_name),
+                    ('ngay', '>', rec.ngay)
+                ], order='ngay')
+                for lr in later_records:
+                    lr.with_context(skip_nuocton_propagation=True)._compute_dongton()
+                    if lr.dongkk or lr.dongnkk:
+                        break
+        # chen_ton propagation
+        if 'chenkk' in vals or 'chen_tonkk' in vals:
+            for rec in self:
+                later_records = self.env['rubber.date'].search([
+                    ('to_name', '=', rec.to_name),
+                    ('ngay', '>', rec.ngay)
+                ], order='ngay')
+                for lr in later_records:
+                    lr.with_context(skip_nuocton_propagation=True)._compute_chenton()
+                    if lr.chenkk or lr.chennkk:
+                        break'''
+        return res
+
+    @api.depends('nuoc_giao', 'nuoc_ban', 'nuoc_daily',
+                 'tap_giao', 'tap_ban', 'tap_daily',
+                 'day_giao', 'day_ban', 'day_daily',
+                 'dong_giao', 'dong_ban', 'dong_daily',
+                 'chen_giao', 'chen_ban', 'chen_daily')
+    def _compute_haohut(self):
+        for rec in self:
+            rec.nuoc_haohut = rec.nuoc_giao - rec.nuoc_ban - rec.nuoc_daily
+            rec.tap_haohut = rec.tap_giao - rec.tap_ban - rec.tap_daily
+            rec.day_haohut = rec.day_giao - rec.day_ban - rec.day_daily
+            rec.dong_haohut = rec.dong_giao - rec.dong_ban - rec.dong_daily
+            rec.chen_haohut = rec.chen_giao - rec.chen_ban - rec.chen_daily
+
+    def get_tylehaohut(self, field_code, date):
+        """Return the latest tylehaohut1, tylehaohut2, color1, color2, color3 for a field_code and date"""
+        rec = self.env['tylehaohut.mu'].search([
+            ('field_code', '=', field_code),
+            ('date', '<=', date)
+        ], order='date desc', limit=1)
+        if rec:
+            return rec.tylehaohut1, rec.tylehaohut2, rec.color1, rec.color2, rec.color3
+        return None, None, None, None, None
+
+    def _compute_tyle_haohut_html(self):
+        for rec in self:
+            # ĐỘ
+            tyle1, tyle2, color1, color2, color3 = rec.get_tylehaohut('do_haohut', rec.ngay)
+            val = -rec.dolech / rec.do_tb * 100 if rec.do_tb is not None and rec.do_tb != 0 else 0
+            color = ''
+            if tyle1 is not None and tyle2 is not None:
+                if val < tyle1:
+                    color = color1 or 'green'
+                elif val < tyle2:
+                    color = color2 or 'brown'
+                else:
+                    color = color3 or 'red'
+            rec.tyle_do_haohut = f'<span style="color:{color};">{val:.0f}%</span>'
+            # NƯỚC
+            tyle1, tyle2, color1, color2, color3 = rec.get_tylehaohut('nuoc_haohut', rec.ngay)
+            val = rec.nuoc_haohut / rec.nuoc_giao * 100 if rec.nuoc_giao else 0
+            color = ''
+            if tyle1 is not None and tyle2 is not None:
+                if val < tyle1:
+                    color = color1 or 'green'
+                elif val < tyle2:
+                    color = color2 or 'brown'
+                else:
+                    color = color3 or 'red'
+            rec.tyle_nuoc_haohut = f'<span style="color:{color};">{val:.0f}%</span>'
+
+            # TẠP
+            tyle1, tyle2, color1, color2, color3 = rec.get_tylehaohut('tap_haohut', rec.ngay)
+            val = rec.tap_haohut / rec.tap_giao * 100 if rec.tap_giao else 0
+            color = ''
+            if tyle1 is not None and tyle2 is not None:
+                if val < tyle1:
+                    color = color1 or 'green'
+                elif val < tyle2:
+                    color = color2 or 'brown'
+                else:
+                    color = color3 or 'red'
+            rec.tyle_tap_haohut = f'<span style="color:{color};">{val:.0f}%</span>'
+
+            # DÂY
+            tyle1, tyle2, color1, color2, color3 = rec.get_tylehaohut('day_haohut', rec.ngay)
+            val = rec.day_haohut / rec.day_giao * 100 if rec.day_giao else 0
+            color = ''
+            if tyle1 is not None and tyle2 is not None:
+                if val < tyle1:
+                    color = color1 or 'green'
+                elif val < tyle2:
+                    color = color2 or 'brown'
+                else:
+                    color = color3 or 'red'
+            rec.tyle_day_haohut = f'<span style="color:{color};">{val:.0f}%</span>'
+
+            # ĐÔNG
+            tyle1, tyle2, color1, color2, color3 = rec.get_tylehaohut('dong_haohut', rec.ngay)
+            val = rec.dong_haohut / rec.dong_giao * 100 if rec.dong_giao else 0
+            color = ''
+            if tyle1 is not None and tyle2 is not None:
+                if val < tyle1:
+                    color = color1 or 'green'
+                elif val < tyle2:
+                    color = color2 or 'brown'
+                else:
+                    color = color3 or 'red'
+            rec.tyle_dong_haohut = f'<span style="color:{color};">{val:.0f}%</span>'
+
+            # CHÉN
+            tyle1, tyle2, color1, color2, color3 = rec.get_tylehaohut('chen_haohut', rec.ngay)
+            val = rec.chen_haohut / rec.chen_giao * 100 if rec.chen_giao else 0
+            color = ''
+            if tyle1 is not None and tyle2 is not None:
+                if val < tyle1:
+                    color = color1 or 'green'
+                elif val < tyle2:
+                    color = color2 or 'brown'
+                else:
+                    color = color3 or 'red'
+            rec.tyle_chen_haohut = f'<span style="color:{color};">{val:.0f}%</span>'

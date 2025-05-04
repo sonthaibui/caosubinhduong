@@ -4,3 +4,4 @@ from . import report_rubber
 from . import rubber_report_config
 from . import rubbertest_report_config
 from . import rubber_price_wizard
+from . import tylehaohut_mu

@@ -34,3 +34,4 @@ access.matcao,access_matcao,caosu.model_matcao,base.group_user,1,1,1,1
 access.rubber.test.nhom,access_rubber_test_nhom,caosu.model_rubber_test_nhom,base.group_user,1,1,1,1
 access.rubber.department.config,access_rubber_department_config,caosu.model_rubber_department_config,base.group_user,1,1,1,1
 access.rubbertest.department.config,access_rubbertest_department_config,caosu.model_rubbertest_department_config,base.group_user,1,1,1,1
+access.tylehaohut.mu,access_tylehaohut_mu,caosu.model_tylehaohut_mu,base.group_user,1,1,1,1

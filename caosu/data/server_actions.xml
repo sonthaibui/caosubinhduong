@@ -1,0 +1,26 @@
+<odoo>
+    <record id="action_recompute_nuoc_giao_all" model="ir.actions.server">
+        <field name="name">Recompute All nuoc_giao</field>
+        <field name="model_id" ref="caosu.model_rubber_date"/>
+        <field name="state">code</field>
+        <field name="code">action = env['rubber.date'].recompute_nuoc_giao_all()</field>
+        <field name="binding_model_id" ref="caosu.model_rubber_date"/>
+        <field name="binding_type">action</field>
+    </record>
+    <record id="action_recompute_all_rubberdate" model="ir.actions.server">
+        <field name="name">Recompute All Calculated Fields</field>
+        <field name="model_id" ref="caosu.model_rubber_date"/>
+        <field name="state">code</field>
+        <field name="code">action = env['rubber.date'].recompute_all_records()</field>
+        <field name="binding_model_id" ref="caosu.model_rubber_date"/>
+        <field name="binding_type">action</field>
+    </record>
+    <record id="action_recompute_haohut_all" model="ir.actions.server">
+        <field name="name">Recompute Hao Hut All</field>
+        <field name="model_id" ref="caosu.model_rubber_date"/>
+        <field name="state">code</field>
+        <field name="code">action = env['rubber.date'].recompute_haohut_all()</field>
+        <field name="binding_model_id" ref="caosu.model_rubber_date"/>
+        <field name="binding_type">action</field>
+    </record>
+</odoo>

@@ -1,0 +1,41 @@
+<odoo>
+  <record id="view_tylehaohut_mu_tree" model="ir.ui.view">
+    <field name="model">tylehaohut.mu</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="date"/>
+        <field name="field_code"/>
+        <field name="tylehaohut1"/>
+        <field name="tylehaohut2"/>
+        <field name="color1"/>
+        <field name="color2"/>
+        <field name="color3"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_tylehaohut_mu_form" model="ir.ui.view">
+    <field name="model">tylehaohut.mu</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <field name="date"/>
+          <field name="field_code"/>
+          <field name="tylehaohut1"/>
+          <field name="tylehaohut2"/>
+          <field name="color1" widget="color"/>
+          <field name="color2" widget="color"/>
+          <field name="color3" widget="color"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_tylehaohut_mu" model="ir.actions.act_window">
+    <field name="name">Tỷ lệ hao hụt mủ</field>
+    <field name="res_model">tylehaohut.mu</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+  
+  <menuitem id="menu_tylehaohut_mu" name="Tỷ lệ hao hụt mủ" parent="sanluong_menu" action="action_tylehaohut_mu"/>
+</odoo>
