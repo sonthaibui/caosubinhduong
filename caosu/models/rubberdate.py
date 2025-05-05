@@ -934,7 +934,7 @@ class RubberByDate(models.Model):
         if self.env.context.get('skip_nuocton_propagation'):
             return super().write(vals)
         res = super().write(vals)
-        '''# nuoc_ton propagation
+        # nuoc_ton propagation
         if 'nuockk' in vals or 'nuoc_tonkk' in vals:
             for rec in self:
                 later_records = self.env['rubber.date'].search([
@@ -988,7 +988,7 @@ class RubberByDate(models.Model):
                 for lr in later_records:
                     lr.with_context(skip_nuocton_propagation=True)._compute_chenton()
                     if lr.chenkk or lr.chennkk:
-                        break'''
+                        break
         return res
     def get_tylehaohut(self, field_code, date):
         """Return the latest tylehaohut1, tylehaohut2, color1, color2, color3 for a field_code and date"""

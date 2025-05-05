@@ -245,6 +245,7 @@ class RubberSalary(models.Model):
     #Tìm những rubber nào có cùng tháng, năm, employee_id với tháng, năm, employee_id của rubber salary, thêm điều kiện là phải có giá trị cộng, mũ đay, mũ đông, mũ chèn, phụ cấp > 0 thì bymonth = True, ngược lại bymonth = False)
     #Sau đó cho hiện những rubber có bymonth = True trong phiếu lương
     #Phải thêm đk cùng tổ nữa vì năm nay có trường hợp 1 công nhân làm 2 tổ trong tháng 1 như tổ 70
+    #Vẫn chưa giải quyết được tình huống rb mới tự nhảy vào sau khi đã chọn tháng
     @api.onchange('startdate', 'enddate', 'to', 'namkt')
     def _onchange_thang(self):
         
