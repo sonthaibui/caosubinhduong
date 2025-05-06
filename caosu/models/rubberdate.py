@@ -41,8 +41,8 @@ class RubberByDate(models.Model):
     # Mu nuoc
     nuoc_thu = fields.Float('Mũ nước cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     nuoc_giao = fields.Float('Mũ nước thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
-    nuoc_ban = fields.Float('Mũ nước giao xe', store=True, compute='_compute_nuocgiao', tracking=True, digits='One Decimal')
-    nuoc_daily = fields.Float('Mũ nước đại lý', store=True, compute='_compute_nuocgiao', tracking=True, digits='One Decimal')
+    nuoc_ban = fields.Float('Mũ nước giao xe', store=True, compute='_compute_nuocban', tracking=True, digits='One Decimal')
+    nuoc_daily = fields.Float('Mũ nước đại lý', store=True, compute='_compute_nuocban', tracking=True, digits='One Decimal')
     nuoc_ton = fields.Float('Mũ nước tồn', store=True, compute='_compute_nuocton', digits='One Decimal')
     nuoc_tonkk = fields.Float('Mũ nước tồn kiểm kê', store=True, digits='One Decimal')
     nuocnkk = fields.Date('Ngày KKLK', readonly=True)
@@ -53,8 +53,8 @@ class RubberByDate(models.Model):
     # Mu tap
     tap_thu = fields.Float('Mũ tạp cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     tap_giao = fields.Float('Mũ tạp thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
-    tap_ban = fields.Float('Mũ tạp giao xe', store=True, compute='_compute_tapgiao', tracking=True, digits='One Decimal')
-    tap_daily = fields.Float('Mũ tạp đại lý', store=True, compute='_compute_tapgiao', tracking=True, digits='One Decimal')
+    tap_ban = fields.Float('Mũ tạp giao xe', store=True, compute='_compute_tapban', tracking=True, digits='One Decimal')
+    tap_daily = fields.Float('Mũ tạp đại lý', store=True, compute='_compute_tapban', tracking=True, digits='One Decimal')
     tap_ton = fields.Float('Mũ tạp tồn', store=True, compute='_compute_tapton', digits='One Decimal')
     tap_tonkk = fields.Float('Mũ nước tồn kiểm kê', store=True, digits='One Decimal')
     tapkk = fields.Boolean('Kiểm kê')
@@ -65,8 +65,8 @@ class RubberByDate(models.Model):
     # Mu day
     day_thu = fields.Float('Mũ dây cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     day_giao = fields.Float('Mũ dây thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
-    day_ban = fields.Float('Mũ dây giao xe', store=True, compute='_compute_daygiao', tracking=True, digits='One Decimal')
-    day_daily = fields.Float('Mũ dây đại lý', store=True, compute='_compute_daygiao', tracking=True, digits='One Decimal')
+    day_ban = fields.Float('Mũ dây giao xe', store=True, compute='_compute_dayban', tracking=True, digits='One Decimal')
+    day_daily = fields.Float('Mũ dây đại lý', store=True, compute='_compute_dayban', tracking=True, digits='One Decimal')
     day_ton = fields.Float('Mũ dây tồn', store=True, compute='_compute_dayton', digits='One Decimal')
     day_tonkk = fields.Float('Mũ dây tồn kiểm kê', store=True, digits='One Decimal')
     daykk = fields.Boolean('Kiểm kê')
@@ -77,8 +77,8 @@ class RubberByDate(models.Model):
     # Mu dong
     dong_thu = fields.Float('Mũ đông cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     dong_giao = fields.Float('Mũ đông thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
-    dong_ban = fields.Float('Mũ đông giao xe', store=True, compute='_compute_donggiao', tracking=True, digits='One Decimal')
-    dong_daily = fields.Float('Mũ đông đại lý', store=True, compute='_compute_donggiao', tracking=True, digits='One Decimal')
+    dong_ban = fields.Float('Mũ đông giao xe', store=True, compute='_compute_dongban', tracking=True, digits='One Decimal')
+    dong_daily = fields.Float('Mũ đông đại lý', store=True, compute='_compute_dongban', tracking=True, digits='One Decimal')
     dong_ton = fields.Float('Mũ đông tồn', store=True, compute='_compute_dongton', digits='One Decimal')
     dong_tonkk = fields.Float('Mũ đông tồn kiểm kê', store=True, digits='One Decimal')
     dongkk = fields.Boolean('Kiểm kê')
@@ -89,8 +89,8 @@ class RubberByDate(models.Model):
     # Mu chen
     chen_thu = fields.Float('Mũ chén cân CN', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
     chen_giao = fields.Float('Mũ chén thực tế', store=True, compute='_compute_thu', tracking=True, digits='One Decimal')
-    chen_ban = fields.Float('Mũ chén giao xe', store=True, compute='_compute_chengiao', tracking=True, digits='One Decimal')
-    chen_daily = fields.Float('Mũ chén đại lý', store=True, compute='_compute_chengiao', tracking=True, digits='One Decimal')
+    chen_ban = fields.Float('Mũ chén giao xe', store=True, compute='_compute_chenban', tracking=True, digits='One Decimal')
+    chen_daily = fields.Float('Mũ chén đại lý', store=True, compute='_compute_chenban', tracking=True, digits='One Decimal')
     chen_ton = fields.Float('Mũ chén tồn', store=True, compute='_compute_chenton', digits='One Decimal')
     chen_tonkk = fields.Float('Mũ chén tồn kiểm kê', store=True, digits='One Decimal')
     chenkk = fields.Boolean('Kiểm kê')
@@ -323,7 +323,7 @@ class RubberByDate(models.Model):
     
     #Tinh mu giao
     @api.depends('deliver_line_ids')
-    def _compute_nuocgiao(self):
+    def _compute_nuocban(self):
         for rec in self:
             if rec.recorded == True:
                 rec.nuoc_ban = 0
@@ -340,7 +340,7 @@ class RubberByDate(models.Model):
                 rec.nuoc_daily = daily_nuoc
 
     @api.depends('deliver_line_ids')
-    def _compute_tapgiao(self):
+    def _compute_tapban(self):
         for rec in self:
             if rec.recorded == True:
                 rec.tap_ban = 0
@@ -357,7 +357,7 @@ class RubberByDate(models.Model):
                 rec.tap_daily = daily_tap
 
     @api.depends('deliver_line_ids')
-    def _compute_daygiao(self):
+    def _compute_dayban(self):
         for rec in self:
             if rec.recorded == True:
                 rec.day_ban = 0
@@ -374,7 +374,7 @@ class RubberByDate(models.Model):
                 rec.day_daily = daily_day
 
     @api.depends('deliver_line_ids')
-    def _compute_donggiao(self):
+    def _compute_dongban(self):
         for rec in self:
             if rec.recorded == True:
                 rec.dong_ban = 0
@@ -391,7 +391,7 @@ class RubberByDate(models.Model):
                 rec.dong_daily = daily_dong
 
     @api.depends('deliver_line_ids')
-    def _compute_chengiao(self):
+    def _compute_chenban(self):
         for rec in self:
             if rec.recorded == True:
                 rec.chen_ban = 0
@@ -847,7 +847,7 @@ class RubberByDate(models.Model):
 
     @api.model
     def recompute_nuoc_giao_all(self):
-        """Recompute nuoc_giao, tap_giao, day_giao, dong_giao, chen_giao for all records"""
+        """Recompute nuoc_giao, tap_giao, day_giao, dong_giao, chen_giao for all records, including previous *_ton"""
         batch_size = 100
         total = self.search_count([])
         processed = 0
@@ -857,7 +857,6 @@ class RubberByDate(models.Model):
             if not records:
                 break
             for rec in records:
-                # Recompute *_giao
                 y = x = i = j = k = l = 0
                 for line in rec.rubber_line_ids:
                     if hasattr(line, 'cong'):
@@ -871,11 +870,22 @@ class RubberByDate(models.Model):
                     i += getattr(line, 'mudong', 0)
                     j += getattr(line, 'muday', 0)
                     k += getattr(line, 'muchen', 0)
-                rec.nuoc_giao = y - (rec.ke or 0) - (rec.mutrangthung or 0)
-                rec.tap_giao = x + (rec.ke or 0) + (rec.mutrangthung or 0) + (rec.xe or 0)
-                rec.chen_giao = k 
-                rec.dong_giao = i 
-                rec.day_giao = j                 
+                # Get previous *_ton values
+                rds = rec.env['rubber.date'].search([
+                    ('ngay', '<', rec.ngay),
+                    ('to_name', '=', rec.to_name)
+                ], order='ngay')
+                prev_nuoc_ton = rds[-1].nuoc_ton if rds else 0
+                prev_tap_ton = rds[-1].tap_ton if rds else 0
+                prev_day_ton = rds[-1].day_ton if rds else 0
+                prev_dong_ton = rds[-1].dong_ton if rds else 0
+                prev_chen_ton = rds[-1].chen_ton if rds else 0
+
+                rec.nuoc_giao = y - (rec.ke or 0) - (rec.mutrangthung or 0) + prev_nuoc_ton
+                rec.tap_giao = x + (rec.ke or 0) + (rec.mutrangthung or 0) + (rec.xe or 0) + prev_tap_ton
+                rec.chen_giao = k - (rec.ke or 0) - (rec.mutrangthung or 0) + prev_chen_ton
+                rec.dong_giao = i - (rec.ke or 0) - (rec.mutrangthung or 0) + prev_dong_ton
+                rec.day_giao = j - (rec.ke or 0) - (rec.mutrangthung or 0) + prev_day_ton
 
                 rec.write({
                     'nuoc_giao': rec.nuoc_giao,
@@ -883,7 +893,6 @@ class RubberByDate(models.Model):
                     'day_giao': rec.day_giao,
                     'dong_giao': rec.dong_giao,
                     'chen_giao': rec.chen_giao,
-                    
                 })
             processed += len(records)
             self.env.cr.commit()  # Commit after each batch
