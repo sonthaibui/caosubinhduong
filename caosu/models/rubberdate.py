@@ -856,44 +856,7 @@ class RubberByDate(models.Model):
             records = self.search([], limit=batch_size, offset=processed)
             if not records:
                 break
-            for rec in records:
-                y = x = i = j = k = l = 0
-                for line in rec.rubber_line_ids:
-                    if hasattr(line, 'cong'):
-                        line.cong = getattr(line, 'munuoc1', 0) + getattr(line, 'munuoc2', 0) + getattr(line, 'munuoc3', 0) + getattr(line, 'mutap1', 0) + getattr(line, 'mutap2', 0)
-                    if hasattr(line, 'caoxa'):
-                        line.caoxa = rec.caoxa
-                    if getattr(line, 'congnuoc', 0) == 0 and getattr(line, 'muchen', 0) > 0:
-                        l += getattr(line, 'muchen', 0)
-                    y += getattr(line, 'congnuoc', 0)
-                    x += getattr(line, 'congtap', 0)
-                    i += getattr(line, 'mudong', 0)
-                    j += getattr(line, 'muday', 0)
-                    k += getattr(line, 'muchen', 0)
-                # Get previous *_ton values
-                rds = rec.env['rubber.date'].search([
-                    ('ngay', '<', rec.ngay),
-                    ('to_name', '=', rec.to_name)
-                ], order='ngay')
-                prev_nuoc_ton = rds[-1].nuoc_ton if rds else 0
-                prev_tap_ton = rds[-1].tap_ton if rds else 0
-                prev_day_ton = rds[-1].day_ton if rds else 0
-                prev_dong_ton = rds[-1].dong_ton if rds else 0
-                prev_chen_ton = rds[-1].chen_ton if rds else 0
-
-                rec.nuoc_giao = y - (rec.ke or 0) - (rec.mutrangthung or 0) + prev_nuoc_ton
-                rec.tap_giao = x + (rec.ke or 0) + (rec.mutrangthung or 0) + (rec.xe or 0) + prev_tap_ton
-                rec.chen_giao = k - (rec.ke or 0) - (rec.mutrangthung or 0) + prev_chen_ton
-                rec.dong_giao = i - (rec.ke or 0) - (rec.mutrangthung or 0) + prev_dong_ton
-                rec.day_giao = j - (rec.ke or 0) - (rec.mutrangthung or 0) + prev_day_ton
-
-                rec.write({
-                    'nuoc_giao': rec.nuoc_giao,
-                    'tap_giao': rec.tap_giao,
-                    'day_giao': rec.day_giao,
-                    'dong_giao': rec.dong_giao,
-                    'chen_giao': rec.chen_giao,
-                })
+            records._compute_thu()
             processed += len(records)
             self.env.cr.commit()  # Commit after each batch
 
@@ -902,12 +865,11 @@ class RubberByDate(models.Model):
             'tag': 'display_notification',
             'params': {
                 'title': _('Recomputation Complete'),
-                'message': f'Recomputed nuoc_giao and related fields for {processed} records',
+                'message': f'Recomputed *_giao fields for {processed} records',
                 'type': 'success',
                 'sticky': False,
             }
         }
-
     @api.model
     def recompute_haohut_all(self):
         """Recompute *_haohut for all records"""
@@ -945,11 +907,11 @@ class RubberByDate(models.Model):
             records = self.search([], limit=batch_size, offset=processed)
             if not records:
                 break
-            records._compute_nuocgiao()
-            records._compute_tapgiao()
-            records._compute_daygiao()
-            records._compute_donggiao()
-            records._compute_chengiao()
+            records._compute_nuocban()
+            records._compute_tapban()
+            records._compute_dayban()
+            records._compute_dongban()
+            records._compute_chenban()
             processed += len(records)
             self.env.cr.commit()  # Commit after each batch
 
