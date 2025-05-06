@@ -35,3 +35,4 @@ access.rubber.test.nhom,access_rubber_test_nhom,caosu.model_rubber_test_nhom,bas
 access.rubber.department.config,access_rubber_department_config,caosu.model_rubber_department_config,base.group_user,1,1,1,1
 access.rubbertest.department.config,access_rubbertest_department_config,caosu.model_rubbertest_department_config,base.group_user,1,1,1,1
 access.tylehaohut.mu,access_tylehaohut_mu,caosu.model_tylehaohut_mu,base.group_user,1,1,1,1
+access.do.mu,access_do_mu,caosu.model_do_mu,base.group_user,1,1,1,1

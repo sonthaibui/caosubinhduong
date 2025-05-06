@@ -48,6 +48,7 @@
         'views/rubber_price_views.xml',         # Then load price views that reference it
         'data/server_actions.xml',
         'views/tylehaohut_mu_views.xml',
+        'views/domu_views.xml',    
     ],
     'controllers': [        
         'caosu/controllers/report_controller.py',

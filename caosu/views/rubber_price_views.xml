@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--<data>
+    <data>
         
         <record id="rubber_price_tree" model="ir.ui.view">
             <field name="name">rubber.price.tree</field>
@@ -97,5 +97,5 @@
                   parent="sanluong_menu"
                   action="action_rubber_price"
                   sequence="3"/>
-    </data>-->
+    </data>
 </odoo>

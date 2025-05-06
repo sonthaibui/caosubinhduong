@@ -98,7 +98,7 @@ class RubberByDate(models.Model):
     chen_haohut = fields.Float('Mũ chén hao hụt', compute='_compute_haohut', store=True)
     chen_tlhh = fields.Float('Tỷ lệ chén hao hụt', store=True, compute='_compute_chenhh', tracking=True, digits='One Decimal')
     chen_hhkk = fields.Float('Mũ chén hao hụt kiểm kê', store=True, compute='_compute_chenhh', tracking=True, digits='One Decimal')
-    
+       
     tyle_nuoc_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
     tyle_tap_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
     tyle_day_haohut = fields.Html(compute='_compute_tyle_haohut_html', store=False)
@@ -117,6 +117,12 @@ class RubberByDate(models.Model):
         help="Độ lệch giữa độ giao và độ trung bình",
         digits='One Decimal'
     )
+     
+    do_tap = fields.Float('Độ tạp', compute='_compute_do_mu', store=True)
+    do_chen = fields.Float('Độ chén', compute='_compute_do_mu', store=True)
+    do_dong = fields.Float('Độ đông', compute='_compute_do_mu', store=True)
+    do_day = fields.Float('Độ dây', compute='_compute_do_mu', store=True)
+    
     thoitiet = fields.Char('Thời tiết')
     thoigian_cao = fields.Char('Thời gian cạo')
     thoigian_trut = fields.Char('Thời gian trút')
@@ -236,8 +242,6 @@ class RubberByDate(models.Model):
                 else:
                     rec.nam_kt = rec.nam
 
-    
-
     def _compute_recorded(self):
         for rec in self:
             if len(rec.rubber_line_ids) > 0:
@@ -296,11 +300,23 @@ class RubberByDate(models.Model):
                 rec.tongmu = x + y + i + k
                 rec.dong_thu = i
                 rec.day_thu = j
-                rec.nuoc_giao = y - rec.ke - rec.mutrangthung
-                rec.tap_giao = x + rec.ke + rec.mutrangthung + rec.xe
-                rec.chen_giao = k - rec.ke - rec.mutrangthung
-                rec.dong_giao = i - rec.ke - rec.mutrangthung
-                rec.day_giao = j - rec.ke - rec.mutrangthung
+
+                rds = rec.env['rubber.date'].search([
+                    ('ngay', '<', rec.ngay),
+                    ('to_name', '=', rec.to_name)
+                ], order='ngay')
+                prev_nuoc_ton = rds[-1].nuoc_ton if rds else 0
+                prev_tap_ton = rds[-1].tap_ton if rds else 0
+                prev_day_ton = rds[-1].day_ton if rds else 0
+                prev_dong_ton = rds[-1].dong_ton if rds else 0
+                prev_chen_ton = rds[-1].chen_ton if rds else 0
+
+                rec.nuoc_giao = y - rec.ke - rec.mutrangthung + prev_nuoc_ton
+                rec.tap_giao = x + rec.ke + rec.mutrangthung + rec.xe + prev_tap_ton
+                rec.chen_giao = k - rec.ke - rec.mutrangthung + prev_chen_ton
+                rec.dong_giao = i - rec.ke - rec.mutrangthung + prev_dong_ton
+                rec.day_giao = j - rec.ke - rec.mutrangthung + prev_day_ton
+
                 if y > 0:
                     rec.do_tb = z / y
                     rec.do_haohut = rec.do_tb - rec.do_giao
@@ -688,6 +704,16 @@ class RubberByDate(models.Model):
                     else:
                         rec.giachen = 0
 
+    @api.depends('to', 'ngay')
+    def _compute_do_mu(self):
+        DoMu = self.env['do.mu']
+        for rec in self:
+            do_vals = DoMu.get_do([rec.to.id], rec.ngay)
+            rec.do_tap = do_vals.get('do_mutap', 0)
+            rec.do_chen = do_vals.get('do_muchen', 0)
+            rec.do_dong = do_vals.get('do_mudong', 0)
+            rec.do_day = do_vals.get('do_muday', 0)
+            
     @api.depends('nuoc_thu', 'day_thu', 'tap_thu', 'dong_thu', 'chen_thu', 
                 'gianuoc', 'giaday', 'giadong', 'giachen', 'giatap', 
                 'do_giao', 'do_tb')
@@ -697,11 +723,11 @@ class RubberByDate(models.Model):
             do = rec.do_tb if rec.do_giao == 0 else rec.do_giao
             
             # Calculate money for each rubber type
-            money_nuoc = rec.nuoc_thu * do * rec.gianuoc 
-            money_chen = rec.chen_thu * do * rec.giachen
-            money_tap = rec.tap_thu * do * rec.giatap
-            money_dong = rec.dong_thu * do * rec.giadong
-            money_day = rec.day_thu * rec.giaday  # No percentage for day rubber
+            money_nuoc = rec.nuoc_ban * do * rec.gianuoc if rec.nuoc_ban != 0 else rec.nuoc_thu * do * rec.gianuoc
+            money_chen = rec.chen_ban * do * rec.giachen if rec.chen_ban != 0 else rec.chen_thu * do * rec.giachen
+            money_tap = rec.tap_ban * do * rec.giatap if rec.tap_ban != 0 else rec.tap_thu * do * rec.giatap
+            money_dong = rec.dong_ban * do * rec.giadong if rec.dong_ban != 0 else rec.dong_thu * do * rec.giadong
+            money_day = rec.day_ban * rec.giaday if rec.day_ban != 0 else rec.day_thu * rec.giaday  # No percentage for day rubber
             
             # Sum all values
             rec.tien = money_nuoc + money_chen + money_tap + money_dong + money_day
@@ -1078,3 +1104,4 @@ class RubberByDate(models.Model):
                 else:
                     color = color3 or 'red'
             rec.tyle_chen_haohut = f'<span style="color:{color};">{val:.0f}%</span>'
+
