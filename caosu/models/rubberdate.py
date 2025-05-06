@@ -969,62 +969,34 @@ class RubberByDate(models.Model):
         if self.env.context.get('skip_nuocton_propagation'):
             return super().write(vals)
         res = super().write(vals)
-        # nuoc_ton propagation
-        if 'nuockk' in vals or 'nuoc_tonkk' in vals:
-            for rec in self:
-                later_records = self.env['rubber.date'].search([
-                    ('to_name', '=', rec.to_name),
-                    ('ngay', '>', rec.ngay)
-                ], order='ngay')
-                for lr in later_records:
-                    lr.with_context(skip_nuocton_propagation=True)._compute_nuocton()
-                    if lr.nuockk or lr.nuocnkk:
-                        break
-        # tap_ton propagation
-        if 'tapkk' in vals or 'tap_tonkk' in vals:
-            for rec in self:
-                later_records = self.env['rubber.date'].search([
-                    ('to_name', '=', rec.to_name),
-                    ('ngay', '>', rec.ngay)
-                ], order='ngay')
-                for lr in later_records:
-                    lr.with_context(skip_nuocton_propagation=True)._compute_tapton()
-                    if lr.tapkk or lr.tapnkk:
-                        break
-        # day_ton propagation
-        if 'daykk' in vals or 'day_tonkk' in vals:
-            for rec in self:
-                later_records = self.env['rubber.date'].search([
-                    ('to_name', '=', rec.to_name),
-                    ('ngay', '>', rec.ngay)
-                ], order='ngay')
-                for lr in later_records:
-                    lr.with_context(skip_nuocton_propagation=True)._compute_dayton()
-                    if lr.daykk or lr.daynkk:
-                        break
-        # dong_ton propagation
-        if 'dongkk' in vals or 'dong_tonkk' in vals:
-            for rec in self:
-                later_records = self.env['rubber.date'].search([
-                    ('to_name', '=', rec.to_name),
-                    ('ngay', '>', rec.ngay)
-                ], order='ngay')
-                for lr in later_records:
-                    lr.with_context(skip_nuocton_propagation=True)._compute_dongton()
-                    if lr.dongkk or lr.dongnkk:
-                        break
-        # chen_ton propagation
-        if 'chenkk' in vals or 'chen_tonkk' in vals:
-            for rec in self:
-                later_records = self.env['rubber.date'].search([
-                    ('to_name', '=', rec.to_name),
-                    ('ngay', '>', rec.ngay)
-                ], order='ngay')
-                for lr in later_records:
-                    lr.with_context(skip_nuocton_propagation=True)._compute_chenton()
-                    if lr.chenkk or lr.chennkk:
-                        break
+
+        def propagate(field_kk, field_tonkk, compute_method, stop_fields):
+            if field_kk in vals or field_tonkk in vals:
+                for rec in self:
+                    # Only run if the value is actually changing
+                    old_kk = getattr(rec, field_kk)
+                    new_kk = vals.get(field_kk, old_kk)
+                    old_tonkk = getattr(rec, field_tonkk)
+                    new_tonkk = vals.get(field_tonkk, old_tonkk)
+                    if old_kk != new_kk or old_tonkk != new_tonkk:
+                        later_records = self.env['rubber.date'].search([
+                            ('to_name', '=', rec.to_name),
+                            ('ngay', '>', rec.ngay)
+                        ], order='ngay')
+                        for lr in later_records:
+                            getattr(lr.with_context(skip_nuocton_propagation=True), compute_method)()
+                            # Stop at the first record where *kk or *nkk is set
+                            if any(getattr(lr, f) for f in stop_fields):
+                                break
+
+        propagate('nuockk', 'nuoc_tonkk', '_compute_nuocton', ['nuockk', 'nuocnkk'])
+        propagate('tapkk', 'tap_tonkk', '_compute_tapton', ['tapkk', 'tapnkk'])
+        propagate('daykk', 'day_tonkk', '_compute_dayton', ['daykk', 'daynkk'])
+        propagate('dongkk', 'dong_tonkk', '_compute_dongton', ['dongkk', 'dongnkk'])
+        propagate('chenkk', 'chen_tonkk', '_compute_chenton', ['chenkk', 'chennkk'])
+
         return res
+
     def get_tylehaohut(self, field_code, date):
         """Return the latest tylehaohut1, tylehaohut2, color1, color2, color3 for a field_code and date"""
         rec = self.env['tylehaohut.mu'].search([
