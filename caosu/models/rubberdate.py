@@ -968,15 +968,31 @@ class RubberByDate(models.Model):
         # Prevent infinite recursion by using a context flag
         if self.env.context.get('skip_nuocton_propagation'):
             return super().write(vals)
+
+        # Store old values before write
+        old_values = {}
+        kk_fields = [
+            ('nuockk', 'nuoc_tonkk', '_compute_nuocton', ['nuockk', 'nuocnkk']),
+            ('tapkk', 'tap_tonkk', '_compute_tapton', ['tapkk', 'tapnkk']),
+            ('daykk', 'day_tonkk', '_compute_dayton', ['daykk', 'daynkk']),
+            ('dongkk', 'dong_tonkk', '_compute_dongton', ['dongkk', 'dongnkk']),
+            ('chenkk', 'chen_tonkk', '_compute_chenton', ['chenkk', 'chennkk']),
+        ]
+        for rec in self:
+            old_values[rec.id] = {}
+            for field_kk, field_tonkk, _, _ in kk_fields:
+                old_values[rec.id][field_kk] = getattr(rec, field_kk)
+                old_values[rec.id][field_tonkk] = getattr(rec, field_tonkk)
+
         res = super().write(vals)
 
-        def propagate(field_kk, field_tonkk, compute_method, stop_fields):
+        # Now propagate if value changed
+        for field_kk, field_tonkk, compute_method, stop_fields in kk_fields:
             if field_kk in vals or field_tonkk in vals:
                 for rec in self:
-                    # Only run if the value is actually changing
-                    old_kk = getattr(rec, field_kk)
+                    old_kk = old_values[rec.id][field_kk]
                     new_kk = vals.get(field_kk, old_kk)
-                    old_tonkk = getattr(rec, field_tonkk)
+                    old_tonkk = old_values[rec.id][field_tonkk]
                     new_tonkk = vals.get(field_tonkk, old_tonkk)
                     if old_kk != new_kk or old_tonkk != new_tonkk:
                         later_records = self.env['rubber.date'].search([
@@ -985,15 +1001,8 @@ class RubberByDate(models.Model):
                         ], order='ngay')
                         for lr in later_records:
                             getattr(lr.with_context(skip_nuocton_propagation=True), compute_method)()
-                            # Stop at the first record where *kk or *nkk is set
                             if any(getattr(lr, f) for f in stop_fields):
                                 break
-
-        propagate('nuockk', 'nuoc_tonkk', '_compute_nuocton', ['nuockk', 'nuocnkk'])
-        propagate('tapkk', 'tap_tonkk', '_compute_tapton', ['tapkk', 'tapnkk'])
-        propagate('daykk', 'day_tonkk', '_compute_dayton', ['daykk', 'daynkk'])
-        propagate('dongkk', 'dong_tonkk', '_compute_dongton', ['dongkk', 'dongnkk'])
-        propagate('chenkk', 'chen_tonkk', '_compute_chenton', ['chenkk', 'chennkk'])
 
         return res
 
