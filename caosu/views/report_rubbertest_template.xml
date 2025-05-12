@@ -12,7 +12,7 @@
                 <!-- Add export buttons at the top -->
                 <div class="row mb-3">
                     <div class="col-12">
-                        <a t-att-href="'/caosu/excel?to=' + str(to or '') + 
+                        <a t-att-href="'/caosu/excel_rubbertest?to=' + str(to or '') + 
                                        '&amp;lo=' + str(lo or '') + 
                                        '&amp;dao_kt_up=' + str(dao_kt_up or '') + 
                                        '&amp;nhom=' + str(nhom or '') +

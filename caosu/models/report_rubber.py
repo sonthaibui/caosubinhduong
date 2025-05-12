@@ -1,3 +1,5 @@
+import io
+import xlsxwriter
 from odoo import api, models
 from datetime import datetime
 import logging
@@ -7,10 +9,10 @@ _logger = logging.getLogger(__name__)
 class ReportRubber(models.AbstractModel):
     _name = 'report.caosu.rubber_report_template'
     _description = 'Rubber Report'
-    
+
     @api.model
     def _get_report_values(self, docids, data=None):
-        data = data or {}        
+        data = data or {}
         # Get all parameters with defaults
         selected_lo = data.get('lo', 'a')
         selected_nhom = data.get('nhom', 'all')
@@ -28,7 +30,7 @@ class ReportRubber(models.AbstractModel):
             selected_to = department.id if department else ''
         else:
             selected_to = data.get('to')
-        
+
         # Convert selected_to to int for comparisons
         selected_to_int = False
         if selected_to:
@@ -36,29 +38,29 @@ class ReportRubber(models.AbstractModel):
                 selected_to_int = int(selected_to)
             except (ValueError, TypeError):
                 pass
-        
+
         # HARDCODED DEPARTMENT APPROACH
         # Replace your hardcoded_departments list with this:
         available_to = self.env['rubber.department.config'].get_departments()
-        
+
         # 2. SECOND: Fetch all available options BEFORE any data processing
         # Force immediate evaluation with list() and store as lists
-        
-        available_lo = self.env['plantation'].fields_get(['lo'])['lo']['selection']        
+
+        available_lo = self.env['plantation'].fields_get(['lo'])['lo']['selection']
         available_nhom_group = self.env['plantation'].read_group([], ['nhom'], ['nhom'])
         available_nhom = [{'id': 'all', 'name': 'Tất cả'}]
         for group in available_nhom_group:
             value = group.get('nhom')
             if value:
                 available_nhom.append({'id': value, 'name': value.capitalize()})
-        
+
         available_dao_group = self.env['rubber'].read_group([], ['dao_kt'], ['dao_kt'])
         available_dao = [{'id': '', 'name': 'Tất cả'}]
         for grp in available_dao_group:
             dao_val = grp.get('dao_kt')
             if dao_val not in (False, None):
                 available_dao.append({'id': dao_val, 'name': str(dao_val)})
-        
+
         # 3. THIRD: Build your domain and process data
         domain = []
         if selected_nhom and selected_nhom != 'all':
@@ -67,7 +69,7 @@ class ReportRubber(models.AbstractModel):
             domain.append(('to', '=', selected_to_int))
         if selected_lo and selected_lo.strip():
             domain.append(('lo', '=', selected_lo))
-        
+
         # Retrieve plantation records based on domain, ordered by sttcn.
         plantation_objs = self.env['plantation'].search(domain, order='sttcn')
         # Build dynamic column headers.
@@ -87,7 +89,7 @@ class ReportRubber(models.AbstractModel):
                 'name': pt.sttcn,
                 'CN': employee_name  # Trimmed name, removed characters to the right of '-'
             })
-        
+
         # Add this after defining your columns but before processing the rows
         # Create a map of plantation IDs to their tree counts
         tree_counts = {}
@@ -98,7 +100,7 @@ class ReportRubber(models.AbstractModel):
             plantations = self.env['plantation'].browse(plantation_ids).read(['caycao'])
             # Create a mapping of ID to tree count
             tree_counts = {p['id']: p['caycao'] or 0 for p in plantations}
-        
+
         # Retrieve rubber records for those plantations.
         plantation_ids = [pt.id for pt in plantation_objs]
         rubber_domain = [('plantation_id', 'in', plantation_ids)]
@@ -114,7 +116,7 @@ class ReportRubber(models.AbstractModel):
         # Add filter for rubberbydate_id.cong > 0
         rubber_domain.append(('rubberbydate_id.tongmu', '>', 0))
         rubber_objs = self.env['rubber'].search(rubber_domain)
-        
+
         # Group rubber records by their rubbertestbydate.
         grouped = {}
         for rec in rubber_objs:
@@ -167,13 +169,13 @@ class ReportRubber(models.AbstractModel):
                 'ghichu': getattr(rec, 'ghichu', ''),
             }
             grouped[group_key]['group_values'][plant_id] = cell_data
-            
+
             if detail_field != 'none':
                 try:
                     raw_val = getattr(rec, detail_field, '')
                 except Exception:
                     raw_val = ''
-                
+
                 if detail_field == 'kichthich':
                     detail_val = 'Yes' if raw_val else 'No'
                 # Add special handling for fields that need one decimal place
@@ -196,14 +198,14 @@ class ReportRubber(models.AbstractModel):
                             detail_val = int(val)
                     except Exception:
                         detail_val = '-' if raw_val == 0 or raw_val == '0' else raw_val
-                
+
                 grouped[group_key]['group_detail_values'][plant_id] = {'value': detail_val}
-        
+
         # In your _get_report_values method, add these values to each group
         for rec in rubber_objs:
             # Process each rubber record
             group_key = rec.rubberbydate_id.id
-            
+
             if group_key not in grouped:
                 # Format the date for display
                 date_value = rec.rubberbydate_id.ngay
@@ -215,14 +217,14 @@ class ReportRubber(models.AbstractModel):
                         long_date = date_obj.strftime('%A, %d %B %Y')
                 except Exception as e:
                     long_date = date_value
-                
+
                 # Get do_giao and tongmu values from rubberbydate_id
                 do_giao_val = rec.rubberbydate_id.do_giao or 0
                 do_giao_formatted = f"{float(do_giao_val):.1f}" if do_giao_val else '-'
-                
+
                 tongmu_val = rec.rubberbydate_id.tongmu or 0
                 tongmu_formatted = f"{int(tongmu_val)}" if tongmu_val else '-'
-                
+
                 grouped[group_key] = {
                     'id': group_key,
                     'name': long_date,
@@ -250,7 +252,7 @@ class ReportRubber(models.AbstractModel):
             total_tongmu = int(total_tongmu)  # Ensure total_tongmu is an integer
         except (ValueError, TypeError):
             total_tongmu = 0  # Default to 0 if conversion fails
-        
+
         # After processing all groups, convert total_tongmu to Tấn (divide by 1000) and no decimals
         total_tongmu = f"{total_tongmu // 1000} Tấn"
 
@@ -260,7 +262,7 @@ class ReportRubber(models.AbstractModel):
             key=lambda g: g.get('date_value') or datetime.min,
             reverse=(sort_order == 'desc')
         )
-        
+
         # Generate HTML directly in Python
         to_options = ""
         for dept in available_to:
@@ -290,7 +292,7 @@ class ReportRubber(models.AbstractModel):
             if thang_val:
                 selected = "selected" if str(selected_thang) == str(thang_val) else ""
                 thang_options += f'<option value="{thang_val}" {selected}>{thang_val}</option>'
-                
+
         # Get available years from rubber.date records
         nam_groups = self.env['rubber.date'].read_group([], ['nam_kt'], ['nam_kt'])
         nam_options = '<option value="Tất cả" ' + ("selected" if selected_nam == "Tất cả" else "") + '>Tất cả</option>'
@@ -330,13 +332,13 @@ class ReportRubber(models.AbstractModel):
         for comp_opt in compare_field_options:
             selected = "selected" if compare_field == comp_opt[0] else ""
             compare_options += f'<option value="{comp_opt[0]}" {selected}>{comp_opt[1]}</option>'
-        
+
         # Calculate column totals or averages based on compare_field
         column_totals = {}
         for col in cols:
             col_id = col['id']
             values = []
-            
+
             # Collect all non-dash values for this column from all rows
             for row in rows:
                 if col_id in row['group_values']:
@@ -347,7 +349,7 @@ class ReportRubber(models.AbstractModel):
                             values.append(float(val))
                         except (ValueError, TypeError):
                             pass
-            
+
             # Calculate total or average based on compare_field
             if not values:
                 column_totals[col_id] = '-'
@@ -387,7 +389,7 @@ class ReportRubber(models.AbstractModel):
                         total_tongmu += float(total)
                     except (ValueError, TypeError):
                         pass
-            
+
             # Format as "X Tấn" - divided by 1000 and rounded to whole number
             if total_tongmu > 0:
                 tons = int(total_tongmu / 1000)
@@ -405,8 +407,8 @@ class ReportRubber(models.AbstractModel):
             'column_totals': column_totals,
             'tree_counts': tree_counts,
             'show_tree_count': show_tree_count,
-            'compare_field': compare_field,            
-            'detail_field': detail_field,            
+            'compare_field': compare_field,
+            'detail_field': detail_field,
             'selected_nhom': selected_nhom,
             'sort_order': sort_order,
             'available_to': available_to,  # Use hardcoded list
@@ -429,3 +431,90 @@ class ReportRubber(models.AbstractModel):
             'nam_options_html': nam_options,
             'total_tongmu': total_tongmu,  # Add the total
         }
+
+    def create_excel_report(self, data):
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('Rubber Report')
+
+        header_format = workbook.add_format({
+            'bold': True,
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color': '#f8f9fa',
+            'border': 1
+        })
+        vanh_format = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1,
+            'italic': True,
+            'bg_color': '#f2f2f2'
+        })
+        total_format = workbook.add_format({
+            'bold': True,
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1,
+            'bg_color': '#e6ffe6'
+        })
+        data_format = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1
+        })
+
+        report_values = self._get_report_values(None, data)
+        cols = report_values.get('cols', [])
+        docs = report_values.get('docs', [])
+        total_tongmu = report_values.get('total_tongmu', 0)
+        column_totals = report_values.get('column_totals', {})
+
+        # First header row: STT, Độ, Tổng, plantation columns (col['name'])
+        worksheet.write(0, 0, 'STT', header_format)
+        worksheet.write(0, 1, 'Độ', header_format)
+        worksheet.write(0, 2, 'Tổng', header_format)
+        for col_idx, col in enumerate(cols, 3):
+            worksheet.write(0, col_idx, col['name'], header_format)
+
+        # Second header row: TÊN, -, -, plantation columns (col['CN'])
+        worksheet.write(1, 0, 'TÊN', vanh_format)
+        worksheet.write(1, 1, '-', vanh_format)
+        worksheet.write(1, 2, '-', vanh_format)
+        for col_idx, col in enumerate(cols, 3):
+            worksheet.write(1, col_idx, col.get('CN', ''), vanh_format)
+
+        # Third header row: Tổng, -, total_tongmu, column_totals
+        worksheet.write(2, 0, 'Tổng', total_format)
+        worksheet.write(2, 1, '-', total_format)
+        worksheet.write(2, 2, total_tongmu if total_tongmu else '-', total_format)
+        for col_idx, col in enumerate(cols, 3):
+            worksheet.write(2, col_idx, column_totals.get(col['id'], ''), total_format)
+
+        # Data rows: group['name'], group['do_giao'], group['tongmu'], then group_values
+        for row_idx, group in enumerate(docs, 3):
+            worksheet.write(row_idx, 0, group.get('name', ''), data_format)
+            worksheet.write(row_idx, 1, group.get('do_giao', ''), data_format)
+            worksheet.write(row_idx, 2, group.get('tongmu', ''), data_format)
+            for col_idx, col in enumerate(cols, 3):
+                cell_data = group.get('group_values', {}).get(col['id'], {})
+                value = cell_data.get('value', '-')
+                cell_format = workbook.add_format({
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'border': 1
+                })
+                if cell_data.get('background'):
+                    cell_format.set_bg_color(cell_data['background'])
+                if cell_data.get('kichthich'):
+                    cell_format.set_bold(True)
+                worksheet.write(row_idx, col_idx, value, cell_format)
+
+        worksheet.set_column(0, 0, 15)  # STT column
+        worksheet.set_column(1, 2, 10)  # Độ, Tổng columns
+        worksheet.set_column(3, 3 + len(cols), 12)  # Data columns
+        worksheet.freeze_panes(3, 1)  # Freeze the first three rows and first column
+
+        workbook.close()
+        output.seek(0)
+        return output.getvalue()

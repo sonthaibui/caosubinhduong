@@ -13,6 +13,8 @@
         'views/product_template_views.xml',        
         'views/project_views.xml',
         'views/project_task_views.xml',
+        'views/account_bank_statement_views_inherit.xml',
+        'views/account_bank_statement_line_views_inherit.xml',
         #'views/project_task_kanban_views.xml',
         'views/ir_module_module_views.xml',
         'data/ir_module_module_actions.xml',

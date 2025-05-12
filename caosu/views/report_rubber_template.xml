@@ -63,10 +63,19 @@
                 </div>
                 <!-- Add this near the top of your form -->
                 <div style="margin-bottom: 15px;">
-                    <a href="/report/pdf/caosu.rubber_report_template" class="btn btn-secondary">
-                        <i class="fa fa-file-pdf-o"></i> Download PDF Report
+                    <a t-att-href="'/caosu/excel_rubber?to=' + str(to or '') + 
+                                '&amp;lo=' + str(lo or '') + 
+                                '&amp;nhom=' + str(nhom or '') +
+                                '&amp;compare_field=' + str(compare_field or '') +
+                                '&amp;detail_field=' + str(detail_field or '') +
+                                '&amp;dao_kt_up=' + str(dao_kt_up or '') +
+                                '&amp;thang=' + str(selected_thang or '') +
+                                '&amp;nam=' + str(selected_nam or '')"
+                        class="btn btn-primary" target="_blank">
+                        <i class="fa fa-file-excel-o"></i> Xuất Excel
                     </a>
                 </div>
+                
                 <!-- Update form action to match rubbertest pattern -->
                 <form action="/report/html/caosu.rubber_report_template" method="get">
                     <div style="display: flex; gap: 20px;">

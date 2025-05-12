@@ -3,7 +3,7 @@
         <field name="name">Recompute All nuoc_giao</field>
         <field name="model_id" ref="caosu.model_rubber_date"/>
         <field name="state">code</field>
-        <field name="code">action = env['rubber.date'].recompute_nuoc_giao_all()</field>
+        <field name="code">action = env['rubber.date'].recompute_giao_all()</field>
         <field name="binding_model_id" ref="caosu.model_rubber_date"/>
         <field name="binding_type">action</field>
     </record>
@@ -27,7 +27,7 @@
         <field name="name">Recompute All Ban</field>
         <field name="model_id" ref="caosu.model_rubber_date"/>
         <field name="state">code</field>
-        <field name="code">action = env['rubber.date'].recompute_all_ban()</field>
+        <field name="code">action = env['rubber.date'].recompute_ban_all()</field>
         <field name="binding_model_id" ref="caosu.model_rubber_date"/>
         <field name="binding_type">action</field>
     </record>

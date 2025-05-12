@@ -1,0 +1,19 @@
+<odoo>
+    <record id="view_bank_statement_form_inherit_cab" model="ir.ui.view">
+        <field name="name">account.bank.statement.form.inherit.cab</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">            
+            <xpath expr="//page[@name='statement_line_ids']" position="inside">
+                <group>
+                    <button name="action_open_bank_statement_line_wizard"
+                            type="object"
+                            string="Thêm khoản chi"
+                            class="oe_stat_button"
+                            icon="fa-plus"
+                            attrs="{'invisible': [('state', '!=', 'open')]}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

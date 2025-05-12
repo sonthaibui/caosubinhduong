@@ -846,7 +846,7 @@ class RubberByDate(models.Model):
         }
 
     @api.model
-    def recompute_nuoc_giao_all(self):
+    def recompute_giao_all(self):
         """Recompute nuoc_giao, tap_giao, day_giao, dong_giao, chen_giao for all records, including previous *_ton"""
         batch_size = 100
         total = self.search_count([])
@@ -897,7 +897,7 @@ class RubberByDate(models.Model):
         }
 
     @api.model
-    def recompute_all_ban(self):
+    def recompute_ban_all(self):
         """Recompute *_ban fields for all records"""
         batch_size = 100
         total = self.search_count([])

@@ -103,7 +103,7 @@ class ReportController(http.Controller):
             _logger.exception(f"Error updating rubber ghichu: {str(e)}")
             return {'success': False, 'error': str(e)}
 
-    @http.route('/caosu/excel', type='http', auth="user", website=True)
+    @http.route('/caosu/excel_rubbertest', type='http', auth="user", website=True)
     def export_excel_rubbertest(self, **kw):
         try:
             # Get report data using the same method as HTML report
@@ -160,3 +160,43 @@ class ReportController(http.Controller):
     @http.route('/caosu/test', type='http', auth="user")
     def test_controller(self, **kw):
         return "Controller is working"
+    
+    @http.route('/caosu/excel_rubber', type='http', auth="user", website=True)
+    def export_excel_rubber(self, **kw):
+        try:
+            ReportRubber = request.env['report.caosu.rubber_report_template']
+            data = {
+                'compare_field': kw.get('compare_field', 'cong'),
+                'detail_field': kw.get('detail_field', 'none')
+            }
+            if kw.get('to'):
+                try:
+                    if kw.get('to') != 'all':
+                        data['to'] = int(kw.get('to'))
+                except (ValueError, TypeError):
+                    data['to'] = kw.get('to')
+            if kw.get('lo'):
+                data['lo'] = kw.get('lo')
+            if kw.get('dao_kt_up'):
+                try:
+                    if kw.get('dao_kt_up') != 'all':
+                        data['dao_kt_up'] = int(kw.get('dao_kt_up'))
+                except (ValueError, TypeError):
+                    pass
+            if kw.get('nhom'):
+                try:
+                    if kw.get('nhom') != 'all':
+                        data['nhom'] = int(kw.get('nhom'))
+                except (ValueError, TypeError):
+                    pass
+
+            excel_data = ReportRubber.create_excel_report(data)
+            filename = f'rubber_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx'
+            headers = [
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', content_disposition(filename))
+            ]
+            return request.make_response(excel_data, headers=headers)
+        except Exception as e:
+            _logger.error("Excel export error: %s", str(e), exc_info=True)
+            return "Error generating Excel file: " + str(e)

@@ -58,3 +58,18 @@ class AccountBankStatement(models.Model):
             line.giamdoc_duyet = False
         #raise UserError(_(vals.giamdoc_duyet))
         return vals
+
+    def action_open_bank_statement_line_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Add Statement Line',
+            'res_model': 'account.bank.statement.line',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_statement_id': self.id,
+                'default_journal_id': self.journal_id.id,
+                'default_date': self.date,
+            }
+        }
