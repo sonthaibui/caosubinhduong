@@ -5,7 +5,7 @@
         <field name="name">rubberbydate.form</field>
         <field name="model">rubber.date</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="NHAP SAN LUONG" autosave="false">
               <style>
                 .freeze-table th {
                     position: sticky;
@@ -243,7 +243,7 @@
                         </page>
                         <page string="Sản lượng mũ cạo" attrs="{'invisible': ['|','&amp;',('to_name','=','TỔ Chung'),('to','=',False),('recorded','=',False)]}">
                           <field name="rubber_line_ids">
-                            <tree editable="bottom" create="0" delete="0" default_order="planname asc">
+                            <tree create="0" delete="0" default_order="planname asc">
                               <field name="plantation_id" optional="hide" style="border-top-style: solid !important;border-width: 1px !important"/>
                               <field name="planname" string="STT"/>
                               <field name="phep" style="border-top-style: solid !important;border-width: 1px !important;"/>
@@ -268,6 +268,95 @@
                               <field name="caoxa" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                               <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                             </tree>
+                            <form string="Mu CN">
+                              <group>                                
+                                <group>
+                                  <field name="planname"/>
+                                </group>
+                                <group>
+                                  <field name="empname" string="CN" />
+                                </group>
+                                <field name="phep" string="Chấm công"/>
+                              </group>
+                                <group>
+                                <div style="overflow-x: auto; width: 100%;">
+                                  <table class="table table-bordered" style="min-width: 320px; width: 100%; max-width: 100%; text-align: center; font-size: 14px; table-layout: fixed; word-break: break-word;">
+                                  <tbody>
+                                    <tr>
+                                    <th style="width:33%;">Nước</th>
+                                    <th style="width:34%;">Tạp</th>
+                                    <th style="width:33%;">Độ</th>
+                                    </tr>
+                                    <tr>
+                                    <td>
+                                      <field name="munuoc1" nolabel="1" options="{'on_click_select': true}"/>
+                                    </td>
+                                    <td>
+                                      <field name="mutap1" nolabel="1" options="{'on_click_select': true}"/>
+                                    </td>
+                                    <td>
+                                      <field name="do" nolabel="1" digits="[42,0]" options="{'on_click_select': true}"/>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <th>Đông</th>
+                                    <th>Dây</th>
+                                    <th>Chén</th>
+                                    </tr>
+                                    <tr>
+                                    <td>
+                                      <field name="mudong" nolabel="1" options="{'on_click_select': true}"/>
+                                    </td>
+                                    <td>
+                                      <field name="muday" nolabel="1" options="{'on_click_select': true}"/>
+                                    </td>
+                                    <td>
+                                      <field name="muchen" nolabel="1" options="{'on_click_select': true}"/>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <th>CỘNG</th>
+                                    <th>LẦN TRƯỚC</th>
+                                    <th>DAO TRƯỚC</th>
+                                    </tr>
+                                    <tr>
+                                    <td>
+                                      <field name="cong" />
+                                    </td>
+                                    <td>
+                                      <field name="mulantruoc" />
+                                    </td>
+                                    <td>
+                                      <field name="mudaotruoc" />
+                                    </td>
+                                    </tr>
+                                  </tbody>
+                                  </table>
+                                </div>
+                                <style>
+                                  @media (max-width: 600px) {
+                                  .table-bordered th, .table-bordered td {
+                                    padding: 4px !important;
+                                    font-size: 12px !important;
+                                  }
+                                  .table-bordered {
+                                    min-width: 0 !important;
+                                  }
+                                  }
+                                </style>
+                                <script type="text/javascript">
+                                  // Select all text when input is focused (works for Odoo web views)
+                                  document.addEventListener('focusin', function(e) {
+                                    if (e.target.tagName === 'INPUT' &amp;&amp; e.target.type === 'text') {
+                                      e.target.select();
+                                    }
+                                  });
+                                </script>
+                                </group>
+                                <group>
+                                  <field name="ghichu" string="Ghi chú" />                                
+                                </group>
+                            </form>
                           </field>
                         </page>
                         <page string="Ghi Chú" attrs="{'invisible': ['&amp;',('to','=',False),('recorded','=',False)]}">
