@@ -148,7 +148,7 @@ class RubberByDate(models.Model):
     dotap = fields.Float('Độ tạp ban đầu', digits='One Decimal', default=35)
     ngaygiao = fields.Date('Ngày giao')
     caoxa = fields.Boolean('Cạo xả', default=False)
-    thongbao = fields.Char(compute='_compute_thongbao', string='Thông báo', default='', readonly=True)
+    thongbao = fields.Char( string='Thông báo', default='', readonly=True) #compute='_compute_thongbao',
     giaday = fields.Monetary('Giá mũ dây', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
     gianuoc = fields.Monetary('Giá mũ nước', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
     tien = fields.Monetary(
@@ -165,6 +165,9 @@ class RubberByDate(models.Model):
     
     @api.depends('nuoc_thu', 'ke', 'mutrangthung', 'do_giao', 'rubber_line_ids')
     def _compute_thongbao(self):
+        # skip during onchange/autosave of rubber_line_ids
+        if self.env.context.get('skip_rubberline_compute'):
+            return
         self.thongbao = ''
         ke = ''
         mutrangthung = ''
@@ -276,6 +279,9 @@ class RubberByDate(models.Model):
 
     @api.depends('ke','mutrangthung','caoxa','rubber_line_ids','do_giao','dotap','xe')
     def _compute_thu(self):
+        # skip during onchange/autosave of rubber_line_ids
+        if self.env.context.get('skip_rubberline_compute'):
+            return
         for rec in self:
             if rec.recorded == True:
                 y = x = z = i = j = k = l = 0
@@ -927,6 +933,9 @@ class RubberByDate(models.Model):
         }
    
     def write(self, vals):
+        # skip during onchange/autosave of rubber_line_ids
+        if self.env.context.get('skip_rubberline_compute'):
+            return
         # Prevent infinite recursion by using a context flag
         if self.env.context.get('skip_nuocton_propagation'):
             return super().write(vals)
