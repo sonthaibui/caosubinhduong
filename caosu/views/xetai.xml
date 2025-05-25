@@ -27,7 +27,7 @@
                     </group>
                     <group string="NHẬN MŨ NƯỚC" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': ['|',('recorded','=',False),('nhannuoc','=',False)]}">
                       <field nolabel="1" name="deliver_line_ids">
-                      <tree edit="0" create="0" delete="0" default_order="to asc">
+                        <tree edit="0" create="0" default_order="to asc" delete="1" groups="base.group_erp_manager">
                         <field name="ngay"/>
                         <field name="to"/>
                         <field name="daily"/>

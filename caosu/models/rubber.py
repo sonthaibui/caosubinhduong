@@ -95,14 +95,14 @@ class Rubber(models.Model):
                     default_ctkt = self.env['ctkt'].create({'name': 'Chưa bôi'})        
             return default_ctkt.id if default_ctkt else None
         
-    '''@api.onchange('mutap1')
+    @api.onchange('mutap1')
     def _onchange_mutap1(self):
         for rec in self:
             if rec.mutap1:
                 if rec.to == 'TỔ 1' or rec.to == 'TỔ 5' or rec.to == 'TỔ 70':
                     if rec.munuoc1 == 0 and rec.munuoc2 == 0:
                         raise UserError(_("Công nhân " + rec.empname.split('-')[0] + 
-                                          " không có mũ nước. Mũ tạp phải nhập qua cột mũ chén. Vui lòng sửa lại trước khi lưu."))'''
+                                          " không có mũ nước. Mũ tạp phải nhập qua cột mũ chén. Vui lòng sửa lại trước khi lưu."))
 
     @api.onchange('phep')
     def _onchange_cophep(self):
