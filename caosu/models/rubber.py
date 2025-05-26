@@ -99,7 +99,7 @@ class Rubber(models.Model):
     def _onchange_mutap1(self):
         for rec in self:
             if rec.mutap1:
-                if rec.to == 'TỔ 1' or rec.to == 'TỔ 5' or rec.to == 'TỔ 70':
+                if rec.to == 'TỔ 1' or rec.to == 'TỔ 140' or rec.to == 'TỔ 75':
                     if rec.munuoc1 == 0 and rec.munuoc2 == 0:
                         raise UserError(_("Công nhân " + rec.empname.split('-')[0] + 
                                           " không có mũ nước. Mũ tạp phải nhập qua cột mũ chén. Vui lòng sửa lại trước khi lưu."))
