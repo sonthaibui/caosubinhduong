@@ -20,7 +20,7 @@ class SalaryBoard(models.Model):
         ('2020', '2020'), ('2021', '2021'), ('2022', '2022'), ('2023', '2023'), ('2024', '2024'),
         ('2025', '2025'), ('2026', '2026'), ('2027', '2027'), ('2028', '2028'), ('2029', '2029'),
     ], string='Năm', default=str(fields.Datetime.now().year), required=True)
-    allowance_line_ids = fields.One2many('allowance', 'salaryboard_id', string='Phụ cấp', domain=[('bymonth', '=', True)])
+    allowance_line_ids = fields.One2many('allowance', 'salaryboard_id', string='Phụ cấp')
     tongcong = fields.Char('Tổng Cộng', compute='_compute_tong')
     tongluong = fields.Monetary('tongluong', compute='_compute_tong', digits='Product Price')
     tienung = fields.Monetary('tienung', compute='_compute_tong', digits='Product Price')
@@ -46,15 +46,21 @@ class SalaryBoard(models.Model):
         for rec in self:
             rec.ref = 'To' + rec.department_id.name[3:6]
 
-    @api.onchange('thang', 'nam')
+    
+    @api.onchange('thang', 'nam', 'department_id')
     def _onchange_thangnam(self):
-        if self.thang and self.nam:
-            als = self.env['allowance'].search([('employee_id.department_id','=',self.department_id.id)])
-            for al in als:
-                if al.thang == self.thang and al.nam == self.nam:
-                    al.bymonth = True #Hien phu cap nao cung to, cung thang va nam
-                else:
-                    al.bymonth = False
+        if not (self.thang and self.nam and self.department_id):
+            # clear all lines
+            self.allowance_line_ids = [(5, 0, 0)]
+            return
+        # pull exactly the allowances you want
+        lines = self.env['allowance'].search([
+            ('allowancebymonth_id.department_id','=', self.department_id.id),
+            ('thang','=', self.thang),
+            ('nam','=',   self.nam),
+        ])
+        # reset the one2many to those existing records:
+        self.allowance_line_ids = [(6, 0, lines.ids)]
 
     @api.depends('allowance_line_ids')
     def _compute_tong(self):
