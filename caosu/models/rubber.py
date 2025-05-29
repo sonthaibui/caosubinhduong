@@ -48,9 +48,19 @@ class Rubber(models.Model):
     rubberbydate_id = fields.Many2one('rubber.date', string='Rubber By Date', ondelete='cascade')
     rubbersalary_id = fields.Many2one('rubber.salary', string='Rubber Salary', ondelete='set null')
     plantation_id = fields.Many2one('plantation', string='Phần cây', ondelete='cascade')
-    empname = fields.Char('Tên Công Nhân', related='rubbersalary_id.employee_id.name')    
+    empname = fields.Char('Tên Công Nhân', compute='_compute_empname', store=True)
+
+    @api.depends('rubbersalary_id.employee_id.name')
+    def _compute_empname(self):
+        for rec in self:
+            rec.empname = rec.rubbersalary_id.employee_id.name or False
     planname = fields.Selection(related='plantation_id.sttcn', store=True)    
-    to = fields.Char('Tổ', related='rubberbydate_id.to.name', store=True, readonly=False) #Son them
+    to = fields.Char('Tổ', compute='_compute_to', store=True)
+
+    @api.depends('rubberbydate_id.to', 'rubberbydate_id.to.name')
+    def _compute_to(self):
+        for rec in self:
+            rec.to = rec.rubberbydate_id.to.name if rec.rubberbydate_id.to else False
     miengcao = fields.Char('Miệng cạo', related='rubberbydate_id.miengcao', store=True, readonly=False) #Son them
     thoitiet = fields.Char('Thời tiết', related='rubberbydate_id.thoitiet', store=True, readonly=False) #Son them
     

@@ -110,6 +110,8 @@
                     <field name="reward_line_ids" nolabel="1">
                       <tree default_order="thang">                        
                         <field name="thang" style="border-top-style: solid !important;border-width: 1px !important" /> <!--sum="Tổng cộng"-->
+                        <field name="nam" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
+                        <field name="namkt" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/> 
                         <field name="phucloi" style="border-top-style: solid !important;border-width: 1px !important" sum="phucloi" optional="show"/>
                         <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                         <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>

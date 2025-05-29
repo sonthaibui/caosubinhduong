@@ -1,5 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
+from datetime import date
+import calendar
 
 class RubberSalary(models.Model):
     _name = "rubber.salary"
@@ -43,8 +45,16 @@ class RubberSalary(models.Model):
     tienchen = fields.Float('tienchen', digits='Product Price', compute='_compute_khotien')
     phucap1 = fields.Float('phucap1', digits='Product Price', compute='_compute_khotien')
     tongtien = fields.Monetary('Tổng cộng', compute='_compute_khotien')
-    rubber_line_ids = fields.One2many('rubber', 'rubbersalary_id', string='Sản lượng mũ cạo', domain=[('bymonth', '=', True)]) # hàm on change bên dưới để set những rubber nào có bymonth = True
-    reward_line_ids = fields.One2many('reward', 'rubbersalary_id', string='Thuong', domain=[('bymonth', '=', True)])
+    rubber_line_ids = fields.One2many(
+        'rubber', 'rubbersalary_id',
+        string='Sản lượng mũ cạo',
+        compute='_compute_lines', store=False
+    )
+    reward_line_ids = fields.One2many(
+        'reward', 'rubbersalary_id',
+        string='Thưởng',
+        compute='_compute_lines', store=False
+    )
     reward_id = fields.Many2one('reward', string='Reward', readonly=True)
     tongtien_reward = fields.Monetary('Tiền thưởng năm', compute='_compute_thuong')
     tienung = fields.Float('Trừ tiền ưng', compute='_compute_phucap', digits='Product Price')
@@ -242,39 +252,12 @@ class RubberSalary(models.Model):
                 rec.tongluong = 0
                 rec.conlai = 0
 
-    #Tìm những rubber nào có cùng tháng, năm, employee_id với tháng, năm, employee_id của rubber salary, thêm điều kiện là phải có giá trị cộng, mũ đay, mũ đông, mũ chèn, phụ cấp > 0 thì bymonth = True, ngược lại bymonth = False)
-    #Sau đó cho hiện những rubber có bymonth = True trong phiếu lương
-    #Phải thêm đk cùng tổ nữa vì năm nay có trường hợp 1 công nhân làm 2 tổ trong tháng 1 như tổ 70
-    #Vẫn chưa giải quyết được tình huống rb mới tự nhảy vào sau khi đã chọn tháng
-    @api.onchange('startdate', 'enddate', 'to', 'namkt')
-    def _onchange_thang(self):
-        
-        if self.startdate and self.enddate and self.to:  
-            if self.env['rubber'].search([('rubbersalary_id.employee_id','=', self.name)]):
-                rbs = self.env['rubber'].search([('rubbersalary_id.employee_id','=', self.name)])
-                
-                for rb in rbs:                               
-                    #raise ValidationError(_(rb.ngay))
-                    #kiem tra rb.ngay vi co the bi rb co ngay bool
-                    if rb.ngay and self.startdate <= rb.ngay and rb.ngay <= self.enddate and rb.to ==self.to_name and (rb.cong > 0 or rb.muday > 0 or rb.mudong > 0 or rb.muchen > 0 or rb.phucap >0):                    
-                        rb.bymonth = True   
-                    else:
-                        rb.bymonth = False
-        '''#Them de tinh luong tu ngay toi ngay
-        if self.env['allowance'].search([('employee_id','=', self.name)]):
-            als = self.env['allowance'].search([('employee_id','=', self.name)])               
-            for al in als:                                 
-                
-                if self.startdate and self.enddate and self.thang == al.thang and self.to == al.to:  
-                    al.startdate = self.startdate
-                    al.enddate = self.enddate'''             
-
     @api.depends('rubber_line_ids')
     def _compute_khotien(self):
         for rec in self:
             if rec.rubber_line_ids:
                 for line in rec.rubber_line_ids:
-                    if line.bymonth == True:
+                    #if line.bymonth == True:
                         rec.quykho += line.quykho
                         rec.tongtien += line.tongtien
                         rec.tientangdg += line.tientangdg
@@ -303,3 +286,50 @@ class RubberSalary(models.Model):
                 rec.tongtien_reward = rec.env['reward'].search([('employee_id','=', rec.name),('thang','=', rec.thang)]).tongtien_luyke
             else:
                 rec.tongtien_reward = 0
+
+    @api.depends('startdate', 'enddate', 'to', 'namkt', 'employee_id')
+    def _compute_lines(self):
+        for rec in self:
+            # if any key criteria missing → clear both lists
+            if not (rec.startdate and rec.enddate and rec.to and rec.employee_id and rec.thang and rec.nam):
+                rec.rubber_line_ids = self.env['rubber'].browse()
+                rec.reward_line_ids = self.env['reward'].browse()
+                continue
+
+            # 1) Find all rubber entries for this worker/to/date‐range
+            rubbers = self.env['rubber'].search([
+                ('rubbersalary_id','=', rec.id),                
+                ('ngay', '>=', rec.startdate),
+                ('ngay', '<=', rec.enddate),
+            ])
+            rec.rubber_line_ids = rubbers
+
+            # 2) Find all reward entries for this worker/month/year
+            # fetch all rewards, then filter by month numerically since 'thang' is stored as string
+            # fetch all rewards for this worker/to/year…
+            base_domain = [
+                ('employee_id', '=', rec.employee_id.id),
+                ('rewardbymonth_id.to', '=', rec.to.id),
+                ('namkt', '=', rec.namkt),
+            ]
+            if rec.thang == '01':
+                # January → include all months of that year
+                rewards = self.env['reward'].search(base_domain)
+            else:
+                # other months → only up to the current month                
+                rewards = self.env['reward'].search(base_domain).filtered(
+                    lambda r: 1 < int(r.thang) <= int(rec.thang)
+                )
+            rec.reward_line_ids = rewards
+
+    @api.onchange('thang', 'nam')
+    def _onchange_thang_nam(self):
+        for rec in self:
+            if rec.thang and rec.nam:
+                y = int(rec.nam)
+                m = int(rec.thang)
+                # first day of month
+                rec.startdate = date(y, m, 1)
+                # last day of month
+                last_day = calendar.monthrange(y, m)[1]
+                rec.enddate = date(y, m, last_day)

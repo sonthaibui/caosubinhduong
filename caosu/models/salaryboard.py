@@ -20,7 +20,12 @@ class SalaryBoard(models.Model):
         ('2020', '2020'), ('2021', '2021'), ('2022', '2022'), ('2023', '2023'), ('2024', '2024'),
         ('2025', '2025'), ('2026', '2026'), ('2027', '2027'), ('2028', '2028'), ('2029', '2029'),
     ], string='Năm', default=str(fields.Datetime.now().year), required=True)
-    allowance_line_ids = fields.One2many('allowance', 'salaryboard_id', string='Phụ cấp')
+    allowance_line_ids = fields.One2many(
+        'allowance', 'salaryboard_id',
+        string='Phụ cấp',
+        compute='_compute_allowance_lines',
+        store=False,
+    )
     tongcong = fields.Char('Tổng Cộng', compute='_compute_tong')
     tongluong = fields.Monetary('tongluong', compute='_compute_tong', digits='Product Price')
     tienung = fields.Monetary('tienung', compute='_compute_tong', digits='Product Price')
@@ -46,21 +51,20 @@ class SalaryBoard(models.Model):
         for rec in self:
             rec.ref = 'To' + rec.department_id.name[3:6]
 
-    
-    @api.onchange('thang', 'nam', 'department_id')
-    def _onchange_thangnam(self):
-        if not (self.thang and self.nam and self.department_id):
-            # clear all lines
-            self.allowance_line_ids = [(5, 0, 0)]
-            return
-        # pull exactly the allowances you want
-        lines = self.env['allowance'].search([
-            ('allowancebymonth_id.department_id','=', self.department_id.id),
-            ('thang','=', self.thang),
-            ('nam','=',   self.nam),
-        ])
-        # reset the one2many to those existing records:
-        self.allowance_line_ids = [(6, 0, lines.ids)]
+    @api.depends('thang', 'nam', 'department_id')
+    def _compute_allowance_lines(self):
+        for rec in self:
+            # clear if incomplete
+            if not (rec.thang and rec.nam and rec.department_id):
+                rec.allowance_line_ids = self.env['allowance'].browse()
+                continue
+            # search matching allowances
+            lines = self.env['allowance'].search([
+                ('allowancebymonth_id.department_id', '=', rec.department_id.id),
+                ('thang', '=', rec.thang),
+                ('nam', '=', rec.nam),
+            ])
+            rec.allowance_line_ids = lines
 
     @api.depends('allowance_line_ids')
     def _compute_tong(self):
