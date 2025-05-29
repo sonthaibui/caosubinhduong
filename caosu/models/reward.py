@@ -38,7 +38,7 @@ class Reward(models.Model):
     rewardbymonth_id = fields.Many2one('reward.by.month', string='Reward By Month', ondelete='cascade')
     rubbersalary_id = fields.Many2one('rubber.salary', string='Phiếu Lương', ondelete='set null')
     sttcn = fields.Char('STT CN')
-    namkt=fields.Char(string='Năm khai thác', compute='_compute_namkt')
+    namkt=fields.Char(string='Năm khai thác', compute='_compute_namkt', store=True)
     thangkt = fields.Char('Tháng khai thác', compute='_compute_namkt')
     diachi = fields.Selection(related='employee_id.diachi', string='Địa chỉ')
     cophep = fields.Integer('CP', default=0)

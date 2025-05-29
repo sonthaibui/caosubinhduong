@@ -33,7 +33,7 @@ class RubberSalary(models.Model):
         ('2020', '2020'), ('2021', '2021'), ('2022', '2022'), ('2023', '2023'), ('2024', '2024'),
         ('2025', '2025'), ('2026', '2026'), ('2027', '2027'), ('2028', '2028'), ('2029', '2029'),
     ], string='Năm', default=str(fields.Datetime.now().year), required=True)
-    namkt = fields.Char('Năm khai thác', compute='_compute_plt')
+    namkt = fields.Char('Năm khai thác', compute='_compute_plt',store=True)
     thangkt = fields.Char('Tháng khai thác', compute='_compute_plt')
     textthang = fields.Char('Tháng', default='Bảng tính lương tháng')
     textnam = fields.Char('Năm', default='Năm')
@@ -311,12 +311,13 @@ class RubberSalary(models.Model):
             ]
             if rec.thang == '01':
                 rewards = Reward.search(base_dom)
-            else:
-                rewards = Reward.search(base_dom).filtered(
-                    lambda r: 1 < int(r.thangkt) <= int(rec.thang)
-                )
-
-            # direct assign to the computed one2many (cache only)
+            else:               
+                # for months > 01, restrict rewards to thang in [02 .. current thang]
+                domain = base_dom + [
+                    ('thang', '>', '01'),
+                    ('thang', '<=', rec.thang),
+                ]
+            rewards = Reward.search(domain)
             rec.update({'rubber_line_ids' : rubbers})            
             rec.update({'reward_line_ids' : rewards})
 

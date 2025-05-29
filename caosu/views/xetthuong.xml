@@ -103,6 +103,7 @@
               <field name="employee_id"/>
               <field name="thang"/>
               <field name="nam"/>
+              <field name="namkt" optional = "hide"/>
               <field name="cophep"/>
               <field name="kophep"/>
               <field name="diachi"/>
