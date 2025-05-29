@@ -257,27 +257,28 @@ class RubberSalary(models.Model):
             total_tiennuoc = total_tienday = total_tiendong = 0.0
             total_tienchen = total_phucap1 = 0.0
             count_days = 0
+            # Ensure rubber_line_ids is populated before iterating
+            if rec.rubber_line_ids:
+                for line in rec.rubber_line_ids:
+                    total_quykho     += line.quykho
+                    total_tongtien   += line.tongtien
+                    total_tientangdg += line.tientangdg
+                    total_tiennuoc   += line.tiennuoc
+                    total_tienday    += line.tienday
+                    total_tiendong   += line.tiendong
+                    total_tienchen   += line.tienchen
+                    total_phucap1    += getattr(line, 'phucap1', 0.0)
+                    count_days       += 1
 
-            for line in rec.rubber_line_ids:
-                total_quykho     += line.quykho
-                total_tongtien   += line.tongtien
-                total_tientangdg += line.tientangdg
-                total_tiennuoc   += line.tiennuoc
-                total_tienday    += line.tienday
-                total_tiendong   += line.tiendong
-                total_tienchen   += line.tienchen
-                total_phucap1    += getattr(line, 'phucap1', 0.0)
-                count_days       += 1
-
-            rec.quykho     = total_quykho
-            rec.tongtien   = total_tongtien
-            rec.tientangdg = total_tientangdg
-            rec.tiennuoc   = total_tiennuoc
-            rec.tienday    = total_tienday
-            rec.tiendong   = total_tiendong
-            rec.tienchen   = total_tienchen
-            rec.phucap1    = total_phucap1
-            rec.ngaycao    = count_days
+                rec.quykho     = total_quykho
+                rec.tongtien   = total_tongtien
+                rec.tientangdg = total_tientangdg
+                rec.tiennuoc   = total_tiennuoc
+                rec.tienday    = total_tienday
+                rec.tiendong   = total_tiendong
+                rec.tienchen   = total_tienchen
+                rec.phucap1    = total_phucap1
+                rec.ngaycao    = count_days
 
     @api.depends('rubber_line_ids')
     def _compute_thuong(self):
