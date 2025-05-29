@@ -23,7 +23,7 @@ class SalaryBoard(models.Model):
     allowance_line_ids = fields.One2many(
         'allowance', 'salaryboard_id',
         string='Phụ cấp',
-        compute='_compute_allowance_lines',
+        compute='_compute_allowance_lines',  # keep store=False
         store=False,
     )
     tongcong = fields.Char('Tổng Cộng', compute='_compute_tong')
@@ -54,17 +54,16 @@ class SalaryBoard(models.Model):
     @api.depends('thang', 'nam', 'department_id')
     def _compute_allowance_lines(self):
         for rec in self:
-            # clear if incomplete
             if not (rec.thang and rec.nam and rec.department_id):
-                rec.allowance_line_ids = self.env['allowance'].browse()
+                rec.allowance_line_ids = []
                 continue
-            # search matching allowances
-            lines = self.env['allowance'].search([
-                ('allowancebymonth_id.department_id', '=', rec.department_id.id),
-                ('thang', '=', rec.thang),
-                ('nam', '=', rec.nam),
+            records = self.env['allowance'].search([
+                ('allowancebymonth_id.department_id','=', rec.department_id.id),
+                ('thang','=', rec.thang),
+                ('nam','=', rec.nam),
             ])
-            rec.allowance_line_ids = lines
+            # **only filter in memory**, don’t write on the records:
+            rec.update({'allowance_line_ids': records})
 
     @api.depends('allowance_line_ids')
     def _compute_tong(self):

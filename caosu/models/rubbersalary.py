@@ -287,40 +287,43 @@ class RubberSalary(models.Model):
             else:
                 rec.tongtien_reward = 0
 
-    @api.depends('startdate', 'enddate', 'to', 'namkt', 'employee_id')
+    @api.depends('startdate', 'enddate', 'to', 'employee_id', 'thang', 'nam', 'namkt')
     def _compute_lines(self):
+        Rubber = self.env['rubber']
+        Reward = self.env['reward']
         for rec in self:
-            # if any key criteria missing → clear both lists
+            # clear both lists if key criteria missing
             if not (rec.startdate and rec.enddate and rec.to and rec.employee_id and rec.thang and rec.nam):
-                rec.rubber_line_ids = self.env['rubber'].browse()
-                rec.reward_line_ids = self.env['reward'].browse()
+                rec.update({
+                    'rubber_line_ids': [],
+                    'reward_line_ids': [],
+                })
                 continue
 
-            # 1) Find all rubber entries for this worker/to/date‐range
-            rubbers = self.env['rubber'].search([
-                ('rubbersalary_id','=', rec.id),                
+            # 1) rubber entries in date/to range
+            rubbers = Rubber.search([
+                ('rubbersalary_id', '=', rec.id),
                 ('ngay', '>=', rec.startdate),
                 ('ngay', '<=', rec.enddate),
             ])
-            rec.rubber_line_ids = rubbers
-
-            # 2) Find all reward entries for this worker/month/year
-            # fetch all rewards, then filter by month numerically since 'thang' is stored as string
-            # fetch all rewards for this worker/to/year…
-            base_domain = [
+            # 2) reward entries by month/year
+            base_dom = [
                 ('employee_id', '=', rec.employee_id.id),
                 ('rewardbymonth_id.to', '=', rec.to.id),
                 ('namkt', '=', rec.namkt),
             ]
             if rec.thang == '01':
-                # January → include all months of that year
-                rewards = self.env['reward'].search(base_domain)
+                rewards = Reward.search(base_dom)
             else:
-                # other months → only up to the current month                
-                rewards = self.env['reward'].search(base_domain).filtered(
-                    lambda r: 1 < int(r.thang) <= int(rec.thang)
+                rewards = Reward.search(base_dom).filtered(
+                    lambda r: 1 < int(r.thangkt) <= int(rec.thang)
                 )
-            rec.reward_line_ids = rewards
+
+            # update in-memory only, no child writes
+            rec.update({
+                'rubber_line_ids': rubbers,
+                'reward_line_ids': rewards,
+            })
 
     @api.onchange('thang', 'nam')
     def _onchange_thang_nam(self):
