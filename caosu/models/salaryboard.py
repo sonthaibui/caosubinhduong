@@ -55,7 +55,7 @@ class SalaryBoard(models.Model):
     def _compute_allowance_lines(self):
         for rec in self:
             if not (rec.thang and rec.nam and rec.department_id):
-                rec.allowance_line_ids = []
+                rec.allowance_line_ids = self.env['allowance'].browse()
                 continue
             records = self.env['allowance'].search([
                 ('allowancebymonth_id.department_id','=', rec.department_id.id),

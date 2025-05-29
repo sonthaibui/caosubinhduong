@@ -47,12 +47,10 @@ class RubberSalary(models.Model):
     tongtien = fields.Monetary('Tổng cộng', compute='_compute_khotien')
     rubber_line_ids = fields.One2many(
         'rubber', 'rubbersalary_id',
-        string='Sản lượng mũ cạo',
         compute='_compute_lines', store=False
     )
     reward_line_ids = fields.One2many(
         'reward', 'rubbersalary_id',
-        string='Thưởng',
         compute='_compute_lines', store=False
     )
     reward_id = fields.Many2one('reward', string='Reward', readonly=True)
@@ -255,29 +253,31 @@ class RubberSalary(models.Model):
     @api.depends('rubber_line_ids')
     def _compute_khotien(self):
         for rec in self:
-            if rec.rubber_line_ids:
-                for line in rec.rubber_line_ids:
-                    #if line.bymonth == True:
-                        rec.quykho += line.quykho
-                        rec.tongtien += line.tongtien
-                        rec.tientangdg += line.tientangdg
-                        rec.tiennuoc += line.tiennuoc
-                        rec.tienday += line.tienday
-                        rec.tiendong += line.tiendong
-                        rec.tienchen += line.tienchen
-                        rec.phucap1 += line.phucap
-                        rec.ngaycao += 1
-            else:
-                rec.quykho = 0
-                rec.tongtien = 0
-                rec.tientangdg = 0
-                rec.tiennuoc = 0
-                rec.tienday = 0
-                rec.tiendong = 0
-                rec.tienchen = 0
-                rec.phucap1 = 0
-                rec.ngaycao = 0
-        
+            total_quykho = total_tongtien = total_tientangdg = 0.0
+            total_tiennuoc = total_tienday = total_tiendong = 0.0
+            total_tienchen = total_phucap1 = 0.0
+            count_days = 0
+
+            for line in rec.rubber_line_ids:
+                total_quykho     += line.quykho
+                total_tongtien   += line.tongtien
+                total_tientangdg += line.tientangdg
+                total_tiennuoc   += line.tiennuoc
+                total_tienday    += line.tienday
+                total_tiendong   += line.tiendong
+                total_tienchen   += line.tienchen
+                total_phucap1    += getattr(line, 'phucap1', 0.0)
+                count_days       += 1
+
+            rec.quykho     = total_quykho
+            rec.tongtien   = total_tongtien
+            rec.tientangdg = total_tientangdg
+            rec.tiennuoc   = total_tiennuoc
+            rec.tienday    = total_tienday
+            rec.tiendong   = total_tiendong
+            rec.tienchen   = total_tienchen
+            rec.phucap1    = total_phucap1
+            rec.ngaycao    = count_days
 
     @api.depends('rubber_line_ids')
     def _compute_thuong(self):
@@ -292,25 +292,22 @@ class RubberSalary(models.Model):
         Rubber = self.env['rubber']
         Reward = self.env['reward']
         for rec in self:
-            # clear both lists if key criteria missing
+            # if missing any key date/employee, set to empty recordsets
             if not (rec.startdate and rec.enddate and rec.to and rec.employee_id and rec.thang and rec.nam):
-                rec.update({
-                    'rubber_line_ids': [],
-                    'reward_line_ids': [],
-                })
+                rec.rubber_line_ids = Rubber.browse()  # empty recordset
+                rec.reward_line_ids = Reward.browse()
                 continue
 
-            # 1) rubber entries in date/to range
             rubbers = Rubber.search([
-                ('rubbersalary_id', '=', rec.id),
-                ('ngay', '>=', rec.startdate),
-                ('ngay', '<=', rec.enddate),
+                ('rubbersalary_id','=', rec.id),
+                ('ngay',      '>=', rec.startdate),
+                ('ngay',      '<=', rec.enddate),
             ])
-            # 2) reward entries by month/year
+            # build your reward domain…
             base_dom = [
-                ('employee_id', '=', rec.employee_id.id),
-                ('rewardbymonth_id.to', '=', rec.to.id),
-                ('namkt', '=', rec.namkt),
+                ('employee_id','=', rec.employee_id.id),
+                ('rewardbymonth_id.to','=', rec.to.id),
+                ('namkt','=', rec.namkt),
             ]
             if rec.thang == '01':
                 rewards = Reward.search(base_dom)
@@ -319,11 +316,9 @@ class RubberSalary(models.Model):
                     lambda r: 1 < int(r.thangkt) <= int(rec.thang)
                 )
 
-            # update in-memory only, no child writes
-            rec.update({
-                'rubber_line_ids': rubbers,
-                'reward_line_ids': rewards,
-            })
+            # direct assign to the computed one2many (cache only)
+            rec.update({'rubber_line_ids' : rubbers})            
+            rec.update({'reward_line_ids' : rewards})
 
     @api.onchange('thang', 'nam')
     def _onchange_thang_nam(self):
