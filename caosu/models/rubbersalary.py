@@ -310,7 +310,7 @@ class RubberSalary(models.Model):
                 ('namkt','=', rec.namkt),
             ]
             if rec.thang == '01':
-                rewards = Reward.search(base_dom)
+                domain = base_dom
             else:               
                 # for months > 01, restrict rewards to thang in [02 .. current thang]
                 domain = base_dom + [
