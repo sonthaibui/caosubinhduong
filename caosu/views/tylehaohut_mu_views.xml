@@ -37,5 +37,5 @@
     <field name="view_mode">tree,form</field>
   </record>
   
-  <menuitem id="menu_tylehaohut_mu" name="Tỷ lệ hao hụt mủ" parent="sanluong_menu" action="action_tylehaohut_mu"/>
+  
 </odoo>

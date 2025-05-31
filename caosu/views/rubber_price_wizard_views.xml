@@ -50,12 +50,6 @@
         <field name="res_model">rubber.price.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
-    </record>
-
+    </record>   
     
-    <menuitem id="menu_rubber_price_wizard"
-              name="Cập nhật giá mủ"
-              parent="caosu.sanluong_menu"
-              action="action_rubber_price_wizard"
-              sequence="6"/>
 </odoo>

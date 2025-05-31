@@ -36,3 +36,6 @@ access.rubber.department.config,access_rubber_department_config,caosu.model_rubb
 access.rubbertest.department.config,access_rubbertest_department_config,caosu.model_rubbertest_department_config,base.group_user,1,1,1,1
 access.tylehaohut.mu,access_tylehaohut_mu,caosu.model_tylehaohut_mu,base.group_user,1,1,1,1
 access.do.mu,access_do_mu,caosu.model_do_mu,base.group_user,1,1,1,1
+access.yield.target.department,access_yield_target_department,caosu.model_yield_target_department,base.group_user,1,1,1,1
+access.yield.target,access_yield_target,caosu.model_yield_target,base.group_user,1,1,1,1
+access.yield.distribution,access_yield_distribution,caosu.model_yield_distribution,base.group_user,1,1,1,1

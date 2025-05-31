@@ -35,7 +35,5 @@
     <field name="name">Độ mủ</field>
     <field name="res_model">do.mu</field>
     <field name="view_mode">tree,form</field>
-  </record>
-
-  <menuitem id="menu_do_mu" name="Độ mủ" parent="sanluong_menu" action="action_do_mu"/>
+  </record>  
 </odoo>

@@ -51,7 +51,65 @@ class Reward(models.Model):
     rutbot = fields.Float('Rút PL', digits='Product Price')
     dongthem = fields.Float('Đóng thêm', digits='Product Price')
     #conlai = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai')
+    qk_drc_thang = fields.Float('Quy khô', compute='_compute_quykho', store=True, digits='One Decimal')
+    dixa = fields.Float('Đi xa', default=0.0, digits='Product Price')
+    tongdiem = fields.Float('Tổng điểm', compute='_compute_tongdiem', store=True)
+    quykho_drc_target = fields.Float('Kế hoạch', store=True)
 
+    # New fields
+    qk_thang_lk = fields.Float('lũy kế', compute='_compute_qk_luyke', store=True, digits='One Decimal')
+    qk_target_lk = fields.Float('kế hoạch', compute='_compute_qk_luyke', store=True, digits='One Decimal')
+    tyle_kehoach = fields.Float('(% Đạt)', compute='_compute_tyle_kehoach', store=True)
+
+    @api.depends('employee_id', 'thang', 'nam', 'to', 'rubbersalary_id')
+    def _compute_quykho(self):            
+        for rec in self:
+            # lũy kế DRC trong cùng tháng
+            rec.qk_drc_thang = 0.0            
+            if not (rec.thang and rec.nam and rec.to and rec.employee_id):
+                continue            
+            # tìm tất cả bản ghi cùng tổ, cùng rubbersalary, trong thang
+            prior_recs = rec.env['rubber'].search([
+                ('to',               '=', rec.to),
+                ('rubbersalary_id',  '=', rec.rubbersalary_id.id),
+                ('thang',             '=', rec.thang),
+                ('nam',             '=', rec.nam),
+            ])
+            # cộng dồn qk_drc
+            rec.qk_drc_thang = sum(r.quykho_drc for r in prior_recs)
+    
+    @api.depends('qk_drc_thang', 'quykho_drc_target', 'thang', 'namkt')
+    def _compute_qk_luyke(self):
+        for rec in self:
+            rec.qk_thang_lk = 0.0
+            rec.qk_target_lk = 0.0
+            if not rec.namkt or not rec.thang:
+                continue
+
+            # Find all records in the same year (`namkt`) and previous months
+            previous_rewards = self.env['reward'].search([
+                ('employee_id', '=', rec.employee_id.id),
+                ('namkt', '=', rec.namkt),
+                ('thang', '<=', rec.thang)
+            ])
+
+            # Sum up `qk_drc_thang` and `quykho_drc_target` for previous months
+            rec.qk_thang_lk = sum(r.qk_drc_thang for r in previous_rewards)
+            rec.qk_target_lk = sum(r.quykho_drc_target for r in previous_rewards)
+
+    @api.depends('qk_thang_lk', 'qk_target_lk')
+    def _compute_tyle_kehoach(self):
+        for rec in self:
+            if rec.qk_target_lk > 0:
+                rec.tyle_kehoach = (rec.qk_thang_lk / rec.qk_target_lk)
+            else:
+                rec.tyle_kehoach = 0.0
+                
+    @api.depends('chuyencan', 'tinhkythuat1', 'tanthumu', 'tichcuc', 'dixa')
+    def _compute_tongdiem(self):
+        for rec in self:
+            rec.tongdiem = rec.chuyencan + rec.tinhkythuat1 + rec.tanthumu + rec.tichcuc + rec.dixa
+            
     @api.depends('thang','nam')
     def _compute_namkt(self):
         for rec in self:
@@ -132,3 +190,5 @@ class Reward(models.Model):
                     rec.tinhkythuat2=150000            
                 else:
                     rec.tinhkythuat2=0
+
+    

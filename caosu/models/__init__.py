@@ -6,3 +6,4 @@ from . import rubbertest_report_config
 from . import rubber_price_wizard
 from . import tylehaohut_mu
 from . import domu
+from . import yield_target_department

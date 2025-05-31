@@ -34,6 +34,7 @@ class Rubber(models.Model):
     thang = fields.Char('Tháng', related='rubberbydate_id.thang')
     nam = fields.Char('Năm', related='rubberbydate_id.nam')
     quykho = fields.Float('Quy khô', compute='_compute_quykho', store=True, digits='One Decimal')
+    quykho_drc = fields.Float('QK-DRC', compute='_compute_quykho', store=True, digits='One Decimal')        
     dongia_nuoc = fields.Float('Giá nước', digits='Product Price')
     dongia_day = fields.Float('Giá dây', digits='Product Price')
     dongia_dong = fields.Float('Giá đông', digits='Product Price')
@@ -239,9 +240,11 @@ class Rubber(models.Model):
             rec.cong = rec.congnuoc + rec.congtap
 
     @api.depends('cong','do_phancay')
-    def _compute_quykho(self):
+    def _compute_quykho(self):            
         for rec in self:
-            rec.quykho = rec.cong * rec.do_phancay / 100
+            # base khô and DRC
+            rec.quykho   = rec.cong * rec.do_phancay / 100
+            rec.quykho_drc   = rec.cong * (rec.do_phancay - 3) / 100          
 
     @api.depends('quykho','dongia_nuoc')
     def _compute_tiennuoc(self):

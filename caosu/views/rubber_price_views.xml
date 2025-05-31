@@ -89,13 +89,7 @@
             <field name="res_model">rubber.price</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{'search_default_group_by_mu': 1}</field>
-        </record>
+        </record> 
         
-        
-        <menuitem id="menu_rubber_price"
-                  name="Lịch Sử Giá Mủ"
-                  parent="sanluong_menu"
-                  action="action_rubber_price"
-                  sequence="3"/>
     </data>
 </odoo>

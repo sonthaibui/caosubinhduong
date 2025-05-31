@@ -1,0 +1,194 @@
+<odoo>
+    <record id="view_yield_target_department_form" model="ir.ui.view">
+        <field name="name">yield.target.department.form</field>
+        <field name="model">yield.target.department</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="department_id"/>
+                        <field name="namkt"/>
+                        <field name="quykho_drc_target"/>                        
+                    </group>
+                    <notebook>
+                        <page string="Yield Targets">
+                            <field name="yield_target_ids">
+                                <tree editable="bottom">
+                                    <field name="plantation_id"/>
+                                    <field name="namkt"/>                                    
+                                    <field name="quykho_drc_target"/>
+                                    <field name="quykho_drc_target_t1"/>
+                                    <field name="quykho_drc_target_t2"/>
+                                    <field name="quykho_drc_target_t3"/>
+                                    <field name="quykho_drc_target_t4"/>
+                                    <field name="quykho_drc_target_t5"/>
+                                    <field name="quykho_drc_target_t6"/>
+                                    <field name="quykho_drc_target_t7"/>
+                                    <field name="quykho_drc_target_t8"/>
+                                    <field name="quykho_drc_target_t9"/>
+                                    <field name="quykho_drc_target_t10"/>
+                                    <field name="quykho_drc_target_t11"/>
+                                    <field name="quykho_drc_target_t12"/>
+                                    <field name="quykho_drc_target_t13"/>
+                                    <field name="quykho_drc_target_t14"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_yield_target_department_tree" model="ir.ui.view">
+        <field name="name">yield.target.department.tree</field>
+        <field name="model">yield.target.department</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="department_id"/>
+                <field name="namkt"/>
+                <field name="quykho_drc_target"/>                
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_yield_target_department" model="ir.actions.act_window">
+        <field name="name">Department Targets</field>
+        <field name="res_model">yield.target.department</field>
+        <field name="view_mode">tree,form</field>
+    </record>    
+
+    <record id="view_yield_target_form" model="ir.ui.view">
+        <field name="name">yield.target.form</field>
+        <field name="model">yield.target</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="yield_target_id"/>
+                        <field name="plantation_id"/>
+                        <field name="department_id"/>
+                        <field name="namkt"/>
+                        <field name="quykho_drc_target"/>
+                    </group>
+                    <group string="Monthly Targets">
+                        <field name="quykho_drc_target_t1"/>
+                        <field name="quykho_drc_target_t2"/>
+                        <field name="quykho_drc_target_t3"/>
+                        <field name="quykho_drc_target_t4"/>
+                        <field name="quykho_drc_target_t5"/>
+                        <field name="quykho_drc_target_t6"/>
+                        <field name="quykho_drc_target_t7"/>
+                        <field name="quykho_drc_target_t8"/>
+                        <field name="quykho_drc_target_t9"/>
+                        <field name="quykho_drc_target_t10"/>
+                        <field name="quykho_drc_target_t11"/>
+                        <field name="quykho_drc_target_t12"/>
+                        <field name="quykho_drc_target_t13"/>
+                        <field name="quykho_drc_target_t14"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_yield_target_tree" model="ir.ui.view">
+        <field name="name">yield.target.tree</field>
+        <field name="model">yield.target</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="yield_target_id"/>
+                <field name="plantation_id"/>
+                <field name="department_id"/>
+                <field name="namkt"/>
+                <field name="quykho_drc_target"/>
+                <field name="quykho_drc_target_t1"/>
+                <field name="quykho_drc_target_t2"/>
+                <field name="quykho_drc_target_t3"/>
+                <field name="quykho_drc_target_t4"/>
+                <field name="quykho_drc_target_t5"/>
+                <field name="quykho_drc_target_t6"/>
+                <field name="quykho_drc_target_t7"/>
+                <field name="quykho_drc_target_t8"/>
+                <field name="quykho_drc_target_t9"/>
+                <field name="quykho_drc_target_t10"/>
+                <field name="quykho_drc_target_t11"/>
+                <field name="quykho_drc_target_t12"/>
+                <field name="quykho_drc_target_t13"/>
+                <field name="quykho_drc_target_t14"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_yield_target" model="ir.actions.act_window">
+        <field name="name">Yield Targets</field>
+        <field name="res_model">yield.target</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_yield_distribution_form" model="ir.ui.view">
+        <field name="name">yield.distribution.form</field>
+        <field name="model">yield.distribution</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="department_id"/>
+                        <field name="yield_target_department_id"/>
+                        <field name="namkt"/>
+                    </group>
+                    <group>
+                        <field name="t1" widget="percent"/>
+                        <field name="t2" widget="percent"/>
+                        <field name="t3" widget="percent"/>
+                        <field name="t4" widget="percent"/>
+                        <field name="t5" widget="percent"/>
+                        <field name="t6" widget="percent"/>
+                        <field name="t7" widget="percent"/>
+                        <field name="t8" widget="percent"/>
+                        <field name="t9" widget="percent"/>
+                        <field name="t10" widget="percent"/>
+                        <field name="t11" widget="percent"/>
+                        <field name="t12" widget="percent"/>
+                        <field name="t13" widget="percent"/>
+                        <field name="t14" widget="percent"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_yield_distribution_tree" model="ir.ui.view">
+        <field name="name">yield.distribution.tree</field>
+        <field name="model">yield.distribution</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="yield_target_department_id"/>
+                <field name="department_id"/>
+                <field name="namkt"/>
+                <field name="t1"/>
+                <field name="t2"/>
+                <field name="t3"/>
+                <field name="t4"/>
+                <field name="t5"/>
+                <field name="t6"/>
+                <field name="t7"/>
+                <field name="t8"/>
+                <field name="t9"/>
+                <field name="t10"/>
+                <field name="t11"/>
+                <field name="t12"/>
+                <field name="t13"/>
+                <field name="t14"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_yield_distribution" model="ir.actions.act_window">
+        <field name="name">Yield Distribution</field>
+        <field name="res_model">yield.distribution</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    
+</odoo>

@@ -49,6 +49,7 @@
         'data/server_actions.xml',
         'views/tylehaohut_mu_views.xml',
         'views/domu_views.xml',    
+        'views/yield_target_department_views.xml',  
     ],
     'controllers': [        
         'caosu/controllers/report_controller.py',
