@@ -14,7 +14,7 @@
     
     'data': [
         'security/ir.model.access.csv',
-        'views/menu.xml',
+        
         'views/sanluong.xml',
         'views/bangluong.xml',
         'views/luongvp.xml',
@@ -49,7 +49,8 @@
         'data/server_actions.xml',
         'views/tylehaohut_mu_views.xml',
         'views/domu_views.xml',    
-        'views/yield_target_department_views.xml',  
+        'views/yield_target_department_views.xml',
+        'views/menu.xml',  
     ],
     'controllers': [        
         'caosu/controllers/report_controller.py',
