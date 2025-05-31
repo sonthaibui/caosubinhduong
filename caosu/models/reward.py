@@ -62,8 +62,9 @@ class Reward(models.Model):
     qk_thang_lk = fields.Float('lũy kế', compute='_compute_qk_luyke', store=True, digits='One Decimal')
     qk_target_lk = fields.Float('kế hoạch', compute='_compute_qk_luyke', store=True, digits='One Decimal')
     tyle_kehoach = fields.Float('(% Đạt)', compute='_compute_tyle_kehoach', store=True)
+    gia_thuong = fields.Float('Giá thưởng', compute='_compute_gia_thuong', store=True, digits='Product Price')
 
-    @api.depends('employee_id', 'thang', 'nam', 'to', 'rubbersalary_id')
+    @api.depends('employee_id', 'thang', 'nam', 'to', 'rubbersalary_id','rubbersalary_id.thang')
     def _compute_quykho(self):            
         for rec in self:
             # lũy kế DRC trong cùng tháng
@@ -80,7 +81,7 @@ class Reward(models.Model):
             # cộng dồn qk_drc
             rec.qk_drc_thang = sum(r.quykho_drc for r in prior_recs)
     
-    @api.depends('qk_drc_thang', 'quykho_drc_target', 'thang', 'namkt', 'rewardbymonth_id.to', 'employee_id')
+    @api.depends('qk_drc_thang', 'quykho_drc_target', 'thang', 'namkt', 'rewardbymonth_id.to', 'employee_id', 'rubbersalary_id.thang')
     def _compute_qk_luyke(self):
         for rec in self:
             rec.qk_thang_lk = 0.0
@@ -100,13 +101,28 @@ class Reward(models.Model):
             rec.qk_thang_lk = sum(r.qk_drc_thang for r in previous_rewards)
             rec.qk_target_lk = sum(r.quykho_drc_target for r in previous_rewards)
 
-    @api.depends('qk_thang_lk', 'qk_target_lk')
+    @api.depends('qk_thang_lk', 'qk_target_lk', 'rubbersalary_id.thang')
     def _compute_tyle_kehoach(self):
         for rec in self:
             if rec.qk_target_lk > 0:
                 rec.tyle_kehoach = (rec.qk_thang_lk / rec.qk_target_lk)
             else:
                 rec.tyle_kehoach = 0.0
+    @api.depends('tyle_kehoach', 'rubbersalary_id.thang')
+    def _compute_gia_thuong(self):
+        for rec in self:
+            if rec.tyle_kehoach >= 1.0:
+                rec.gia_thuong = 1500
+            elif rec.tyle_kehoach >= 0.8:
+                rec.gia_thuong = 800
+            elif rec.tyle_kehoach >= 0.6:
+                rec.gia_thuong = 600
+            elif rec.tyle_kehoach >= 0.4:
+                rec.gia_thuong = 400
+            elif rec.tyle_kehoach >= 0.2:
+                rec.gia_thuong = 200
+            else:
+                rec.gia_thuong = 0.0
                 
     @api.depends('chuyencan', 'tinhkythuat1', 'tanthumu', 'tichcuc', 'dixa')
     def _compute_tongdiem(self):

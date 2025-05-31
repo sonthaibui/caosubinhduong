@@ -121,8 +121,9 @@
                         <field name="qk_drc_thang" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" sum="qk_drc_thang" optional="show"/>
                         <field name="quykho_drc_target" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" sum="quykho_drc_target" optional="show"/>
                         <field name="qk_thang_lk" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" optional="hide"/>
-                        <field name="qk_target_lk" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" optional="hide"/>
+                        <field name="qk_target_lk" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" optional="hide"/>                        
                         <field name="tyle_kehoach" string = "% Đạt" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" widget ="percentage" optional="show"/>
+                        <field name="gia_thuong" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" optional="show"/>
                         <field name="phucloitl" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                         <field name="ttth" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                         <field name="ruttt" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
