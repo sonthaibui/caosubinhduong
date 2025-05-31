@@ -85,7 +85,7 @@ class Rubber(models.Model):
         for record in records:
             # Find related reward records and trigger recomputation
             rewards = self.env['reward'].search([
-                ('to', '=', record.to.id),
+                ('to', '=', record.to),
                 ('rubbersalary_id', '=', record.rubbersalary_id.id),
                 ('thang', '=', record.thang),
                 ('nam', '=', record.nam)
