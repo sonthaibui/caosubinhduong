@@ -80,7 +80,7 @@ class Reward(models.Model):
             # cộng dồn qk_drc
             rec.qk_drc_thang = sum(r.quykho_drc for r in prior_recs)
     
-    @api.depends('qk_drc_thang', 'quykho_drc_target', 'thang', 'namkt')
+    @api.depends('qk_drc_thang', 'quykho_drc_target', 'thang', 'namkt', 'rewardbymonth_id.to', 'employee_id')
     def _compute_qk_luyke(self):
         for rec in self:
             rec.qk_thang_lk = 0.0
@@ -90,6 +90,7 @@ class Reward(models.Model):
 
             # Find all records in the same year (`namkt`) and previous months
             previous_rewards = self.env['reward'].search([
+                ('rewardbymonth_id.to','=', rec.rewardbymonth_id.to.id),
                 ('employee_id', '=', rec.employee_id.id),
                 ('namkt', '=', rec.namkt),
                 ('thang', '<=', rec.thang)
