@@ -106,6 +106,7 @@ class RubberSalary(models.Model):
     ruttt = fields.Float('Rút tiền thưởng', digits='Product Price', compute='_compute_plt')
     dongthem = fields.Float('Đóng thêm', digits='Product Price', compute='_compute_plt')
     # Phuc loi  
+    tick = fields.Boolean('Recompute Quy Khô', default=False)
 
     @api.constrains('employee_id','thang','nam')
     def _check_rubbersalary_unique(self):
@@ -338,3 +339,11 @@ class RubberSalary(models.Model):
                 # last day of month
                 last_day = calendar.monthrange(y, m)[1]
                 rec.enddate = date(y, m, last_day)
+
+    def write(self, vals):
+        res = super(RubberSalary, self).write(vals)
+        if 'tick' in vals:
+            # Find related reward records and trigger recomputation
+            rewards = self.env['reward'].search([('rubbersalary_id', '=', self.id)])
+            rewards._compute_quykho()
+        return res

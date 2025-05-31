@@ -16,6 +16,7 @@
                   <group>
                     <field name="to"/>
                     <field name="employee_id"/>
+                    <field name="tick"/>
                   </group>
                   <group>
                     <field name="thang"/>
