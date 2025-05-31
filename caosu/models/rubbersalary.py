@@ -170,7 +170,7 @@ class RubberSalary(models.Model):
                 rec.ngaylam = als[0].ngaylam
                 rec.phucap = als[0].phucap
                 rec.sophan = als[0].sophan
-                rec.quykho1 = als[0].quykho
+                rec.quykho1 = als[0].quykho_drc
                 rec.caochoang = als[0].caochoang
                 rec.duongxau = als[0].duongxau
                 rec.tienvattu = als[0].tienvattu

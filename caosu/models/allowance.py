@@ -21,6 +21,7 @@ class Allowance(models.Model):
     giacomang = fields.Float('Gia cố máng', digits='Product Price')
     phucap = fields.Float('Phụ cấp', digits='Product Price')
     quykho = fields.Float('Quy khô', compute='_compute_quykho', digits='One Decimal')
+    quykho_drc = fields.Float('Quy khô', compute='_compute_quykho_drc', digits='One Decimal')
     quykho_nam = fields.Float('Quy khô năm', digits='Product Price', compute='_compute_quykho')
     thuong_qk = fields.Float('Thưởng quy khô', digits='Product Price')
     thuong_cc = fields.Float('Thưởng chuyên cần', digits='Product Price', compute='_compute_ngaynghi')
@@ -217,6 +218,17 @@ class Allowance(models.Model):
             if rec.sophan > 0:
                 rec.quykho = quykho / rec.sophan
                 rec.quykho_nam = quykho_nam / rec.sophan
+    @api.depends('employee_id', 'sophan')
+    def _compute_quykho_drc(self):
+        for rec in self:
+            rbs = self.env['rubber'].search([('empname','=',rec.employee_id.name)])
+            quykho_drc = 0            
+            for rb in rbs:
+                if rb.nam == rec.nam and rb.thang == rec.thang and rb.to == rec.allowancebymonth_id.department_id.name:
+                    quykho_drc += rb.quykho_drc                
+            if rec.sophan > 0:
+                rec.quykho_drc = quykho_drc / rec.sophan
+                
 
     @api.depends('ngay_bd')
     def _compute_songay(self):

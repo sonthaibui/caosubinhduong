@@ -89,15 +89,15 @@ class AllowanceByMonth(models.Model):
                         qk.append(line.quykho)
                     qk.sort(reverse=True)
                     for line in rec.allowance_line_ids:
-                        if line.quykho == qk[0]:
+                        if line.quykho_drc == qk[0]:
                             line.thuong_sl = 1000000
-                        elif line.quykho == qk[1]:
+                        elif line.quykho_drc == qk[1]:
                             line.thuong_sl = 800000
-                        elif line.quykho == qk[2]:
+                        elif line.quykho_drc == qk[2]:
                             line.thuong_sl = 500000
-                        elif line.quykho == qk[3]:
+                        elif line.quykho_drc == qk[3]:
                             line.thuong_sl = 300000
-                        elif line.quykho == qk[4]:
+                        elif line.quykho_drc == qk[4]:
                             line.thuong_sl = 200000
 
     @api.onchange('dg_nuoc','dg_day','dg_tang','dg_dong','dg_chen')

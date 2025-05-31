@@ -45,7 +45,8 @@
                             <field name="kophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                             <field name="chuyencan" style="border-top-style: solid !important;border-width: 1px !important" optional="show" sum='chuyencan'/>
                             <field name="phucap" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='phucap'/>
-                            <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important" optional="show" sum='quykho'/>
+                            <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='quykho'/>
+                            <field name="quykho_drc" style="border-top-style: solid !important;border-width: 1px !important" optional="show" sum='quykho_drc'/>
                             <field name="sophan" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                             <field name="caochoang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='caochoang'/>
                             <field name="duongxau" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='duongxau'/>

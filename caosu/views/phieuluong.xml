@@ -38,7 +38,8 @@
                     <field name="lo" style="border-top-style: solid !important;border-width: 1px !important"/>
                     <field name="cong" style="border-top-style: solid !important;border-width: 1px !important"/>
                     <field name="do_phancay" style="border-top-style: solid !important;border-width: 1px !important"/>
-                    <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important" sum="quykho"/>
+                    <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum="quykho"/>
+                    <field name="quykho_drc" style="border-top-style: solid !important;border-width: 1px !important" optional="show" sum="quykho_drc"/>
                     <field name="dongia_nuoc" style="border-top-style: solid !important;border-width: 1px !important"/>
                     <field name="tiennuoc" style="border-top-style: solid !important;border-width: 1px !important" sum="tiennuoc"/>
                     <field name="dongia_tang" style="border-top-style: solid !important;border-width: 1px !important" attrs="{'column_invisible': [('parent.tientangdg', '=', 0)]}"/>

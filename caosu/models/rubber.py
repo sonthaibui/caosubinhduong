@@ -79,6 +79,20 @@ class Rubber(models.Model):
     ], string='Nghỉ', default='ko', required=True)
     caoxa = fields.Boolean('Cạo xả', default=True, readonly=True)
     
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super(Rubber, self).create(vals_list)
+        for record in records:
+            # Find related reward records and trigger recomputation
+            rewards = self.env['reward'].search([
+                ('to', '=', record.to.id),
+                ('rubbersalary_id', '=', record.rubbersalary_id.id),
+                ('thang', '=', record.thang),
+                ('nam', '=', record.nam)
+            ])
+            rewards._compute_quykho()
+        return records
+    
     @api.depends('ctktup') # Add the appropriate dependencies
     def _compute_kichthich(self):
         for rec in self:
