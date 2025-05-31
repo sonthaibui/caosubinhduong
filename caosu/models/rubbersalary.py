@@ -150,12 +150,17 @@ class RubberSalary(models.Model):
             rec.empname = rec.employee_id.name.split('-')[0]
             rec.empname1 = rec.employee_id.name.split('-')[0].replace(' ', '_')
                    
-    @api.depends('employee_id', 'thang', 'nam')
+    @api.depends('employee_id', 'thang', 'nam', 'to')
     def _compute_phucap(self):
         for rec in self:
-            alw = rec.env['allowance'].search([('employee_id','=',rec.employee_id.id),('thang','=',rec.thang),('nam','=',rec.nam)])
-            if len(rec.env['allowance'].search([('employee_id','=',rec.employee_id.id),('thang','=',rec.thang),('nam','=',rec.nam)])) == 1:
-                als = rec.env['allowance'].search([('employee_id','=',rec.employee_id.id),('thang','=',rec.thang),('nam','=',rec.nam)])
+            # Search for related allowance records
+            als = self.env['allowance'].search([
+                ('employee_id', '=', rec.employee_id.id),
+                ('thang', '=', rec.thang),
+                ('nam', '=', rec.nam),
+                ('allowancebymonth_id.department_id', '=', rec.to.id)
+            ])
+            if als:                
                 rec.boithuoc = als[0].boithuoc
                 rec.boikeo = als[0].boikeo
                 rec.ghichu = als[0].ghichu
@@ -204,7 +209,7 @@ class RubberSalary(models.Model):
                     rec.tongtienr = rec.conlai - mod + 10000
                 else:
                     rec.tongtienr = rec.conlai - mod
-            elif len(rec.env['allowance'].search([('employee_id','=',rec.employee_id.id),('thang','=',rec.thang),('nam','=',rec.nam)])) == False:
+            else:
                 rec.tienung = 0
                 rec.tiendao = 0
                 rec.boithuoc = 0
@@ -302,6 +307,7 @@ class RubberSalary(models.Model):
                 ('rubbersalary_id','=', rec.id),
                 ('ngay',      '>=', rec.startdate),
                 ('ngay',      '<=', rec.enddate),
+                ('rubberbydate_id.to',      '=', rec.to.id),
             ])
             # build your reward domain…
             base_dom = [

@@ -116,7 +116,7 @@
                         <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                         <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>                                                
                         <field name="tongtien" style="border-top-style: solid !important;border-width: 1px !important" sum="tongtien" optional="hide"/>
-                        <field name="tongdiem" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" sum="tongdiem" optional="show"/>
+                        <field name="tongdiem" string="Điểm" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" sum="tongdiem" optional="show"/>
                         <field name="qk_drc_thang" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" sum="qk_drc_thang" optional="show"/>
                         <field name="quykho_drc_target" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" sum="quykho_drc_target" optional="show"/>
                         <field name="qk_thang_lk" style="border-top-style: solid !important;border-width: 1px !important" digits ="[42,0]" optional="hide"/>
