@@ -30,7 +30,7 @@ class Reward(models.Model):
     tanthumu = fields.Float('Tận thu mũ', default='0', digits='Product Price')
     ttth = fields.Float('TT tăng/giảm', default='0', digits='Product Price')
     ruttt = fields.Float('Rút TT', default='0', digits='Product Price')
-    tichcuc = fields.Float('Tích cực', default='0')
+    tichcuc = fields.Float('Tích cực', default='0', digits='Product Price')
     motsuat = fields.Float('1 suất', compute='_compute_motsuat', digits='One Decimal')
     sosuatcao = fields.Float('Số suất cạo', default='1.0', digits='One Decimal')
     tongtien = fields.Float('Tiền thưởng', compute='_compute_tongtien', digits='Product Price')
@@ -119,14 +119,23 @@ class Reward(models.Model):
             if not rec.namkt or not rec.thang:
                 continue
 
-            # Find all records in the same year (`namkt`) and up to the current month
+            # Define the threshold for computation
+            threshold_year = '2025'
+            threshold_month = '05'
+
+            # Only include records from `thang = 5` and `namkt = 2025` onward
             previous_rewards = self.env['reward'].search([
                 ('employee_id', '=', rec.employee_id.id),
                 ('namkt', '=', rec.namkt),
-                ('thang', '<=', rec.thang)
+                ('thang', '<=', rec.thang),
+                '|',
+                ('namkt', '>', threshold_year),
+                '&',
+                ('namkt', '=', threshold_year),
+                ('thang', '>=', threshold_month)
             ])
 
-            # Sum up `tongdiem` for previous months
+            # Sum up `tongdiem` for valid records
             rec.tongdiem_tl = sum(r.tongdiem for r in previous_rewards)
 
     @api.depends('thang','nam')
