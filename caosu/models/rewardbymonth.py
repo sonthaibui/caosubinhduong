@@ -24,7 +24,16 @@ class RewardByMonth(models.Model):
     #pltl = fields.Float(compute='_compute_ttth', string='pltl')
     #pltln = fields.Float(compute='_compute_ttth', string='pltln')
     thongbao = fields.Char(compute='_compute_thongbao', string='Thông báo')
-    
+    namkt=fields.Char(string='Năm khai thác', compute='_compute_namkt', store=True)
+
+    @api.depends('thang','nam')
+    def _compute_namkt(self):
+        for rec in self:
+            if rec.thang =='01':                
+                rec.namkt = str(int(rec.nam) - 1)
+            else:                
+                rec.namkt = rec.nam
+                
     @api.depends('thang','nam','to')
     def _compute_thongbao(self):
         for rec in self:

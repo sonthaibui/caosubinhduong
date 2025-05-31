@@ -54,6 +54,8 @@ class Reward(models.Model):
     qk_drc_thang = fields.Float('Quy khô', compute='_compute_quykho', store=True, digits='One Decimal')
     dixa = fields.Float('Đi xa', default=0.0, digits='Product Price')
     tongdiem = fields.Float('Tổng điểm', compute='_compute_tongdiem', store=True)
+    tongdiem_tl = fields.Float('Lũy kế', compute='_compute_tongdiem_tl', store=True, digits='Product Price')
+
     quykho_drc_target = fields.Float('Kế hoạch', store=True)
 
     # New fields
@@ -110,6 +112,23 @@ class Reward(models.Model):
         for rec in self:
             rec.tongdiem = rec.chuyencan + rec.tinhkythuat1 + rec.tanthumu + rec.tichcuc + rec.dixa
             
+    @api.depends('tongdiem', 'thang', 'namkt')
+    def _compute_tongdiem_tl(self):
+        for rec in self:
+            rec.tongdiem_tl = 0.0
+            if not rec.namkt or not rec.thang:
+                continue
+
+            # Find all records in the same year (`namkt`) and up to the current month
+            previous_rewards = self.env['reward'].search([
+                ('employee_id', '=', rec.employee_id.id),
+                ('namkt', '=', rec.namkt),
+                ('thang', '<=', rec.thang)
+            ])
+
+            # Sum up `tongdiem` for previous months
+            rec.tongdiem_tl = sum(r.tongdiem for r in previous_rewards)
+
     @api.depends('thang','nam')
     def _compute_namkt(self):
         for rec in self:
@@ -191,4 +210,4 @@ class Reward(models.Model):
                 else:
                     rec.tinhkythuat2=0
 
-    
+

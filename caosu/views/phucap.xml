@@ -26,13 +26,13 @@
                     </group>
                     <field name="allowance_line_ids" nolabel="1">
                         <tree editable="bottom" default_order="sttcn asc">
-                            <field name="sttcn" style="border-top-style: solid !important;border-width: 1px !important"/>
-                            <field name="employee_id" style="border-top-style: solid !important;border-width: 1px !important"/>
+                            <field name="sttcn" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
+                            <field name="employee_id" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                             <field name="dgta" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                             <field name="dgtb" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                             <field name="dgtc" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
-                            <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important" sum='tienung'/>
-                            <field name="ungtien" style="border-top-style: solid !important;border-width: 1px !important" sum='ungtien'/>
+                            <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important" sum='tienung' optional="show"/>
+                            <field name="ungtien" style="border-top-style: solid !important;border-width: 1px !important" sum='ungtien' optional="show"/>
                             <field name="tamvong" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tamvong'/>
                             <field name="truidao" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='truidao'/>
                             <field name="bandao" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='bandao'/>
@@ -43,9 +43,9 @@
                             <field name="giacomang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='giacomang'/>
                             <field name="cophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                             <field name="kophep" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
-                            <field name="chuyencan" style="border-top-style: solid !important;border-width: 1px !important" sum='chuyencan'/>
+                            <field name="chuyencan" style="border-top-style: solid !important;border-width: 1px !important" optional="show" sum='chuyencan'/>
                             <field name="phucap" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='phucap'/>
-                            <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important" sum='quykho'/>
+                            <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important" optional="show" sum='quykho'/>
                             <field name="sophan" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                             <field name="caochoang" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='caochoang'/>
                             <field name="duongxau" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='duongxau'/>
@@ -57,8 +57,8 @@
                             <field name="tiengomto" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tiengomto'/>
                             <field name="tienbh" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienbh'/>
                             <field name="tienphan" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tienphan'/>
-                            <field name="thuong_sl" style="border-top-style: solid !important;border-width: 1px !important" sum='thuong_sl'/>
-                            <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important"/>
+                            <field name="thuong_sl" style="border-top-style: solid !important;border-width: 1px !important" optional="show" sum='thuong_sl'/>
+                            <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                             <field name="mmcn" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='mmcn'/>
                             <field name="mmcu" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='mmcu'/>
                             <field name="bkrtgn" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='bkrtgn'/>
