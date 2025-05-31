@@ -151,8 +151,11 @@ class Reward(models.Model):
         res.dunggio = 100000
         res.gomuday = 100000
         res.upday = 100000
-        res.tanthumu = 100000
-        res.tichcuc = 100000
+        res.tanthumu = 2
+        res.tichcuc = 2
+        res.tinhkythuat1 = 2
+        res.chuyencan = 2
+        res.dixa = 2
         return res
             
     
