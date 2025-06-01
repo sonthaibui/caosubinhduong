@@ -6,7 +6,6 @@ import calendar
 class RubberSalary(models.Model):
     _name = "rubber.salary"
     _description = "Rubber Salary"
-    _rec_name = 'name'
 
     to = fields.Many2one('hr.department', required=True, string='Tổ')
     to_name = fields.Char(string='Tên Tổ', related='to.name')
@@ -39,11 +38,11 @@ class RubberSalary(models.Model):
     textnam = fields.Char('Năm', default='Năm')
     empty = fields.Char('Empty')
     quykho = fields.Float('Tổng quy khô', digits='One Decimal', compute='_compute_khotien')
-    tiennuoc = fields.Float('tiennuoc', digits='Product Price', compute='_compute_khotien')
-    tienday = fields.Float('tienday', digits='Product Price', compute='_compute_khotien')
-    tiendong = fields.Float('tiendong', digits='Product Price', compute='_compute_khotien')
-    tienchen = fields.Float('tienchen', digits='Product Price', compute='_compute_khotien')
-    phucap1 = fields.Float('phucap1', digits='Product Price', compute='_compute_khotien')
+    tiennuoc = fields.Float('Tiền nước', compute='_compute_khotien', digits='Product Price')
+    tienday = fields.Float('Tiền dây', compute='_compute_khotien', digits='Product Price')
+    tiendong = fields.Float('Tiền đông', compute='_compute_khotien', digits='Product Price')
+    tienchen = fields.Float('Tiền chén', compute='_compute_khotien', digits='Product Price')
+    phucap1 = fields.Float('Phụ cấp tổng', compute='_compute_khotien', digits='Product Price')
     tongtien = fields.Monetary('Tổng cộng', compute='_compute_khotien')
     rubber_line_ids = fields.One2many(
         'rubber', 'rubbersalary_id',
@@ -107,6 +106,12 @@ class RubberSalary(models.Model):
     dongthem = fields.Float('Đóng thêm', digits='Product Price', compute='_compute_plt')
     # Phuc loi  
     tick = fields.Boolean('Recompute Quy Khô', default=False)
+    # Missing fields added
+    quykho_drc = fields.Float('Quykhô DRC', digits='Product Price', compute='_compute_khotien')
+    tongdiem = fields.Float('Tổng điểm', digits='Product Price', compute='_compute_reward_totals')
+    quykho_drc_thang = fields.Float('Kế hoạch', digits='Product Price', compute='_compute_reward_totals')
+    quykho_drc_target = fields.Float('Kế hoạch', digits='Product Price', compute='_compute_reward_totals')
+    tyle_kehoach = fields.Float('(%) Đạt', compute='_compute_tyle_kehoach', digits='Product Price')
 
     @api.constrains('employee_id','thang','nam')
     def _check_rubbersalary_unique(self):
@@ -261,20 +266,22 @@ class RubberSalary(models.Model):
         for rec in self:
             total_quykho = total_tongtien = total_tientangdg = 0.0
             total_tiennuoc = total_tienday = total_tiendong = 0.0
-            total_tienchen = total_phucap1 = 0.0
+            total_tienchen = total_phucap = total_quykho_drc = total_quykho_drc_target = 0.0
             count_days = 0
-
+            # An nhung cot khong co gia trị trong rubber_line_ids
             for line in rec.rubber_line_ids:
-                total_quykho     += line.quykho
+                total_quykho     += getattr(line, 'quykho', 0.0)
+                total_quykho_drc += getattr(line, 'quykho_drc', 0.0)
                 total_tongtien   += line.tongtien
                 total_tientangdg += line.tientangdg
                 total_tiennuoc   += line.tiennuoc
                 total_tienday    += line.tienday
                 total_tiendong   += line.tiendong
                 total_tienchen   += line.tienchen
-                total_phucap1    += getattr(line, 'phucap1', 0.0)
+                total_phucap    += getattr(line, 'phucap', 0.0)                
                 count_days       += 1
 
+            rec.quykho_drc = total_quykho_drc
             rec.quykho     = total_quykho
             rec.tongtien   = total_tongtien
             rec.tientangdg = total_tientangdg
@@ -282,8 +289,33 @@ class RubberSalary(models.Model):
             rec.tienday    = total_tienday
             rec.tiendong   = total_tiendong
             rec.tienchen   = total_tienchen
-            rec.phucap1    = total_phucap1
+            rec.phucap1    = total_phucap           
             rec.ngaycao    = count_days
+
+    @api.depends('reward_line_ids')
+    def _compute_reward_totals(self):
+        for rec in self:
+            total_quykho_drc_thang = 0.0
+            total_quykho_drc_target = 0.0
+            total_tongdiem = 0.0
+            
+            # Compute totals from reward_line_ids
+            for line in rec.reward_line_ids:
+                total_tongdiem += getattr(line, 'tongdiem', 0.0)
+                total_quykho_drc_thang += getattr(line, 'qk_drc_thang', 0.0)
+                total_quykho_drc_target += getattr(line, 'quykho_drc_target', 0.0)
+
+            rec.tongdiem = total_tongdiem
+            rec.quykho_drc_thang = total_quykho_drc_thang
+            rec.quykho_drc_target = total_quykho_drc_target
+
+    @api.depends('quykho_drc_thang', 'quykho_drc_target')
+    def _compute_tyle_kehoach(self):
+        for rec in self:
+            if rec.quykho_drc_target > 0:
+                rec.tyle_kehoach = (rec.quykho_drc_thang / rec.quykho_drc_target)
+            else:
+                rec.tyle_kehoach = 0.0
 
     @api.depends('rubber_line_ids')
     def _compute_thuong(self):

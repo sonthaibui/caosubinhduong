@@ -51,12 +51,12 @@ class Reward(models.Model):
     rutbot = fields.Float('Rút PL', digits='Product Price')
     dongthem = fields.Float('Đóng thêm', digits='Product Price')
     #conlai = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai')
-    qk_drc_thang = fields.Float('Quy khô', compute='_compute_quykho', digits='One Decimal')
+    qk_drc_thang = fields.Float('Quy khô', compute='_compute_quykho', digits='Product Price')
     dixa = fields.Float('Đi xa', default=0.0, digits='Product Price')
     tongdiem = fields.Float('Tổng điểm', compute='_compute_tongdiem', digits='Product Price')
     tongdiem_tl = fields.Float('Lũy kế', compute='_compute_tongdiem_tl', digits='Product Price')
 
-    quykho_drc_target = fields.Float('Kế hoạch')
+    quykho_drc_target = fields.Float('Kế hoạch', digits='Product Price')
 
     # New fields
     qk_thang_lk = fields.Float('lũy kế', compute='_compute_qk_luyke',  digits='Product Price')
@@ -105,7 +105,14 @@ class Reward(models.Model):
     def _compute_tyle_kehoach(self):
         for rec in self:
             if rec.qk_target_lk > 0:
-                rec.tyle_kehoach = (rec.qk_thang_lk / rec.qk_target_lk)
+                result = (rec.qk_thang_lk / rec.qk_target_lk)
+                print(f"DEBUG - Employee: {rec.employee_id.name}")
+                print(f"  qk_thang_lk: {rec.qk_thang_lk}")
+                print(f"  qk_target_lk: {rec.qk_target_lk}")
+                print(f"  Division result: {result}")
+                print(f"  Type: {type(result)}")
+                rec.tyle_kehoach = result
+                print(f"  Final tyle_kehoach: {rec.tyle_kehoach}")
             else:
                 rec.tyle_kehoach = 0.0
     @api.depends('tyle_kehoach')

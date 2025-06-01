@@ -9,9 +9,9 @@ class Rubber(models.Model):
 
     active = fields.Boolean('Active', default=True)
     bymonth = fields.Boolean('By Month', default=True, readonly=False)
-    congnuoc = fields.Float('Nước', store=True, compute='_compute_nuoc', digits='One Decimal')
+    congnuoc = fields.Float('Nước', store=True, compute='_compute_nuoc', digits='Product Price')
     congtap = fields.Float('Tạp', store=True, compute='_compute_tap', digits='One Decimal')
-    cong = fields.Float('Cộng', store=True, compute='_compute_cong', digits='One Decimal')
+    cong = fields.Float('Cộng', store=True, compute='_compute_cong', digits='Product Price')
     do = fields.Float('Độ', default='0', digits='One Decimal', store=True)
     do_phancay = fields.Float('Độ CN', compute='_compute_do_phancay', digits='One Decimal', store=True)
     ghichu = fields.Char('Ghi chú')
