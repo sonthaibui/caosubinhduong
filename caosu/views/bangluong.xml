@@ -34,37 +34,37 @@
                   </group>
                   <field name="allowance_line_ids" nolabel="1">
                     <tree create="0" delete="0" editable="bottom" default_order="sttcn asc">
-                      <field name="sttcn" style="border-top-style: solid !important;border-width: 1px !important"/>
-                      <field name="employee_id" style="border-top-style: solid !important;border-width: 1px !important"/>
-                      <field name="ltn2" decoration-danger="ltn2 &lt; ltn" decoration-success="ltn2 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn2'/>
-                      <field name="ltn1" decoration-danger="ltn1 &lt; ltn" decoration-success="ltn1 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn1'/>
-                      <field name="ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn'/>
-                      <field name="nctb" style="border-top-style: solid !important;border-width: 1px !important" sum='nctb' attrs="{'column_invisible': [('parent.nctb', '=', 0)]}"/>
-                      <field name="tienphan" style="border-top-style: solid !important;border-width: 1px !important" sum='tienphan' attrs="{'column_invisible': [('parent.tienphan', '=', 0)]}"/>
-                      <field name="chiendo" style="border-top-style: solid !important;border-width: 1px !important" sum='chiendo' attrs="{'column_invisible': [('parent.chiendo', '=', 0)]}"/>
-                      <field name="tongluong" style="border-top-style: solid !important;border-width: 1px !important" sum='tongluong'/>
-                      <field name="tiendao" style="border-top-style: solid !important;border-width: 1px !important" sum='tiendao' attrs="{'column_invisible': [('parent.tiendao', '=', 0)]}"/>
-                      <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important" sum='tienung' attrs="{'column_invisible': [('parent.tienung', '=', 0)]}"/>
-                      <field name="ungtien" style="border-top-style: solid !important;border-width: 1px !important" sum='ungtien' attrs="{'column_invisible': [('parent.ungtien', '=', 0)]}"/>
-                      <field name="tamvong" style="border-top-style: solid !important;border-width: 1px !important" sum='tamvong' attrs="{'column_invisible': [('parent.tamvong', '=', 0)]}"/>
-                      <field name="truidao" style="border-top-style: solid !important;border-width: 1px !important" sum='truidao' attrs="{'column_invisible': [('parent.truidao', '=', 0)]}"/>
-                      <field name="bandao" style="border-top-style: solid !important;border-width: 1px !important" sum='bandao' attrs="{'column_invisible': [('parent.bandao', '=', 0)]}"/>
-                      <field name="tbm" style="border-top-style: solid !important;border-width: 1px !important" sum='tbm' attrs="{'column_invisible': [('parent.tbm', '=', 0)]}"/>
-                      <field name="tienmuon" style="border-top-style: solid !important;border-width: 1px !important" sum='tienmuon' attrs="{'column_invisible': [('parent.tienmuon', '=', 0)]}"/>
-                      <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" sum='rutbot'  attrs="{'column_invisible': [('parent.rutbot', '=', 0)]}"/>
-                      <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" sum='dongthem'  attrs="{'column_invisible': [('parent.dongthem', '=', 0)]}"/>
-                      <field name="ruttt" style="border-top-style: solid !important;border-width: 1px !important" sum='ruttt'  attrs="{'column_invisible': [('parent.ruttt', '=', 0)]}"/>
-                      <field name="ttth" style="border-top-style: solid !important;border-width: 1px !important" sum='ttth'  attrs="{'column_invisible': [('parent.ttth', '=', 0)]}"/>
-                      <field name="banlinhtinh" style="border-top-style: solid !important;border-width: 1px !important" sum='banlinhtinh' attrs="{'column_invisible': [('parent.banlinhtinh', '=', 0)]}"/>
-                      <field name="conlai" style="border-top-style: solid !important;border-width: 1px !important" sum='conlai'/>
+                      <field name="sttcn" style="border-top-style: solid !important;border-width: 1px !important" optional= "show"/>
+                      <field name="employee_id" style="border-top-style: solid !important;border-width: 1px !important" optional= "show"/>
+                      <field name="ltn2" decoration-danger="ltn2 &lt; ltn" decoration-success="ltn2 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn2' optional= "show"/>
+                      <field name="ltn1" decoration-danger="ltn1 &lt; ltn" decoration-success="ltn1 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn1' optional= "show"/>
+                      <field name="ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn' optional= "show"/>
+                      <field name="nctb" style="border-top-style: solid !important;border-width: 1px !important" sum='nctb' attrs="{'column_invisible': [('parent.nctb', '=', 0)]}" optional= "show"/>
+                      <field name="tienphan" style="border-top-style: solid !important;border-width: 1px !important" sum='tienphan' attrs="{'column_invisible': [('parent.tienphan', '=', 0)]}" optional= "show"/>
+                      <field name="chiendo" style="border-top-style: solid !important;border-width: 1px !important" sum='chiendo' attrs="{'column_invisible': [('parent.chiendo', '=', 0)]}" optional= "show"/>
+                      <field name="tongluong" style="border-top-style: solid !important;border-width: 1px !important" sum='tongluong' optional= "show"/>
+                      <field name="tiendao" style="border-top-style: solid !important;border-width: 1px !important" sum='tiendao' attrs="{'column_invisible': [('parent.tiendao', '=', 0)]}" optional= "show"/>
+                      <field name="tienung" style="border-top-style: solid !important;border-width: 1px !important" sum='tienung' attrs="{'column_invisible': [('parent.tienung', '=', 0)]}" optional= "show"/>
+                      <field name="ungtien" style="border-top-style: solid !important;border-width: 1px !important" sum='ungtien' attrs="{'column_invisible': [('parent.ungtien', '=', 0)]}" optional= "show"/>
+                      <field name="tamvong" style="border-top-style: solid !important;border-width: 1px !important" sum='tamvong' attrs="{'column_invisible': [('parent.tamvong', '=', 0)]}" optional= "show"/>
+                      <field name="truidao" style="border-top-style: solid !important;border-width: 1px !important" sum='truidao' attrs="{'column_invisible': [('parent.truidao', '=', 0)]}" optional= "show"/>
+                      <field name="bandao" style="border-top-style: solid !important;border-width: 1px !important" sum='bandao' attrs="{'column_invisible': [('parent.bandao', '=', 0)]}" optional= "show"/>
+                      <field name="tbm" style="border-top-style: solid !important;border-width: 1px !important" sum='tbm' attrs="{'column_invisible': [('parent.tbm', '=', 0)]}" optional= "show"/>
+                      <field name="tienmuon" style="border-top-style: solid !important;border-width: 1px !important" sum='tienmuon' attrs="{'column_invisible': [('parent.tienmuon', '=', 0)]}" optional= "show"/>
+                      <field name="rutbot" style="border-top-style: solid !important;border-width: 1px !important" sum='rutbot'  attrs="{'column_invisible': [('parent.rutbot', '=', 0)]}" optional= "show"/>
+                      <field name="dongthem" style="border-top-style: solid !important;border-width: 1px !important" sum='dongthem'  attrs="{'column_invisible': [('parent.dongthem', '=', 0)]}" optional= "show"/>
+                      <field name="ruttt" style="border-top-style: solid !important;border-width: 1px !important" sum='ruttt'  attrs="{'column_invisible': [('parent.ruttt', '=', 0)]}" optional= "show"/>
+                      <field name="ttth" style="border-top-style: solid !important;border-width: 1px !important" sum='ttth'  attrs="{'column_invisible': [('parent.ttth', '=', 0)]}" optional= "show"/>
+                      <field name="banlinhtinh" style="border-top-style: solid !important;border-width: 1px !important" sum='banlinhtinh' attrs="{'column_invisible': [('parent.banlinhtinh', '=', 0)]}" optional= "show"/>
+                      <field name="conlai" style="border-top-style: solid !important;border-width: 1px !important" sum='conlai' optional= "show"/>
                       <field name="kynhan" style="border-top-style: solid !important;border-width: 1px !important"/>
-                      <field name="to500" style="border-top-style: solid !important;border-width: 1px !important" sum='500'/>
-                      <field name="to200" style="border-top-style: solid !important;border-width: 1px !important" sum='200'/>
-                      <field name="to100" style="border-top-style: solid !important;border-width: 1px !important" sum='100'/>
-                      <field name="to50" style="border-top-style: solid !important;border-width: 1px !important" sum='50'/>
-                      <field name="to20" style="border-top-style: solid !important;border-width: 1px !important" sum='20'/>
-                      <field name="to10" style="border-top-style: solid !important;border-width: 1px !important" sum='10'/>
-                      <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important"/>
+                      <field name="to500" style="border-top-style: solid !important;border-width: 1px !important" sum='500' optional= "show"/>
+                      <field name="to200" style="border-top-style: solid !important;border-width: 1px !important" sum='200' optional= "show"/>
+                      <field name="to100" style="border-top-style: solid !important;border-width: 1px !important" sum='100' optional= "show"/>
+                      <field name="to50" style="border-top-style: solid !important;border-width: 1px !important" sum='50' optional= "show"/>
+                      <field name="to20" style="border-top-style: solid !important;border-width: 1px !important" sum='20' optional= "show"/>
+                      <field name="to10" style="border-top-style: solid !important;border-width: 1px !important" sum='10' optional= "show"/>
+                      <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important" optional= "show"/>
                     </tree>
                   </field>
                 </group>

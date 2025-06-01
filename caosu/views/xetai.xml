@@ -33,10 +33,10 @@
                         <field name="daily"/>
                         <field name="sanpham"/>
                         <field name="soluong" sum="soluong"/>
-                        <field name="do" avg="do"/>
+                        <field name="do"/>
                         <field name="quykho" sum="quykho"/>
                         <field name="soluongtt" sum="soluongtt"/>
-                        <field name="dott" avg="dott"/>
+                        <field name="dott"/>
                         <field name="quykhott" sum="quykhott"/>
                         <field name="tyle" sum="tyle"/>
                         <field name="state"/>

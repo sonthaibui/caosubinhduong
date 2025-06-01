@@ -52,7 +52,7 @@ class Reward(models.Model):
     dongthem = fields.Float('Đóng thêm', digits='Product Price')
     #conlai = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai')
     qk_drc_thang = fields.Float('Quy khô', compute='_compute_quykho', digits='Product Price')
-    dixa = fields.Float('Đi xa', default=0.0, digits='Product Price')
+    dixa = fields.Float('Đi xa', default=2, digits='Product Price')
     tongdiem = fields.Float('Tổng điểm', compute='_compute_tongdiem', digits='Product Price')
     tongdiem_tl = fields.Float('Lũy kế', compute='_compute_tongdiem_tl', digits='Product Price')
 
