@@ -27,7 +27,7 @@
                     </group>
                     <group string="NHẬN MŨ NƯỚC" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': ['|',('recorded','=',False),('nhannuoc','=',False)]}">
                       <field nolabel="1" name="deliver_line_ids">
-                        <tree edit="0" create="0" default_order="to asc" delete="1" groups="base.group_erp_manager">
+                      <tree edit="0" create="0" default_order="to asc" delete="1" groups="base.group_erp_manager">
                         <field name="ngay"/>
                         <field name="to"/>
                         <field name="daily"/>
@@ -40,8 +40,32 @@
                         <field name="quykhott" sum="quykhott"/>
                         <field name="tyle" sum="tyle"/>
                         <field name="state"/>
-                      </tree>
-                    </field></group>
+                      </tree>                      
+                      </field>                      
+                    </group>
+                  <group>
+                      <div class="container">            
+                        <table class="table table-bordered" style="text-align: center;">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th>Số lượng</th>
+                              <th>Độ</th>
+                              <th>Quy khô</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><b>Nhận</b></td>
+                              <td><field name="soluong_nuoc" nolabel="1" decoration-info="1"/></td>
+                              <td><field name="do_nuoc" nolabel="1" decoration-info="1"/></td>
+                              <td><field name="quykho_nuoc" nolabel="1" decoration-info="1"/></td>
+                            </tr>                          
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                    </group>
                     <group string="NHẬN MŨ TẠP" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': ['|',('recorded','=',False),('nhantap','=',False)]}">
                       <field nolabel="1" name="delivertap_line_ids">
                       <tree edit="0" create="0" delete="0" default_order="to asc">
