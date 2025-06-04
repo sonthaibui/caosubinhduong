@@ -17,7 +17,7 @@ class RewardByMonth(models.Model):
         ('2025', '2025'), ('2026', '2026'), ('2027', '2027'), ('2028', '2028'), ('2029', '2029'),
     ], string='Năm', default=str(fields.Datetime.now().year), required=True)    
     name = fields.Char('Tên tổ', related='to.name')
-    ghichu = fields.Char('Ghi chú')
+    ghichu = fields.Html('Ghi chú')
     reward_line_ids = fields.One2many('reward', 'rewardbymonth_id', string='Xét Thưởng CN', copy=True)
     #ttth = fields.Float(compute='_compute_ttth', string='ttth')
     #ruttt = fields.Float(compute='_compute_ttth', string='ruttt')
@@ -25,7 +25,16 @@ class RewardByMonth(models.Model):
     #pltln = fields.Float(compute='_compute_ttth', string='pltln')
     thongbao = fields.Char(compute='_compute_thongbao', string='Thông báo')
     namkt=fields.Char(string='Năm khai thác', compute='_compute_namkt', store=True)
+    chiquy_pl = fields.Float(string='Chi Quỹ PL', compute='_compute_chiquy_pl', store=True)
 
+    @api.depends('reward_line_ids')
+    def _compute_chiquy_pl(self):
+        for rec in self:
+            total_chiquy_pl = 0
+            for line in rec.reward_line_ids:                
+                total_chiquy_pl += line.chiquy_pl
+        rec.chiquy_pl = total_chiquy_pl
+    
     @api.depends('thang','nam')
     def _compute_namkt(self):
         for rec in self:

@@ -50,6 +50,7 @@
                       <th style="border-right-style: solid;">Kế hoạch</th>
                       <th style="border-right-style: solid;">% Đạt</th>
                       <th style="border-right-style: solid;">Giá thưởng</th>
+                      <th t-if="o.chiquy_pl != 0" style="border-right-style: solid;">Chi Quỹ PL</th>
                       <th style="border-right-style: solid;">Phúc lợi TL</th>                      
                   </tr>
                 </thead>
@@ -101,6 +102,9 @@
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
                         <span t-esc="line.gia_thuong" t-options='{"widget": "float", "precision": 0}'/>
                       </td>                    
+                      <td t-if="o.chiquy_pl != 0" style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                        <span t-field="line.chiquy_pl" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
                         <span t-field="line.phucloitl" t-options='{"widget": "float", "precision": 0}'/>
                       </td>                     
@@ -109,6 +113,17 @@
                 </tbody>
               </table>
             </div>
+            <div style="height: 30px;"></div>
+            <div class="row">
+              <div class="col-12">
+                <table width="100%">
+                <tr>
+                  <td width="10%" style="font-weight: bold;">Ghi chú</td>
+                    <td style="text-align: left; text-decoration: underline;"><span t-field="o.ghichu"/></td>
+                </tr>
+                </table>
+              </div>
+              </div>
           </t>
         </div>
       </t>

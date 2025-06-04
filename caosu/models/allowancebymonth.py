@@ -24,7 +24,8 @@ class AllowanceByMonth(models.Model):
     dg_chen = fields.Float('Đơn giá chén', digits='Product Price')
     allowance_line_ids = fields.One2many('allowance', 'allowancebymonth_id', string='Phụ cấp')
     thongbao = fields.Char(compute='_compute_thongbao', string='Thông báo')
-    
+    ghichu = fields.Html('Ghi chú')
+
     @api.depends('thang','nam','department_id')
     def _compute_thongbao(self):
         for rec in self:

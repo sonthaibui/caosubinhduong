@@ -50,6 +50,8 @@ class Reward(models.Model):
     phucloitl = fields.Float('PL tích lũy', digits='Product Price', compute='_compute_thuongphucloi') #, compute='_compute_phucloitl'    
     rutbot = fields.Float('Rút PL', digits='Product Price')
     dongthem = fields.Float('Đóng thêm', digits='Product Price')
+    chiquy_pl = fields.Float('Chi quỹ PL', digits='Product Price')
+    chothem = fields.Float('Cho thêm', digits='Product Price')
     #conlai = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai')
     qk_drc_thang = fields.Float('Quy khô', compute='_compute_quykho', digits='Product Price')
     dixa = fields.Float('Đi xa', default=2, digits='One Decimal')
@@ -213,11 +215,11 @@ class Reward(models.Model):
             for rw in rws:
                 if int(rw.nam) < int(rec.nam):                    
                     tongtientl += rw.tongtien - rw.ruttt + rw.ttth
-                    phucloitl += rw.phucloi - rw.rutbot + rw.dongthem                    
+                    phucloitl += rw.phucloi - rw.rutbot + rw.dongthem- rw.chiquy_pl + rw.chothem                    
                 elif int(rw.nam) == int(rec.nam):
                     if int(rw.thang) <= int(rec.thang):
                         tongtientl += rw.tongtien - rw.ruttt + rw.ttth
-                        phucloitl += rw.phucloi - rw.rutbot + rw.dongthem  
+                        phucloitl += rw.phucloi - rw.rutbot + rw.dongthem - rw.chiquy_pl + rw.chothem
             rec.tongtientl = tongtientl
             rec.phucloitl = phucloitl      
             

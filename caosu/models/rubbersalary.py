@@ -279,7 +279,7 @@ class RubberSalary(models.Model):
                 total_tiendong   += line.tiendong
                 total_tienchen   += line.tienchen
                 total_phucap    += getattr(line, 'phucap', 0.0)                
-                count_days       += 1
+                if line.tongtien != 0: count_days       += 1
 
             rec.quykho_drc = total_quykho_drc
             rec.quykho     = total_quykho
