@@ -159,6 +159,7 @@ class RubberByDate(models.Model):
         digits='Product Price'
     )
     giatap = fields.Monetary('Giá mũ tạp', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
+    giatap_do = fields.Monetary('Giá mũ tạp độ', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
     giadong = fields.Monetary('Giá mũ đông', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
     giachen = fields.Monetary('Giá mũ chén', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
     kholantruoc = fields.Float('Khô lần trước', compute='_compute_kholantruoc', store=True, digits='Product Unit of Measure')
@@ -721,8 +722,8 @@ class RubberByDate(models.Model):
             rec.do_day = do_vals.get('do_muday', 0)
             
     @api.depends('nuoc_thu', 'day_thu', 'tap_thu', 'dong_thu', 'chen_thu', 
-                'gianuoc', 'giaday', 'giadong', 'giachen', 'giatap', 
-                'do_giao', 'do_tb')
+            'gianuoc', 'giaday', 'giadong', 'giachen', 'giatap', 'giatap_do',
+            'do_giao', 'do_tb')
     def _compute_tien(self):
         for rec in self:
             # If do_giao is not set, use average degree
@@ -731,9 +732,18 @@ class RubberByDate(models.Model):
             # Calculate money for each rubber type
             money_nuoc = rec.nuoc_ban * do * rec.gianuoc if rec.nuoc_ban != 0 else rec.nuoc_thu * do * rec.gianuoc
             money_chen = rec.chen_ban * do * rec.giachen if rec.chen_ban != 0 else rec.chen_thu * do * rec.giachen
-            money_tap = rec.tap_ban * do * rec.giatap if rec.tap_ban != 0 else rec.tap_thu * do * rec.giatap
             money_dong = rec.dong_ban * do * rec.giadong if rec.dong_ban != 0 else rec.dong_thu * do * rec.giadong
             money_day = rec.day_ban * rec.giaday if rec.day_ban != 0 else rec.day_thu * rec.giaday  # No percentage for day rubber
+            
+            # Modified logic for mũ tạp with two different prices
+            tap_quantity = rec.tap_ban if rec.tap_ban != 0 else rec.tap_thu
+            
+            if rec.giatap == 0 and rec.giatap_do != 0:
+                money_tap = tap_quantity * do * rec.giatap_do
+            elif rec.giatap != 0 and rec.giatap_do == 0:
+                money_tap = tap_quantity * rec.giatap
+            else:
+                money_tap = 0
             
             # Sum all values
             rec.tien = money_nuoc + money_chen + money_tap + money_dong + money_day
@@ -748,6 +758,7 @@ class RubberByDate(models.Model):
                 'giachen': record.giaday,
                 'giadong': record.giadong,
                 'giatap': record.giatap,
+                'giatap_do': record.giatap_do,
             })
 
     @api.depends('to_name', 'lo', 'nam_kt', 'ngay', 'thang', 'lan_kt', 'dao_kt')

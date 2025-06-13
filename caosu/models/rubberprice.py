@@ -19,95 +19,85 @@ class RubberPrice(models.Model):
         domain=[('is_customer', '=', 'True')], 
         required=True, ondelete='restrict',
         default=lambda self: self.env['res.partner'].search([('is_customer', '=', 'True')], limit=1))
-    
-    mu = fields.Many2one('product.template', string='Mũ', 
-        domain=['|', '|', '|', '|',
-            ('name', 'ilike', 'mũ nước'),
-            ('name', 'ilike', 'mũ chén'),
-            ('name', 'ilike', 'mũ dây'),
-            ('name', 'ilike', 'mũ đông'),
-            ('name', 'ilike', 'mũ tạp')
-        ], 
-        required=True, ondelete='restrict')
+       
     
     gia = fields.Float('Giá', digits='Product Price', required=True)
     ngay_hieuluc = fields.Date('Ngày hiệu lực', default=fields.Date.today, required=True)
     macdinh = fields.Boolean('Mặc định', default=False, help="Đặt đại lý này làm mặc định cho loại mũ này")
     ghi_chu = fields.Text('Ghi chú')
     name = fields.Char(compute='_compute_name', string='name', store=True)
+    price_type_id = fields.Many2one('rubber.price.type', string='Loại giá', required=True)
     
-    @api.depends('to', 'daily', 'mu', 'ngay_hieuluc', 'gia')
+    _sql_constraints = [
+        ('unique_price_record',
+         'UNIQUE(price_type_id, to, daily, ngay_hieuluc)',
+         'A price record for this type, department, dealer and date already exists!')
+    ]
+    
+    @api.depends('to', 'daily', 'price_type_id', 'ngay_hieuluc', 'gia')
     def _compute_name(self):
         for rec in self:
             to_names = ", ".join(rec.to.mapped('name')) if rec.to else "All"
-            mu_name = rec.mu.name if rec.mu else ""
+            price_type_name = rec.price_type_id.name if rec.price_type_id else ""
             daily_name = rec.daily.name if rec.daily else ""
             date_str = rec.ngay_hieuluc.strftime('%d/%m/%Y') if rec.ngay_hieuluc else ""
-            rec.name = f"{daily_name}_{mu_name}_{to_names}_{date_str}_{rec.gia:,.0f}"
+            rec.name = f"{daily_name}_{price_type_name}_{to_names}_{date_str}_{rec.gia:,.0f}"
 
-    @api.constrains('to', 'daily', 'mu', 'ngay_hieuluc')
+    @api.constrains('to', 'daily', 'price_type_id', 'ngay_hieuluc')
     def _check_rubberdate_unique(self):
         for record in self:
-            if not (record.to and record.daily and record.mu and record.ngay_hieuluc):
-                continue  # Skip validation if any required field is missing
-                
+            if not (record.to and record.daily and record.price_type_id and record.ngay_hieuluc):
+                continue
             dublicate_price = self.search([
                 ('to', 'in', record.to.ids),
                 ('daily', '=', record.daily.id),
-                ('mu', '=', record.mu.id),  # Changed from record.mu to record.mu.id for Many2one
+                ('price_type_id', '=', record.price_type_id.id),
                 ('ngay_hieuluc', '=', record.ngay_hieuluc),
                 ('id', '!=', record.id)
             ])
             if dublicate_price:
-                raise ValidationError(f"Giá cho {', '.join(record.to.mapped('name'))} đại lý {record.daily.name} loại {record.mu.name} đã tồn tại cho ngày {record.ngay_hieuluc.strftime('%d/%m/%Y')}!")
+                raise ValidationError(
+                    f"Giá cho {', '.join(record.to.mapped('name'))} đại lý {record.daily.name} loại {record.price_type_id.name} đã tồn tại cho ngày {record.ngay_hieuluc.strftime('%d/%m/%Y')}!"
+                )
     
-    @api.constrains('macdinh', 'mu', 'to')
+    @api.constrains('macdinh', 'price_type_id', 'to')
     def _check_default(self):
-        # Ensure only one default per rubber type per team
         for rec in self:
             if rec.macdinh:
                 other_defaults = self.search([
                     ('id', '!=', rec.id),
                     ('to', 'in', rec.to.ids),
-                    ('mu', '=', rec.mu),
+                    ('price_type_id', '=', rec.price_type_id.id),
                     ('macdinh', '=', True)
                 ])
                 if other_defaults:
-                    # Unmark other defaults
                     other_defaults.write({'macdinh': False})
     
     @api.model
-    def get_price(self, mu, to_ids, daily_id=False, ngay=False):
+    def get_price(self, price_type_id, to_ids, daily_id=False, ngay=False):
         """Lấy giá áp dụng cho đại lý vào một ngày cụ thể"""
         if not ngay:
             ngay = fields.Date.today()
-            
         domain = [
-            ('mu', '=', mu),
+            ('price_type_id', '=', price_type_id),
             ('to', 'in', to_ids),
             ('ngay_hieuluc', '<=', ngay)
         ]
-        
         # First try with specific daily
         if daily_id:
             daily_price = self.search([
                 ('daily', '=', daily_id),
                 *domain
             ], order='ngay_hieuluc desc', limit=1)
-            
             if daily_price:
                 return daily_price.gia
-        
         # Fall back to default daily
         default_price = self.search([
             ('macdinh', '=', True),
             *domain
         ], order='ngay_hieuluc desc', limit=1)
-        
         if default_price:
             return default_price.gia
-            
-        # No price found
         return 0.0
 
     @api.model
@@ -130,69 +120,15 @@ class RubberPrice(models.Model):
             # Find all records from the effective date onward with matching team and product type
             domain = [
                 ('ngay', '>=', price.ngay_hieuluc),
-                ('to', 'in', price.to.ids)
+                ('to', 'in', price.to.ids),
+                ('price_type_id', '=', price.price_type_id.id)
             ]
-            
-            # Determine which field needs updating based on the product
-            product = price.mu
-            if not product or not product.name:
-                continue
-                
-            product_name = product.name.lower()
-            RubberDate = self.env['rubber.date']
-            affected_records = False
-            
-            # MŨ DÂY
-            if 'mũ dây' in product_name:
-                domain_day = domain.copy()
-                domain_day.extend(['|', ('daily_day', '=', price.daily.id), ('daily_day', '=', False)])
-                affected_records = RubberDate.search(domain_day)
-                for record in affected_records:
-                    record._compute_rubber_prices()
-                    record.write({'giaday': record.giaday})
-                    
-            # MŨ NƯỚC
-            elif 'mũ nước' in product_name:
-                domain_nuoc = domain.copy()
-                domain_nuoc.extend(['|', ('daily_nuoc', '=', price.daily.id), ('daily_nuoc', '=', False)])
-                affected_records = RubberDate.search(domain_nuoc)
-                for record in affected_records:
-                    record._compute_rubber_prices()
-                    record.write({'gianuoc': record.gianuoc})
-                    
-            # MŨ TẠP
-            elif 'mũ tạp' in product_name:
-                domain_tap = domain.copy()
-                domain_tap.extend(['|', ('daily_tap', '=', price.daily.id), ('daily_tap', '=', False)])
-                affected_records = RubberDate.search(domain_tap)
-                for record in affected_records:
-                    record._compute_rubber_prices()
-                    record.write({'giatap': record.giatap})
-                    
-            # MŨ ĐÔNG
-            elif 'mũ đông' in product_name:
-                domain_dong = domain.copy()
-                domain_dong.extend(['|', ('daily_dong', '=', price.daily.id), ('daily_dong', '=', False)])
-                affected_records = RubberDate.search(domain_dong)
-                for record in affected_records:
-                    record._compute_rubber_prices()
-                    record.write({'giadong': record.giadong})
-                    
-            # MŨ CHÉN (typically uses the same dealer as mũ nước)
-            elif 'mũ chén' in product_name:
-                domain_chen = domain.copy()
-                domain_chen.extend(['|', ('daily_nuoc', '=', price.daily.id), ('daily_nuoc', '=', False)])
-                affected_records = RubberDate.search(domain_chen)
-                for record in affected_records:
-                    record._compute_rubber_prices()
-                    record.write({'giachen': record.giachen})
-                    
-            # Update money calculation after price changes
-            if affected_records:
-                for record in affected_records:
-                    if hasattr(record, '_compute_tien'):
-                        record._compute_tien()
-                        record.write({'tien': record.tien})
+            affected_records = self.env['rubber.date'].search(domain)
+            for record in affected_records:
+                if hasattr(record, '_compute_gia'):
+                    record._compute_gia()
+                if hasattr(record, '_compute_tien'):
+                    record._compute_tien()
 
     def action_open_price_wizard(self):
         """Open the rubber price wizard"""

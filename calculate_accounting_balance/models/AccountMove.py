@@ -28,8 +28,7 @@ class AccountMove(models.Model):
         vals = super(AccountMove, self).copy()
         vals.giamdoc_duyet = False
         vals.ketoan_duyet = False
-        for line in vals.line_ids:
-            line.x_ketoan_duyet = False
+        
         #line.giamdoc_duyet = False
         #raise UserError(_(vals.giamdoc_duyet))
         return vals

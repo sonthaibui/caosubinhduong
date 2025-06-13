@@ -134,7 +134,7 @@
                     <!-- Sum Row -->
                     <tr>
                       <td style="border: 0.5px solid black; text-align: center; font-weight: bold;">
-                        <span t-field="o.ngaycao"/>
+                        <span t-field="o.ngaycao"/> ngày
                       </td>
                       <td style="border: 0.5px solid black;"></td>
                       <td style="border: 0.5px solid black;"></td>

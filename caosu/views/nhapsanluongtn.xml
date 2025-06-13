@@ -163,20 +163,19 @@
         </field>
     </record>
     <!-- Menu item for the ctkt model -->
-    <menuitem id="menu_ctkt" name="Công thức kích thích" parent="thinghiem_menu" action="action_congthuckichthich"/>
+    <menuitem id="menu_ctkt" name="Công thức kích thích" parent="thinghiem_menu" action="action_congthuckichthich"/> 
+  
+    <!-- Action for Rubber Test Nhóm Tree View -->
+    <record id="action_rubber_test_nhom" model="ir.actions.act_window">
+        <field name="name">Rubber Test Nhóm</field>
+        <field name="res_model">rubber.test.nhom</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
+    
+    <!-- Menu Item for Rubber Test Nhóm Management -->
+    <menuitem id="menu_rubber_test_nhom" name="Manage Nhóm" 
+              parent="thinghiem_menu" 
+              action="action_rubber_test_nhom" sequence="7"/>
   </data>
-  
-  
-  <!-- Action for Rubber Test Nhóm Tree View -->
-  <record id="action_rubber_test_nhom" model="ir.actions.act_window">
-      <field name="name">Rubber Test Nhóm</field>
-      <field name="res_model">rubber.test.nhom</field>
-      <field name="view_mode">tree,form</field>
-      <field name="target">current</field>
-  </record>
-  
-  <!-- Menu Item for Rubber Test Nhóm Management -->
-  <menuitem id="menu_rubber_test_nhom" name="Manage Nhóm" 
-            parent="thinghiem_menu" 
-            action="action_rubber_test_nhom" sequence="7"/>
 </odoo>
