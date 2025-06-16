@@ -18,7 +18,7 @@
                     <field name="ngay_hieuluc"/>
                     <field name="to" widget="many2many_tags"/>
                     <field name="daily"/>
-                    <field name="mu"/>
+                    <field name="price_type_id"/>
                     <field name="gia" sum="Tổng"/>
                     <field name="macdinh"/>
                 </tree>
@@ -42,7 +42,7 @@
                             <group>
                                 <field name="to"/>
                                 <field name="daily"/>
-                                <field name="mu"/>
+                                <field name="price_type_id"/>
                                 <field name="gia"/>
                             </group>
                             <group>
@@ -69,15 +69,15 @@
                     <field name="gia"/>
                     <field name="ngay_hieuluc"/>
                     <separator/>
-                    <filter string="Mũ Nước" name="nuoc" domain="[('mu', '=', 'nuoc')]"/>
-                    <filter string="Mũ Dây" name="day" domain="[('mu', '=', 'day')]"/>
-                    <filter string="Mũ Tạp" name="tap" domain="[('mu', '=', 'tap')]"/>
-                    <filter string="Mũ Đông" name="dong" domain="[('mu', '=', 'dong')]"/>
+                    <filter string="Mũ Nước" name="nuoc" domain="[('price_type_id', '=', 'nuoc')]"/>
+                    <filter string="Mũ Dây" name="day" domain="[('price_type_id', '=', 'day')]"/>
+                    <filter string="Mũ Tạp" name="tap" domain="[('price_type_id', '=', 'tap')]"/>
+                    <filter string="Mũ Đông" name="dong" domain="[('price_type_id', '=', 'dong')]"/>
                     <filter string="Mặc Định" name="macdinh" domain="[('macdinh', '=', True)]"/>
                     <separator/>
                     <filter string="Đại Lý" name="group_by_daily" context="{'group_by': 'daily'}"/>
                     <filter string="Tổ" name="group_by_to" context="{'group_by': 'to'}"/>
-                    <filter string="Loại Mũ" name="group_by_mu" context="{'group_by': 'mu'}"/>
+                    <filter string="Loại Mũ" name="group_by_mu" context="{'group_by': 'price_type_id'}"/>
                     <filter string="Ngày Hiệu Lực" name="group_by_ngay" context="{'group_by': 'ngay_hieuluc'}"/>
                 </search>
             </field>
