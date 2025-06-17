@@ -13,8 +13,7 @@
     ],
     
     'data': [
-        'security/ir.model.access.csv',
-        
+        'security/ir.model.access.csv',        
         'views/sanluong.xml',
         'views/bangluong.xml',
         'views/luongvp.xml',

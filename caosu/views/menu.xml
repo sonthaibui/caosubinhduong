@@ -89,17 +89,30 @@
         action="action_tylehaohut_mu"
         sequence="1"/>
     <menuitem 
-        id="menu_rubber_price"
-        name="Lịch Sử Giá Mủ"
+        id="menu_rubber_price_type"
+        name="Price Types"
         parent="banmu_menu"
-        action="action_rubber_price"
-        sequence="3"/>
+        action="action_rubber_price_type"
+        sequence="2"/>
     <menuitem 
         id="menu_rubber_price_wizard"
         name="Cập nhật giá mủ"
         parent="banmu_menu"
         action="action_rubber_price_wizard"
-        sequence="2"/>
+        sequence="3"/>
+    <menuitem 
+        id="menu_rubber_price_wizard_line"
+        name="Cập nhật giá mủ line"
+        parent="banmu_menu"
+        action="action_rubber_price_wizard_line"
+        sequence="4"/>
+    <menuitem 
+        id="menu_rubber_price"
+        name="Lịch Sử Giá Mủ"
+        parent="banmu_menu"
+        action="action_rubber_price"
+        sequence="5"/>
+    
     
 
     <menuitem

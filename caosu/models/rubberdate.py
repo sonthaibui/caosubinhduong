@@ -149,8 +149,8 @@ class RubberByDate(models.Model):
     ngaygiao = fields.Date('Ngày giao')
     caoxa = fields.Boolean('Cạo xả', default=False)
     thongbao = fields.Char( string='Thông báo', default='', readonly=True) #compute='_compute_thongbao',
-    giaday = fields.Monetary('Giá mũ dây', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
-    gianuoc = fields.Monetary('Giá mũ nước', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
+    giaday = fields.Monetary('Giá mũ dây', digits='Zero Decimal', compute='_compute_rubber_price', store=True) #
+    gianuoc = fields.Monetary('Giá mũ nước', digits='Zero Decimal', compute='_compute_rubber_price', store=True) #
     tien = fields.Monetary(
         string="Tiền", 
         compute="_compute_tien", 
@@ -158,10 +158,10 @@ class RubberByDate(models.Model):
         currency_field='currency_id',
         digits='Product Price'
     )
-    giatap = fields.Monetary('Giá mũ tạp', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
-    giatap_do = fields.Monetary('Giá mũ tạp độ', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
-    giadong = fields.Monetary('Giá mũ đông', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
-    giachen = fields.Monetary('Giá mũ chén', digits='Zero Decimal', compute='_compute_rubber_prices', store=True) #
+    giatap = fields.Monetary('Giá mũ tạp', digits='Zero Decimal', compute='_compute_rubber_price', store=True) #
+    giatap_do = fields.Monetary('Giá mũ tạp độ', digits='Zero Decimal', compute='_compute_rubber_price', store=True) #
+    giadong = fields.Monetary('Giá mũ đông', digits='Zero Decimal', compute='_compute_rubber_price', store=True) #
+    giachen = fields.Monetary('Giá mũ chén', digits='Zero Decimal', compute='_compute_rubber_price', store=True) #
     kholantruoc = fields.Float('Khô lần trước', compute='_compute_kholantruoc', store=True, digits='Product Unit of Measure')
     
     @api.depends('nuoc_thu', 'ke', 'mutrangthung', 'do_giao', 'rubber_line_ids')
@@ -618,99 +618,30 @@ class RubberByDate(models.Model):
             if not line.occtktup:
                 line.ctktup = self.ctktup
 
-    @api.depends('daily_day', 'daily_nuoc', 'daily_tap', 'daily_dong', 'ngay', 'to')
-    def _compute_rubber_prices(self):
-        RubberPrice = self.env['rubber.price']
-        ProductTemplate = self.env['product.template']
-        ResPartner = self.env['res.partner']
-        
-        # Find the relevant product IDs once
-        day_product = ProductTemplate.search([
-            '|', ('name', 'ilike', 'mũ dây'), ('name', '=', 'Mũ dây')
-        ], limit=1)
-        
-        nuoc_product = ProductTemplate.search([
-            '|', ('name', 'ilike', 'mũ nước'), ('name', '=', 'Mũ nước')
-        ], limit=1)
-        
-        tap_product = ProductTemplate.search([
-            '|', ('name', 'ilike', 'mũ tạp'), ('name', '=', 'Mũ tạp')
-        ], limit=1)
-        
-        dong_product = ProductTemplate.search([
-            '|', ('name', 'ilike', 'mũ đông'), ('name', '=', 'Mũ đông')
-        ], limit=1)
-        
-        chen_product = ProductTemplate.search([
-            '|', ('name', 'ilike', 'mũ chén'), ('name', '=', 'Mũ chén')
-        ], limit=1)
-        
-        # Find the "Đại lý xe tải" partner
-        xetai_partner = ResPartner.search([('name', '=', 'Đại lý xe tải')], limit=1)
-        
+    @api.depends('ngay', 'to')
+    def _compute_rubber_price(self):
+        price_type_codes = {
+            'gianuoc': 'giamunuoc',
+            'giachen': 'giamuchen',
+            'giadong': 'giamudong',
+            'giaday': 'giamuday',
+            'giatap': 'giamutap',
+            'giatap_do': 'giamutap_do',
+        }
         for rec in self:
-            # For mũ dây
-            if day_product:
-                # Try to find price for the daily_day if available
-                if rec.daily_day and rec.to:
-                    rec.giaday = RubberPrice.get_price(day_product.id, rec.to.id, rec.daily_day.id, rec.ngay)
-                # If no daily_day or price is 0, try using "Đại lý xe tải"
-                if not rec.daily_day or rec.giaday == 0:
-                    if xetai_partner and rec.to:
-                        rec.giaday = RubberPrice.get_price(day_product.id, rec.to.id, xetai_partner.id, rec.ngay)
-                    else:
-                        rec.giaday = 0
-                    
-            # For mũ nước
-            if nuoc_product:
-                # Try to find price for the daily_nuoc if available
-                if rec.daily_nuoc and rec.to:
-                    rec.gianuoc = RubberPrice.get_price(nuoc_product.id, rec.to.id, rec.daily_nuoc.id, rec.ngay)
-                # If no daily_nuoc or price is 0, try using "Đại lý xe tải"
-                if not rec.daily_nuoc or rec.gianuoc == 0:
-                    if xetai_partner and rec.to:
-                        rec.gianuoc = RubberPrice.get_price(nuoc_product.id, rec.to.id, xetai_partner.id, rec.ngay)
-                    else:
-                        rec.gianuoc = 0
-            
-            # For mũ tạp
-            if tap_product:
-                # Try to find price for the daily_tap if available
-                if rec.daily_tap and rec.to:
-                    rec.giatap = RubberPrice.get_price(tap_product.id, rec.to.id, rec.daily_tap.id, rec.ngay)
-                # If no daily_tap or price is 0, try using "Đại lý xe tải"
-                if not rec.daily_tap or rec.giatap == 0:
-                    if xetai_partner and rec.to:
-                        rec.giatap = RubberPrice.get_price(tap_product.id, rec.to.id, xetai_partner.id, rec.ngay)
-                    else:
-                        rec.giatap = 0
-            
-            # For mũ đông
-            if dong_product:
-                # Try to find price for the daily_dong if available
-                if rec.daily_dong and rec.to:
-                    rec.giadong = RubberPrice.get_price(dong_product.id, rec.to.id, rec.daily_dong.id, rec.ngay)
-                # If no daily_dong or price is 0, try using "Đại lý xe tải"
-                if not rec.daily_dong or rec.giadong == 0:
-                    if xetai_partner and rec.to:
-                        rec.giadong = RubberPrice.get_price(dong_product.id, rec.to.id, xetai_partner.id, rec.ngay)
-                    else:
-                        rec.giadong = 0
-            
-            # For mũ chén
-            if chen_product:
-                # Default dealer for mũ chén is usually the same as mũ nước
-                dealer_id = rec.daily_nuoc.id if rec.daily_nuoc else None
-                
-                if dealer_id and rec.to:
-                    rec.giachen = RubberPrice.get_price(chen_product.id, rec.to.id, dealer_id, rec.ngay)
-                # If no dealer or price is 0, try using "Đại lý xe tải"
-                if not dealer_id or rec.giachen == 0:
-                    if xetai_partner and rec.to:
-                        rec.giachen = RubberPrice.get_price(chen_product.id, rec.to.id, xetai_partner.id, rec.ngay)
-                    else:
-                        rec.giachen = 0
+            # Reset all prices
+            rec.gianuoc = rec.giachen = rec.giadong = rec.giaday = rec.giatap = rec.giatap_do = 0
 
+            for field, code in price_type_codes.items():
+                price = self.env['rubber.price'].search([
+                    ('price_type_id.code', '=', code),
+                    ('ngay_hieuluc', '<=', rec.ngay),
+                    ('to_id', '=', rec.to.id),
+                    ('daily_id.name', '=', "Xe tải nhà"),
+                ], order='ngay_hieuluc desc', limit=1)
+                if price:
+                    setattr(rec, field, price.gia)
+            
     @api.depends('to', 'ngay')
     def _compute_do_mu(self):
         DoMu = self.env['do.mu']
@@ -751,7 +682,7 @@ class RubberByDate(models.Model):
     def update_rubber_prices(self):
         """Manually update rubber prices based on the latest price data"""
         for record in self:
-            record._compute_rubber_prices()
+            record._compute_rubber_price()
             record.write({
                 'giaday': record.giaday,
                 'gianuoc': record.gianuoc,

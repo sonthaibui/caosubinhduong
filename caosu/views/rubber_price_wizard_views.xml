@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Wizard Form View -->
     <record id="view_rubber_price_wizard_form" model="ir.ui.view">
         <field name="name">rubber.price.wizard.form</field>
         <field name="model">rubber.price.wizard</field>
@@ -11,26 +12,27 @@
                     </div>
                     <group>
                         <group>
-                            <field name="daily_id"/>
+                            <field name="daily_ids" widget="many2many_tags"/>
                             <field name="to_ids" widget="many2many_tags"/>
-                            <field name="ngay_hieuluc"/>
+                            <field name="price_type_ids" widget="many2many_tags"/>
+                            <field name="ngay_hieuluc"/>                            
                         </group>
-                        <group>
-                            <field name="macdinh"/>
-                            <field name="ghi_chu"/>
-                        </group>
+                        <group> 
+                            <field name="ngay_hieuluc_suggestions" widget="html" readonly="1"/>
+                            <field name="show_ngay_hieuluc_suggestions"/>
+                        </group>                       
                     </group>
                     <notebook>
                         <page string="Giá mủ">
                             <field name="price_line_ids">
-                                <tree editable="bottom" decoration-success="changed==True">                                    
+                                <tree editable="false">
+                                    <field name="price_type_id"/>
                                     <field name="old_price" readonly="1"/>
                                     <field name="new_price"/>
-                                    <field name="to_id"/>
-                                    <field name="daily_id"/>
+                                    <field name="daily_ids" widget="many2many_tags"/>
+                                    <field name="to_ids" widget="many2many_tags"/>
                                     <field name="ngay_hieuluc"/>
                                     <field name="macdinh"/>
-                                    <field name="changed" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -39,16 +41,83 @@
                 <footer>
                     <button name="save_prices" string="Lưu giá" type="object" class="btn-primary"/>
                     <button string="Hủy" class="btn-secondary" special="cancel"/>
+                    <button name="action_load_lines" type="object" string="Load Lines" class="oe_highlight"/>
                 </footer>
             </form>
         </field>
     </record>
 
+    <!-- Wizard Action -->
     <record id="action_rubber_price_wizard" model="ir.actions.act_window">
         <field name="name">Cập nhật giá mủ</field>
         <field name="res_model">rubber.price.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>   
-    
+
+    <!-- Tree View -->
+    <record id="view_rubber_price_wizard_line_tree" model="ir.ui.view">
+        <field name="name">rubber.price.wizard.line.tree</field>
+        <field name="model">rubber.price.wizard.line</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0">
+                <field name="ngay_hieuluc"/>
+                <field name="to_ids" />
+                <field name="daily_ids" />
+                <field name="price_type_id" />
+                <field name="old_price" />
+                <field name="new_price" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_rubber_price_wizard_line_form" model="ir.ui.view">
+        <field name="name">rubber.price.wizard.line.form</field>
+        <field name="model">rubber.price.wizard.line</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" string="Wizard Line" readonly="True">
+                <sheet>
+                    <group>
+                        <field name="price_type_id" />
+                        <field name="old_price" />
+                        <field name="new_price" />
+                        <field name="daily_ids" widget="many2many_tags" />
+                        <field name="to_ids" widget="many2many_tags" />
+                        <field name="ngay_hieuluc"/>
+                        <field name="macdinh" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_rubber_price_wizard_line_search" model="ir.ui.view">
+        <field name="name">rubber.price.wizard.line.search</field>
+        <field name="model">rubber.price.wizard.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="ngay_hieuluc" filter_domain="[]" string="Effective Date"/>
+                <field name="to_ids"/>
+                <field name="daily_ids"/>
+                <field name="price_type_id"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_ngay_hieuluc_year" string="Year" context="{'group_by':'ngay_hieuluc:year'}"/>
+                    <filter name="group_ngay_hieuluc_month" string="Month" context="{'group_by':'ngay_hieuluc:month'}"/>
+                    <filter name="group_ngay_hieuluc_date" string="Ngay" context="{'group_by':'ngay_hieuluc:date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_rubber_price_wizard_line" model="ir.actions.act_window">
+        <field name="name">Rubber Price Wizard Lines</field>
+        <field name="res_model">rubber.price.wizard.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_rubber_price_wizard_line_search"/>
+        <field name="context">{'search_default_group_ngay_hieuluc_year': 1, 'search_default_group_ngay_hieuluc_month': 1, 'search_default_group_ngay_hieuluc_date': 1}</field>        
+        
+    </record>
 </odoo>

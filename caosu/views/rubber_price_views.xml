@@ -1,57 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        
+    <data>        
         <record id="rubber_price_tree" model="ir.ui.view">
             <field name="name">rubber.price.tree</field>
             <field name="model">rubber.price</field>
             <field name="arch" type="xml">
-                <tree string="Giá Mủ Cao Su">
-                     
-                    <header>
-                        <button name="%(action_rubber_price_wizard)d" 
-                                string="Cập nhật nhiều giá mủ" 
-                                type="action" 
-                                class="btn-primary"/>
-                    </header>
-                    
+                <tree string="Giá Mủ Cao Su">                    
                     <field name="ngay_hieuluc"/>
-                    <field name="to" widget="many2many_tags"/>
-                    <field name="daily"/>
+                    <field name="to_id"/>
+                    <field name="daily_id"/>
                     <field name="price_type_id"/>
                     <field name="gia" sum="Tổng"/>
                     <field name="macdinh"/>
                 </tree>
             </field>
-        </record>
-        
+        </record>        
         
         <record id="rubber_price_form" model="ir.ui.view">
             <field name="name">rubber.price.form</field>
             <field name="model">rubber.price</field>
             <field name="arch" type="xml">
-                <form string="Giá Mủ Cao Su">
-                    <header>
-                        <button name="action_open_price_wizard" 
-                                string="Cập nhật nhiều giá mủ" 
-                                type="object" 
-                                class="oe_highlight"/>
-                    </header>
+                <form string="Rubber Price" readonly="True">
                     <sheet>
                         <group>
-                            <group>
-                                <field name="to"/>
-                                <field name="daily"/>
-                                <field name="price_type_id"/>
-                                <field name="gia"/>
-                            </group>
-                            <group>
-                                <field name="ngay_hieuluc"/>
-                                <field name="macdinh"/>
-                            </group>
-                        </group>
-                        <group>
-                            <field name="ghi_chu" placeholder="Ghi chú về thay đổi giá..."/>
+                            <field name="price_type_id"/>                            
+                            <field name="gia"/>
+                            <field name="daily_id"/>
+                            <field name="to_id"/>
+                            <field name="ngay_hieuluc"/>
+                            <field name="macdinh"/>
                         </group>
                     </sheet>
                 </form>
@@ -64,19 +41,19 @@
             <field name="model">rubber.price</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="daily"/>
-                    <field name="to"/>
+                    <field name="daily_id"/>
+                    <field name="to_id"/>
                     <field name="gia"/>
                     <field name="ngay_hieuluc"/>
                     <separator/>
-                    <filter string="Mũ Nước" name="nuoc" domain="[('price_type_id', '=', 'nuoc')]"/>
-                    <filter string="Mũ Dây" name="day" domain="[('price_type_id', '=', 'day')]"/>
-                    <filter string="Mũ Tạp" name="tap" domain="[('price_type_id', '=', 'tap')]"/>
-                    <filter string="Mũ Đông" name="dong" domain="[('price_type_id', '=', 'dong')]"/>
+                    <filter string="Mũ Nước" name="nuoc" domain="[('price_type_id', '=', 'giamunuoc')]"/>
+                    <filter string="Mũ Dây" name="day" domain="[('price_type_id', '=', 'giamuday')]"/>
+                    <filter string="Mũ Tạp" name="tap" domain="[('price_type_id', '=', 'giamutap')]"/>
+                    <filter string="Mũ Đông" name="dong" domain="[('price_type_id', '=', 'giamudong')]"/>
                     <filter string="Mặc Định" name="macdinh" domain="[('macdinh', '=', True)]"/>
                     <separator/>
-                    <filter string="Đại Lý" name="group_by_daily" context="{'group_by': 'daily'}"/>
-                    <filter string="Tổ" name="group_by_to" context="{'group_by': 'to'}"/>
+                    <filter string="Đại Lý" name="group_by_daily" context="{'group_by': 'daily_id'}"/>
+                    <filter string="Tổ" name="group_by_to" context="{'group_by': 'to_id'}"/>
                     <filter string="Loại Mũ" name="group_by_mu" context="{'group_by': 'price_type_id'}"/>
                     <filter string="Ngày Hiệu Lực" name="group_by_ngay" context="{'group_by': 'ngay_hieuluc'}"/>
                 </search>
@@ -91,5 +68,36 @@
             <field name="context">{'search_default_group_by_mu': 1}</field>
         </record> 
         
-    </data>
+        <record id="view_rubber_price_type_tree" model="ir.ui.view">
+            <field name="name">rubber.price.type.tree</field>
+            <field name="model">rubber.price.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_rubber_price_type_form" model="ir.ui.view">
+            <field name="name">rubber.price.type.form</field>
+            <field name="model">rubber.price.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_rubber_price_type" model="ir.actions.act_window">
+            <field name="name">Rubber Price Types</field>
+            <field name="res_model">rubber.price.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>        
 </odoo>

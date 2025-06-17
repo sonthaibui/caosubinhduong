@@ -8,14 +8,11 @@ class RubberPrice(models.Model):
     _rec_name = 'name'
     _order = "ngay_hieuluc desc, create_date desc"
     
-    to = fields.Many2many('hr.department', string='Tổ', 
-        relation='rubber_price_hr_department_rel',
-        column1='price_id',
-        column2='department_id',
+    to_id = fields.Many2one('hr.department', string='Tổ', 
         domain=[('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22'), ('name', 'not ilike', 'Tổ mì')], 
-        required=True)
+        required=True, ondelete='restrict')
     
-    daily = fields.Many2one('res.partner', string='Đại lý', 
+    daily_id = fields.Many2one('res.partner', string='Đại lý', 
         domain=[('is_customer', '=', 'True')], 
         required=True, ondelete='restrict',
         default=lambda self: self.env['res.partner'].search([('is_customer', '=', 'True')], limit=1))
@@ -30,76 +27,49 @@ class RubberPrice(models.Model):
     
     _sql_constraints = [
         ('unique_price_record',
-         'UNIQUE(price_type_id, to, daily, ngay_hieuluc)',
+         'UNIQUE(price_type_id, to_id, daily_id, ngay_hieuluc)',
          'A price record for this type, department, dealer and date already exists!')
     ]
     
-    @api.depends('to', 'daily', 'price_type_id', 'ngay_hieuluc', 'gia')
+    @api.depends('to_id', 'daily_id', 'price_type_id', 'ngay_hieuluc', 'gia')
     def _compute_name(self):
         for rec in self:
-            to_names = ", ".join(rec.to.mapped('name')) if rec.to else "All"
+            to_name = rec.to_id.name if rec.to_id else "All"
             price_type_name = rec.price_type_id.name if rec.price_type_id else ""
-            daily_name = rec.daily.name if rec.daily else ""
+            daily_name = rec.daily_id.name if rec.daily_id else ""
             date_str = rec.ngay_hieuluc.strftime('%d/%m/%Y') if rec.ngay_hieuluc else ""
-            rec.name = f"{daily_name}_{price_type_name}_{to_names}_{date_str}_{rec.gia:,.0f}"
+            rec.name = f"{daily_name}_{price_type_name}_{to_name}_{date_str}_{rec.gia:,.0f}"
 
     @api.constrains('to', 'daily', 'price_type_id', 'ngay_hieuluc')
     def _check_rubberdate_unique(self):
         for record in self:
-            if not (record.to and record.daily and record.price_type_id and record.ngay_hieuluc):
+            if not (record.to_id and record.daily_id and record.price_type_id and record.ngay_hieuluc):
                 continue
-            dublicate_price = self.search([
-                ('to', 'in', record.to.ids),
-                ('daily', '=', record.daily.id),
+            duplicate_price = self.search([
+                ('to_id', '=', record.to_id.id),
+                ('daily_id', '=', record.daily_id.id),
                 ('price_type_id', '=', record.price_type_id.id),
                 ('ngay_hieuluc', '=', record.ngay_hieuluc),
                 ('id', '!=', record.id)
             ])
-            if dublicate_price:
+            if duplicate_price:
                 raise ValidationError(
                     f"Giá cho {', '.join(record.to.mapped('name'))} đại lý {record.daily.name} loại {record.price_type_id.name} đã tồn tại cho ngày {record.ngay_hieuluc.strftime('%d/%m/%Y')}!"
                 )
     
-    @api.constrains('macdinh', 'price_type_id', 'to')
+    @api.constrains('macdinh', 'price_type_id', 'to_id')
     def _check_default(self):
         for rec in self:
             if rec.macdinh:
                 other_defaults = self.search([
                     ('id', '!=', rec.id),
-                    ('to', 'in', rec.to.ids),
+                    ('to_id', '=', rec.to_id.id),
                     ('price_type_id', '=', rec.price_type_id.id),
                     ('macdinh', '=', True)
                 ])
                 if other_defaults:
-                    other_defaults.write({'macdinh': False})
-    
-    @api.model
-    def get_price(self, price_type_id, to_ids, daily_id=False, ngay=False):
-        """Lấy giá áp dụng cho đại lý vào một ngày cụ thể"""
-        if not ngay:
-            ngay = fields.Date.today()
-        domain = [
-            ('price_type_id', '=', price_type_id),
-            ('to', 'in', to_ids),
-            ('ngay_hieuluc', '<=', ngay)
-        ]
-        # First try with specific daily
-        if daily_id:
-            daily_price = self.search([
-                ('daily', '=', daily_id),
-                *domain
-            ], order='ngay_hieuluc desc', limit=1)
-            if daily_price:
-                return daily_price.gia
-        # Fall back to default daily
-        default_price = self.search([
-            ('macdinh', '=', True),
-            *domain
-        ], order='ngay_hieuluc desc', limit=1)
-        if default_price:
-            return default_price.gia
-        return 0.0
-
+                    other_defaults.write({'macdinh': False})    
+   
     @api.model
     def create(self, vals):
         res = super(RubberPrice, self).create(vals)
@@ -110,7 +80,7 @@ class RubberPrice(models.Model):
     def write(self, vals):
         res = super(RubberPrice, self).write(vals)
         # Trigger price recalculation if price-related fields changed
-        if any(field in vals for field in ['mu', 'gia', 'to', 'daily', 'ngay_hieuluc', 'macdinh']):
+        if any(field in vals for field in ['price_type_id', 'gia', 'to_id', 'daily_id', 'ngay_hieuluc', 'macdinh']):
             self._update_affected_rubberdate_records()
         return res
 
@@ -120,27 +90,51 @@ class RubberPrice(models.Model):
             # Find all records from the effective date onward with matching team and product type
             domain = [
                 ('ngay', '>=', price.ngay_hieuluc),
-                ('to', 'in', price.to.ids),
-                ('price_type_id', '=', price.price_type_id.id)
+                ('to', '=', price.to_id.id),                
             ]
             affected_records = self.env['rubber.date'].search(domain)
             for record in affected_records:
-                if hasattr(record, '_compute_gia'):
-                    record._compute_gia()
+                if hasattr(record, '_compute_rubber_price'):
+                    record._compute_rubber_price()
                 if hasattr(record, '_compute_tien'):
                     record._compute_tien()
 
-    def action_open_price_wizard(self):
-        """Open the rubber price wizard"""
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Cập nhật giá mủ'),
-            'res_model': 'rubber.price.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {
-                'default_daily_id': self.daily.id if self.daily else False,
-                'default_to_ids': self.to.ids if self.to else [],
-                'default_ngay_hieuluc': fields.Date.today(),
-            },
-        }
+    def unlink(self):
+        # Collect affected rubber.date records before deleting prices
+        RubberDate = self.env['rubber.date']
+        affected_dates = RubberDate.browse()
+        for price in self:
+            # Find rubber.date records related to this price
+            dates = RubberDate.search([
+                ('to', '=', price.to_id.id),                
+                ('ngay', '>=', price.ngay_hieuluc),
+            ])
+            affected_dates |= dates
+        # Unlink the prices
+        res = super(RubberPrice, self).unlink()
+        # Recompute fields on affected rubber.date records
+        if affected_dates:
+            affected_dates._compute_rubber_price()
+            affected_dates._compute_tien()
+        return res    
+
+class RubberPriceType(models.Model):
+    _name = 'rubber.price.type'
+    _description = 'Rubber Price Type'
+
+    code = fields.Char(string='Code', required=True, unique=True)
+    name = fields.Char(string='Name', required=True)
+
+    @api.model
+    def create_default_type(self):
+        """Create the default price type if none exists."""
+        if not self.search([], limit=1):
+            self.create({
+                'code': 'giamunuoc',
+                'name': 'Giá mũ nước',
+            })
+
+    @api.model
+    def init(self):
+        """Ensure default record exists at module install/upgrade."""
+        self.create_default_type()
