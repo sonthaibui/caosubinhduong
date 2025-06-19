@@ -16,23 +16,26 @@ class RubberPriceWizard(models.TransientModel):
     price_type_ids = fields.Many2many('rubber.price.type', string='Loại giá')    
     
     ngay_hieuluc = fields.Date('Ngày hiệu lực', default=fields.Date.today)
-    show_ngay_hieuluc_suggestions = fields.Boolean(string="Hiển thị ngày hiệu lực đã có")
-    ngay_hieuluc_suggestions = fields.Html(string='Ngày hiệu lực đã có', readonly=True)
+    ngay_hieuluc_old = fields.Many2one('rubber.price.wizard.line', string='Ngày hiệu lực cũ')
 
     price_line_ids = fields.One2many('rubber.price.wizard.line', 'wizard_id', string='Giá mũ')
-    
+         
     #filter rubber.price.wizard.line in the range of rubber.price.wizard
-    @api.onchange('daily_ids', 'to_ids', 'ngay_hieuluc')
-    def _onchange_params(self):
-        domain = []
+    @api.onchange('daily_ids', 'to_ids', 'price_type_ids', 'ngay_hieuluc')
+    def onchange_params(self):
+        # --- For price_line_ids ---
+        price_line_domain = []
         if self.daily_ids:
-            domain.append(('daily_ids', 'in', self.daily_ids.ids))
+            price_line_domain.append(('daily_ids', 'in', self.daily_ids.ids))
         if self.to_ids:
-            domain.append(('to_ids', 'in', self.to_ids.ids))
+            price_line_domain.append(('to_ids', 'in', self.to_ids.ids))
+        if self.price_type_ids:
+            price_line_domain.append(('price_type_id', 'in', self.price_type_ids.ids))
         if self.ngay_hieuluc:
-            domain.append(('ngay_hieuluc', '=', self.ngay_hieuluc))
-        if domain:
-            price_lines = self.env['rubber.price.wizard.line'].search(domain)
+            price_line_domain.append(('ngay_hieuluc', '=', self.ngay_hieuluc))
+        # ...your logic to update price_line_ids...
+        if price_line_domain:
+            price_lines = self.env['rubber.price.wizard.line'].search(price_line_domain)
             # Set old_price = new_price for each found line
             for line in price_lines:
                 line.old_price = line.new_price
@@ -40,8 +43,77 @@ class RubberPriceWizard(models.TransientModel):
         else:
             self.price_line_ids = [(5, 0, 0)]
 
+        # --- For ngay_hieuluc_old ---
+        old_date_domain = []
+        if self.daily_ids:
+            old_date_domain.append(('daily_ids', 'in', self.daily_ids.ids))
+        if self.to_ids:
+            old_date_domain.append(('to_ids', 'in', self.to_ids.ids))
+        if self.price_type_ids:
+            old_date_domain.append(('price_type_id', 'in', self.price_type_ids.ids))
+        # Do NOT include ('ngay_hieuluc', '=', self.ngay_hieuluc) here
+
+        return {
+            'domain': {'ngay_hieuluc_old': old_date_domain}}
+
+    @api.onchange('ngay_hieuluc_old')
+    def _onchange_set_ngay_hieuluc(self):
+        if self.ngay_hieuluc_old:
+            self.ngay_hieuluc = self.ngay_hieuluc_old.ngay_hieuluc
+    
+    
     #Khi bấm nút "Lưu giá", sẽ lưu tất cả các giá đã thay đổi
-    def save_prices(self):
+    def save_prices(self):       
+        self.ensure_one()
+        # Gather all selected params from lines
+        all_to_ids = set()
+        all_daily_ids = set()
+        all_price_type_ids = set()
+        all_ngay_hieuluc = set()
+        valid_params = set()
+        for line in self.price_line_ids:
+            all_to_ids.update(line.to_ids.ids)
+            all_daily_ids.update(line.daily_ids.ids)
+            all_price_type_ids.add(line.price_type_id.id)
+            all_ngay_hieuluc.add(line.ngay_hieuluc)
+            
+
+        # 1. Unlink all other wizard lines matching these params but not in this wizard
+        WizardLine = self.env['rubber.price.wizard.line']
+        domain = [
+            ('to_ids', 'in', list(all_to_ids)),
+            ('daily_ids', 'in', list(all_daily_ids)),
+            ('price_type_id', 'in', list(all_price_type_ids)),
+            ('ngay_hieuluc', 'in', list(all_ngay_hieuluc)),
+            ('wizard_id', '!=', self.id),
+        ]
+        other_lines = WizardLine.search(domain)
+        other_lines.unlink()
+
+        
+
+        for line in self.price_line_ids:
+            # Build all valid combinations for this line
+            valid_keys = set(
+                (to_id, daily_id, line.price_type_id.id, line.ngay_hieuluc)
+                for to_id in line.to_ids.ids
+                for daily_id in line.daily_ids.ids
+            )
+
+            # Find all rubber.price records for this line's ngay_hieuluc, price_type_id, to_ids, daily_ids
+            prices = self.env['rubber.price'].search([
+                ('ngay_hieuluc', '=', line.ngay_hieuluc),
+                ('price_type_id', '=', line.price_type_id.id),
+                ('to_id', 'in', line.to_ids.ids),
+                ('daily_id', 'in', line.daily_ids.ids),]
+            )
+            
+            # Unlink prices not matching any valid key for this line
+            for price in prices:
+                key = (price.to_id.id, price.daily_id.id, price.price_type_id.id, price.ngay_hieuluc)
+                if key not in valid_keys:
+                    price.unlink()
+                    
         RubberPrice = self.env['rubber.price']
         created_or_updated_count = 0
         for rec in self:
@@ -61,6 +133,7 @@ class RubberPriceWizard(models.TransientModel):
                             'daily_id': daily.id,
                             'price_type_id': line.price_type_id.id,
                             'gia': line.new_price,  # Adjust if your field is named differently
+                            'macdinh': line.macdinh,
                         }
                         if price:
                             price.write(vals)
@@ -69,16 +142,16 @@ class RubberPriceWizard(models.TransientModel):
                             RubberPrice.create(vals)
                             created_or_updated_count += 1
         
-        # Show notification and return to the form
+        
+        # Show notification and keep the wizard open
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
-                'title': _('Success'),
-                'message': _('%s price records updated') % created_or_updated_count,
-                'type': 'success',
-                'sticky': False,
-                'next': {'type': 'ir.actions.act_window_close'},
+            'title': _('Success'),
+            'message': _('%s price records updated') % created_or_updated_count,
+            'type': 'success',
+            'sticky': False,
             }
         }
 
@@ -111,26 +184,9 @@ class RubberPriceWizard(models.TransientModel):
             'view_mode': 'form',
             'res_id': self.id,
             'target': 'new',
-        }
+        }        
 
-    @api.onchange('show_ngay_hieuluc_suggestions', 'price_type_ids')
-    def _onchange_show_ngay_hieuluc_suggestions(self):
-        if self.show_ngay_hieuluc_suggestions:
-            lines = self.env['rubber.price.wizard.line'].search([
-                ('price_type_id', 'in', self.price_type_ids.ids)
-            ])
-            dates = lines.mapped('ngay_hieuluc')
-            unique_dates = sorted(set(dates))
-            if unique_dates:
-                self.ngay_hieuluc_suggestions = (
-                    "<b>Ngày hiệu lực đã có:</b> " +
-                    " - ".join(d.strftime('%d.%m.%y') for d in unique_dates if d) + ";"
-                )
-            else:
-                self.ngay_hieuluc_suggestions = "<i>Chưa có ngày hiệu lực nào.</i>"
-        else:
-            self.ngay_hieuluc_suggestions = False
-
+    
 class RubberPriceWizardLine(models.TransientModel):
     _name = 'rubber.price.wizard.line'
     _description = 'Rubber Price Wizard Line'
@@ -151,6 +207,23 @@ class RubberPriceWizardLine(models.TransientModel):
         required=True)
     ngay_hieuluc = fields.Date('Áp dụng từ', required=True)
     macdinh = fields.Boolean('Mặc định')    
+    
+    def name_get(self):
+        result = []
+        for rec in self:
+            name = rec.ngay_hieuluc and rec.ngay_hieuluc.strftime('%d.%m.%y') or 'No Date'
+            result.append((rec.id, name))
+        return result
+
+    def action_delete_line(self):
+        self.unlink()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'rubber.price.wizard',
+            'view_mode': 'form',
+            'res_id': self.id,
+            'target': 'new',
+        } 
     
     def unlink(self):
         RubberPrice = self.env['rubber.price']
@@ -181,3 +254,23 @@ class RubberPriceWizardLine(models.TransientModel):
                     "A wizard line with the same 'ngay_hieuluc', 'price_type_id', 'to_ids', and 'daily_ids' already exists."
                 )
 
+    @api.constrains('macdinh', 'price_type_id', 'to_ids', 'ngay_hieuluc', 'wizard_id')
+    def _check_unique_macdinh_line(self):
+        for line in self:
+            if line.macdinh:
+                for to in line.to_ids:
+                    # Find other lines in the same wizard with the same price_type_id, ngay_hieuluc, and this to_id
+                    domain = [
+                        ('macdinh', '=', True),
+                        ('price_type_id', '=', line.price_type_id.id),
+                        ('to_ids', 'in', to.id),
+                        ('ngay_hieuluc', '=', line.ngay_hieuluc),
+                        ('wizard_id', '=', line.wizard_id.id),
+                        ('id', '!=', line.id),
+                    ]
+                    if self.search_count(domain):
+                        raise ValidationError(
+                            "Chỉ được phép lấy giá một đại lý làm mặc định cho mỗi loại giá, trong cùng tổ và ngày hiệu lực trong wizard. "
+                            f"Tổ bị trùng: {to.name}"
+                        )
+    

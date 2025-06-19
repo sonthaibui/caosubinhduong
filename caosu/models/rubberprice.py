@@ -57,18 +57,21 @@ class RubberPrice(models.Model):
                     f"Giá cho {', '.join(record.to.mapped('name'))} đại lý {record.daily.name} loại {record.price_type_id.name} đã tồn tại cho ngày {record.ngay_hieuluc.strftime('%d/%m/%Y')}!"
                 )
     
-    @api.constrains('macdinh', 'price_type_id', 'to_id')
-    def _check_default(self):
+    @api.constrains('macdinh', 'price_type_id', 'to_id', 'ngay_hieuluc')
+    def _check_unique_macdinh(self):
         for rec in self:
             if rec.macdinh:
-                other_defaults = self.search([
-                    ('id', '!=', rec.id),
-                    ('to_id', '=', rec.to_id.id),
+                domain = [
+                    ('macdinh', '=', True),
                     ('price_type_id', '=', rec.price_type_id.id),
-                    ('macdinh', '=', True)
-                ])
-                if other_defaults:
-                    other_defaults.write({'macdinh': False})    
+                    ('to_id', '=', rec.to_id.id),
+                    ('ngay_hieuluc', '=', rec.ngay_hieuluc),
+                    ('id', '!=', rec.id),
+                ]
+                if self.search_count(domain):
+                    raise ValidationError(
+                        "Chỉ được phép có một dòng mặc định cho mỗi loại giá, tổ và ngày hiệu lực."
+                    )
    
     @api.model
     def create(self, vals):

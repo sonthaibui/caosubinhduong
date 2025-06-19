@@ -5,7 +5,7 @@
         <field name="name">rubber.price.wizard.form</field>
         <field name="model">rubber.price.wizard</field>
         <field name="arch" type="xml">
-            <form string="Cập nhật giá mủ hàng loạt">
+            <form string="Cập nhật giá mủ hàng loạt">                
                 <sheet>
                     <div class="oe_title">
                         <h1>Cập nhật giá mủ</h1>
@@ -15,17 +15,16 @@
                             <field name="daily_ids" widget="many2many_tags"/>
                             <field name="to_ids" widget="many2many_tags"/>
                             <field name="price_type_ids" widget="many2many_tags"/>
+                            <field name="ngay_hieuluc_old"/>
                             <field name="ngay_hieuluc"/>                            
+                            
                         </group>
-                        <group> 
-                            <field name="ngay_hieuluc_suggestions" widget="html" readonly="1"/>
-                            <field name="show_ngay_hieuluc_suggestions"/>
-                        </group>                       
+                                               
                     </group>
                     <notebook>
                         <page string="Giá mủ">
                             <field name="price_line_ids">
-                                <tree editable="false">
+                                <tree editable="bottom">
                                     <field name="price_type_id"/>
                                     <field name="old_price" readonly="1"/>
                                     <field name="new_price"/>
@@ -33,12 +32,13 @@
                                     <field name="to_ids" widget="many2many_tags"/>
                                     <field name="ngay_hieuluc"/>
                                     <field name="macdinh"/>
-                                </tree>
+                                    <button name="action_delete_line" type="object" string="Xóa giá"  icon="fa-trash" />                                  
+                                </tree>                                
                             </field>
                         </page>
                     </notebook>
                 </sheet>
-                <footer>
+                <footer>                    
                     <button name="save_prices" string="Lưu giá" type="object" class="btn-primary"/>
                     <button string="Hủy" class="btn-secondary" special="cancel"/>
                     <button name="action_load_lines" type="object" string="Load Lines" class="oe_highlight"/>
@@ -51,7 +51,7 @@
     <record id="action_rubber_price_wizard" model="ir.actions.act_window">
         <field name="name">Cập nhật giá mủ</field>
         <field name="res_model">rubber.price.wizard</field>
-        <field name="view_mode">form</field>
+        <field name="view_mode">form</field>        
         <field name="target">new</field>
     </record>   
 
@@ -60,7 +60,7 @@
         <field name="name">rubber.price.wizard.line.tree</field>
         <field name="model">rubber.price.wizard.line</field>
         <field name="arch" type="xml">
-            <tree create="0" edit="0">
+            <tree string="Wizard Line">
                 <field name="ngay_hieuluc"/>
                 <field name="to_ids" />
                 <field name="daily_ids" />
@@ -76,7 +76,7 @@
         <field name="name">rubber.price.wizard.line.form</field>
         <field name="model">rubber.price.wizard.line</field>
         <field name="arch" type="xml">
-            <form create="0" edit="0" string="Wizard Line" readonly="True">
+            <form string="Wizard Line">
                 <sheet>
                     <group>
                         <field name="price_type_id" />
@@ -104,8 +104,7 @@
                 <field name="price_type_id"/>
                 <group expand="0" string="Group By">
                     <filter name="group_ngay_hieuluc_year" string="Year" context="{'group_by':'ngay_hieuluc:year'}"/>
-                    <filter name="group_ngay_hieuluc_month" string="Month" context="{'group_by':'ngay_hieuluc:month'}"/>
-                    <filter name="group_ngay_hieuluc_date" string="Ngay" context="{'group_by':'ngay_hieuluc:date'}"/>
+                    <filter name="group_ngay_hieuluc_month" string="Month" context="{'group_by':'ngay_hieuluc:month'}"/>                    
                 </group>
             </search>
         </field>
@@ -117,7 +116,7 @@
         <field name="res_model">rubber.price.wizard.line</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_rubber_price_wizard_line_search"/>
-        <field name="context">{'search_default_group_ngay_hieuluc_year': 1, 'search_default_group_ngay_hieuluc_month': 1, 'search_default_group_ngay_hieuluc_date': 1}</field>        
+        <field name="context">{'search_default_group_ngay_hieuluc_year': 1, 'search_default_group_ngay_hieuluc_month': 1, 'search_default_group_ngay_hieuluc_date': 1, 'create': False, 'edit': False}</field>        
         
     </record>
 </odoo>

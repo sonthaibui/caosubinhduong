@@ -248,10 +248,10 @@
                               <field name="planname" string="STT"/>
                               <field name="phep" style="border-top-style: solid !important;border-width: 1px !important;"/>
                               <field name="empname" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                              <field name="munuoc1" style="border-top-style: solid !important;border-width: 1px !important;" optional="show"/>
+                              <field name="munuoc1" style="border-top-style: solid !important;border-width: 1px !important;" sum="munuoc1" optional="show"/>
                               <field name="munuoc2" style="border-top-style: solid !important;border-width: 1px !important;" optional="hide"/>
                               <field name="munuoc3" style="border-top-style: solid !important;border-width: 1px !important;" optional="hide"/>
-                              <field name="mutap1" style="border-top-style: solid !important;border-width: 1px !important;" optional="show"/>
+                              <field name="mutap1" style="border-top-style: solid !important;border-width: 1px !important;" sum="mutap1" optional="show"/>
                               <field name="mutap2" style="border-top-style: solid !important;border-width: 1px !important;" optional="hide"/>
                               <field name="congnuoc" style="border-top-style: solid !important;border-width: 1px !important;" sum="congnuoc" optional="hide"/>
                               <field name="congtap" style="border-top-style: solid !important;border-width: 1px !important;" sum="congtap" optional="hide"/>

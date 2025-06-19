@@ -637,7 +637,7 @@ class RubberByDate(models.Model):
                     ('price_type_id.code', '=', code),
                     ('ngay_hieuluc', '<=', rec.ngay),
                     ('to_id', '=', rec.to.id),
-                    ('daily_id.name', '=', "Xe tải nhà"),
+                    ('macdinh', '=', "True"),
                 ], order='ngay_hieuluc desc', limit=1)
                 if price:
                     setattr(rec, field, price.gia)
