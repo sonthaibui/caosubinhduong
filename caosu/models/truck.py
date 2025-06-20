@@ -51,10 +51,51 @@ class CompanyTruck(models.Model):
             ('sanpham', '=', 'nuoc')
         ]
     )
-    delivertap_line_ids = fields.One2many('rubber.deliver', 'company_truck_id', string='Nhận mũ tạp', domain=[('sanpham','=','tap'),('state','in',['giao','mua','nhan'])])
-    deliverday_line_ids = fields.One2many('rubber.deliver', 'company_truck_id', string='Nhận mũ dây', domain=[('sanpham','=','day'),('state','in',['giao','mua','nhan'])])
-    deliverdong_line_ids = fields.One2many('rubber.deliver', 'company_truck_id', string='Nhận mũ đông', domain=[('sanpham','=','dong'),('state','in',['giao','mua','nhan'])])
-    deliverchen_line_ids = fields.One2many('rubber.deliver', 'company_truck_id', string='Nhận mũ chén', domain=[('sanpham','=','chen'),('state','in',['giao','mua','nhan'])])
+    ddelivertap_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',
+        string='Nhận mũ tạp',
+        domain=[
+            '|',
+            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
+            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
+            ('sanpham', '=', 'tap')
+        ]
+    )
+    deliverday_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',
+        string='Nhận mũ dây',
+        domain=[
+            '|',
+            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
+            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
+            ('sanpham', '=', 'day')
+        ]       
+    )
+    deliverdong_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',
+        string='Nhận mũ đông',
+        domain=[
+            '|',
+            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
+            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
+            ('sanpham', '=', 'dong')    
+        ]
+    )
+    deliverchen_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',
+        string='Nhận mũ chén',
+        domain=[
+            '|',
+            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
+            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
+            ('sanpham', '=', 'chen')
+        ]
+    )
+    
     sell_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ nước', domain=[('sanpham','=','nuoc')])
     selltap_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ tạp', domain=[('sanpham','=','tap')])
     sellday_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ dây', domain=[('sanpham','=','day')])
