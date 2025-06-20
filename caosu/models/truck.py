@@ -51,7 +51,7 @@ class CompanyTruck(models.Model):
             ('sanpham', '=', 'nuoc')
         ]
     )
-    ddelivertap_line_ids = fields.One2many(
+    delivertap_line_ids = fields.One2many(
         'rubber.deliver',
         'company_truck_id',
         string='Nhận mũ tạp',
