@@ -54,6 +54,7 @@
                                         <field name="ngay"/>
                                         <field name="to"/>
                                         <field name="daily" widget="selection" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
+                                        <!--<field name="sanpham_id" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>-->
                                         <field name="sanpham" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
                                       </group>
                                       <group>
@@ -71,6 +72,7 @@
                                   <field name="to"/>
                                   <field name="daily"/>
                                   <field name="sanpham"/>
+                                  <!--<field name="sanpham_id"/>-->
                                   <field name="soluong"/>
                                   <field name="do"/>
                                   <field name="quykho" digits = "[42,0]" />
@@ -463,6 +465,36 @@
                 Nhập sản lượng công nhân cạo hằng ngày.
             </p>
         </field>
+    </record>
+
+    <record id="view_sanpham_tree" model="ir.ui.view">
+        <field name="name">sanpham.tree</field>
+        <field name="model">sanpham</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_sanpham_form" model="ir.ui.view">
+        <field name="name">sanpham.form</field>
+        <field name="model">sanpham</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_sanpham" model="ir.actions.act_window">
+        <field name="name">Sản phẩm</field>
+        <field name="res_model">sanpham</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
 </odoo>

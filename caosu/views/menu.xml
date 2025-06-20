@@ -112,8 +112,36 @@
         parent="banmu_menu"
         action="action_rubber_price"
         sequence="5"/>
-    
-    
+    <menuitem 
+        id="menu_sanpham"
+        name="Loại mũ"
+        parent="banmu_menu"
+        action="action_sanpham"
+        sequence="6"/>
+    <menuitem 
+        id="menu_rubber_deliver"
+        name="Giao mủ"
+        parent="banmu_menu"
+        action="action_rubber_deliver"
+        sequence="7"/>
+    <menuitem 
+        id="menu_rubber_buy"
+        name="Mua mủ"
+        parent="banmu_menu"
+        action="action_rubber_buy"
+        sequence="8"/>    
+    <menuitem 
+        id="menu_rubber_sell"
+        name="Bán mủ"
+        parent="banmu_menu"
+        action="action_rubber_sell"
+        sequence="9"/>
+    <menuitem 
+        id="menu_rubber_harvest"
+        name="Thu hoạch mủ"
+        parent="banmu_menu"
+        action="action_rubber_harvest"
+        sequence="10"/>
 
     <menuitem
         id="luong_menu"

@@ -27,7 +27,30 @@ class CompanyTruck(models.Model):
     nam_kt = fields.Char('Năm khai thác', compute='_compute_ngay', store=True)
     ngayban = fields.Date('Ngày bán', default=fields.Datetime.now(), required=True, tracking=True, store=True)
     recorded = fields.Boolean('recorded', default=False, compute='_compute_recorded')
-    deliver_line_ids = fields.One2many('rubber.deliver', 'company_truck_id', string='Nhận mũ nước', domain=[('sanpham','=','nuoc'),('state','in',['giao','mua','nhan'])])
+    sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
+    all_deliver_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',
+        string='All Delivery Lines'
+    )
+    delivermu_line_ids = fields.One2many(
+        'rubber.deliver', 
+        'company_truck_id', 
+        string='Delivery Lines',
+        compute='_compute_delivermu_line_ids',
+        store=True
+    )
+    deliver_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',
+        string='Nhận mũ nước',
+        domain=[
+            '|',
+            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
+            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
+            ('sanpham', '=', 'nuoc')
+        ]
+    )
     delivertap_line_ids = fields.One2many('rubber.deliver', 'company_truck_id', string='Nhận mũ tạp', domain=[('sanpham','=','tap'),('state','in',['giao','mua','nhan'])])
     deliverday_line_ids = fields.One2many('rubber.deliver', 'company_truck_id', string='Nhận mũ dây', domain=[('sanpham','=','day'),('state','in',['giao','mua','nhan'])])
     deliverdong_line_ids = fields.One2many('rubber.deliver', 'company_truck_id', string='Nhận mũ đông', domain=[('sanpham','=','dong'),('state','in',['giao','mua','nhan'])])
@@ -137,6 +160,23 @@ class CompanyTruck(models.Model):
                 else:
                     rec.nam_kt = rec.nam
 
+    @api.depends('ngaygiao', 'sanpham_id', 'all_deliver_line_ids')
+    def _compute_delivermu_line_ids(self):
+        for truck in self:
+            lines = truck.all_deliver_line_ids.filtered(
+                lambda l: l.ngay == truck.ngaygiao and
+                        (l.soluong != 0 or l.soluongtt != 0) and
+                        l.state in ['giao', 'nhan', 'mua'])
+            
+            if truck.sanpham_id:
+                lines = lines.filtered(
+                    lambda l: l.sanpham_id == truck.sanpham_id
+                )
+            else:
+                # Sort by daily, then sanpham
+                lines = lines.sorted(key=lambda l: (l.daily, l.sanpham_id))
+            truck.delivermu_line_ids = lines
+        
     def mua_mu(self):
         self.ensure_one()
         if len(self.env['rubber.date'].search([('ngay','=',self.ngaygiao),('to_name', '=', 'TỔ Xe tải')])) == False:
@@ -161,12 +201,27 @@ class CompanyTruck(models.Model):
         self.ensure_one()
         self.nhannuoc = False
         self.nhannuoc1 = False
-        rbd = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','nuoc'),('state','in',['giao','nhan'])])
+        rbd = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'nuoc'),            
+        ])
+        
+        
         if len(rbd) > 0:
             self.nhannuoc = True
         else:
             self.nhannuoc = False
-        rbd1 = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','!=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','nuoc'),('state','in',['giao','nhan'])])
+        rbd1 = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'nuoc'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd1) > 0:
             self.nhannuoc1 = True
         else:
@@ -177,12 +232,26 @@ class CompanyTruck(models.Model):
         self.ensure_one()
         self.nhantap = False
         self.nhantap1 = False
-        rbd = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','tap'),('state','in',['giao','nhan'])])
+        rbd = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'tap'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd) > 0:
             self.nhantap = True
         else:
             self.nhantap = False
-        rbd1 = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','!=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','tap'),('state','in',['giao','nhan'])])
+        rbd1 = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'tap'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd1) > 0:
             self.nhantap1 = True
         else:
@@ -193,12 +262,26 @@ class CompanyTruck(models.Model):
         self.ensure_one()
         self.nhanday = False
         self.nhanday1 = False
-        rbd = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','day'),('state','in',['giao','nhan'])])
+        rbd = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'day'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd) > 0:
             self.nhanday = True
         else:
             self.nhanday = False
-        rbd1 = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','!=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','day'),('state','in',['giao','nhan'])])
+        rbd1 = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'day'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd1) > 0:
             self.nhanday1 = True
         else:
@@ -209,12 +292,26 @@ class CompanyTruck(models.Model):
         self.ensure_one()
         self.nhandong = False
         self.nhandong1 = False
-        rbd = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','dong'),('state','in',['giao','nhan'])])
+        rbd = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'dong'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd) > 0:
             self.nhandong = True
         else:
             self.nhandong = False
-        rbd1 = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','!=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','dong'),('state','in',['giao','nhan'])])
+        rbd1 = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'dong'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd1) > 0:
             self.nhandong1 = True
         else:
@@ -225,12 +322,26 @@ class CompanyTruck(models.Model):
         self.ensure_one()
         self.nhanchen = False
         self.nhanchen1 = False
-        rbd = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','chen'),('state','in',['giao','nhan'])])
+        rbd = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'chen'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd) > 0:
             self.nhanchen = True
         else:
             self.nhanchen = False
-        rbd1 = self.env['rubber.deliver'].search([('ngay','=',self.ngaygiao),('daily_name','!=','Xe tải nhà'),('soluong','!=',0),('sanpham','=','chen'),('state','in',['giao','nhan'])])
+        rbd1 = self.env['rubber.deliver'].search([
+            ('ngay', '=', self.ngaygiao),
+            '|',
+            ('soluong', '!=', 0),
+            ('soluongtt', '!=', 0),
+            ('sanpham', '=', 'chen'),
+            ('state', 'in', ['giao', 'nhan', 'mua'])
+        ])
         if len(rbd1) > 0:
             self.nhanchen1 = True
         else:
@@ -551,8 +662,8 @@ class CompanyTruck(models.Model):
         companytruck_counts = self.search_count([('ngaygiao','=',self.ngaygiao),('id','!=',self.id)])
         if companytruck_counts > 0:
             raise ValidationError("Nhận và bán ngày " + str(datetime.strptime(str(self.ngaygiao),'%Y-%m-%d').strftime('%d/%m/%Y')) + " đã tồn tại.")
-        if len(self.env['rubber.date'].search([('ngay','=',self.ngaygiao)])) == False:
-            raise ValidationError(_('Ngày ' + str(datetime.strptime(str(self.ngaygiao),'%Y-%m-%d').strftime('%d/%m/%Y')) + ' không có mũ giao.'))
+        '''if len(self.env['rubber.date'].search([('ngay','=',self.ngaygiao)])) == False:
+            raise ValidationError(_('Ngày ' + str(datetime.strptime(str(self.ngaygiao),'%Y-%m-%d').strftime('%d/%m/%Y')) + ' không có mũ giao.'))'''
 
     def _compute_recorded(self):
         for rec in self:

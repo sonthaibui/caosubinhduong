@@ -1008,3 +1008,14 @@ class RubberByDate(models.Model):
                     color = color3 or 'red'
             rec.tyle_chen_haohut = f'<span style="color:{color};">{val:.0f}%</span>'
 
+class SanPham(models.Model):
+    _name = 'sanpham'
+    _description = 'Sản phẩm'
+
+    code = fields.Char(string='code')
+    name = fields.Char(string='Loại mũ', required=True, help="Loại mũ này sẽ được sử dụng trong các báo cáo và tính toán sản lượng.")
+
+    @api.model
+    def create_default_sanpham(self):
+        if not self.search([], limit=1):
+            self.create({'code': 'nuoc', 'name': 'Mũ nước'})
