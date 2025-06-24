@@ -9,7 +9,7 @@ class RubberHarvest(models.Model):
 
     to = fields.Char('Tổ', readonly=True)
     daily = fields.Char('Đại lý', readonly=True)
-    source = fields.Many2one('res.partner', string='Gốc', domain=[('is_customer','=',True)], store=True)
+    source = fields.Many2one('res.partner', string='Gốc' related='rubberdeliver_id.daily')
     sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
     sanpham = fields.Selection([
         ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
@@ -126,8 +126,7 @@ class RubberDeliver(models.Model):
             elif rec.daily_name != 'Xe tải nhà':
                 rec.env['rubber.harvest'].create({
                     'to': rec.to,
-                    'daily': rec.daily_name,
-                    'source': rec.daily.id,
+                    'daily': rec.daily_name,                    
                     'sanpham': rec.sanpham,
                     'soluong': rec.soluong,
                     'tyle': 1.0,
@@ -193,13 +192,13 @@ class RubberSell(models.Model):
                 for rbd in rbds:
                     rec.env['rubber.harvest'].create({
                         'to': rbd.to,
-                        'daily': rec.daily.name,
-                        'source': rbd.daily.id,
+                        'daily': rec.daily.name,                        
                         'sanpham': rec.sanpham,
                         'tyle': rbd.tyle,
                         'soluong': rec.soluong,
                         'do': rec.do,
                         'rubbersell_id': rec.id,
+                        'rubberdeliver_id': rbd.id,
                         'company_truck_id': rec.company_truck_id.id,
                     })
     
