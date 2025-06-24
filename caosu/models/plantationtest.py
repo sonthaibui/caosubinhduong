@@ -51,7 +51,8 @@ class PlantationTest(models.Model):
 
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Mã')#, compute='_compute_ma_to')
-    nongtruong = fields.Selection([('DHR', 'Đăk Hring'), ('DRE', 'Đăk Tờ Re'),('THTR', 'Thanh Trung'),('DTH', 'Triệu Hải'),('SS', 'Sa Sơn'),('IL', 'Ia Le')], string='Nông Trường', default='DHR', required=True)
+    location_id = fields.Many2one('location', string='Khu vực')
+    nongtruong = fields.Selection([('DHR', 'Đăk Hring'), ('DRE', 'Đăk Tờ Re'),('THTR', 'Thanh Trung'),('DTH', 'Triệu Hải'),('SS', 'Sa Sơn'),('IL', 'Ia Le')], string='Nông Trường', default='DHR')
     loso = fields.Char('Lô Số', default='1')
     sophan = fields.Char('Số Hàng', default='1')
     to = fields.Many2one('hr.department', string='Tổ', domain=[('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22')], required=True,

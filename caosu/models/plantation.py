@@ -9,7 +9,8 @@ class Plantation(models.Model):
     active = fields.Boolean('Active', default=True)
     can_duplicate = fields.Boolean('Can Duplicate', default=False)
     name = fields.Char('Mã')#, compute='_compute_ma_to')
-    nongtruong = fields.Selection([('DHR', 'Đăk Hring'), ('DRE', 'Đăk Tờ Re'),('THTR', 'Thanh Trung'),('DTH', 'Triệu Hải'),('SS', 'Sa Sơn'),('IL', 'Ia Le')], string='Nông Trường', default='DHR', required=True)
+    location_id = fields.Many2one('location', string='Khu vực', required=True)
+    nongtruong = fields.Selection([('DHR', 'Đăk Hring'), ('DRE', 'Đăk Tờ Re'),('THTR', 'Thanh Trung'),('DTH', 'Triệu Hải'),('SS', 'Sa Sơn'),('IL', 'Ia Le')], string='Nông Trường', default='DHR')
     loso = fields.Char('Lô Số', default='1')
     sophan = fields.Char('Số Hàng', default='1')
     to = fields.Many2one('hr.department', string='Tổ', domain=[('name', 'like', 'TỔ '),('name', '!=', 'TỔ 22')], required=True,
@@ -86,3 +87,10 @@ class Plantation(models.Model):
             return super(Plantation, self).copy()
         elif self.can_duplicate == False:
             raise ValidationError("Plantation with worker already exists!")
+
+class location(models.Model):
+    _name = 'location'
+    _description = 'Khu vực'
+
+    code = fields.Char(string='Mã')
+    name = fields.Char(string='Tên')

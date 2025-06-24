@@ -17,6 +17,7 @@
         'views/account_bank_statement_line_views_inherit.xml',
         #'views/project_task_kanban_views.xml',
         'views/ir_module_module_views.xml',
+        'views/hr_department_views.xml',
         'data/ir_module_module_actions.xml',
         'data/ir_project_task_action.xml',
         

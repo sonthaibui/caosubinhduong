@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import datetime
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -26,7 +27,7 @@ class CompanyTruck(models.Model):
     nam = fields.Char('Năm', compute='_compute_ngay', store=True)
     nam_kt = fields.Char('Năm khai thác', compute='_compute_ngay', store=True)
     ngayban = fields.Date('Ngày bán', default=fields.Datetime.now(), required=True, tracking=True, store=True)
-    recorded = fields.Boolean('recorded', default=False, compute='_compute_recorded')
+    #recorded = fields.Boolean('recorded', default=False, compute='_compute_recorded')
     sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
     all_deliver_line_ids = fields.One2many(
         'rubber.deliver',
@@ -161,7 +162,7 @@ class CompanyTruck(models.Model):
     soluongban_chen = fields.Float('SL nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')
     doban_chen = fields.Float('Độ nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')
     quykhoban_chen = fields.Float('QK nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    harvest_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string="Mũ nước xe tải", domain=[('sanpham','=','nuoc'),('rubbersell_id','!=',False)])
+    harvest_line_ids = fields.One2many('rubber.harvest', 'company_truck_id')
     harvesttap_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ tạp xe tải', domain=[('sanpham','=','tap'),('rubbersell_id','!=',False)])
     harvestday_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ dây xe tải', domain=[('sanpham','=','day'),('rubbersell_id','!=',False)])
     harvestdong_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ đông xe tải', domain=[('sanpham','=','dong'),('rubbersell_id','!=',False)])
@@ -171,18 +172,19 @@ class CompanyTruck(models.Model):
     harvestday1_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ dây trực tiếp', domain=[('sanpham','=','day'),('rubbersell_id','=',False)])
     harvestdong1_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ đông trực tiếp', domain=[('sanpham','=','dong'),('rubbersell_id','=',False)])
     harvestchen1_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ chén trực tiếp', domain=[('sanpham','=','chen'),('rubbersell_id','=',False)])
-    nhannuoc = fields.Boolean(compute='_compute_nhannuoc', string='Nhận mũ nước xe tải')
+    #nhannuoc = fields.Boolean(compute='_compute_nhannuoc', string='Nhận mũ nước xe tải')
     nhantap = fields.Boolean(compute='_compute_nhantap', string='Nhận mũ tạp xe tải')
     nhanday = fields.Boolean(compute='_compute_nhanday', string='Nhận mũ dây xe tải')
     nhandong = fields.Boolean(compute='_compute_nhandong', string='Nhận mũ đông xe tải')
     nhanchen = fields.Boolean(compute='_compute_nhanchen', string='Nhận mũ chén xe tải')
-    nhannuoc1 = fields.Boolean(compute='_compute_nhannuoc', string='Nhận mũ nước trực tiếp')
+    #nhannuoc1 = fields.Boolean(compute='_compute_nhannuoc', string='Nhận mũ nước trực tiếp')
     nhantap1 = fields.Boolean(compute='_compute_nhantap', string='Nhận mũ tạp trực tiếp')
     nhanday1 = fields.Boolean(compute='_compute_nhanday', string='Nhận mũ dây trực tiếp')
     nhandong1 = fields.Boolean(compute='_compute_nhandong', string='Nhận mũ đông trực tiếp')
     nhanchen1 = fields.Boolean(compute='_compute_nhanchen', string='Nhận mũ chén trực tiếp')
     nguoitao = fields.Char(compute='_compute_nguoitao', string='Người Tạo:')
-    
+    debug = fields.Html('Debug Info')    
+
     @api.model
     def _compute_nguoitao(self):
         self.nguoitao = str(self.env.user.id)
@@ -193,15 +195,15 @@ class CompanyTruck(models.Model):
             rec.thang = '01'
             rec.nam = '2024'
             rec.nam_kt = '2024'
-            if rec.recorded == True:
-                rec.thang = datetime.strptime(str(rec.ngaygiao),'%Y-%m-%d').strftime('%m')
-                rec.nam = datetime.strptime(str(rec.ngaygiao),'%Y-%m-%d').strftime('%Y')
-                if rec.thang == '01':
-                    rec.nam_kt = str(int(rec.nam) - 1)
-                else:
-                    rec.nam_kt = rec.nam
+            #if rec.recorded == True:
+            rec.thang = datetime.strptime(str(rec.ngaygiao),'%Y-%m-%d').strftime('%m')
+            rec.nam = datetime.strptime(str(rec.ngaygiao),'%Y-%m-%d').strftime('%Y')
+            if rec.thang == '01':
+                rec.nam_kt = str(int(rec.nam) - 1)
+            else:
+                rec.nam_kt = rec.nam
 
-    @api.depends('ngaygiao', 'sanpham_id', 'all_deliver_line_ids')
+    '''@api.depends('ngaygiao', 'sanpham_id', 'all_deliver_line_ids')
     def _compute_delivermu_line_ids(self):
         for truck in self:
             lines = truck.all_deliver_line_ids.filtered(
@@ -216,7 +218,7 @@ class CompanyTruck(models.Model):
             else:
                 # Sort by daily, then sanpham
                 lines = lines.sorted(key=lambda l: (l.daily, l.sanpham_id))
-            truck.delivermu_line_ids = lines
+            truck.delivermu_line_ids = lines'''
         
     def mua_mu(self):
         self.ensure_one()
@@ -237,7 +239,7 @@ class CompanyTruck(models.Model):
                 'default_state': 'mua'})
             }
     
-    @api.depends('deliver_line_ids')
+    '''@api.depends('deliver_line_ids')
     def _compute_nhannuoc(self):
         self.ensure_one()
         self.nhannuoc = False
@@ -266,7 +268,7 @@ class CompanyTruck(models.Model):
         if len(rbd1) > 0:
             self.nhannuoc1 = True
         else:
-            self.nhannuoc1 = False
+            self.nhannuoc1 = False'''
     
     @api.depends('delivertap_line_ids')
     def _compute_nhantap(self):
@@ -706,31 +708,120 @@ class CompanyTruck(models.Model):
         '''if len(self.env['rubber.date'].search([('ngay','=',self.ngaygiao)])) == False:
             raise ValidationError(_('Ngày ' + str(datetime.strptime(str(self.ngaygiao),'%Y-%m-%d').strftime('%d/%m/%Y')) + ' không có mũ giao.'))'''
 
-    def _compute_recorded(self):
-        for rec in self:
-            rec.recorded = False
-            if len(rec.deliver_line_ids) > 0:
-                rec.recorded = True
-            elif str(rec.id).replace('NewId_', '')[0:2] != "0x":
-                if len(self.env['rubber.date'].search([('ngay','=',rec.ngaygiao)])) > 0:
-                    rec.recorded = True
-                    rds = self.env['rubber.date'].search([('ngay','=',rec.ngaygiao)])
-                    for rd in rds:
-                        if len(self.env['rubber.deliver'].search([('daily_name','=','Xe tải nhà'),('ngay','=',rd.ngay),('state','in',['giao','nhan'])])) > 0:
-                            drs = self.env['rubber.deliver'].search([('daily_name','=','Xe tải nhà'),('ngay','=',rd.ngay),('state','in',['giao','nhan'])])
-                            for dr in drs:
-                                dr.company_truck_id = rec.id
-                                dr.soluongtt = dr.soluong
-                                dr.dott = dr.do
-                        if len(self.env['rubber.deliver'].search([('to','=','TỔ Xe tải'),('ngay','=',rd.ngay),('state','=','mua')])) > 0:
-                            drs = self.env['rubber.deliver'].search([('to','=','TỔ Xe tải'),('ngay','=',rd.ngay),('state','=','mua')])
-                            for dr in drs:
-                                dr.company_truck_id = rec.id
-                        if len(self.env['rubber.deliver'].search([('to','!=','TỔ Xe tải'),('daily_name','!=','Xe tải nhà'),('ngay','=',rd.ngay),('state','in',['giao','nhan'])])) > 0:
-                            drs = self.env['rubber.deliver'].search([('to','!=','TỔ Xe tải'),('daily_name','!=','Xe tải nhà'),('ngay','=',rd.ngay),('state','in',['giao','nhan'])])
-                            for dr in drs:
-                                dr.company_truck_id = rec.id
-                                if len(self.env['rubber.harvest'].search([('rubberdeliver_id','=',dr.id)])) > 0:
-                                    hrs = self.env['rubber.harvest'].search([('rubberdeliver_id','=',dr.id)])
-                                    for hr in hrs:
-                                        hr.company_truck_id = rec.id
+    '''def _compute_recorded(self):
+        for rec in self:            
+            rec.recorded = True'''   
+                        
+                
+
+    def action_create_sale_order_from_harvest_lines(self):
+        self.ensure_one()
+        selected_lines = self.harvest_line_ids.filtered(lambda l: l.selected)  # or your selection logic
+        if not selected_lines:
+            raise UserError("Please select at least one harvest line.")
+
+        # Group lines by (daily, to)
+        lines_by_daily_to = defaultdict(list)
+        for line in selected_lines:
+            if line.daily and line.to:
+                key = (line.daily, line.to)
+                lines_by_daily_to[key].append(line)
+
+        SaleOrder = self.env['sale.order']
+        SaleOrderLine = self.env['sale.order.line']
+        Partner = self.env['res.partner']
+        Product = self.env['product.product']
+        sanpham_map = {
+            'nuoc': 'MUNUOC',
+            'tap': 'MUTAP',
+            'day': 'MUDAY',
+            'dong': 'MUDONG',
+            'chen': 'MUCHEN',
+        }
+        created_orders = []
+        for (daily_name, to_name), lines in lines_by_daily_to.items():
+            # Find partner by name
+            partner = Partner.search([('name', '=', daily_name)], limit=1)
+            if not partner:
+                continue  # Or handle missing partner as needed
+            # Find to_id by name
+            to_id = self.env['hr.department'].search([('name', '=', to_name)], limit=1)
+            analytic_account_id = to_id.analytic_account_id.id if to_id and to_id.analytic_account_id else False
+            # Find max ngay for date_order
+            max_ngay = max(line.ngay for line in lines if line.ngay)       
+            
+            # Create sale order
+            sale_order_vals = {
+                'partner_id': partner.id,
+                'date_order': max_ngay,
+                'commitment_date': max_ngay,
+                'expected_date': max_ngay,
+                'analytic_account_id': analytic_account_id,           
+                # Add other sale order fields as needed
+            }          
+
+            sale_order = SaleOrder.create(sale_order_vals)
+            created_orders.append(sale_order)
+            # Create sale order lines
+            for line in lines:
+                default_code = sanpham_map.get(line.sanpham)
+                if not default_code:
+                    continue  # Skip if mapping not found
+                product = Product.search([('default_code', '=', default_code)], limit=1)
+                if not product:
+                    continue  # Skip if no matching product
+                price, price_type_code = self._get_rubber_price(line)
+                if price_type_code == 'giamutap':
+                    SaleOrderLine.create({
+                        'order_id': sale_order.id,
+                        'product_id': product.id,
+                        'product_uom_qty': line.soluongban,
+                        'price_unit': price,
+                        'commitment_date': line.ngay,
+                    })
+                else:
+                    SaleOrderLine.create({
+                        'order_id': sale_order.id,
+                        'product_id': product.id,
+                        'sanluong': line.soluongban,
+                        'do': line.do,
+                        'product_uom_qty': line.do * line.soluongban / 100,
+                        'price_unit': price,
+                        'commitment_date': line.ngay,
+                    })                 
+        
+        
+    def _get_rubber_price(self, harvest_line):      
+        # Find to_id record where name matches harvest_line.to (char)
+        
+        domain = [
+            ('daily_id', '=', harvest_line.source.id),             
+            ('ngay_hieuluc', '<', harvest_line.ngay),                       
+        ]
+        to_id = self.env['hr.department'].search([('name', '=', harvest_line.to)], limit=1)
+        if to_id:
+            domain.append(('to_id', '=', to_id.id))
+        if harvest_line.sanpham == 'nuoc':
+            domain.append(('price_type_id.code', '=', 'giamunuoc'))
+        elif harvest_line.sanpham == 'tap':
+            domain.append('|')
+            domain.append(('price_type_id.code', '=', 'giamutap'))
+            domain.append(('price_type_id.code', '=', 'giamutap_do'))
+        elif harvest_line.sanpham == 'dong':
+            domain.append(('price_type_id.code', '=', 'giamudong'))
+        elif harvest_line.sanpham == 'day':
+            domain.append(('price_type_id.code', '=', 'giamuday'))
+        elif harvest_line.sanpham == 'chen':
+            domain.append(('price_type_id.code', '=', 'giamuchen'))
+        else:
+            domain.append(('price_type_id.code', '=', ''))
+        # Append domain to debug field            
+        price = self.env['rubber.price'].search(domain, limit=1)
+        debug_line = f"Domain: {domain}, Price: {price.gia if price else 'N/A'}\n"
+        self.debug = (self.debug or '') + debug_line
+        if price:
+            if price.price_type_id.code == 'giamutap_do' or price.price_type_id.code == 'giamunuoc':
+                return price.gia * 100, price.price_type_id.code
+            else:
+                return price.gia, price.price_type_id.code
+        return 0.0, None

@@ -37,6 +37,7 @@
                           <field name="can_duplicate" string='Can Duplicate'/>
                           <field name="name"/>
                           <field name='nongtruong'/>
+                          <field name='location_id'/>
                           <field name="loso"/>
                           <field name="sophan"/>
                           <field name='hangso'/>
@@ -100,6 +101,7 @@
                 <field name="sttcn" string="STT" optional="show"/>
                 <field name="employee_id" optional="show" domain="[('name','like',toname),('department_id','=',to)]" attrs="{'readonly': [('to','=',False)]}"/>
                 <field name='nongtruong' optional="hide"/>
+                <field name='location_id' optional="hide"/>
                 <field name="loso"/>
                 <field name="sophan"/>
                 <field name="caycao" string="Cây cạo"/>
@@ -141,7 +143,30 @@
             </search>
         </field>
     </record>
-
+    <record id="view_location_tree" model="ir.ui.view">
+        <field name="name">location.tree</field>
+        <field name="model">location</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_location_form" model="ir.ui.view">
+        <field name="name">location.form</field>
+        <field name="model">location</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
     <record id="action_nhapphancay" model="ir.actions.act_window">
         <field name="name">Phần Cây</field>
         <field name="type">ir.actions.act_window</field>
@@ -153,6 +178,11 @@
               Phần Cây.
             </p>
         </field>
+    </record>
+    <record id="action_location" model="ir.actions.act_window">
+        <field name="name">Locations</field>
+        <field name="res_model">location</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
 </odoo>

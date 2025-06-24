@@ -9,6 +9,7 @@ class RubberHarvest(models.Model):
 
     to = fields.Char('Tổ', readonly=True)
     daily = fields.Char('Đại lý', readonly=True)
+    source = fields.Many2one('res.partner', string='Gốc', domain=[('is_customer','=',True)], store=True)
     sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
     sanpham = fields.Selection([
         ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
@@ -21,7 +22,9 @@ class RubberHarvest(models.Model):
     rubbersell_id = fields.Many2one('rubber.sell', ondelete='cascade')
     rubberdeliver_id = fields.Many2one('rubber.deliver', ondelete='cascade')
     company_truck_id = fields.Many2one('company.truck', ondelete='cascade')
-    
+    ngay = fields.Date('Ngày', related='company_truck_id.ngaygiao', store=True)
+    selected = fields.Boolean(string="Select")
+
     @api.depends('soluongban', 'do')
     def _compute_quykho(self):
         for rec in self:
@@ -33,6 +36,12 @@ class RubberHarvest(models.Model):
         for rec in self:
             rec.soluongban = 0
             rec.soluongban = rec.tyle * rec.soluong
+
+    @api.depends('ngay', 'sanpham', 'daily')
+    def _compute_name(self):
+        for rec in self:
+            # Customize the name as needed
+            rec.name = f"{rec.ngay or ''} - {rec.sanpham or ''} - {rec.daily or ''}"
 
 class RubberDeliver(models.Model):
     _name = 'rubber.deliver'
@@ -93,34 +102,53 @@ class RubberDeliver(models.Model):
                     rec.tyle = rec.quykhott / qktt
 
     def giaomu(self):
+        Truck = self.env['company.truck']
         for rec in self:
-            rec.state = 'giao'
-            if len(self.env['company.truck'].search([('ngaygiao','=',rec.ngay)])) == 1:
-                if rec.company_truck_id.id == False and rec.daily_name == 'Xe tải nhà':
-                    rec.soluongtt = rec.soluong
-                    rec.dott = rec.do
-                    rec.quykhott = rec.quykho
-                    rec.company_truck_id = self.env['company.truck'].search([('ngaygiao','=',rec.ngay)])[0].id
-                #Nếu bên Nhận và bán tạo xong có id cho xe tải cùng ngày thì gắn company_truck_id và gán các giá trị thực tế
-                #Trường hợp bán ngoài thì tạo rec.daily_name != 'Xe tải nhà' thì tạo 
-                #elif rec.company_truck_id.id == False and rec.daily_name != 'Xe tải nhà':
-                
-                elif rec.daily_name != 'Xe tải nhà':
-                    rec.env['rubber.harvest'].create({
-                        'to': rec.to,
-                        'daily': rec.daily_name,
-                        'sanpham': rec.sanpham,
-                        'soluong': rec.soluong,
-                        'tyle': 1.0,
-                        'do': rec.do,
-                        'quykho': rec.quykho,
-                        'rubberdeliver_id': rec.id,
-                        'company_truck_id': self.env['company.truck'].search([('ngaygiao','=',rec.ngay)])[0].id,
-                    })
+            rec.state = 'giao'   
+            ngay = rec.ngay
+            if not ngay:
+                continue  # Skip if ngay is not set
+            truck = Truck.search([('ngaygiao', '=', ngay)], limit=1)
+            if not truck:
+                Truck.create({
+                    'ngaygiao': ngay,
+                    'ngayban': ngay,
+                })           
+            
+            #Nếu chưa gắn company_truck_id thì gắn company_truck_id và gán các giá trị thực tế
+            if rec.daily_name == 'Xe tải nhà':
+                rec.soluongtt = rec.soluong
+                rec.dott = rec.do
+                rec.quykhott = rec.quykho
+                rec.company_truck_id = self.env['company.truck'].search([('ngaygiao','=',rec.ngay)])[0].id                         
+                            
+            #Trường hợp bán ngoài rec.daily_name != 'Xe tải nhà' thì tạo rubber.harvest
+            elif rec.daily_name != 'Xe tải nhà':
+                rec.env['rubber.harvest'].create({
+                    'to': rec.to,
+                    'daily': rec.daily_name,
+                    'source': rec.daily.id,
+                    'sanpham': rec.sanpham,
+                    'soluong': rec.soluong,
+                    'tyle': 1.0,
+                    'do': rec.do,
+                    'quykho': rec.quykho,
+                    'rubberdeliver_id': rec.id,
+                    'company_truck_id': self.env['company.truck'].search([('ngaygiao','=',rec.ngay)])[0].id,
+                })
         
     def chuagiao(self):
         for rec in self:
-            rec.state = 'chua'
+            if rec.daily_name != 'Xe tải nhà':
+                # Find related rubber.delivery records (adjust the domain as needed)
+                harvests = self.env['rubber.harvest'].search([('rubberdeliver_id', '=', rec.id), ('sanpham', '=', rec.sanpham)])
+                harvests.unlink()
+                rec.state = 'chua'
+            elif rec.daily_name == 'Xe tải nhà':
+                rec.state = 'chua'
+                # Unlink company_truck_id
+                rec.company_truck_id = False
+
 
     def nhanmu(self):
         for rec in self:
@@ -166,6 +194,7 @@ class RubberSell(models.Model):
                     rec.env['rubber.harvest'].create({
                         'to': rbd.to,
                         'daily': rec.daily.name,
+                        'source': rbd.daily.id,
                         'sanpham': rec.sanpham,
                         'tyle': rbd.tyle,
                         'soluong': rec.soluong,
@@ -178,7 +207,13 @@ class RubberSell(models.Model):
     def _compute_quykho(self):
         for rec in self:
             rec.quykho = rec.soluong * rec.do / 100
-
+    
+    def unlink(self):
+        for sell in self:
+            harvests = self.env['rubber.harvest'].search([('rubbersell_id', '=', sell.id)])
+            harvests.unlink()
+        return super(RubberSell, self).unlink()
+        
 class RubberLoss(models.Model):
     _name = 'rubber.loss'
     _description = 'Rubber Loss Model'

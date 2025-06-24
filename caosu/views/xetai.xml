@@ -7,19 +7,19 @@
         <field name="arch" type="xml">
             <form>
               <sheet>
-                <field name="recorded" invisible="1"/>
+                <!--<field name="recorded" invisible="1"/>-->
                 <field name="nguoitao" invisible="1"/>
                 <notebook>
                   <page string="NHẬN MŨ">
                     <group>
-                      <field name="ngaygiao" attrs="{'readonly': [('recorded','=',True)]}"/>
+                      <field name="ngaygiao" />
                       <button name="mua_mu" string="Mua mũ" type="object" class="btn-info" /> <!--attrs="{'invisible': [('recorded','=',False)]}"-->
-                      <field name="nhannuoc" invisible="1"/>
+                      <!--<field name="nhannuoc" invisible="1"/>-->
                       <field name="nhantap" invisible="1"/>
                       <field name="nhanday" invisible="1"/>
                       <field name="nhandong" invisible="1"/>
                       <field name="nhanchen" invisible="1"/>
-                      <field name="nhannuoc1" invisible="1"/>
+                      <!--<field name="nhannuoc1" invisible="1"/>-->
                       <field name="nhantap1" invisible="1"/>
                       <field name="nhanday1" invisible="1"/>
                       <field name="nhandong1" invisible="1"/>
@@ -47,7 +47,7 @@
                       </field>                      
                     </group>-->
                     
-                    <group string="NHẬN MŨ NƯỚC" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': ['|',('recorded','=',False),('nhannuoc','=',False)]}">
+                    <group string="NHẬN MŨ NƯỚC" style="border: 1px solid grey; background-color: gainsboro;">
                       <field nolabel="1" name="deliver_line_ids">
                       <tree edit="0" create="0" default_order="to asc" delete="1" groups="base.group_erp_manager">
                         <field name="ngay"/>
@@ -88,7 +88,7 @@
                         </table>
                       </div>
                     </group>
-                    <group string="NHẬN MŨ TẠP" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': ['|',('recorded','=',False),('nhantap','=',False)]}">
+                    <group string="NHẬN MŨ TẠP" style="border: 1px solid grey; background-color: gainsboro;" >
                       <field nolabel="1" name="delivertap_line_ids">
                       <tree edit="0" create="0" delete="0" default_order="to asc">
                         <field name="ngay"/>
@@ -105,7 +105,7 @@
                         <field name="state"/>
                       </tree>
                     </field></group>
-                    <group string="NHẬN MŨ DÂY" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': ['|',('recorded','=',False),('nhanday','=',False)]}">
+                    <group string="NHẬN MŨ DÂY" style="border: 1px solid grey; background-color: gainsboro;">
                       <field nolabel="1" name="deliverday_line_ids">
                       <tree edit="0" create="0" delete="0" default_order="to asc">
                         <field name="ngay"/>
@@ -122,7 +122,7 @@
                         <field name="state"/>
                       </tree>
                     </field></group>
-                    <group string="NHẬN MŨ ĐÔNG" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': ['|',('recorded','=',False),('nhandong','=',False)]}">
+                    <group string="NHẬN MŨ ĐÔNG" style="border: 1px solid grey; background-color: gainsboro;">
                       <field nolabel="1" name="deliverdong_line_ids">
                       <tree edit="0" create="0" delete="0" default_order="to asc">
                         <field name="ngay"/>
@@ -139,7 +139,7 @@
                         <field name="state"/>
                       </tree>
                     </field></group>
-                    <group string="NHẬN MŨ CHÉN" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': ['|',('recorded','=',False),('nhanchen','=',False)]}">
+                    <group string="NHẬN MŨ CHÉN" style="border: 1px solid grey; background-color: gainsboro;">
                       <field nolabel="1" name="deliverchen_line_ids">
                       <tree edit="0" create="0" delete="0" default_order="to asc">
                         <field name="ngay"/>
@@ -157,8 +157,8 @@
                       </tree>
                     </field></group>
                   </page>
-                  <page string="BÁN MŨ" attrs="{'invisible': [('recorded','=',False)]}">
-                    <group string="BÁN MŨ NƯỚC" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': [('nhannuoc','=',False)]}">
+                  <page string="BÁN MŨ" >
+                    <group string="BÁN MŨ NƯỚC" style="border: 1px solid grey; background-color: gainsboro;" > <!--attrs="{'invisible': [('nhannuoc','=',False)]}"-->
                       <field name="sell_line_ids" nolabel="1">
                         <tree default_order="daily asc">
                           <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important;"/>
@@ -429,11 +429,19 @@
                       </group>
                     </group>
                   </page>
-                  <page string="PHÂN BỔ" attrs="{'invisible': [('recorded','=',False)]}">
-                    <group string="PHÂN BỔ MŨ NƯỚC XE TẢI" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': [('nhannuoc','=',False)]}">
+                  <page string="PHÂN BỔ" >
+                    <group>
+                      <button name="action_create_sale_order_from_harvest_lines"
+                          type="object"
+                          string="Create Sale Order from Selected Lines"
+                          class="btn-primary"/>
+                      <field name="debug"/>
+                    </group>
+                    <group string="PHÂN BỔ MŨ NƯỚC XE TẢI" style="border: 1px solid grey; background-color: gainsboro;" > <!--attrs="{'invisible': [('nhannuoc','=',False)]}"-->
                       <field name="harvest_line_ids" nolabel="1">
-                        <tree create="0" delete="0" edit="0" default_order="daily asc">
+                        <tree create="0" delete="0" edit="0" default_order="daily asc, to asc">
                           <field name="to" style="border-top-style: solid !important;border-width: 1px !important;"/>
+                          <field name="source" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="tyle" style="border-top-style: solid !important;border-width: 1px !important;"/>
@@ -441,13 +449,15 @@
                           <field name="soluongban" style="border-top-style: solid !important;border-width: 1px !important;" sum="soluongban"/>
                           <field name="do" style="border-top-style: solid !important;border-width: 1px !important;" avg="do"/>
                           <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important;" sum="quykho"/>
+                          <field name="selected" widget="boolean_toggle"/>
                         </tree>
                       </field>
                     </group>
-                    <group string="PHÂN BỔ MŨ NƯỚC TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': [('nhannuoc1','=',False)]}">
+                    <!--<group string="PHÂN BỔ MŨ NƯỚC TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro;" >
                       <field name="harvest1_line_ids" nolabel="1">
                         <tree create="0" delete="0" edit="0" default_order="daily asc">
                           <field name="to" style="border-top-style: solid !important;border-width: 1px !important;"/>
+                          <field name="source" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="tyle" style="border-top-style: solid !important;border-width: 1px !important;"/>
@@ -569,7 +579,7 @@
                           <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important;" sum="quykho"/>
                         </tree>
                       </field>
-                    </group>
+                    </group>-->
                   </page>
                 </notebook>
               </sheet>
@@ -741,15 +751,42 @@
         </form>
       </field>
     </record>
-
+    <record id="view_rubber_harvest_tree" model="ir.ui.view">
+        <field name="name">rubber.harvest.tree</field>
+        <field name="model">rubber.harvest</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ngay"/>
+                <field name="to"/>
+                <field name="daily"/>
+                <field name="sanpham"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_rubber_harvest_form" model="ir.ui.view">
+        <field name="name">rubber.harvest.form</field>
+        <field name="model">rubber.harvest</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="ngay"/>
+                        <field name="to"/>
+                        <field name="daily"/>
+                        <field name="sanpham"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
     
     <record model="ir.ui.view" id="view_company_truck_tree">
       <field name="name">companytruck.tree</field>
       <field name="model">company.truck</field>
       <field name="arch" type="xml">
           <tree string="Company Truck Tree View">
-            <field name="recorded" invisible="1"/>
-            <field name="ngaygiao" attrs="{'readonly': [('recorded','=',True)]}"/>
+            <!--<field name="recorded" invisible="1"/>-->
+            <field name="ngaygiao" />
           </tree>
       </field>
     </record>
@@ -805,7 +842,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">rubber.harvest</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{}</field>
+        <field name="context">{'group_by': ['ngay:year', 'ngay:month']}</field>
     </record>
 
     <record id="action_rubber_sell" model="ir.actions.act_window">
@@ -816,4 +853,5 @@
         <field name="context">{'group_by': ['ngay:year', 'ngay:month']}</field>
     </record>
 
+    
 </odoo>

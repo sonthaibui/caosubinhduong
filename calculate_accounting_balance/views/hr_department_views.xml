@@ -1,0 +1,28 @@
+<!-- Inherit and extend the department form view -->
+<odoo>
+    <data>
+        <!-- Inherit and extend the department form view -->
+        <record id="view_department_form_inherit_analytic" model="ir.ui.view">
+            <field name="name">hr.department.form.inherit.analytic</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="analytic_account_id"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Inherit and extend the department tree view -->
+        <record id="view_department_tree_inherit_analytic" model="ir.ui.view">
+            <field name="name">hr.department.tree.inherit.analytic</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="analytic_account_id"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

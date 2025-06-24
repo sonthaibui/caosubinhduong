@@ -11,3 +11,4 @@ from . import StockValuationLayer
 from . import PurchaseOrderLine
 from . import ProductTemplate
 from . import hr_employee
+from . import hr_department
