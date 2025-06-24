@@ -9,7 +9,7 @@ class RubberHarvest(models.Model):
 
     to = fields.Char('Tổ', readonly=True)
     daily = fields.Char('Đại lý', readonly=True)
-    source = fields.Many2one('res.partner', string='Gốc' related='rubberdeliver_id.daily')
+    source = fields.Many2one('res.partner', string='Gốc', related='rubberdeliver_id.daily')
     sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
     sanpham = fields.Selection([
         ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
