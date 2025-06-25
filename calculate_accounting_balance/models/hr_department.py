@@ -7,3 +7,4 @@ class Department(models.Model):
         'account.analytic.account',
         string='Analytic Account'
     )
+    chucnang = fields.Char(string='Chức năng', default='Cạo mũ')

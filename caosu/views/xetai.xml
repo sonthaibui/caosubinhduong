@@ -13,59 +13,77 @@
                   <page string="NHẬN MŨ">
                     <group>
                       <field name="ngaygiao" />
-                      <button name="mua_mu" string="Mua mũ" type="object" class="btn-info" /> <!--attrs="{'invisible': [('recorded','=',False)]}"-->
-                      <!--<field name="nhannuoc" invisible="1"/>-->
-                      <field name="nhantap" invisible="1"/>
-                      <field name="nhanday" invisible="1"/>
-                      <field name="nhandong" invisible="1"/>
-                      <field name="nhanchen" invisible="1"/>
-                      <!--<field name="nhannuoc1" invisible="1"/>-->
-                      <field name="nhantap1" invisible="1"/>
-                      <field name="nhanday1" invisible="1"/>
-                      <field name="nhandong1" invisible="1"/>
-                      <field name="nhanchen1" invisible="1"/>
+                      <button name="mua_mu" string="Mua mũ" type="object" class="btn-info" />                    
                     </group>
+                    <!-- Thêm field ẩn để lưu trạng thái lọc -->
+                    <field name="active_sanpham" invisible="1"/>                    
+                    <!-- Dãy buttons để lọc sản phẩm -->
+                    <div class="oe_button_box" style="margin-top: 10px; margin-bottom: 10px;">
+                        <button name="set_sanpham_all" type="object" 
+                                class="oe_stat_button" icon="fa-list"
+                                attrs="{'invisible': [('active_sanpham', '=', 'all')]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Tất cả</span>
+                            </div>
+                        </button>
+                        <button name="set_sanpham_nuoc" type="object" 
+                                class="oe_stat_button" icon="fa-tint"
+                                attrs="{'invisible': [('active_sanpham', '=', 'nuoc')]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Mũ nước</span>
+                            </div>
+                        </button>
+                        <button name="set_sanpham_tap" type="object" 
+                                class="oe_stat_button" icon="fa-recycle"
+                                attrs="{'invisible': [('active_sanpham', '=', 'tap')]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Mũ tạp</span>
+                            </div>
+                        </button>
+                        <button name="set_sanpham_day" type="object" 
+                                class="oe_stat_button" icon="fa-link"
+                                attrs="{'invisible': [('active_sanpham', '=', 'day')]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Mũ dây</span>
+                            </div>
+                        </button>
+                        <button name="set_sanpham_dong" type="object" 
+                                class="oe_stat_button" icon="fa-cubes"
+                                attrs="{'invisible': [('active_sanpham', '=', 'dong')]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Mũ đông</span>
+                            </div>
+                        </button>
+                        <button name="set_sanpham_chen" type="object" 
+                                class="oe_stat_button" icon="fa-circle-o"
+                                attrs="{'invisible': [('active_sanpham', '=', 'chen')]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Mũ chén</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group string="XE TẢI NHÀ" style="border: 1px solid grey; background-color: gainsboro;">
+                      <field delete="0" nolabel="1" name="filtered_deliver_line_ids">
+                      <tree default_order="to_id asc, daily_id asc" groups="base.group_erp_manager">
+                        <field name="ngay"/>
+                        <field name="to_name"/>
+                        <field name="to_id" invisible="1"/>
+                        <field name="daily"/>
+                        <field name="daily_id"/>
+                        <field name="sanpham"/>
+                        <field name="soluong"/>
+                        <field name="do"/>
+                        <field name="quykho"/>
+                        <field name="soluongtt"/>
+                        <field name="dott"/>
+                        <field name="quykhott"/>
+                        <field name="tyle"/>
+                        <field name="state"/>
+                      </tree>                                           
+                      </field>                      
+                    </group>
+                    <!-- Hiển thị danh sách Xe tải nhà -->
                     <group>
-                        <field name="sanpham_id"/>
-                    </group>
-                    <!--<group string="NHẬN MŨ NƯỚC 1" style="border: 1px solid grey; background-color: gainsboro">
-                      <field nolabel="1" name="delivermu_line_ids" >
-                      <tree groups="base.group_erp_manager">
-                        <field name="ngay"/>
-                        <field name="to"/>
-                        <field name="daily"/>
-                        <field name="sanpham"/>
-                        <field name="soluong" sum="soluong"/>
-                        <field name="do"/>
-                        <field name="quykho" sum="quykho"/>
-                        <field name="soluongtt" sum="soluongtt"/>
-                        <field name="dott"/>
-                        <field name="quykhott" sum="quykhott"/>
-                        <field name="tyle" sum="tyle"/>
-                        <field name="state"/>
-                      </tree>                      
-                      </field>                      
-                    </group>-->
-                    
-                    <group string="NHẬN MŨ NƯỚC" style="border: 1px solid grey; background-color: gainsboro;">
-                      <field nolabel="1" name="deliver_line_ids">
-                      <tree edit="0" create="0" default_order="to asc" delete="1" groups="base.group_erp_manager">
-                        <field name="ngay"/>
-                        <field name="to"/>
-                        <field name="daily"/>
-                        <field name="sanpham"/>
-                        <field name="soluong" sum="soluong"/>
-                        <field name="do"/>
-                        <field name="quykho" sum="quykho"/>
-                        <field name="soluongtt" sum="soluongtt"/>
-                        <field name="dott"/>
-                        <field name="quykhott" sum="quykhott"/>
-                        <field name="tyle" sum="tyle"/>
-                        <field name="state"/>
-                      </tree>                      
-                      </field>                      
-                    </group>
-                  <group>
                       <div class="container">            
                         <table class="table table-bordered" style="text-align: center;">
                           <thead>
@@ -88,12 +106,30 @@
                         </table>
                       </div>
                     </group>
-                    <group string="NHẬN MŨ TẠP" style="border: 1px solid grey; background-color: gainsboro;" >
-                      <field nolabel="1" name="delivertap_line_ids">
-                      <tree edit="0" create="0" delete="0" default_order="to asc">
+                    <group string="BÁN TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
+                        <field delete="0" nolabel="1" name="filtered_tructiep_deliver_line_ids">
+                            <tree default_order="daily_id, sanpham">
+                                <field name="ngay"/>
+                                <field name="to_name"/>
+                                <field name="to_id" invisible="1"/>
+                                <field name="daily"/>
+                                <field name="daily_id"/>
+                                <field name="sanpham"/>
+                                <field name="soluongtt"/>
+                                <field name="dott"/>
+                                <field name="quykhott"/>
+                                <field name="state"/>
+                                <!-- Các trường khác nếu cần -->
+                            </tree>
+                        </field>
+                    </group>
+                    
+                    <!--<group string="NHẬN MŨ TẠP" style="border: 1px solid grey; background-color: gainsboro;" >
+                      <field nolabel="1" name= "deliver_line_ids" domain="[('sanpham','=','tap')]">
+                      <tree edit="0" create="0" delete="0" default_order="to_id asc">
                         <field name="ngay"/>
-                        <field name="to"/>
-                        <field name="daily"/>
+                        <field name="to_id"/>
+                        <field name="daily_id"/>
                         <field name="sanpham"/>
                         <field name="soluong" sum="soluong"/>
                         <field name="do" avg="do"/>
@@ -106,11 +142,11 @@
                       </tree>
                     </field></group>
                     <group string="NHẬN MŨ DÂY" style="border: 1px solid grey; background-color: gainsboro;">
-                      <field nolabel="1" name="deliverday_line_ids">
-                      <tree edit="0" create="0" delete="0" default_order="to asc">
+                      <field nolabel="1" name= "deliver_line_ids" domain="[('sanpham','=','day')]">
+                      <tree edit="0" create="0" delete="0" default_order="to_id asc">
                         <field name="ngay"/>
-                        <field name="to"/>
-                        <field name="daily"/>
+                        <field name="to_id"/>
+                        <field name="daily_id"/>
                         <field name="sanpham"/>
                         <field name="soluong" sum="soluong"/>
                         <field name="do" avg="do"/>
@@ -123,11 +159,11 @@
                       </tree>
                     </field></group>
                     <group string="NHẬN MŨ ĐÔNG" style="border: 1px solid grey; background-color: gainsboro;">
-                      <field nolabel="1" name="deliverdong_line_ids">
-                      <tree edit="0" create="0" delete="0" default_order="to asc">
+                      <field nolabel="1" name= "deliver_line_ids" domain="[('sanpham','=','dong')]">
+                      <tree edit="0" create="0" delete="0" default_order="to_id asc">
                         <field name="ngay"/>
-                        <field name="to"/>
-                        <field name="daily"/>
+                        <field name="to_id"/>
+                        <field name="daily_id"/>
                         <field name="sanpham"/>
                         <field name="soluong" sum="soluong"/>
                         <field name="do" avg="do"/>
@@ -140,11 +176,11 @@
                       </tree>
                     </field></group>
                     <group string="NHẬN MŨ CHÉN" style="border: 1px solid grey; background-color: gainsboro;">
-                      <field nolabel="1" name="deliverchen_line_ids">
-                      <tree edit="0" create="0" delete="0" default_order="to asc">
+                      <field nolabel="1" name= "deliver_line_ids" domain="[('sanpham','=','chen')]">
+                      <tree edit="0" create="0" delete="0" default_order="to_id asc">
                         <field name="ngay"/>
-                        <field name="to"/>
-                        <field name="daily"/>
+                        <field name="to_id"/>
+                        <field name="daily_id"/>
                         <field name="sanpham"/>
                         <field name="soluong" sum="soluong"/>
                         <field name="do" avg="do"/>
@@ -155,14 +191,87 @@
                         <field name="tyle" sum="tyle"/>
                         <field name="state"/>
                       </tree>
-                    </field></group>
+                    </field></group>-->
+                  </page>
+                  <page string="INVOICE" >
+                    <group>
+                        <field name="ngaygiao"/>
+                        <field name="debug"/>
+                        <!-- Các trường thông tin khác nếu cần -->
+                    </group>                    
+                    <div class="oe_button_box">
+                        <button name="action_select_all_invoice_lines" string="Select All" type="object" class="oe_link"/>
+                        <button name="action_deselect_all_invoice_lines" string="Deselect All" type="object" class="oe_link"/>
+                        <button name="action_create_sale_order_from_selected_lines" 
+                                string="Create Sale Orders from Selected" 
+                                type="object" 
+                                class="oe_highlight"/>
+                    </div>
+                    <!-- Mũ xe tải nhà -->
+                    <group string="MŨ GIAO XE TẢI NHÀ" style="border: 1px solid grey; background-color: gainsboro;">
+                        <field delete="0" nolabel="1" name="invoice_xetainha_line_ids">
+                            <tree>
+                                <field name="is_selected" widget="boolean_toggle"/>
+                                <field name="ngay"/>
+                                <field name="to_name"/>
+                                <field name="to_id" invisible="1"/>
+                                <field name="daily"/>
+                                <field name="daily_id"/>
+                                <field name="daily_ban"/>
+                                <field name="sanpham"/>
+                                <field name="soluongtt"/>
+                                <field name="dott"/>
+                                <field name="quykhott"/>
+                                <field name="state"/>
+                            </tree>                                
+                        </field>
+                    </group>
+                    
+                    <!-- Mũ trực tiếp -->
+                    <group string="MŨ BÁN TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
+                        <field delete="0" nolabel="1" name="invoice_tructiep_line_ids">
+                            <tree>
+                                <field name="is_selected" widget="boolean_toggle"/>
+                                <field name="ngay"/>
+                                <field name="to_name"/>
+                                <field name="to_id" invisible="1"/>
+                                <field name="daily"/>
+                                <field name="daily_id"/>
+                                <field name="daily_ban"/>
+                                <field name="sanpham"/>
+                                <field name="soluongtt" />
+                                <field name="dott"/>
+                                <field name="quykhott" />
+                                <field name="state"/>
+                            </tree>                                
+                        </field>
+                    </group>
+                    
+                    <!-- Mũ chờ -->
+                    <group string="MŨ CHỞ" style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
+                        <field delete="0" nolabel="1" name="invoice_chomu_line_ids">
+                            <tree>
+                                <field name="is_selected" widget="boolean_toggle"/>
+                                <field name="ngay"/>
+                                <field name="to_name"/>
+                                <field name="to_id" invisible="1"/>                                
+                                <field name="daily_id"/>
+                                <field name="daily_ban"/>
+                                <field name="sanpham"/>
+                                <field name="soluongtt"/>
+                                <field name="dott"/>
+                                <field name="quykhott"/>
+                                <field name="state"/>
+                            </tree>                                
+                        </field>
+                    </group>             
                   </page>
                   <page string="BÁN MŨ" >
-                    <group string="BÁN MŨ NƯỚC" style="border: 1px solid grey; background-color: gainsboro;" > <!--attrs="{'invisible': [('nhannuoc','=',False)]}"-->
+                    <group string="BÁN MŨ" style="border: 1px solid grey; background-color: gainsboro;" >
                       <field name="sell_line_ids" nolabel="1">
-                        <tree default_order="daily asc">
+                        <tree default_order="daily_id asc">
                           <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
+                          <field name="daily_id" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="soluong" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="do" style="border-top-style: solid !important;border-width: 1px !important;"/>
@@ -211,225 +320,10 @@
                           </table>
                         </div>
                       </group>
-                    </group>
-                    <group string="BÁN MŨ TẠP" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': [('nhantap','=',False)]}">
-                      <field name="selltap_line_ids" nolabel="1">
-                        <tree default_order="daily asc">
-                          <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="soluong" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="do" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="state" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <button name="phan_bo" string="PHÂN BỔ" type="object" class="btn-info" attrs="{'invisible': [('state','=','yes')], 'column_invisible': [('parent.nguoitao','!=','43'),('parent.nguoitao','!=','41')]}"/>
-                        </tree>
-                      </field>
-                      <group>
-                        <div class="container">            
-                          <table class="table table-bordered" style="text-align: center;">
-                            <thead>
-                              <tr>
-                                <th></th>
-                                <th>Số lượng</th>
-                                <th>Độ</th>
-                                <th>Quy khô</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td><b>Nhận</b></td>
-                                <td><field name="soluong_tap" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="do_tap" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="quykho_tap" nolabel="1" decoration-info="1"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>Bán</b></td>
-                                <td><field name="soluongban_tap" nolabel="1"/></td>
-                                <td><field name="doban_tap" nolabel="1"/></td>
-                                <td><field name="quykhoban_tap" nolabel="1"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>Hao hụt</b></td>
-                                <td><field name="haohut_tap" nolabel="1" decoration-success="haohut_tap &gt; 0" decoration-danger="haohut_tap &lt; 0"/></td>
-                                <td><field name="haohutdo_tap" nolabel="1" decoration-success="haohutdo_tap &gt; 0" decoration-danger="haohutdo_tap &lt; 0"/></td>
-                                <td><field name="haohutqk_tap" nolabel="1" decoration-success="haohutqk_tap &gt; 0" decoration-danger="haohutqk_tap &lt; 0"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>TL hao hụt(%)</b></td>
-                                <td><field name="tylehh_tap" nolabel="1" decoration-success="tylehh_tap &gt; 0" decoration-danger="tylehh_tap &lt; 0"/></td>
-                                <td><field name="tylehhdo_tap" nolabel="1" decoration-success="tylehhdo_tap &gt; 0" decoration-danger="tylehhdo_tap &lt; 0"/></td>
-                                <td><field name="tylehhqk_tap" nolabel="1" decoration-success="tylehhqk_tap &gt; 0" decoration-danger="tylehhqk_tap &lt; 0"/></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </group>
-                    </group>
-                    <group string="BÁN MŨ DÂY" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': [('nhanday','=',False)]}">
-                      <field name="sellday_line_ids" nolabel="1">
-                        <tree default_order="daily asc">
-                          <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="soluong" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="do" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="state" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <button name="phan_bo" string="PHÂN BỔ" type="object" class="btn-info" attrs="{'invisible': [('state','=','yes')], 'column_invisible': [('parent.nguoitao','!=','43'),('parent.nguoitao','!=','41')]}"/>
-                        </tree>
-                      </field>
-                      <group>
-                        <div class="container">            
-                          <table class="table table-bordered" style="text-align: center;">
-                            <thead>
-                              <tr>
-                                <th></th>
-                                <th>Số lượng</th>
-                                <th>Độ</th>
-                                <th>Quy khô</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td><b>Nhận</b></td>
-                                <td><field name="soluong_day" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="do_day" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="quykho_day" nolabel="1" decoration-info="1"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>Bán</b></td>
-                                <td><field name="soluongban_day" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="doban_day" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="quykhoban_day" nolabel="1" decoration-info="1"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>Hao hụt</b></td>
-                                <td><field name="haohut_day" nolabel="1" decoration-success="haohut_day &gt; 0" decoration-danger="haohut_day &lt; 0"/></td>
-                                <td><field name="haohutdo_day" nolabel="1" decoration-success="haohutdo_day &gt; 0" decoration-danger="haohutdo_day &lt; 0"/></td>
-                                <td><field name="haohutqk_day" nolabel="1" decoration-success="haohutqk_day &gt; 0" decoration-danger="haohutqk_day &lt; 0"/></td>
-                              </tr>
-                              <!-- <tr>
-                                <td><b>TL hao hụt(%)</b></td>
-                                <td><field name="tylehh_day" nolabel="1" decoration-success="tylehh_day &gt; 0" decoration-danger="tylehh_day &lt; 0"/></td>
-                                <td><field name="tylehhdo_day" nolabel="1" decoration-success="tylehhdo_day &gt; 0" decoration-danger="tylehhdo_day &lt; 0"/></td>
-                                <td><field name="tylehhqk_day" nolabel="1" decoration-success="tylehhqk_day &gt; 0" decoration-danger="tylehhqk_day &lt; 0"/></td>
-                              </tr> -->
-                            </tbody>
-                          </table>
-                        </div>
-                      </group>
-                    </group>
-                    <group string="BÁN MŨ ĐÔNG" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': [('nhandong','=',False)]}">
-                      <field name="selldong_line_ids" nolabel="1">
-                        <tree default_order="daily asc">
-                          <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="soluong" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="do" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="state" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <button name="phan_bo" string="PHÂN BỔ" type="object" class="btn-info" attrs="{'invisible': [('state','=','yes')], 'column_invisible': [('parent.nguoitao','!=','43'),('parent.nguoitao','!=','41')]}"/>
-                        </tree>
-                      </field>
-                      <group>
-                        <div class="container">            
-                          <table class="table table-bordered" style="text-align: center;">
-                            <thead>
-                              <tr>
-                                <th></th>
-                                <th>Số lượng</th>
-                                <th>Độ</th>
-                                <th>Quy khô</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td><b>Nhận</b></td>
-                                <td><field name="soluong_dong" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="do_dong" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="quykho_dong" nolabel="1" decoration-info="1"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>Bán</b></td>
-                                <td><field name="soluongban_dong" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="doban_dong" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="quykhoban_dong" nolabel="1" decoration-info="1"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>Hao hụt</b></td>
-                                <td><field name="haohut_dong" nolabel="1" decoration-success="haohut_dong &gt; 0" decoration-danger="haohut_dong &lt; 0"/></td>
-                                <td><field name="haohutdo_dong" nolabel="1" decoration-success="haohutdo_dong &gt; 0" decoration-danger="haohutdo_dong &lt; 0"/></td>
-                                <td><field name="haohutqk_dong" nolabel="1" decoration-success="haohutqk_dong &gt; 0" decoration-danger="haohutqk_dong &lt; 0"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>TL hao hụt(%)</b></td>
-                                <td><field name="tylehh_dong" nolabel="1" decoration-success="tylehh_dong &gt; 0" decoration-danger="tylehh_dong &lt; 0"/></td>
-                                <td><field name="tylehhdo_dong" nolabel="1" decoration-success="tylehhdo_dong &gt; 0" decoration-danger="tylehhdo_dong &lt; 0"/></td>
-                                <td><field name="tylehhqk_dong" nolabel="1" decoration-success="tylehhqk_dong &gt; 0" decoration-danger="tylehhqk_dong &lt; 0"/></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </group>
-                    </group>
-                    <group string="BÁN MŨ CHÉN" style="border: 1px solid grey; background-color: gainsboro;" attrs="{'invisible': [('nhanchen','=',False)]}">
-                      <field name="sellchen_line_ids" nolabel="1">
-                        <tree default_order="daily asc">
-                          <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="soluong" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="do" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="state" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <button name="phan_bo" string="PHÂN BỔ" type="object" class="btn-info" attrs="{'invisible': [('state','=','yes')], 'column_invisible': [('parent.nguoitao','!=','43'),('parent.nguoitao','!=','41')]}"/>
-                        </tree>
-                      </field>
-                      <group>
-                        <div class="container">            
-                          <table class="table table-bordered" style="text-align: center;">
-                            <thead>
-                              <tr>
-                                <th></th>
-                                <th>Số lượng</th>
-                                <th>Độ</th>
-                                <th>Quy khô</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td><b>Nhận</b></td>
-                                <td><field name="soluong_chen" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="do_chen" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="quykho_chen" nolabel="1" decoration-info="1"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>Bán</b></td>
-                                <td><field name="soluongban_chen" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="doban_chen" nolabel="1" decoration-info="1"/></td>
-                                <td><field name="quykhoban_chen" nolabel="1" decoration-info="1"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>Hao hụt</b></td>
-                                <td><field name="haohut_chen" nolabel="1" decoration-success="haohut_chen &gt; 0" decoration-danger="haohut_chen &lt; 0"/></td>
-                                <td><field name="haohutdo_chen" nolabel="1" decoration-success="haohutdo_chen &gt; 0" decoration-danger="haohutdo_chen &lt; 0"/></td>
-                                <td><field name="haohutqk_chen" nolabel="1" decoration-success="haohutqk_chen &gt; 0" decoration-danger="haohutqk_chen &lt; 0"/></td>
-                              </tr>
-                              <tr>
-                                <td><b>TL hao hụt(%)</b></td>
-                                <td><field name="tylehh_chen" nolabel="1" decoration-success="tylehh_chen &gt; 0" decoration-danger="tylehh_chen &lt; 0"/></td>
-                                <td><field name="tylehhdo_chen" nolabel="1" decoration-success="tylehhdo_chen &gt; 0" decoration-danger="tylehhdo_chen &lt; 0"/></td>
-                                <td><field name="tylehhqk_chen" nolabel="1" decoration-success="tylehhqk_chen &gt; 0" decoration-danger="tylehhqk_chen &lt; 0"/></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </group>
-                    </group>
+                    </group>                    
                   </page>
-                  <page string="PHÂN BỔ" >
+                  
+                  <!--<page string="PHÂN BỔ" >
                     <group>
                       <button name="action_create_sale_order_from_harvest_lines"
                           type="object"
@@ -437,12 +331,12 @@
                           class="btn-primary"/>
                       <field name="debug"/>
                     </group>
-                    <group string="PHÂN BỔ MŨ NƯỚC XE TẢI" style="border: 1px solid grey; background-color: gainsboro;" > <!--attrs="{'invisible': [('nhannuoc','=',False)]}"-->
+                    <group string="PHÂN BỔ MŨ NƯỚC XE TẢI" style="border: 1px solid grey; background-color: gainsboro;" > 
                       <field name="harvest_line_ids" nolabel="1">
-                        <tree create="0" delete="0" edit="0" default_order="daily asc, to asc">
-                          <field name="to" style="border-top-style: solid !important;border-width: 1px !important;"/>
+                        <tree create="0" delete="0" edit="0" default_order="daily_id asc, to_id asc">
+                          <field name="to_id" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="source" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
+                          <field name="daily_id" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="tyle" style="border-top-style: solid !important;border-width: 1px !important;"/>
                           <field name="soluong" style="border-top-style: solid !important;border-width: 1px !important;" sum="soluong"/>
@@ -453,7 +347,7 @@
                         </tree>
                       </field>
                     </group>
-                    <!--<group string="PHÂN BỔ MŨ NƯỚC TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro;" >
+                    <group string="PHÂN BỔ MŨ NƯỚC TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro;" >
                       <field name="harvest1_line_ids" nolabel="1">
                         <tree create="0" delete="0" edit="0" default_order="daily asc">
                           <field name="to" style="border-top-style: solid !important;border-width: 1px !important;"/>
@@ -579,8 +473,8 @@
                           <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important;" sum="quykho"/>
                         </tree>
                       </field>
-                    </group>-->
-                  </page>
+                    </group>
+                  </page>-->
                 </notebook>
               </sheet>
               <div class="oe_chatter">
@@ -597,7 +491,7 @@
         <field name="arch" type="xml">
             <tree>                
                 <field name="ngay"/>
-                <field name="daily"/>
+                <field name="daily_id"/>
                 <field name="sanpham"/>
                 <!--<field name="sanpham_id"/>-->
                 <field name="soluong"/>
@@ -619,7 +513,7 @@
             <group>
               <group>
                 <field name="ngay" attrs="{'readonly': [('state','=','yes')]}"/>
-                <field name="daily" attrs="{'readonly': [('state','=','yes')]}"/>
+                <field name="daily_id" attrs="{'readonly': [('state','=','yes')]}"/>
                 <field name="sanpham" attrs="{'readonly': [('state','=','yes')]}"/>
               </group>
               <group>
@@ -651,8 +545,8 @@
         <field name="arch" type="xml">
             <tree>                
                 <field name="ngay"/>
-                <field name="to"/>
-                <field name="daily"/>
+                <field name="to_id"/>
+                <field name="daily_id"/>
                 <field name="sanpham"/>
                 <field name="sanpham_id"/>
                 <field name="soluong"/>
@@ -671,8 +565,8 @@
         <field name="arch" type="xml">
             <tree>                
                 <field name="ngay"/>
-                <field name="to"/>
-                <field name="daily"/>
+                <field name="to_id"/>
+                <field name="daily_id"/>
                 <field name="sanpham"/>
                 <!--<field name="sanpham_id"/>-->
                 <field name="soluong"/>
@@ -692,24 +586,25 @@
         <form string="">
           <sheet>
             <header>
-              <field name="state" widget="statusbar" statusbar_visible="giao,nhan"/>
+              <field name="state" widget="statusbar" statusbar_visible="chua,giao,nhan,invoice"/>
             </header>
             <group>
               <group>
-                <field name="ngay"/>
-                <field name="to"/>
-                <field name="soluong" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
-                <field name="do" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
+                <field name="ngay" attrs="{'readonly': [('state','in',['giao','nhan','invoice'])]}"/>
+                <field name="to_id" attrs="{'readonly': [('state','in',['giao','nhan','invoice'])]}"/>
+                <field name="soluong" attrs="{'readonly': [('state','in',['giao','nhan','invoice'])]}"/>
+                <field name="do" attrs="{'readonly': [('state','in',['giao','nhan','invoice'])]}"/>
                 <field name="quykho"/>
               </group>
               <group>
-                <field name="daily" attrs="{'readonly': [('state','=','nhan')]}"/>
-                <field name="sanpham" attrs="{'readonly': [('state','=','nhan')]}"/>
-                <field name="soluongtt" attrs="{'readonly': [('state','=','nhan')]}"/>
-                <field name="dott" attrs="{'readonly': [('state','=','nhan')]}"/>
-                <field name="quykhott"/>
-                <button name="nhanmu" string="NHẬN" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['nhan','mua'])]}"/>
-                <button name="giaomu" string="SỬA LẠI" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['giao','chua','mua'])]}"/>
+                <field name="daily_id" attrs="{'readonly': [('state','in',['giao','nhan','invoice'])]}"/>
+                <field name="sanpham" attrs="{'readonly': [('state','in',['giao','nhan','invoice'])]}"/>
+                <field name="soluongtt" attrs="{'readonly': [('state','in',['nhan','invoice'])]}"/>
+                <field name="dott" attrs="{'readonly': [('state','in',['nhan','invoice'])]}"/>
+                <field name="quykhott"/>                
+                <button name="nhanmu" string="NHẬN" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['nhan','mua','invoice'])]}"/>
+                <button name="giaomu" string="GIAO" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['giao','nhan','mua','invoice'])]}"/>
+                <button name="chuagiao" string="SỬA LẠI" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['chua'])]}"/>
               </group>
             </group>
           </sheet>
@@ -737,7 +632,7 @@
           <sheet>
             <group>
               <group>
-                <field name="daily" widget="selection"/>
+                <field name="daily_id" widget="selection"/>
                 <field name="sanpham"/>
                 <!--<field name="sanpham_id"/>-->
               </group>
@@ -757,8 +652,8 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="ngay"/>
-                <field name="to"/>
-                <field name="daily"/>
+                <field name="to_id"/>
+                <field name="daily_id"/>
                 <field name="sanpham"/>
             </tree>
         </field>
@@ -771,8 +666,8 @@
                 <sheet>
                     <group>
                         <field name="ngay"/>
-                        <field name="to"/>
-                        <field name="daily"/>
+                        <field name="to_id"/>
+                        <field name="daily_id"/>
                         <field name="sanpham"/>
                     </group>
                 </sheet>

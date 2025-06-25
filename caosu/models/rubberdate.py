@@ -339,9 +339,9 @@ class RubberByDate(models.Model):
                 daily_nuoc = 0
                 if len(rec.deliver_line_ids) > 0:
                     for line in rec.deliver_line_ids:
-                        if line.daily.name == 'Xe tải nhà' and line.sanpham == 'nuoc':
+                        if line.daily_id.name == 'Xe tải nhà' and line.sanpham == 'nuoc':
                             giaoxe_nuoc += line.soluong
-                        elif line.daily.name != 'Xe tải nhà' and line.sanpham == 'nuoc':
+                        elif line.daily_id.name != 'Xe tải nhà' and line.sanpham == 'nuoc':
                             daily_nuoc += line.soluong
                 rec.nuoc_ban = giaoxe_nuoc
                 rec.nuoc_daily = daily_nuoc
@@ -356,9 +356,9 @@ class RubberByDate(models.Model):
                 daily_tap = 0
                 if len(rec.deliver_line_ids) > 0:
                     for line in rec.deliver_line_ids:
-                        if line.daily.name == 'Xe tải nhà' and line.sanpham == 'tap':
+                        if line.daily_id.name == 'Xe tải nhà' and line.sanpham == 'tap':
                             giaoxe_tap += line.soluong
-                        elif line.daily.name != 'Xe tải nhà' and line.sanpham == 'tap':
+                        elif line.daily_id.name != 'Xe tải nhà' and line.sanpham == 'tap':
                             daily_tap += line.soluong
                 rec.tap_ban = giaoxe_tap
                 rec.tap_daily = daily_tap
@@ -373,9 +373,9 @@ class RubberByDate(models.Model):
                 daily_day = 0
                 if len(rec.deliver_line_ids) > 0:
                     for line in rec.deliver_line_ids:
-                        if line.daily.name == 'Xe tải nhà' and line.sanpham == 'day':
+                        if line.daily_id.name == 'Xe tải nhà' and line.sanpham == 'day':
                             giaoxe_day += line.soluong
-                        elif line.daily.name != 'Xe tải nhà' and line.sanpham == 'day':
+                        elif line.daily_id.name != 'Xe tải nhà' and line.sanpham == 'day':
                             daily_day += line.soluong
                 rec.day_ban = giaoxe_day
                 rec.day_daily = daily_day
@@ -390,9 +390,9 @@ class RubberByDate(models.Model):
                 daily_dong = 0
                 if len(rec.deliver_line_ids) > 0:
                     for line in rec.deliver_line_ids:
-                        if line.daily.name == 'Xe tải nhà' and line.sanpham == 'dong':
+                        if line.daily_id.name == 'Xe tải nhà' and line.sanpham == 'dong':
                             giaoxe_dong += line.soluong
-                        elif line.daily.name != 'Xe tải nhà' and line.sanpham == 'dong':
+                        elif line.daily_id.name != 'Xe tải nhà' and line.sanpham == 'dong':
                             daily_dong += line.soluong
                 rec.dong_ban = giaoxe_dong
                 rec.dong_daily = daily_dong
@@ -407,9 +407,9 @@ class RubberByDate(models.Model):
                 daily_chen = 0
                 if len(rec.deliver_line_ids) > 0:
                     for line in rec.deliver_line_ids:
-                        if line.daily.name == 'Xe tải nhà' and line.sanpham == 'chen':
+                        if line.daily_id.name == 'Xe tải nhà' and line.sanpham == 'chen':
                             giaoxe_chen += line.soluong
-                        elif line.daily.name != 'Xe tải nhà' and line.sanpham == 'chen':
+                        elif line.daily_id.name != 'Xe tải nhà' and line.sanpham == 'chen':
                             daily_chen += line.soluong
                 rec.chen_ban = giaoxe_chen
                 rec.chen_daily = daily_chen    
