@@ -178,7 +178,7 @@ class CompanyTruck(models.Model):
     def _compute_invoice_xetainha_line_ids(self):
         for truck in self:
             lines = truck.deliver_line_ids.filtered(
-                lambda l: l.state in ['nhan','mua','invoice'] and 
+                lambda l: l.state in ['nhan','invoice'] and 
                           l.ngay == truck.ngaygiao and
                           l.daily_id.name == 'Xe tải nhà'
             )
@@ -192,7 +192,7 @@ class CompanyTruck(models.Model):
                 lambda l: l.state in ['nhan','invoice'] and 
                           l.ngay == truck.ngaygiao and
                           l.daily_id.name != 'Xe tải nhà' and
-                          l.to_id.name != 'TỔ Xe tải'
+                          l.to_name != 'TỔ Xe tải'
             )
             truck.invoice_tructiep_line_ids = lines
     
@@ -204,7 +204,7 @@ class CompanyTruck(models.Model):
                 lambda l: l.state in ['mua','invoice'] and 
                           l.ngay == truck.ngaygiao and
                           l.daily_id.name != 'Xe tải nhà' and
-                          l.to_id.name == 'TỔ Xe tải'
+                          l.to_name == 'TỔ Xe tải'
             )
             truck.invoice_chomu_line_ids = lines
 
