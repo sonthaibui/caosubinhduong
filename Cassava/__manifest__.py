@@ -10,6 +10,7 @@
     'depends': ['base', 'product', 'calculate_accounting_balance'],
     'data': [
         'data/dummy_currency.xml',  # Include the dummy currency data file
+        'views/product_template_views.xml',
         'views/bonphan_views.xml',
         'views/bonphan_line_views.xml',
         'views/lomi_views.xml',                

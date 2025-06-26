@@ -14,20 +14,41 @@
     
     'data': [
         'security/ir.model.access.csv',        
-        'views/sanluong.xml',
-        'views/bangluong.xml',
-        'views/luongvp.xml',
-        'views/sanluongtn.xml',
-        'views/nhapsanluong.xml',
-        'views/nhapsanluongtn.xml',
-        'views/phancay.xml',
-        'views/hangcay.xml',
-        'views/phancaytn.xml',
-        'views/phucap.xml',
-        'views/phucloi.xml',
-        'views/xetthuong.xml',
-        'views/xetai.xml',
-        'views/phieuluong.xml',
+        
+        'views/menu.xml',
+
+        'views/giaomu/domu_views.xml',
+        'views/giaomu/rubber_price_views.xml',         # Then load price views that reference it
+        'views/giaomu/rubber_price_wizard_views.xml',  # Load wizard views FIRST
+        'views/giaomu/tylehaohut_mu_views.xml',
+        'views/giaomu/xetai.xml',
+
+        'views/inherit/hr_department_views.xml',
+        
+        'views/salary/bangluong.xml',
+        'views/salary/luongvp.xml',
+        'views/salary/phieuluong.xml',
+        'views/salary/phucap.xml',
+        'views/salary/phucloi.xml',
+        'views/salary/xetthuong.xml',
+        
+        'views/sanluong/hangcay.xml',
+        'views/sanluong/nhapsanluong.xml',
+        'views/sanluong/phancay.xml',
+        'views/sanluong/sanluong.xml',
+        
+        'views/thinghiem/nhapsanluongtn.xml',
+        'views/thinghiem/phancaytn.xml',
+        'views/thinghiem/sanluongtn.xml',
+        
+        'views/xembaocao/menu_rubber_report.xml',
+        'views/xembaocao/menu_rubbertest_report.xml',
+        'views/xembaocao/report_rubber_template.xml',
+        'views/xembaocao/report_rubbertest_template.xml',
+        'views/xembaocao/rubber_config_views.xml',        
+
+        'views/xetthuong/yield_target_department_views.xml',
+        'views/xetthuong/xetthuongnv.xml',
         
         #'data/update_color.xml',  # Include the update script
         
@@ -37,19 +58,10 @@
         'report/salary_officer_report.xml',        
         'report/salaryboard_report.xml',
         'report/rubber_report.xml',
-        'report/rubbertest_report.xml',  # Add this if not already present               
-        'views/report_rubber_template.xml',
-        'views/report_rubbertest_template.xml',       
-        'views/menu_rubbertest_report.xml',
-        'views/menu_rubber_report.xml',
-        'views/rubber_config_views.xml',
-        'views/rubber_price_wizard_views.xml',  # Load wizard views FIRST
-        'views/rubber_price_views.xml',         # Then load price views that reference it
-        'data/server_actions.xml',
-        'views/tylehaohut_mu_views.xml',
-        'views/domu_views.xml',    
-        'views/yield_target_department_views.xml',
-        'views/menu.xml',  
+        'report/rubbertest_report.xml',  # Add this if not already present        
+        
+        'data/server_actions.xml',     
+          
     ],
     'controllers': [        
         'caosu/controllers/report_controller.py',

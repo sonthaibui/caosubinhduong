@@ -1,9 +1,7 @@
-from . import sanluong, rubber, rubberdate, reward, plantation, plantationtest, rewardbymonth, rubbertest, rubberdatetest, treeline, rubbersalary, allowance, allowancebymonth, salaryboard, employeebenefit, salaryoffice, salarydepartment, truck, xetthuongnv, salaryofficer, rubbertrans, rubberprice
-from . import report_rubbertest
-from . import report_rubber
-from . import rubber_report_config
-from . import rubbertest_report_config
-from . import rubber_price_wizard
-from . import tylehaohut_mu
-from . import domu
-from . import yield_target_department
+from . import giaomu
+from . import inherit
+from . import salary
+from . import sanluong
+from . import thinghiem
+from . import xembaocao
+from . import xetthuong
