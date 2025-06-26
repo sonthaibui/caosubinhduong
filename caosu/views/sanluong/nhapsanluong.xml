@@ -43,34 +43,13 @@
                                 <field name="mutrangthung"/>
                                 <field name="xe"/>
                               </group>
-                              <field name="deliver_line_ids" nolabel="1">
-                                <form>
-                                  <sheet>
-                                    <header>
-                                      <field name="state" widget="statusbar" statusbar_visible="chua,giao"/>
-                                    </header>
-                                    <group>
-                                      <group>
-                                        <field name="ngay"/>
-                                        <field name="to_id"/>
-                                        <field name="daily_id" widget="selection" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
-                                        <!--<field name="sanpham_id" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>-->
-                                        <field name="sanpham" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
-                                      </group>
-                                      <group>
-                                        <field name="soluong" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
-                                        <field name="do" attrs="{'readonly': [('state','in',['giao','nhan'])]}"/>
-                                        <field name="quykho" digits = "[42,0]" />                                        
-                                      </group>
-                                    </group>
-                                  </sheet>
-                                </form>
-                                <tree default_order='sanpham asc' create="1" edit="0" delete="1">
+                              <field name="deliver_line_ids" nolabel="1">                                
+                                <tree default_order='product_id asc' create="1" edit="0" delete="1">
                                   <field name="ngay"/>
                                   <field name="to_id"/>
                                   <field name="daily_id"/>
                                   <field name="sanpham"/>
-                                  <!--<field name="sanpham_id"/>-->
+                                  <field name="product_id" domain="[('categ_id.name', '=', 'MŨ')]"/>
                                   <field name="soluong"/>
                                   <field name="do"/>
                                   <field name="quykho" digits = "[42,0]" />
@@ -465,7 +444,7 @@
         </field>
     </record>
 
-    <record id="view_sanpham_tree" model="ir.ui.view">
+    <!--<record id="view_sanpham_tree" model="ir.ui.view">
         <field name="name">sanpham.tree</field>
         <field name="model">sanpham</field>
         <field name="arch" type="xml">
@@ -493,6 +472,6 @@
         <field name="name">Sản phẩm</field>
         <field name="res_model">sanpham</field>
         <field name="view_mode">tree,form</field>
-    </record>
+    </record>-->
 
 </odoo>

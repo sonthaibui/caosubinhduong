@@ -14,10 +14,18 @@ class RubberHarvest(models.Model):
     to_id = fields.Many2one('hr.department', string='Tổ')
     daily_id = fields.Many2one('res.partner', string='Đại lý')
     source = fields.Many2one('res.partner', string='Gốc', related='rubberdeliver_id.daily_id')
-    sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
+    
     sanpham = fields.Selection([
         ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
     ], string='Sản phẩm', readonly=True)
+    
+    product_id = fields.Many2one(
+        'product.product', 
+        string='Sản phẩm',
+        domain=[('categ_id.name', '=', 'Mũ')],
+        required=True
+    )
+    product_name = fields.Char(related='product_id.name', string='Sản phẩm', readonly=True)
     tyle = fields.Float('Tỷ lệ', readonly=True)
     soluong = fields.Float('Số lượng', digits='One Decimal', readonly=True)
     soluongban = fields.Float('Số lượng bán', digits='One Decimal', compute='_compute_soluongban')
@@ -41,11 +49,11 @@ class RubberHarvest(models.Model):
             rec.soluongban = 0
             rec.soluongban = rec.tyle * rec.soluong
 
-    @api.depends('ngay', 'sanpham', 'daily_id')
+    @api.depends('ngay', 'product_id', 'daily_id')
     def _compute_name(self):
         for rec in self:
             # Customize the name as needed
-            rec.name = f"{rec.ngay or ''} - {rec.sanpham or ''} - {rec.daily_id or ''}"
+            rec.name = f"{rec.ngay or ''} - {rec.product_id or ''} - {rec.daily_id or ''}"
 
 class RubberDeliver(models.Model):
     _name = 'rubber.deliver'
@@ -62,10 +70,17 @@ class RubberDeliver(models.Model):
     daily_name = fields.Char('Tên đại lý', related='daily_id.name')
     daily_ban = fields.Many2one('res.partner', string='Đại lý bán', compute='_compute_daily_ban', readonly=False)
        
-    sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
+    
     sanpham = fields.Selection([
         ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
     ], string='Sản phẩm', required=True, default='nuoc')
+    product_id = fields.Many2one(
+        'product.product', 
+        string='Sản phẩm',
+        domain=[('categ_id.name', '=', 'Mũ')],
+        required=True
+    )
+    product_name = fields.Char(related='product_id.name', string='Sản phẩm', readonly=True)
     soluong = fields.Float('Số lượng', default='0', digits='One Decimal')
     do = fields.Float('Độ', default='0', digits='One Decimal')
     quykho = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_quykho')
@@ -80,8 +95,8 @@ class RubberDeliver(models.Model):
     company_truck_id = fields.Many2one('company.truck', string='Xe công ty', ondelete='set null')
     tyle = fields.Float(compute='_compute_tyle', string='Tỷ lệ (%)')
     is_selected = fields.Boolean(string="Select", default=False)
-    sale_order_id = fields.Many2one('sale.order', string='Sale Order', copy=False)
-    sale_order_line_id = fields.Many2one('sale.order.line', string='Sale Order Line', copy=False)
+    sale_order_id = fields.Many2one('sale.order', string='Sale Order', copy=False, ondelete='set null')
+    sale_order_line_id = fields.Many2one('sale.order.line', string='Sale Order Line', copy=False, ondelete='set null')
 
     def unlink(self):
         for record in self:
@@ -97,7 +112,7 @@ class RubberDeliver(models.Model):
     def _compute_tyle(self):
         for rec in self:
             rec.tyle = 0
-            rbs = self.env['rubber.deliver'].search([('sanpham','=',rec.sanpham),('ngay','=',rec.ngay)])
+            rbs = self.env['rubber.deliver'].search([('product_id','=',rec.product_id.id),('ngay','=',rec.ngay)])
             qktt = 0
             if len(rbs) > 0:
                 for rb in rbs:
@@ -113,10 +128,10 @@ class RubberDeliver(models.Model):
             
             # If daily_id is "Xe tải nhà", apply special logic
             if (record.daily_id and record.daily_id.name == 'Xe tải nhà' and record.company_truck_id) or (record.to_id and record.to_name == 'TỔ Xe tải' and record.company_truck_id):
-                # Search for rubber.sell records with the same company_truck_id
+                # Search for rubber.sell records with the same company_truck_id and product
                 sell_records = self.env['rubber.sell'].search([
-                    ('company_truck_id', '=', record.company_truck_id.id),                    
-                    ('sanpham', '=', record.sanpham)
+                    ('company_truck_id', '=', record.company_truck_id.id),
+                    ('product_id', '=', record.product_id.id)
                 ])
                 
                 # If exactly one sell record exists, use its daily_id
@@ -128,20 +143,20 @@ class RubberDeliver(models.Model):
 
     def giaomu(self):
         for rec in self:
-            if rec.state == 'chua':
-                rec.state = 'giao'   
-                ngay = rec.ngay
-                if not ngay:
-                    continue  # Skip if ngay is not set
-                    
-                # Search for truck once
-                truck = self.env['company.truck'].search([('ngaygiao', '=', ngay)], limit=1)
+            if rec.state == 'chua':                   
+                # Find a truck with the same date as the delivery
+                truck = self.env['company.truck'].search([
+                    ('ngaygiao', '=', rec.ngay)
+                ], limit=1)                
+                # If no truck exists for this date, create a new one
                 if not truck:
                     truck = self.env['company.truck'].create({
-                        'ngaygiao': ngay,
-                        'ngayban': ngay,
+                        'ngaygiao': rec.ngay,
+                        'ngayban': rec.ngay,
                     })  
                 
+                # Update all required fields
+                rec.state = 'giao'
                 rec.soluongtt = rec.soluong
                 rec.dott = rec.do
                 rec.quykhott = rec.quykho
@@ -172,7 +187,9 @@ class RubberDeliver(models.Model):
                 # Update state and clear references
                 rec.sale_order_id = False
                 rec.sale_order_line_id = False
-                rec.state = 'nhan'
+                if rec.daily_id.name != 'Xe tải nhà' and rec.to_name == 'TỔ Xe tải':
+                    rec.state = 'mua'
+                else: rec.state == 'nhan'
             
             elif rec.state == 'nhan':
                 rec.state = 'giao'                
@@ -180,11 +197,11 @@ class RubberDeliver(models.Model):
                 rec.state = 'chua'
                 rec.company_truck_id = False
 
-            _logger.info(f"Record ID: {rec.id}, sale_order_line_id: {rec.sale_order_line_id}, "
+            '''_logger.info(f"Record ID: {rec.id}, sale_order_line_id: {rec.sale_order_line_id}, "
                     f"type: {type(rec.sale_order_line_id)}")
         
             if rec.sale_order_line_id:
-                _logger.info(f"Order line exists: {rec.sale_order_line_id.exists()}")
+                _logger.info(f"Order line exists: {rec.sale_order_line_id.exists()}")'''
 
 
     def nhanmu(self):
@@ -207,12 +224,21 @@ class RubberSell(models.Model):
     _description = 'Rubber Sell Model'
 
     ngay = fields.Date('Ngày', default=fields.Datetime.now(), required=True, store=True)
+    daily = fields.Many2one('res.partner', string='Đại lý', domain=[('is_customer','=',True)], required=True,
+        default=lambda self: self.env['res.partner'].search([('is_customer','=',True)], limit=1))
     daily_id = fields.Many2one('res.partner', string='Đại lý', domain=[('is_customer','=',True)], required=True,
         default=lambda self: self.env['res.partner'].search([('is_customer','=',True)], limit=1))
-    sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
+    
     sanpham = fields.Selection([
         ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
     ], string='Sản phẩm', required=True, default='nuoc')
+    product_id = fields.Many2one(
+        'product.product', 
+        string='Sản phẩm',
+        domain=[('categ_id.name', '=', 'Mũ')],
+        required=True
+    )
+    product_name = fields.Char(related='product_id.name', string='Sản phẩm', readonly=True)
     soluong = fields.Float('Số lượng bán', default='0', digits='One Decimal')
     do = fields.Float('Độ bán', default='0', digits='One Decimal')
     quykho = fields.Float('Quy khô bán', default='0', digits='One Decimal', compute='_compute_quykho')
@@ -222,25 +248,29 @@ class RubberSell(models.Model):
     state = fields.Selection([
         ('no', 'Chưa phân bổ'), ('yes', 'Đã phân bổ')
     ], string='Phân bổ', default='no', readonly=True)
-    
-    
-    def phan_bo(self):
+        
+    '''def phan_bo(self):
         for rec in self:
             rec.state = 'yes'
-            rbds = rec.env['rubber.deliver'].search([('company_truck_id','=',rec.company_truck_id.id),('sanpham','=',rec.sanpham),('ngay','=',rec.ngaygiao)])
+            rbds = rec.env['rubber.deliver'].search([
+                ('company_truck_id', '=', rec.company_truck_id.id),
+                ('ngay', '=', rec.ngaygiao),
+                ('product_id', '=', rec.product_id.id)
+            ])
+            
             if len(rbds) > 0:
                 for rbd in rbds:
                     rec.env['rubber.harvest'].create({
                         'to_id': rbd.to_id,
-                        'daily_id': rec.daily_id,                        
-                        'sanpham': rec.sanpham,
+                        'daily_id': rec.daily_id,
+                        'product_id': rec.product_id.id,
                         'tyle': rbd.tyle,
                         'soluong': rec.soluong,
                         'do': rec.do,
                         'rubbersell_id': rec.id,
                         'rubberdeliver_id': rbd.id,
                         'company_truck_id': rec.company_truck_id.id,
-                    })
+                    })'''
     
     @api.depends('soluong','do')
     def _compute_quykho(self):
@@ -252,9 +282,7 @@ class RubberSell(models.Model):
             harvests = self.env['rubber.harvest'].search([('rubbersell_id', '=', sell.id)])
             harvests.unlink()
         return super(RubberSell, self).unlink()
-    
-    
-        
+           
 class RubberLoss(models.Model):
     _name = 'rubber.loss'
     _description = 'Rubber Loss Model'

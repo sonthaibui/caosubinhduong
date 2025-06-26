@@ -26,10 +26,9 @@ class CompanyTruck(models.Model):
     thang = fields.Char('Tháng', compute='_compute_ngay', store=True)
     nam = fields.Char('Năm', compute='_compute_ngay', store=True)
     nam_kt = fields.Char('Năm khai thác', compute='_compute_ngay', store=True)
-    ngayban = fields.Date('Ngày bán', default=fields.Datetime.now(), required=True, tracking=True, store=True)
+    ngayban = fields.Date('Ngày bán', default=fields.Datetime.now(), tracking=True, store=True)
     #recorded = fields.Boolean('recorded', default=False, compute='_compute_recorded')
-    sanpham_id = fields.Many2one('sanpham', string='Sản phẩm')
-    
+        
     # 1. Thêm field để lọc loại sản phẩm
     active_sanpham = fields.Selection([
         ('all', 'Tất cả'),
@@ -39,7 +38,11 @@ class CompanyTruck(models.Model):
         ('dong', 'Mũ đông'),
         ('chen', 'Mũ chén')
     ], string="Lọc sản phẩm", default='all')
-
+    active_product_id = fields.Many2one(
+        'product.product', 
+        string='Sản phẩm hoạt động',
+        domain=[('categ_id.name', '=', 'MŨ')]
+    )
     # 2. Giữ lại field one2many gốc - không thay đổi
     deliver_line_ids = fields.One2many(
         'rubber.deliver',
@@ -63,8 +66,10 @@ class CompanyTruck(models.Model):
 
     
     # 4. Phương thức tính toán cho filtered_deliver_line_ids
-    @api.depends('active_sanpham', 'deliver_line_ids', 'deliver_line_ids.sanpham', 
-                'deliver_line_ids.daily_id', 'deliver_line_ids.to_id', 'deliver_line_ids.state','ngaygiao')
+    @api.depends('active_product_id', 'deliver_line_ids', 
+                'deliver_line_ids.product_id', 
+                'deliver_line_ids.daily_id', 'deliver_line_ids.to_id', 
+                'deliver_line_ids.state', 'ngaygiao')
     def _compute_filtered_deliver_line_ids(self):
         for truck in self:
             lines = truck.deliver_line_ids.filtered(
@@ -75,19 +80,19 @@ class CompanyTruck(models.Model):
             # Lọc theo đại lý "Xe tải nhà" và tổ "TỔ Xe tải"
             lines = lines.filtered(
                 lambda l: (l.daily_id.name == 'Xe tải nhà') or 
-                            (l.to_id.name == 'TỔ Xe tải')
+                          (l.to_id.name == 'TỔ Xe tải')
             )
-            # Lọc theo sanpham nếu không phải "all"
-            if truck.active_sanpham != 'all':
-                lines = lines.filtered(lambda l: l.sanpham == truck.active_sanpham)
+            # Lọc theo product_id nếu được thiết lập
+            if truck.active_product_id:
+                lines = lines.filtered(lambda l: l.product_id == truck.active_product_id)
                 
             # Sắp xếp theo daily, sanpham
-            lines = lines.sorted(key=lambda l: (l.daily_id.name if l.daily_id else "", l.sanpham))
+            lines = lines.sorted(key=lambda l: (l.daily_id.name if l.daily_id else "", l.product_id))
             
             truck.filtered_deliver_line_ids = lines
     
     # Phương thức tính toán cho filtered_tructiep_deliver_line_ids
-    @api.depends('active_sanpham', 'deliver_line_ids', 'deliver_line_ids.sanpham', 
+    @api.depends('deliver_line_ids', 'deliver_line_ids.product_id', 
                 'deliver_line_ids.daily_id', 'deliver_line_ids.to_id', 'deliver_line_ids.state', 'ngaygiao')
     def _compute_filtered_tructiep_deliver_line_ids(self):
         for truck in self:
@@ -102,51 +107,53 @@ class CompanyTruck(models.Model):
             lines = lines.filtered(
                 lambda l: (l.daily_id.name != 'Xe tải nhà' and 
                            l.to_id.name != 'TỔ Xe tải')
-            )
-            
-            '''# Lọc theo sanpham nếu không phải "all"
-            if truck.active_sanpham != 'all':
-                lines = lines.filtered(lambda l: l.sanpham == truck.active_sanpham)'''
+            ) 
                 
             # Sắp xếp theo daily, sanpham
-            lines = lines.sorted(key=lambda l: (l.daily_id.name if l.daily_id else "", l.sanpham))
+            lines = lines.sorted(key=lambda l: (l.daily_id.name if l.daily_id else "", l.product_id))
             
             truck.filtered_tructiep_deliver_line_ids = lines
     
     # 5. Các methods để thiết lập active_sanpham qua buttons
-    def set_sanpham_all(self):
-        self.active_sanpham = 'all'
+    def set_sanpham_all(self):        
+        # Setting to False to show all products (no filtering)
+        self.active_product_id = False        
         return True
 
-    def set_sanpham_nuoc(self):
-        self.active_sanpham = 'nuoc'
+    def set_sanpham_nuoc(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'munuoc')], limit=1)
+        self.active_product_id = product.id if product else False
         return True
 
-    def set_sanpham_tap(self):
-        self.active_sanpham = 'tap'
+    def set_sanpham_tap(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'mutap')], limit=1)
+        self.active_product_id = product.id if product else False
         return True
 
-    def set_sanpham_day(self):
-        self.active_sanpham = 'day'
+    def set_sanpham_day(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'muday')], limit=1)
+        self.active_product_id = product.id if product else False
         return True
 
-    def set_sanpham_dong(self):
-        self.active_sanpham = 'dong'
+    def set_sanpham_dong(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'mudong')], limit=1)
+        self.active_product_id = product.id if product else False
         return True
 
-    def set_sanpham_chen(self):
-        self.active_sanpham = 'chen'
+    def set_sanpham_chen(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'muchen')], limit=1)
+        self.active_product_id = product.id if product else False
         return True
-
-    order_xetainha_line_ids = fields.One2many(
-    'rubber.deliver',
-    'company_truck_id',  # Quan trọng: Thêm field relation
-    compute='_compute_order_xetainha_line_ids',
-    readonly=False,
-    string='Mũ xe tải nhà'
-    )
 
     # 3 trường one2many mới cho trang order
+    order_xetainha_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',  # Quan trọng: Thêm field relation
+        compute='_compute_order_xetainha_line_ids',
+        readonly=False,
+        string='Mũ xe tải nhà'
+    )
+    
     order_tructiep_line_ids = fields.One2many(
         'rubber.deliver',
         'company_truck_id',  # Quan trọng: Thêm field relation
@@ -162,17 +169,7 @@ class CompanyTruck(models.Model):
         readonly=False,
         string='Mũ chờ'
     )
-    delivertap_line_ids = fields.One2many(
-        'rubber.deliver',
-        'company_truck_id',
-        string='Nhận mũ tạp',
-        domain=[
-            '|',
-            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
-            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
-            ('sanpham', '=', 'tap')
-        ]
-    )
+    
     # Phương thức tính toán cho order_xetainha_line_ids
     @api.depends('deliver_line_ids', 'deliver_line_ids.daily_id', 'deliver_line_ids.state', 'deliver_line_ids.ngay', 'ngaygiao')
     def _compute_order_xetainha_line_ids(self):
@@ -207,47 +204,13 @@ class CompanyTruck(models.Model):
                           l.to_name == 'TỔ Xe tải'
             )
             truck.order_chomu_line_ids = lines
-
-    deliverday_line_ids = fields.One2many(
-        'rubber.deliver',
-        'company_truck_id',
-        string='Nhận mũ dây',
-        domain=[
-            '|',
-            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
-            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
-            ('sanpham', '=', 'day')
-        ]       
-    )
-    deliverdong_line_ids = fields.One2many(
-        'rubber.deliver',
-        'company_truck_id',
-        string='Nhận mũ đông',
-        domain=[
-            '|',
-            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
-            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
-            ('sanpham', '=', 'dong')    
-        ]
-    )
-    deliverchen_line_ids = fields.One2many(
-        'rubber.deliver',
-        'company_truck_id',
-        string='Nhận mũ chén',
-        domain=[
-            '|',
-            '&', ('daily_name', '=', 'Xe tải nhà'), ('state', 'in', ['giao', 'nhan']),
-            '&', ('daily_name', '!=', 'Xe tải nhà'), ('state', '=', 'mua'),
-            ('sanpham', '=', 'chen')
-        ]
-    )
-    
+   
     sell_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ nước')
     selltap_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ tạp', domain=[('sanpham','=','tap')])
     sellday_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ dây', domain=[('sanpham','=','day')])
     selldong_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ đông', domain=[('sanpham','=','dong')])
     sellchen_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ chén', domain=[('sanpham','=','chen')])
-    haohut_nuoc = fields.Float('Hao hụt', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
+    '''haohut_nuoc = fields.Float('Hao hụt', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
     tylehh_nuoc = fields.Float('Tỷ lệ hao hụt (%)', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
     haohutdo_nuoc = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
     tylehhdo_nuoc = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
@@ -306,7 +269,7 @@ class CompanyTruck(models.Model):
     quykho_chen = fields.Float('Quy khô nhận', default='0', digits='One Decimal', compute='_compute_haohut_chen')
     soluongban_chen = fields.Float('SL nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')
     doban_chen = fields.Float('Độ nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    quykhoban_chen = fields.Float('QK nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')
+    quykhoban_chen = fields.Float('QK nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')'''
     harvest_line_ids = fields.One2many('rubber.harvest', 'company_truck_id')
     harvesttap_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ tạp xe tải', domain=[('sanpham','=','tap'),('rubbersell_id','!=',False)])
     harvestday_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ dây xe tải', domain=[('sanpham','=','day'),('rubbersell_id','!=',False)])
@@ -346,9 +309,7 @@ class CompanyTruck(models.Model):
             if rec.thang == '01':
                 rec.nam_kt = str(int(rec.nam) - 1)
             else:
-                rec.nam_kt = rec.nam
-
-    
+                rec.nam_kt = rec.nam    
         
     def mua_mu(self):
         self.ensure_one()
@@ -383,10 +344,8 @@ class CompanyTruck(models.Model):
                 'default_state': 'mua'
             })
         }
-    
-    
-    
-    @api.depends('delivertap_line_ids')
+
+    '''@api.depends('delivertap_line_ids')
     def _compute_nhantap(self):
         self.ensure_one()
         self.nhantap = False
@@ -830,7 +789,7 @@ class CompanyTruck(models.Model):
                 rec.tylehhdo_chen = tylehhdo_chen
                 rec.haohutqk_chen = haohutqk_chen
                 rec.tylehhqk_chen = tylehhqk_chen
-
+    '''
     @api.constrains('ngaygiao')
     def _check_rubberdate_unique(self):
         companytruck_counts = self.search_count([('ngaygiao','=',self.ngaygiao),('id','!=',self.id)])
@@ -838,12 +797,7 @@ class CompanyTruck(models.Model):
             raise ValidationError("Nhận và bán ngày " + str(datetime.strptime(str(self.ngaygiao),'%Y-%m-%d').strftime('%d/%m/%Y')) + " đã tồn tại.")
         '''if len(self.env['rubber.date'].search([('ngay','=',self.ngaygiao)])) == False:
             raise ValidationError(_('Ngày ' + str(datetime.strptime(str(self.ngaygiao),'%Y-%m-%d').strftime('%d/%m/%Y')) + ' không có mũ giao.'))'''
-
-    '''def _compute_recorded(self):
-        for rec in self:            
-            rec.recorded = True'''   
-                        
-                
+    
     def action_create_sale_order_from_selected_lines(self):
         self.ensure_one()
         
@@ -859,27 +813,18 @@ class CompanyTruck(models.Model):
         lines_by_daily_to = defaultdict(list)
         for line in selected_lines:
             if not line.daily_ban:
-                raise UserError(_("Line for product %s has no partner (daily_id).") % line.sanpham)
+                raise UserError(_("Line for product %s has no partner (daily_id).") % line.product_id)
             
             key = (line.daily_ban, line.to_id)
             lines_by_daily_to[key].append(line)
-        debug_line = f"line: {lines_by_daily_to}"
-        self.debug = (self.debug or '') + debug_line
+        '''debug_line = f"line: {lines_by_daily_to}"
+        self.debug = (self.debug or '') + debug_line'''
         # Create sale orders for each partner+team combination
         SaleOrder = self.env['sale.order']
         SaleOrderLine = self.env['sale.order.line']
         Partner = self.env['res.partner']
         Product = self.env['product.product']
-        
-        # Map sanpham values to product codes (same as in your original function)
-        sanpham_map = {
-            'nuoc': 'MUNUOC',
-            'tap': 'MUTAP',
-            'day': 'MUDAY',
-            'dong': 'MUDONG',
-            'chen': 'MUCHEN',
-        }
-        
+                        
         created_orders = []
         for (daily_ban, to_id), lines in lines_by_daily_to.items():
             # Find max ngay for date_order
@@ -888,30 +833,44 @@ class CompanyTruck(models.Model):
             # Get analytic account from to_id
             analytic_account_id = to_id.analytic_account_id.id if to_id and to_id.analytic_account_id else False
             
-            # Create sale order
-            sale_order_vals = {
-                'partner_id': daily_ban.id,
-                'date_order': max_ngay,
-                'commitment_date': max_ngay,
-                'expected_date': max_ngay,
-                'analytic_account_id': analytic_account_id,
-                #'user_id': self.env.user.id,
-                # Add other sale order fields as needed
-            }
+            # Check for existing orders with same criteria
+            domain = [
+                ('partner_id', '=', daily_ban.id),
+                ('commitment_date', '=', max_ngay),
+                ('state', 'in', ['draft', 'sent']),  # Only consider draft/sent orders
+            ]
             
-            sale_order = SaleOrder.create(sale_order_vals)
+            # Add to_id to domain if it exists
+            if to_id:
+                domain.append(('analytic_account_id', '=', analytic_account_id))
+            
+            existing_order = SaleOrder.search(domain, limit=1)
+            
+            if existing_order:
+                # Use existing order
+                sale_order = existing_order
+            else:
+                # Create sale order
+                sale_order_vals = {
+                    'partner_id': daily_ban.id,
+                    'date_order': max_ngay,
+                    'commitment_date': max_ngay,
+                    'expected_date': max_ngay,
+                    'analytic_account_id': analytic_account_id,
+                    #'user_id': self.env.user.id,
+                    # Add other sale order fields as needed
+                }
+                
+                sale_order = SaleOrder.create(sale_order_vals)
             created_orders.append(sale_order)
             
             # Create sale order lines
             for line in lines:
-                default_code = sanpham_map.get(line.sanpham)
-                if not default_code:
-                    continue  # Skip if mapping not found
-                    
-                product = Product.search([('default_code', '=', default_code)], limit=1)
-                if not product:
-                    continue  # Skip if no matching product
-                    
+                # Use product_id if available, otherwise look up based on sanpham
+                if line.product_id:
+                    product = line.product_id
+                
+                
                 # Get price using existing method
                 price, price_type_code = self._get_rubber_price(line)
                 
@@ -935,9 +894,9 @@ class CompanyTruck(models.Model):
                         'commitment_date': line.ngay,
                     })
                 '''debug_line = f"order_line: {product.id}, ' \
-                              'sanluong': {line.soluongtt}, ' \
+                            'sanluong': {line.soluongtt}, ' \
                                 'do': {line.dott}, ' \
-                              'product_uom_qty': {line.soluongtt}, ' \
+                            'product_uom_qty': {line.soluongtt}, ' \
                                 'commitment_date': {line.ngay}"
 
                 self.debug = (self.debug or '') + debug_line'''
@@ -977,30 +936,37 @@ class CompanyTruck(models.Model):
             ('to_id', '=', order_line.to_id.id)                      
         ]       
         
-        if order_line.sanpham == 'nuoc':
-            domain.append(('price_type_id.code', '=', 'giamunuoc'))
-        elif order_line.sanpham == 'tap':
-            domain.append('|')
-            domain.append(('price_type_id.code', '=', 'giamutap'))
-            domain.append(('price_type_id.code', '=', 'giamutap_do'))
-        elif order_line.sanpham == 'dong':
-            domain.append(('price_type_id.code', '=', 'giamudong'))
-        elif order_line.sanpham == 'day':
-            domain.append(('price_type_id.code', '=', 'giamuday'))
-        elif order_line.sanpham == 'chen':
-            domain.append(('price_type_id.code', '=', 'giamuchen'))
+        # Try to determine price type from product_id first
+        if order_line.product_id and order_line.product_id.default_code:
+            code = order_line.product_id.default_code
+            if code == 'MUNUOC':
+                domain.append(('price_type_id.code', '=', 'giamunuoc'))
+            elif code == 'MUTAP':
+                domain.append('|')
+                domain.append(('price_type_id.code', '=', 'giamutap'))
+                domain.append(('price_type_id.code', '=', 'giamutap_do'))
+            elif code == 'MUDONG':
+                domain.append(('price_type_id.code', '=', 'giamudong'))
+            elif code == 'MUDAY':
+                domain.append(('price_type_id.code', '=', 'giamuday'))
+            elif code == 'MUCHEN':
+                domain.append(('price_type_id.code', '=', 'giamuchen'))
+        
         else:
             domain.append(('price_type_id.code', '=', ''))
-        # Append domain to debug field            
+        
         price = self.env['rubber.price'].search(domain, limit=1)
+        
         '''debug_line = f"Domain: {domain}, Price: {price.gia if price else 'N/A'}\n"
         self.debug = (self.debug or '') + debug_line'''
+        
         if price:
             if price.price_type_id.code == 'giamutap_do' or price.price_type_id.code == 'giamunuoc':
                 return price.gia * 100, price.price_type_id.code
             else:
                 return price.gia, price.price_type_id.code
         return 0.0, None
+    
     def action_select_all_order_lines(self):
         """Select all order lines"""
         lines = self.order_xetainha_line_ids + self.order_tructiep_line_ids + self.order_chomu_line_ids

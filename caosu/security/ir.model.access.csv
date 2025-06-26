@@ -40,5 +40,4 @@ access.yield.target.department,access_yield_target_department,caosu.model_yield_
 access.yield.target,access_yield_target,caosu.model_yield_target,base.group_user,1,1,1,1
 access.yield.distribution,access_yield_distribution,caosu.model_yield_distribution,base.group_user,1,1,1,1
 access.rubber.price.type,access_rubber_price_type,caosu.model_rubber_price_type,base.group_user,1,1,1,1
-access.sanpham,access_sanpham,caosu.model_sanpham,base.group_user,1,1,1,1
 access.location,access_location,caosu.model_location,base.group_user,1,1,1,1

@@ -118,12 +118,12 @@
         parent="banmu_menu"
         action="action_rubber_price"
         sequence="5"/>
-    <menuitem 
+    <!--<menuitem 
         id="menu_sanpham"
         name="Loại mũ"
         parent="banmu_menu"
         action="action_sanpham"
-        sequence="6"/>
+        sequence="6"/>-->
     <menuitem 
         id="menu_rubber_deliver"
         name="Giao mủ"

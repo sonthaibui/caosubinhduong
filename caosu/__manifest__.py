@@ -15,7 +15,7 @@
     'data': [
         'security/ir.model.access.csv',        
         
-        'views/menu.xml',
+        
 
         'views/giaomu/domu_views.xml',
         'views/giaomu/rubber_price_views.xml',         # Then load price views that reference it
@@ -50,6 +50,7 @@
         'views/xetthuong/yield_target_department_views.xml',
         'views/xetthuong/xetthuongnv.xml',
         
+        'views/menu.xml',
         #'data/update_color.xml',  # Include the update script
         
         'report/reward_bymonth_report.xml',
