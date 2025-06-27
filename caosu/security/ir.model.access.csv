@@ -4,7 +4,6 @@ access.rubber.date,access_rubber_date,caosu.model_rubber_date,base.group_user,1,
 access.rubber.price,access_rubber_price,caosu.model_rubber_price,base.group_user,1,1,1,1
 access.rubber.price.wizard,access_rubber_price_wizard,caosu.model_rubber_price_wizard,base.group_user,1,1,1,1
 access.rubber.price.wizard.line,access_rubber_price_wizard_line,caosu.model_rubber_price_wizard_line,base.group_user,1,1,1,1
-access.rubber.harvest,access_rubber_harvest,caosu.model_rubber_harvest,base.group_user,1,1,1,1
 access.rubber.deliver,access_rubber_deliver,caosu.model_rubber_deliver,base.group_user,1,1,1,1
 access.rubber.sell,access_rubber_sell,caosu.model_rubber_sell,base.group_user,1,1,1,1
 access.rubber.loss,access_rubber_loss,caosu.model_rubber_loss,base.group_user,1,1,1,1

@@ -27,8 +27,21 @@ class CompanyTruck(models.Model):
     nam = fields.Char('Năm', compute='_compute_ngay', store=True)
     nam_kt = fields.Char('Năm khai thác', compute='_compute_ngay', store=True)
     ngayban = fields.Date('Ngày bán', default=fields.Datetime.now(), tracking=True, store=True)
-    #recorded = fields.Boolean('recorded', default=False, compute='_compute_recorded')
-        
+    nguoitao = fields.Char(compute='_compute_nguoitao', string='Người Tạo:')
+    debug = fields.Html('Debug Info')  
+    sum_soluong = fields.Float('Sảnlượng', compute='_compute_sum', digits='Product Price', store=True)
+    sum_do = fields.Float('Độ', compute='_compute_sum', digits='One Decimal',store=True)
+    sum_quykho = fields.Float('Quykhô', compute='_compute_sum', digits='Product Price', store=True)
+    sum_slban = fields.Float('SL bán', compute='_compute_sum', digits='Product Price', store=True)
+    sum_doban = fields.Float('Độ bán', compute='_compute_sum', digits='One Decimal',store=True)
+    sum_qkban = fields.Float('Quykhô bán', compute='_compute_sum', digits='Product Price', store=True)
+    haohut_sl = fields.Float('Haohụt SL', compute='_compute_sum', digits='Product Price', store=True)
+    haohut_do = fields.Float('Haohụt Độ', compute='_compute_sum', digits='One Decimal', store=True)
+    haohut_qk = fields.Float('Haohụt QK', compute='_compute_sum', digits='Product Price', store=True)
+    money_loss = fields.Float(string="$ Haohụt", compute="_compute_money_loss", digits='Product Price', store=True)
+    money_chomu = fields.Float( string="$ Chở mủ", compute="_compute_money_chomu", store=True, digits='Product Price')
+    money_loi = fields.Float(string="$ Lời", compute="_compute_money_loi", store=True, digits='Product Price')
+
     # 1. Thêm field để lọc loại sản phẩm
     active_sanpham = fields.Selection([
         ('all', 'Tất cả'),
@@ -49,6 +62,11 @@ class CompanyTruck(models.Model):
         'company_truck_id',
         string='Nhận mũ'
     )    
+    sell_line_ids = fields.One2many(
+        'rubber.sell', 
+        'company_truck_id', 
+        string='Bán mũ nước')
+
     # 3. Tạo field computed để hiển thị dữ liệu được lọc
     filtered_deliver_line_ids = fields.One2many(
         'rubber.deliver',
@@ -64,7 +82,37 @@ class CompanyTruck(models.Model):
         readonly=False,  # Thêm dòng này
         string='Danh sách lọc'   )
 
+    filtered_sell_line_ids = fields.One2many(
+        'rubber.sell',
+        'company_truck_id',
+        compute='_compute_filtered_sell_line_ids',
+        readonly=False,
+        string='Filtered Sell Lines'
+    )
+    # 6 trường one2many mới cho trang order
+    order_xetainha_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',  # Quan trọng: Thêm field relation
+        compute='_compute_order_xetainha_line_ids',
+        readonly=False,
+        string='Mũ xe tải nhà'
+    )
     
+    order_tructiep_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',  # Quan trọng: Thêm field relation
+        compute='_compute_order_tructiep_line_ids',
+        readonly=False,
+        string='Mũ trực tiếp'
+    )
+
+    order_chomu_line_ids = fields.One2many(
+        'rubber.deliver',
+        'company_truck_id',  # Quan trọng: Thêm field relation
+        compute='_compute_order_chomu_line_ids',
+        readonly=False,
+        string='Mũ chờ'
+    )
     # 4. Phương thức tính toán cho filtered_deliver_line_ids
     @api.depends('active_product_id', 'deliver_line_ids', 
                 'deliver_line_ids.product_id', 
@@ -92,8 +140,10 @@ class CompanyTruck(models.Model):
             truck.filtered_deliver_line_ids = lines
     
     # Phương thức tính toán cho filtered_tructiep_deliver_line_ids
-    @api.depends('deliver_line_ids', 'deliver_line_ids.product_id', 
-                'deliver_line_ids.daily_id', 'deliver_line_ids.to_id', 'deliver_line_ids.state', 'ngaygiao')
+    @api.depends('deliver_line_ids', 
+                'deliver_line_ids.product_id', 
+                'deliver_line_ids.daily_id', 'deliver_line_ids.to_id', 
+                'deliver_line_ids.state', 'ngaygiao')
     def _compute_filtered_tructiep_deliver_line_ids(self):
         for truck in self:
             # Lọc theo ngày, số lượng và trạng thái
@@ -109,68 +159,32 @@ class CompanyTruck(models.Model):
                            l.to_id.name != 'TỔ Xe tải')
             ) 
                 
+            # Lọc theo product_id nếu được thiết lập
+            if truck.active_product_id:
+                lines = lines.filtered(lambda l: l.product_id == truck.active_product_id)
+                
             # Sắp xếp theo daily, sanpham
             lines = lines.sorted(key=lambda l: (l.daily_id.name if l.daily_id else "", l.product_id))
             
             truck.filtered_tructiep_deliver_line_ids = lines
     
-    # 5. Các methods để thiết lập active_sanpham qua buttons
-    def set_sanpham_all(self):        
-        # Setting to False to show all products (no filtering)
-        self.active_product_id = False        
-        return True
-
-    def set_sanpham_nuoc(self):        
-        product = self.env['product.product'].search([('default_code', '=', 'munuoc')], limit=1)
-        self.active_product_id = product.id if product else False
-        return True
-
-    def set_sanpham_tap(self):        
-        product = self.env['product.product'].search([('default_code', '=', 'mutap')], limit=1)
-        self.active_product_id = product.id if product else False
-        return True
-
-    def set_sanpham_day(self):        
-        product = self.env['product.product'].search([('default_code', '=', 'muday')], limit=1)
-        self.active_product_id = product.id if product else False
-        return True
-
-    def set_sanpham_dong(self):        
-        product = self.env['product.product'].search([('default_code', '=', 'mudong')], limit=1)
-        self.active_product_id = product.id if product else False
-        return True
-
-    def set_sanpham_chen(self):        
-        product = self.env['product.product'].search([('default_code', '=', 'muchen')], limit=1)
-        self.active_product_id = product.id if product else False
-        return True
-
-    # 3 trường one2many mới cho trang order
-    order_xetainha_line_ids = fields.One2many(
-        'rubber.deliver',
-        'company_truck_id',  # Quan trọng: Thêm field relation
-        compute='_compute_order_xetainha_line_ids',
-        readonly=False,
-        string='Mũ xe tải nhà'
-    )
-    
-    order_tructiep_line_ids = fields.One2many(
-        'rubber.deliver',
-        'company_truck_id',  # Quan trọng: Thêm field relation
-        compute='_compute_order_tructiep_line_ids',
-        readonly=False,
-        string='Mũ trực tiếp'
-    )
-
-    order_chomu_line_ids = fields.One2many(
-        'rubber.deliver',
-        'company_truck_id',  # Quan trọng: Thêm field relation
-        compute='_compute_order_chomu_line_ids',
-        readonly=False,
-        string='Mũ chờ'
-    )
-    
-    # Phương thức tính toán cho order_xetainha_line_ids
+    @api.depends('active_product_id', 'sell_line_ids', 
+                'sell_line_ids.product_id', 
+                'sell_line_ids.daily_id', 'ngaygiao')
+    def _compute_filtered_sell_line_ids(self):
+        for truck in self:
+            lines = truck.sell_line_ids
+            
+            # Filter by product_id if set
+            if truck.active_product_id:
+                lines = lines.filtered(lambda l: l.product_id == truck.active_product_id)
+                
+            # Sort by daily_id
+            lines = lines.sorted(key=lambda l: (l.daily_id.name if l.daily_id else ""))
+            
+            truck.filtered_sell_line_ids = lines
+        
+    # 7 Phương thức tính toán cho order_xetainha_line_ids
     @api.depends('deliver_line_ids', 'deliver_line_ids.daily_id', 'deliver_line_ids.state', 'deliver_line_ids.ngay', 'ngaygiao')
     def _compute_order_xetainha_line_ids(self):
         for truck in self:
@@ -205,94 +219,6 @@ class CompanyTruck(models.Model):
             )
             truck.order_chomu_line_ids = lines
    
-    sell_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ nước')
-    selltap_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ tạp', domain=[('sanpham','=','tap')])
-    sellday_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ dây', domain=[('sanpham','=','day')])
-    selldong_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ đông', domain=[('sanpham','=','dong')])
-    sellchen_line_ids = fields.One2many('rubber.sell', 'company_truck_id', tracking=True, string='Bán mũ chén', domain=[('sanpham','=','chen')])
-    '''haohut_nuoc = fields.Float('Hao hụt', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    tylehh_nuoc = fields.Float('Tỷ lệ hao hụt (%)', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    haohutdo_nuoc = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    tylehhdo_nuoc = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    haohutqk_nuoc = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    tylehhqk_nuoc = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    soluong_nuoc = fields.Float('SL nước nhận', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    do_nuoc = fields.Float('Độ nước nhận', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    quykho_nuoc = fields.Float('QK nước nhận', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    soluongban_nuoc = fields.Float('SL nước bán', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    doban_nuoc = fields.Float('Độ nước bán', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    quykhoban_nuoc = fields.Float('QK nước bán', default='0', digits='One Decimal', compute='_compute_haohut_nuoc')
-    haohut_tap = fields.Float('Hao hụt', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    tylehh_tap = fields.Float('Tỷ lệ hao hụt (%)', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    haohutdo_tap = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    tylehhdo_tap = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    haohutqk_tap = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    tylehhqk_tap = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    soluong_tap = fields.Float('Nhận', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    do_tap = fields.Float('Độ nhận', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    quykho_tap = fields.Float('Quy khô nhận', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    soluongban_tap = fields.Float('SL nước bán', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    doban_tap = fields.Float('Độ nước bán', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    quykhoban_tap = fields.Float('QK nước bán', default='0', digits='One Decimal', compute='_compute_haohut_tap')
-    haohut_day = fields.Float('Hao hụt', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    tylehh_day = fields.Float('Tỷ lệ hao hụt (%)', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    haohutdo_day = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    tylehhdo_day = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    haohutqk_day = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    tylehhqk_day = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    haohut_dong = fields.Float('Hao hụt', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    soluong_day = fields.Float('Nhận', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    do_day = fields.Float('Độ nhận', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    quykho_day = fields.Float('Quy khô nhận', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    soluongban_day = fields.Float('SL nước bán', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    doban_day = fields.Float('Độ nước bán', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    quykhoban_day = fields.Float('QK nước bán', default='0', digits='One Decimal', compute='_compute_haohut_day')
-    tylehh_dong = fields.Float('Tỷ lệ hao hụt (%)', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    haohutdo_dong = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    tylehhdo_dong = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    haohutqk_dong = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    tylehhqk_dong = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    soluong_dong = fields.Float('Nhận', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    do_dong = fields.Float('Độ nhận', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    quykho_dong = fields.Float('Quy khô nhận', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    soluongban_dong = fields.Float('SL nước bán', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    doban_dong = fields.Float('Độ nước bán', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    quykhoban_dong = fields.Float('QK nước bán', default='0', digits='One Decimal', compute='_compute_haohut_dong')
-    haohut_chen = fields.Float('Hao hụt', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    tylehh_chen = fields.Float('Tỷ lệ hao hụt (%)', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    haohutdo_chen = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    tylehhdo_chen = fields.Float('Độ', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    haohutqk_chen = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    tylehhqk_chen = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    soluong_chen = fields.Float('Nhận', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    do_chen = fields.Float('Độ nhận', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    quykho_chen = fields.Float('Quy khô nhận', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    soluongban_chen = fields.Float('SL nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    doban_chen = fields.Float('Độ nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')
-    quykhoban_chen = fields.Float('QK nước bán', default='0', digits='One Decimal', compute='_compute_haohut_chen')'''
-    harvest_line_ids = fields.One2many('rubber.harvest', 'company_truck_id')
-    harvesttap_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ tạp xe tải', domain=[('sanpham','=','tap'),('rubbersell_id','!=',False)])
-    harvestday_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ dây xe tải', domain=[('sanpham','=','day'),('rubbersell_id','!=',False)])
-    harvestdong_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ đông xe tải', domain=[('sanpham','=','dong'),('rubbersell_id','!=',False)])
-    harvestchen_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ chén xe tải', domain=[('sanpham','=','chen'),('rubbersell_id','!=',False)])
-    harvest1_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ nước trực tiếp', domain=[('sanpham','=','nuoc'),('rubbersell_id','=',False)])
-    harvesttap1_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ tạp trực tiếp', domain=[('sanpham','=','tap'),('rubbersell_id','=',False)])
-    harvestday1_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ dây trực tiếp', domain=[('sanpham','=','day'),('rubbersell_id','=',False)])
-    harvestdong1_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ đông trực tiếp', domain=[('sanpham','=','dong'),('rubbersell_id','=',False)])
-    harvestchen1_line_ids = fields.One2many('rubber.harvest', 'company_truck_id', string='Mũ chén trực tiếp', domain=[('sanpham','=','chen'),('rubbersell_id','=',False)])
-    #nhannuoc = fields.Boolean(compute='_compute_nhannuoc', string='Nhận mũ nước xe tải')
-    nhantap = fields.Boolean(compute='_compute_nhantap', string='Nhận mũ tạp xe tải')
-    nhanday = fields.Boolean(compute='_compute_nhanday', string='Nhận mũ dây xe tải')
-    nhandong = fields.Boolean(compute='_compute_nhandong', string='Nhận mũ đông xe tải')
-    nhanchen = fields.Boolean(compute='_compute_nhanchen', string='Nhận mũ chén xe tải')
-    #nhannuoc1 = fields.Boolean(compute='_compute_nhannuoc', string='Nhận mũ nước trực tiếp')
-    nhantap1 = fields.Boolean(compute='_compute_nhantap', string='Nhận mũ tạp trực tiếp')
-    nhanday1 = fields.Boolean(compute='_compute_nhanday', string='Nhận mũ dây trực tiếp')
-    nhandong1 = fields.Boolean(compute='_compute_nhandong', string='Nhận mũ đông trực tiếp')
-    nhanchen1 = fields.Boolean(compute='_compute_nhanchen', string='Nhận mũ chén trực tiếp')
-    nguoitao = fields.Char(compute='_compute_nguoitao', string='Người Tạo:')
-    debug = fields.Html('Debug Info')    
-
     @api.model
     def _compute_nguoitao(self):
         self.nguoitao = str(self.env.user.id)
@@ -300,9 +226,9 @@ class CompanyTruck(models.Model):
     @api.depends('ngaygiao')
     def _compute_ngay(self):
         for rec in self:
-            rec.thang = '01'
-            rec.nam = '2024'
-            rec.nam_kt = '2024'
+            #rec.thang = '01'
+            #rec.nam = '2024'
+            #rec.nam_kt = '2024'
             #if rec.recorded == True:
             rec.thang = datetime.strptime(str(rec.ngaygiao),'%Y-%m-%d').strftime('%m')
             rec.nam = datetime.strptime(str(rec.ngaygiao),'%Y-%m-%d').strftime('%Y')
@@ -344,452 +270,51 @@ class CompanyTruck(models.Model):
                 'default_state': 'mua'
             })
         }
-
-    '''@api.depends('delivertap_line_ids')
-    def _compute_nhantap(self):
-        self.ensure_one()
-        self.nhantap = False
-        self.nhantap1 = False
-        rbd = self.env['rubber.deliver'].search([
-            ('ngay', '=', self.ngaygiao),
-            '|',
-            ('soluong', '!=', 0),
-            ('soluongtt', '!=', 0),
-            ('sanpham', '=', 'tap'),
-            ('state', 'in', ['giao', 'nhan', 'mua'])
-        ])
-        if len(rbd) > 0:
-            self.nhantap = True
-        else:
-            self.nhantap = False
-        rbd1 = self.env['rubber.deliver'].search([
-            ('ngay', '=', self.ngaygiao),
-            '|',
-            ('soluong', '!=', 0),
-            ('soluongtt', '!=', 0),
-            ('sanpham', '=', 'tap'),
-            ('state', 'in', ['giao', 'nhan', 'mua'])
-        ])
-        if len(rbd1) > 0:
-            self.nhantap1 = True
-        else:
-            self.nhantap1 = False
     
-    @api.depends('deliverday_line_ids')
-    def _compute_nhanday(self):
-        self.ensure_one()
-        self.nhanday = False
-        self.nhanday1 = False
-        rbd = self.env['rubber.deliver'].search([
-            ('ngay', '=', self.ngaygiao),
-            '|',
-            ('soluong', '!=', 0),
-            ('soluongtt', '!=', 0),
-            ('sanpham', '=', 'day'),
-            ('state', 'in', ['giao', 'nhan', 'mua'])
-        ])
-        if len(rbd) > 0:
-            self.nhanday = True
-        else:
-            self.nhanday = False
-        rbd1 = self.env['rubber.deliver'].search([
-            ('ngay', '=', self.ngaygiao),
-            '|',
-            ('soluong', '!=', 0),
-            ('soluongtt', '!=', 0),
-            ('sanpham', '=', 'day'),
-            ('state', 'in', ['giao', 'nhan', 'mua'])
-        ])
-        if len(rbd1) > 0:
-            self.nhanday1 = True
-        else:
-            self.nhanday1 = False
-
-    @api.depends('deliverdong_line_ids')
-    def _compute_nhandong(self):
-        self.ensure_one()
-        self.nhandong = False
-        self.nhandong1 = False
-        rbd = self.env['rubber.deliver'].search([
-            ('ngay', '=', self.ngaygiao),
-            '|',
-            ('soluong', '!=', 0),
-            ('soluongtt', '!=', 0),
-            ('sanpham', '=', 'dong'),
-            ('state', 'in', ['giao', 'nhan', 'mua'])
-        ])
-        if len(rbd) > 0:
-            self.nhandong = True
-        else:
-            self.nhandong = False
-        rbd1 = self.env['rubber.deliver'].search([
-            ('ngay', '=', self.ngaygiao),
-            '|',
-            ('soluong', '!=', 0),
-            ('soluongtt', '!=', 0),
-            ('sanpham', '=', 'dong'),
-            ('state', 'in', ['giao', 'nhan', 'mua'])
-        ])
-        if len(rbd1) > 0:
-            self.nhandong1 = True
-        else:
-            self.nhandong1 = False
-
-    @api.depends('deliverchen_line_ids')
-    def _compute_nhanchen(self):
-        self.ensure_one()
-        self.nhanchen = False
-        self.nhanchen1 = False
-        rbd = self.env['rubber.deliver'].search([
-            ('ngay', '=', self.ngaygiao),
-            '|',
-            ('soluong', '!=', 0),
-            ('soluongtt', '!=', 0),
-            ('sanpham', '=', 'chen'),
-            ('state', 'in', ['giao', 'nhan', 'mua'])
-        ])
-        if len(rbd) > 0:
-            self.nhanchen = True
-        else:
-            self.nhanchen = False
-        rbd1 = self.env['rubber.deliver'].search([
-            ('ngay', '=', self.ngaygiao),
-            '|',
-            ('soluong', '!=', 0),
-            ('soluongtt', '!=', 0),
-            ('sanpham', '=', 'chen'),
-            ('state', 'in', ['giao', 'nhan', 'mua'])
-        ])
-        if len(rbd1) > 0:
-            self.nhanchen1 = True
-        else:
-            self.nhanchen1 = False
-
     @api.depends('active_sanpham', 'filtered_deliver_line_ids', 'deliver_line_ids','sell_line_ids')
-    def _compute_haohut_nuoc(self):
+    def _compute_sum(self):
         for rec in self:
             if len(rec.filtered_deliver_line_ids) > 0:
-                nhan = 0
+                slnhan = 0
+                slxdonhan = 0
                 donhan = 0
                 qknhan = 0
                 for line in rec.filtered_deliver_line_ids:
-                        nhan += line.soluongtt
-                        donhan += line.dott * line.soluongtt
-                        qknhan += line.quykhott 
-                if nhan > 0:
-                    donhan = donhan / nhan
-                rec.soluong_nuoc = nhan
-                rec.do_nuoc = donhan
-                rec.quykho_nuoc = qknhan
+                    slnhan += line.soluongtt if line.soluongtt != 0 else line.soluong
+                    slxdonhan += line.dott * line.soluongtt if line.soluongtt != 0 and line.dott != 0 else line.do * line.soluong
+                    qknhan += line.quykhott if line.quykhott != 0 else line.quykho
+                if slnhan > 0:
+                    donhan = slxdonhan / slnhan
+                rec.sum_soluong = slnhan
+                rec.sum_do = donhan
+                rec.sum_quykho = qknhan
 
-            rec.soluongban_nuoc = 0
-            rec.doban_nuoc = 0
-            rec.quykhoban_nuoc = 0
-            rec.haohut_nuoc = 0
-            rec.tylehh_nuoc = 0
-            rec.haohutdo_nuoc = 0
-            rec.tylehhdo_nuoc = 0
-            rec.haohutqk_nuoc = 0
-            rec.tylehhqk_nuoc = 0
-            rec.soluong_nuoc = 0
-            rec.do_nuoc = 0
-            rec.quykho_nuoc = 0
-            haohut_nuoc = 0
-            tylehh_nuoc = 0
-            haohutdo_nuoc = 0
-            tylehhdo_nuoc = 0
-            haohutqk_nuoc = 0
-            tylehhqk_nuoc = 0
-               
-            if len(rec.deliver_line_ids) > 0 and len(rec.sell_line_ids) > 0:
-                nhan = 0
-                ban = 0
-                donhan = 0
+            if len(rec.filtered_sell_line_ids) > 0:                
+                slban = 0                
+                slxdoban = 0                
                 doban = 0
-                qknhan = 0
-                qkban = 0
-                for line in rec.deliver_line_ids:
-                    nhan += line.soluongtt
-                    donhan += line.dott * line.soluongtt
-                    qknhan += line.quykhott
-                if nhan > 0:
-                    donhan = donhan / nhan
-                rec.soluong_nuoc = nhan
-                rec.do_nuoc = donhan
-                rec.quykho_nuoc = qknhan
-                for line in rec.sell_line_ids:
-                    ban += line.soluong
-                    doban += line.do * line.soluong
+                qkban = 0                
+                for line in rec.filtered_sell_line_ids:
+                    slban += line.soluong
+                    slxdoban += line.do * line.soluong
                     qkban += line.quykho
-                if ban > 0:
-                    doban = doban / ban
-                if nhan > 0:
-                    haohut_nuoc = ban - nhan
-                    tylehh_nuoc = haohut_nuoc / nhan * 100
-                if donhan > 0:
-                    haohutdo_nuoc = doban - donhan
-                    tylehhdo_nuoc = haohutdo_nuoc / donhan * 100
-                if qknhan > 0:
-                    haohutqk_nuoc = qkban - qknhan
-                    tylehhqk_nuoc = haohutqk_nuoc / qknhan * 100
-                rec.soluongban_nuoc = ban
-                rec.doban_nuoc = doban
-                rec.quykhoban_nuoc = qkban
-                rec.haohut_nuoc = haohut_nuoc
-                rec.tylehh_nuoc = tylehh_nuoc
-                rec.haohutdo_nuoc = haohutdo_nuoc
-                rec.tylehhdo_nuoc = tylehhdo_nuoc
-                rec.haohutqk_nuoc = haohutqk_nuoc
-                rec.tylehhqk_nuoc = tylehhqk_nuoc
-        
-    @api.depends('delivertap_line_ids','selltap_line_ids')
-    def _compute_haohut_tap(self):
-        for rec in self:
-            rec.soluongban_tap = 0
-            rec.doban_tap = 0
-            rec.quykhoban_tap = 0
-            rec.haohut_tap = 0
-            rec.tylehh_tap = 0
-            rec.haohutdo_tap = 0
-            rec.tylehhdo_tap = 0
-            rec.haohutqk_tap = 0
-            rec.tylehhqk_tap = 0
-            rec.soluong_tap = 0
-            rec.do_tap = 0
-            rec.quykho_tap = 0
-            haohut_tap = 0
-            tylehh_tap = 0
-            haohutdo_tap = 0
-            tylehhdo_tap = 0
-            haohutqk_tap = 0
-            tylehhqk_tap = 0
-            if len(rec.delivertap_line_ids) > 0 and len(rec.selltap_line_ids) > 0:
-                nhan = 0
-                ban = 0
-                donhan = 0
-                doban = 0
-                qknhan = 0
-                qkban = 0
-                for line in rec.delivertap_line_ids:
-                    nhan += line.soluongtt
-                    donhan += line.dott * line.soluongtt
-                    qknhan += line.quykhott
-                if nhan > 0:
-                    donhan = donhan / nhan
-                rec.soluong_tap = nhan
-                rec.do_tap = donhan
-                rec.quykho_tap = qknhan
-                for line in rec.selltap_line_ids:
-                    ban += line.soluong
-                    doban += line.do * line.soluong
-                    qkban += line.quykho
-                if ban > 0:
-                    doban = doban / ban
-                if nhan > 0:
-                    haohut_tap = ban - nhan
-                    tylehh_tap = haohut_tap / nhan * 100
-                if donhan > 0:
-                    haohutdo_tap = doban - donhan
-                    tylehhdo_tap = haohutdo_tap / donhan * 100
-                if qknhan > 0:
-                    haohutqk_tap = qkban - qknhan
-                    tylehhqk_tap = haohutqk_tap / qknhan * 100
-                rec.soluongban_tap = ban
-                rec.doban_tap = doban
-                rec.quykhoban_tap = qkban
-                rec.haohut_tap = haohut_tap
-                rec.tylehh_tap = tylehh_tap
-                rec.haohutdo_tap = haohutdo_tap
-                rec.tylehhdo_tap = tylehhdo_tap
-                rec.haohutqk_tap = haohutqk_tap
-                rec.tylehhqk_tap = tylehhqk_tap
+                if slban > 0:
+                    doban = slxdoban / slban
+                rec.sum_slban = slban
+                rec.sum_doban = doban
+                rec.sum_qkban = qkban
 
-    @api.depends('deliverday_line_ids','sellday_line_ids')
-    def _compute_haohut_day(self):
-        for rec in self:
-            rec.soluongban_day = 0
-            rec.doban_day = 0
-            rec.quykhoban_day = 0
-            rec.haohut_day = 0
-            rec.tylehh_day = 0
-            rec.haohutdo_day = 0
-            rec.tylehhdo_day = 0
-            rec.haohutqk_day = 0
-            rec.tylehhqk_day = 0
-            rec.soluong_day = 0
-            rec.do_day = 0
-            rec.quykho_day = 0
-            haohut_day = 0
-            tylehh_day = 0
-            haohutdo_day = 0
-            tylehhdo_day = 0
-            haohutqk_day = 0
-            tylehhqk_day = 0
-            if len(rec.deliverday_line_ids) > 0 and len(rec.sellday_line_ids) > 0:
-                nhan = 0
-                ban = 0
-                donhan = 0
-                doban = 0
-                qknhan = 0
-                qkban = 0
-                for line in rec.deliverday_line_ids:
-                    nhan += line.soluongtt
-                    donhan += line.dott * line.soluongtt
-                    qknhan += line.quykhott
-                if nhan > 0:
-                    donhan = donhan / nhan
-                rec.soluong_day = nhan
-                rec.do_day = donhan
-                rec.quykho_day = qknhan
-                for line in rec.sellday_line_ids:
-                    ban += line.soluong
-                    doban += line.do * line.soluong
-                    qkban += line.quykho
-                if ban > 0:
-                    doban = doban / ban
-                if nhan > 0:
-                    haohut_day = ban - nhan
-                    tylehh_day = haohut_day / nhan * 100
-                if donhan > 0:
-                    haohutdo_day = doban - donhan
-                    tylehhdo_day = haohutdo_day / donhan * 100
-                if qknhan > 0:
-                    haohutqk_day = qkban - qknhan
-                    tylehhqk_day = haohutqk_day / qknhan * 100
-                rec.soluongban_day = ban
-                rec.doban_day = doban
-                rec.quykhoban_day = qkban
-                rec.haohut_day = haohut_day
-                rec.tylehh_day = tylehh_day
-                rec.haohutdo_day = haohutdo_day
-                rec.tylehhdo_day = tylehhdo_day
-                rec.haohutqk_day = haohutqk_day
-                rec.tylehhqk_day = tylehhqk_day
-
-    @api.depends('deliverdong_line_ids','selldong_line_ids')
-    def _compute_haohut_dong(self):
-        for rec in self:
-            rec.soluongban_dong = 0
-            rec.doban_dong = 0
-            rec.quykhoban_dong = 0
-            rec.haohut_dong = 0
-            rec.tylehh_dong = 0
-            rec.haohutdo_dong = 0
-            rec.tylehhdo_dong = 0
-            rec.haohutqk_dong = 0
-            rec.tylehhqk_dong = 0
-            rec.soluong_dong = 0
-            rec.do_dong = 0
-            rec.quykho_dong = 0
-            haohut_dong = 0
-            tylehh_dong = 0
-            haohutdo_dong = 0
-            tylehhdo_dong = 0
-            haohutqk_dong = 0
-            tylehhqk_dong = 0
-            if len(rec.deliverdong_line_ids) > 0 and len(rec.selldong_line_ids) > 0:
-                nhan = 0
-                ban = 0
-                donhan = 0
-                doban = 0
-                qknhan = 0
-                qkban = 0
-                for line in rec.deliverdong_line_ids:
-                    nhan += line.soluongtt
-                    donhan += line.dott * line.soluongtt
-                    qknhan += line.quykhott
-                if nhan > 0:
-                    donhan = donhan / nhan
-                rec.soluong_dong = nhan
-                rec.do_dong = donhan
-                rec.quykho_dong = qknhan
-                for line in rec.selldong_line_ids:
-                    ban += line.soluong
-                    doban += line.do * line.soluong
-                    qkban += line.quykho
-                if ban > 0:
-                    doban = doban / ban
-                if nhan > 0:
-                    haohut_dong = ban - nhan
-                    tylehh_dong = haohut_dong / nhan * 100
-                if donhan > 0:
-                    haohutdo_dong = doban - donhan
-                    tylehhdo_dong = haohutdo_dong / donhan * 100
-                if qknhan > 0:
-                    haohutqk_dong = qkban - qknhan
-                    tylehhqk_dong = haohutqk_dong / qknhan * 100
-                rec.soluongban_dong = ban
-                rec.doban_dong = doban
-                rec.quykhoban_dong = qkban
-                rec.haohut_dong = haohut_dong
-                rec.tylehh_dong = tylehh_dong
-                rec.haohutdo_dong = haohutdo_dong
-                rec.tylehhdo_dong = tylehhdo_dong
-                rec.haohutqk_dong = haohutqk_dong
-                rec.tylehhqk_dong = tylehhqk_dong
-
-    @api.depends('deliverchen_line_ids','sellchen_line_ids')
-    def _compute_haohut_chen(self):
-        for rec in self:
-            rec.soluongban_chen = 0
-            rec.doban_chen = 0
-            rec.quykhoban_chen = 0
-            rec.haohut_chen = 0
-            rec.tylehh_chen = 0
-            rec.haohutdo_chen = 0
-            rec.tylehhdo_chen = 0
-            rec.haohutqk_chen = 0
-            rec.tylehhqk_chen = 0
-            rec.soluong_chen = 0
-            rec.do_chen = 0
-            rec.quykho_chen = 0
-            haohut_chen = 0
-            tylehh_chen = 0
-            haohutdo_chen = 0
-            tylehhdo_chen = 0
-            haohutqk_chen = 0
-            tylehhqk_chen = 0
-            if len(rec.deliverchen_line_ids) > 0 and len(rec.sellchen_line_ids) > 0:
-                nhan = 0
-                ban = 0
-                donhan = 0
-                doban = 0
-                qknhan = 0
-                qkban = 0
-                for line in rec.deliverchen_line_ids:
-                    nhan += line.soluongtt
-                    donhan += line.dott * line.soluongtt
-                    qknhan += line.quykhott
-                if nhan > 0:
-                    donhan = donhan / nhan
-                rec.soluong_chen = nhan
-                rec.do_chen = donhan
-                rec.quykho_chen = qknhan
-                for line in rec.sellchen_line_ids:
-                    ban += line.soluong
-                    doban += line.do * line.soluong
-                    qkban += line.quykho
-                if ban > 0:
-                    doban = doban / ban
-                if nhan > 0:
-                    haohut_chen = ban - nhan
-                    tylehh_chen = haohut_chen / nhan * 100
-                if donhan > 0:
-                    haohutdo_chen = doban - donhan
-                    tylehhdo_chen = haohutdo_chen / donhan * 100
-                if qknhan > 0:
-                    haohutqk_chen = qkban - qknhan
-                    tylehhqk_chen = haohutqk_chen / qknhan * 100
-                rec.soluongban_chen = ban
-                rec.doban_chen = doban
-                rec.quykhoban_chen = qkban
-                rec.haohut_chen = haohut_chen
-                rec.tylehh_chen = tylehh_chen
-                rec.haohutdo_chen = haohutdo_chen
-                rec.tylehhdo_chen = tylehhdo_chen
-                rec.haohutqk_chen = haohutqk_chen
-                rec.tylehhqk_chen = tylehhqk_chen
-    '''
+            if len(rec.filtered_deliver_line_ids) > 0 and len(rec.filtered_sell_line_ids) > 0:            
+                haohut_sl = slban - slnhan
+                #tylehh_nuoc = haohut_nuoc / nhan * 100            
+                haohut_do = doban - donhan
+                #tylehhdo_nuoc = haohutdo_nuoc / donhan * 100            
+                haohut_qk = qkban - qknhan
+                #tylehhqk_nuoc = haohutqk_nuoc / qknhan * 100
+                rec.haohut_sl = haohut_sl
+                rec.haohut_do = haohut_do
+                rec.haohut_qk = haohut_qk            
+       
     @api.constrains('ngaygiao')
     def _check_rubberdate_unique(self):
         companytruck_counts = self.search_count([('ngaygiao','=',self.ngaygiao),('id','!=',self.id)])
@@ -925,8 +450,7 @@ class CompanyTruck(models.Model):
             action['res_id'] = created_orders[0].id
             
         return action    
-        
-        
+           
     def _get_rubber_price(self, order_line):      
         # Find to_id record where name matches harvest_line.to (char)
         
@@ -966,6 +490,115 @@ class CompanyTruck(models.Model):
             else:
                 return price.gia, price.price_type_id.code
         return 0.0, None
+        
+    @api.depends('filtered_sell_line_ids', 'active_product_id', 'ngaygiao')
+    def _compute_money_loss(self):
+        # Product code to price type mapping
+        price_type_map = {
+            'munuoc': 'giamunuoc', 
+            'mutap': 'giamutap', 
+            'muday': 'giamuday',
+            'mudong': 'giamudong', 
+            'muchen': 'giamuchen'
+        }
+        
+        for rec in self:           
+            rec.money_loss = 0
+            total_haohut = rec.haohut_qk
+
+            # Use the right field - if filtered_sell_line_ids doesn't exist, use sell_line_ids
+            lines = getattr(rec, 'filtered_sell_line_ids', rec.sell_line_ids)
+            if not lines or not rec.active_product_id:
+                continue        
+               
+            try:               
+                # Find highest line safely
+                highest_line = lines[0] if lines else False
+                if len(lines) > 1:
+                    highest_line = sorted(lines, key=lambda x: getattr(x, 'quykho', 0) or 0, reverse=True)[0]
+                
+                # Default price
+                price = 0.0
+            
+                if highest_line and highest_line.daily_id:
+                    # Get price type from product code
+                    product_code = rec.active_product_id.default_code or ''
+                    price_type_code = price_type_map.get(product_code, 'giamunuoc')
+                    
+                    # Safely look up models
+                    PriceType = self.env['rubber.price.type']
+                    price_type = PriceType.search([('code', '=', price_type_code)], limit=1)
+                    
+                    if price_type:
+                        # Base domain for price search
+                        domain = [
+                            ('ngay_hieuluc', '<=', rec.ngaygiao),
+                            ('price_type_id', '=', price_type.id),
+                            ('daily_id', '=', highest_line.daily_id.id),
+                        ]                    
+                        # Try with team first, then without
+                        to_id = self.env['hr.department'].search([('name', '=', 'TỔ Xe tải')], limit=1)
+                        price_record = False
+                        if to_id:
+                            price_record = self.env['rubber.price'].search(
+                                domain + [('to_id', '=', to_id.id)], 
+                                order='ngay_hieuluc desc', limit=1
+                            )
+                        
+                        if not price_record:
+                            price_record = self.env['rubber.price'].search(
+                                domain, order='ngay_hieuluc desc', limit=1
+                            )
+                        
+                        if price_record:
+                            price = price_record.gia
+            
+                rec.money_loss = total_haohut * price *100
+            except Exception as e:
+                _logger.error(f"Error computing money_loss: {e}")
+                rec.money_loss = 0.0
+    
+    @api.depends('active_product_id', 'sum_qkban')
+    def _compute_money_chomu(self):
+        for truck in self:
+            # Use the existing sum_qkban field directly
+            truck.money_chomu = truck.sum_qkban * 15 * 100
+    @api.depends('money_chomu', 'money_loss')
+    def _compute_money_loi(self):
+        for truck in self:
+            truck.money_loi = truck.money_chomu + truck.money_loss
+
+    # Các methods để thiết lập active_sanpham qua buttons
+    
+    def set_sanpham_all(self):        
+        # Setting to False to show all products (no filtering)
+        self.active_product_id = False        
+        return True
+
+    def set_sanpham_nuoc(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'munuoc')], limit=1)
+        self.active_product_id = product.id if product else False
+        return True
+
+    def set_sanpham_tap(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'mutap')], limit=1)
+        self.active_product_id = product.id if product else False
+        return True
+
+    def set_sanpham_day(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'muday')], limit=1)
+        self.active_product_id = product.id if product else False
+        return True
+
+    def set_sanpham_dong(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'mudong')], limit=1)
+        self.active_product_id = product.id if product else False
+        return True
+
+    def set_sanpham_chen(self):        
+        product = self.env['product.product'].search([('default_code', '=', 'muchen')], limit=1)
+        self.active_product_id = product.id if product else False
+        return True
     
     def action_select_all_order_lines(self):
         """Select all order lines"""

@@ -89,65 +89,56 @@
         parent="banmu_menu"
         sequence="0"/>
     <menuitem 
-        id="menu_tylehaohut_mu" 
-        name="Tỷ lệ hao hụt mủ" 
-        parent="banmu_menu" 
-        action="action_tylehaohut_mu"
+        id="menu_rubber_buy"
+        name="Mua mủ"
+        parent="banmu_menu"
+        action="action_rubber_buy"
         sequence="1"/>
-    <menuitem 
-        id="menu_rubber_price_type"
-        name="Price Types"
-        parent="banmu_menu"
-        action="action_rubber_price_type"
-        sequence="2"/>
-    <menuitem 
-        id="menu_rubber_price_wizard"
-        name="Cập nhật giá mủ"
-        parent="banmu_menu"
-        action="action_rubber_price_wizard"
-        sequence="3"/>
-    <menuitem 
-        id="menu_rubber_price_wizard_line"
-        name="Cập nhật giá mủ line"
-        parent="banmu_menu"
-        action="action_rubber_price_wizard_line"
-        sequence="4"/>
-    <menuitem 
-        id="menu_rubber_price"
-        name="Lịch Sử Giá Mủ"
-        parent="banmu_menu"
-        action="action_rubber_price"
-        sequence="5"/>
-    <!--<menuitem 
-        id="menu_sanpham"
-        name="Loại mũ"
-        parent="banmu_menu"
-        action="action_sanpham"
-        sequence="6"/>-->
     <menuitem 
         id="menu_rubber_deliver"
         name="Giao mủ"
         parent="banmu_menu"
         action="action_rubber_deliver"
-        sequence="7"/>
-    <menuitem 
-        id="menu_rubber_buy"
-        name="Mua mủ"
-        parent="banmu_menu"
-        action="action_rubber_buy"
-        sequence="8"/>    
+        sequence="2"/>        
     <menuitem 
         id="menu_rubber_sell"
         name="Bán mủ"
         parent="banmu_menu"
         action="action_rubber_sell"
-        sequence="9"/>
+        sequence="3"/>
     <menuitem 
-        id="menu_rubber_harvest"
-        name="Thu hoạch mủ"
+        id="menu_tylehaohut_mu" 
+        name="Tỷ lệ hao hụt mủ" 
+        parent="banmu_menu" 
+        action="action_tylehaohut_mu"
+        sequence="4"/>
+    <menuitem 
+        id="menu_rubber_price_type"
+        name="Price Types"
         parent="banmu_menu"
-        action="action_rubber_harvest"
-        sequence="10"/>
+        action="action_rubber_price_type"
+        sequence="5"/>
+    <menuitem 
+        id="menu_rubber_price_wizard"
+        name="Cập nhật giá mủ"
+        parent="banmu_menu"
+        action="action_rubber_price_wizard"
+        sequence="6"/>
+    <menuitem 
+        id="menu_rubber_price_wizard_line"
+        name="Cập nhật giá mủ line"
+        parent="banmu_menu"
+        action="action_rubber_price_wizard_line"
+        sequence="7"/>
+    <menuitem 
+        id="menu_rubber_price"
+        name="Lịch Sử Giá Mủ"
+        parent="banmu_menu"
+        action="action_rubber_price"
+        sequence="8"/>
+    
+    
+    
 
     <menuitem
         id="luong_menu"

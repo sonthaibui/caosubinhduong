@@ -2,59 +2,14 @@ from datetime import datetime
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 import logging
-
 _logger = logging.getLogger(__name__)
-
-#from .rubberprice import RubberPrice  # Import the RubberPrice class from the new file
 
 class RubberHarvest(models.Model):
     _name = 'rubber.harvest'
-    _description = 'Rubber Harvest Model'
-
-    to_id = fields.Many2one('hr.department', string='Tổ')
-    daily_id = fields.Many2one('res.partner', string='Đại lý')
-    source = fields.Many2one('res.partner', string='Gốc', related='rubberdeliver_id.daily_id')
+    _description = 'Temporary model for migration'
+    # Add basic fields
+    name = fields.Char()
     
-    sanpham = fields.Selection([
-        ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
-    ], string='Sản phẩm', readonly=True)
-    
-    product_id = fields.Many2one(
-        'product.product', 
-        string='Sản phẩm',
-        domain=[('categ_id.name', '=', 'Mũ')],
-        required=True
-    )
-    product_name = fields.Char(related='product_id.name', string='Sản phẩm', readonly=True)
-    tyle = fields.Float('Tỷ lệ', readonly=True)
-    soluong = fields.Float('Số lượng', digits='One Decimal', readonly=True)
-    soluongban = fields.Float('Số lượng bán', digits='One Decimal', compute='_compute_soluongban')
-    do = fields.Float('Độ bán', digits='One Decimal', readonly=True)
-    quykho = fields.Float('Quy khô bán', digits='One Decimal', readonly=True, compute='_compute_quykho')
-    rubbersell_id = fields.Many2one('rubber.sell', ondelete='cascade')
-    rubberdeliver_id = fields.Many2one('rubber.deliver', ondelete='cascade')
-    company_truck_id = fields.Many2one('company.truck', ondelete='cascade')
-    ngay = fields.Date('Ngày', related='company_truck_id.ngaygiao', store=True)
-    selected = fields.Boolean(string="Select")
-
-    @api.depends('soluongban', 'do')
-    def _compute_quykho(self):
-        for rec in self:
-            rec.quykho = 0
-            rec.quykho = rec.soluongban * rec.do / 100
-    
-    @api.depends('soluong', 'tyle')
-    def _compute_soluongban(self):
-        for rec in self:
-            rec.soluongban = 0
-            rec.soluongban = rec.tyle * rec.soluong
-
-    @api.depends('ngay', 'product_id', 'daily_id')
-    def _compute_name(self):
-        for rec in self:
-            # Customize the name as needed
-            rec.name = f"{rec.ngay or ''} - {rec.product_id or ''} - {rec.daily_id or ''}"
-
 class RubberDeliver(models.Model):
     _name = 'rubber.deliver'
     _description = 'Rubber Deliver Model'
@@ -69,8 +24,7 @@ class RubberDeliver(models.Model):
                 default=lambda self: self.env['res.partner'].search([('is_customer','=',True),('name','=','Xe tải nhà')], limit=1))
     daily_name = fields.Char('Tên đại lý', related='daily_id.name')
     daily_ban = fields.Many2one('res.partner', string='Đại lý bán', compute='_compute_daily_ban', readonly=False)
-       
-    
+     
     sanpham = fields.Selection([
         ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
     ], string='Sản phẩm', required=True, default='nuoc')
@@ -148,6 +102,7 @@ class RubberDeliver(models.Model):
                 truck = self.env['company.truck'].search([
                     ('ngaygiao', '=', rec.ngay)
                 ], limit=1)                
+                
                 # If no truck exists for this date, create a new one
                 if not truck:
                     truck = self.env['company.truck'].create({
@@ -158,9 +113,9 @@ class RubberDeliver(models.Model):
                 # Update all required fields
                 rec.state = 'giao'
                 rec.soluongtt = rec.soluong
-                rec.dott = rec.do
-                rec.quykhott = rec.quykho
-                rec.company_truck_id = truck.id    
+                rec.dott = rec.do                
+                rec.company_truck_id = truck.id
+                #raise UserError(_(rec.to_id + " - " + rec.to_name + " - " + rec.product_id.name + " - " + str(rec.soluongtt) + " - " + str(rec.dott) + " - " + str(rec.quykhott)))
         
     def sualai(self):
         for rec in self:
@@ -202,7 +157,6 @@ class RubberDeliver(models.Model):
         
             if rec.sale_order_line_id:
                 _logger.info(f"Order line exists: {rec.sale_order_line_id.exists()}")'''
-
 
     def nhanmu(self):
         for rec in self:
@@ -247,41 +201,12 @@ class RubberSell(models.Model):
     dailygiao = fields.Char('dailygiao', readonly=True, default='Xe tải nhà')
     state = fields.Selection([
         ('no', 'Chưa phân bổ'), ('yes', 'Đã phân bổ')
-    ], string='Phân bổ', default='no', readonly=True)
-        
-    '''def phan_bo(self):
-        for rec in self:
-            rec.state = 'yes'
-            rbds = rec.env['rubber.deliver'].search([
-                ('company_truck_id', '=', rec.company_truck_id.id),
-                ('ngay', '=', rec.ngaygiao),
-                ('product_id', '=', rec.product_id.id)
-            ])
-            
-            if len(rbds) > 0:
-                for rbd in rbds:
-                    rec.env['rubber.harvest'].create({
-                        'to_id': rbd.to_id,
-                        'daily_id': rec.daily_id,
-                        'product_id': rec.product_id.id,
-                        'tyle': rbd.tyle,
-                        'soluong': rec.soluong,
-                        'do': rec.do,
-                        'rubbersell_id': rec.id,
-                        'rubberdeliver_id': rbd.id,
-                        'company_truck_id': rec.company_truck_id.id,
-                    })'''
+    ], string='Phân bổ', default='no', readonly=True)        
     
     @api.depends('soluong','do')
     def _compute_quykho(self):
         for rec in self:
-            rec.quykho = rec.soluong * rec.do / 100
-    
-    def unlink(self):
-        for sell in self:
-            harvests = self.env['rubber.harvest'].search([('rubbersell_id', '=', sell.id)])
-            harvests.unlink()
-        return super(RubberSell, self).unlink()
+            rec.quykho = rec.soluong * rec.do / 100    
            
 class RubberLoss(models.Model):
     _name = 'rubber.loss'
