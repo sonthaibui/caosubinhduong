@@ -271,7 +271,7 @@ class CompanyTruck(models.Model):
             })
         }
     
-    @api.depends('active_sanpham', 'filtered_deliver_line_ids', 'deliver_line_ids','sell_line_ids')
+    @api.depends('active_product_id', 'filtered_sell_line_ids', 'filtered_deliver_line_ids', 'deliver_line_ids','sell_line_ids')
     def _compute_sum(self):
         for rec in self:
             if len(rec.filtered_deliver_line_ids) > 0:
@@ -288,6 +288,10 @@ class CompanyTruck(models.Model):
                 rec.sum_soluong = slnhan
                 rec.sum_do = donhan
                 rec.sum_quykho = qknhan
+            else:
+                rec.sum_soluong = 0
+                rec.sum_do = 0
+                rec.sum_quykho = 0
 
             if len(rec.filtered_sell_line_ids) > 0:                
                 slban = 0                
@@ -303,6 +307,10 @@ class CompanyTruck(models.Model):
                 rec.sum_slban = slban
                 rec.sum_doban = doban
                 rec.sum_qkban = qkban
+            else:
+                rec.sum_slban = 0
+                rec.sum_doban = 0
+                rec.sum_qkban = 0
 
             if len(rec.filtered_deliver_line_ids) > 0 and len(rec.filtered_sell_line_ids) > 0:            
                 haohut_sl = slban - slnhan
@@ -313,7 +321,11 @@ class CompanyTruck(models.Model):
                 #tylehhqk_nuoc = haohutqk_nuoc / qknhan * 100
                 rec.haohut_sl = haohut_sl
                 rec.haohut_do = haohut_do
-                rec.haohut_qk = haohut_qk            
+                rec.haohut_qk = haohut_qk 
+            else:
+                rec.haohut_sl = 0
+                rec.haohut_do = 0
+                rec.haohut_qk = 0           
        
     @api.constrains('ngaygiao')
     def _check_rubberdate_unique(self):
