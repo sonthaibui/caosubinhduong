@@ -187,6 +187,7 @@
                               <th>Số lượng</th>
                               <th>Độ</th>
                               <th>Quy khô</th>
+                              <th>$Hao hụt</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -195,18 +196,21 @@
                               <td><field name="sum_soluong" nolabel="1" decoration-info="1"/></td>
                               <td><field name="sum_do" nolabel="1" decoration-info="1"/></td>
                               <td><field name="sum_quykho" nolabel="1" decoration-info="1"/></td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td><b>Bán</b></td>
                               <td><field name="sum_slban" nolabel="1"/></td>
                               <td><field name="sum_doban" nolabel="1"/></td>
                               <td><field name="sum_qkban" nolabel="1"/></td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td><b>Hao hụt</b></td>
                               <td><field name="haohut_sl" nolabel="1" decoration-success="haohut_sl &gt; 0" decoration-danger="haohut_sl &lt; 0"/></td>
                               <td><field name="haohut_do" nolabel="1" decoration-success="haohut_do &gt; 0" decoration-danger="haohut_do &lt; 0"/></td>
                               <td><field name="haohut_qk" nolabel="1" decoration-success="haohut_qk &gt; 0" decoration-danger="haohut_qk &lt; 0"/></td>
+                              <td><field name="money_loss" nolabel="1" decoration-success="money_loss &gt; 0" decoration-danger="money_loss &lt; 0"/></td>
                             </tr>
                             <!--<tr>
                               <td><b>TL hao hụt(%)</b></td>
@@ -320,7 +324,7 @@
             <field name="sum_quykho" optional = "show"/>
             <field name="sum_qkban" optional = "show"/>
             <field name="haohut_qk" decoration-success="haohut_qk &gt;= 0" decoration-danger="haohut_qk &lt; 0"/>
-            <field name="money_loss" optional = "show"/>
+            <field name="money_loss" decoration-success="money_loss &gt; 0" decoration-danger="money_loss &lt; 0" optional = "show"/>
             <field name="money_chomu" optional = "show"/>
             <field name="money_loi" optional = "show"/>
             <field name="id" optional = "hide"/>
