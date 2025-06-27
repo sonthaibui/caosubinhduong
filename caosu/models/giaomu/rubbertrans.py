@@ -20,27 +20,27 @@ class RubberDeliver(models.Model):
     to_name = fields.Char(string='Tổ', related='to_id.name', store=True)    
     daily = fields.Many2one('res.partner', string='Đại lý', domain=[('is_customer','=',True)],
                 default=lambda self: self.env['res.partner'].search([('is_customer','=',True),('name','=','Xe tải nhà')], limit=1))
-    daily_id = fields.Many2one('res.partner', string='Đại lý', domain=[('is_customer','=',True)], required=True,
+    daily_id = fields.Many2one('res.partner', string='Khách hàng', domain=[('is_customer','=',True)], required=True,
                 default=lambda self: self.env['res.partner'].search([('is_customer','=',True),('name','=','Xe tải nhà')], limit=1))
     daily_name = fields.Char('Tên đại lý', related='daily_id.name')
-    daily_ban = fields.Many2one('res.partner', string='Đại lý bán', compute='_compute_daily_ban', readonly=False)
+    daily_ban = fields.Many2one('res.partner', string='Đại lý', compute='_compute_daily_ban', readonly=False)
      
     sanpham = fields.Selection([
         ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
     ], string='Sản phẩm', required=True, default='nuoc')
     product_id = fields.Many2one(
         'product.product', 
-        string='Sản phẩm',
+        string='--LOẠI MŨ--',
         domain=[('categ_id.name', '=', 'Mũ')],
         required=True
     )
-    product_name = fields.Char(related='product_id.name', string='Sản phẩm', readonly=True)
-    soluong = fields.Float('Số lượng', default='0', digits='One Decimal')
+    product_name = fields.Char(related='product_id.name', string='--LOẠI MŨ--', readonly=True)
+    soluong = fields.Float('Số lượng', default='0', digits='Product Price')
     do = fields.Float('Độ', default='0', digits='One Decimal')
-    quykho = fields.Float('Quy khô', default='0', digits='One Decimal', compute='_compute_quykho')
-    soluongtt = fields.Float('SL thực tế', default='0', digits='One Decimal')
-    dott = fields.Float('Độ thực tế', default='0', digits='One Decimal')
-    quykhott = fields.Float('QK thực tế', default='0', digits='One Decimal', compute='_compute_quykhott')
+    quykho = fields.Float('Quykhô', default='0', digits='Product Price', compute='_compute_quykho')
+    soluongtt = fields.Float('SL thực', default='0', digits='Product Price')
+    dott = fields.Float('Độ thực', default='0', digits='One Decimal')
+    quykhott = fields.Float('QK thực', default='0', digits='Product Price', compute='_compute_quykhott')
     state = fields.Selection([
         ('luu','Chưa lưu'),('chua', 'Chưa giao'), ('giao', 'Đã giao'), ('mua', 'Mua mũ'), ('nhan', 'Đã nhận'), ('order', 'Đã order')], string='Trạng thái',
         copy=False, default='chua', index=True, readonly=True,
@@ -188,14 +188,14 @@ class RubberSell(models.Model):
     ], string='Sản phẩm', required=True, default='nuoc')
     product_id = fields.Many2one(
         'product.product', 
-        string='Sản phẩm',
+        string='--LOẠI MŨ--',
         domain=[('categ_id.name', '=', 'Mũ')],
         required=True
     )
-    product_name = fields.Char(related='product_id.name', string='Sản phẩm', readonly=True)
-    soluong = fields.Float('Số lượng bán', default='0', digits='One Decimal')
+    product_name = fields.Char(related='product_id.name', string='--LOẠI MŨ--', readonly=True)
+    soluong = fields.Float('SL bán', default='0', digits='Product Price')
     do = fields.Float('Độ bán', default='0', digits='One Decimal')
-    quykho = fields.Float('Quy khô bán', default='0', digits='One Decimal', compute='_compute_quykho')
+    quykho = fields.Float('QK bán', default='0', digits='Product Price', compute='_compute_quykho')
     company_truck_id = fields.Many2one('company.truck', string='Xe công ty', ondelete='cascade', required=True)
     ngaygiao = fields.Date(related='company_truck_id.ngaygiao')
     dailygiao = fields.Char('dailygiao', readonly=True, default='Xe tải nhà')

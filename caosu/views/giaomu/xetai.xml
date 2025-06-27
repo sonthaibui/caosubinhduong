@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo>    
     <record id="view_company_truck_form" model="ir.ui.view">
         <field name="name">companytruck.form</field>
         <field name="model">company.truck</field>
         <field name="arch" type="xml">
             <form>
+              <style>
+                  .autofit-column {
+                      text-align: center !important;
+                      padding: 6px 4px !important; /* Tighter padding on mobile */
+                      max-width: 50px !important; /* Prevent extra wide columns */
+                  }
+              </style>
               <sheet>
                 <!--<field name="recorded" invisible="1"/>-->
                 <field name="nguoitao" invisible="1"/>
                 <notebook>
                   <page string="NHẬN MŨ">
                     <group>
-                      <field name="ngaygiao" invisible="1"/>
+                      <field name="ngaygiao"/>
                       <button name="mua_mu" string="Mua mũ" type="object" class="btn-info" />                    
                     </group>
-                    <!-- Thêm field ẩn để lưu trạng thái lọc -->
-                    <field name="active_sanpham" invisible="1"/> 
+                    <!-- Thêm field ẩn để lưu trạng thái lọc -->                     
                     <field name="active_product_id" domain="[('categ_id.name', '=', 'MŨ')]" invisible="1"/>                   
                     <!-- Dãy buttons để lọc sản phẩm -->
                     <div class="oe_button_box" style="margin-top: 10px; margin-bottom: 10px;">
@@ -57,27 +63,24 @@
                         </button>
                     </div>
                     <group string="XE TẢI NHÀ" style="border: 1px solid grey; background-color: gainsboro;">
-                      <field delete="0" nolabel="1" name="filtered_deliver_line_ids">
-                      <tree default_order="to_id asc, daily_id asc" groups="base.group_erp_manager">
-                        <field name="ngay"/>
-                        <field name="to_name"/>
-                        <field name="to_id" invisible="1"/>
-                        <field name="daily"/>
-                        <field name="daily_id"/>
-                        <field name="sanpham"/>
-                        <field name="product_name"/>
-                        <field name="soluong"/>
-                        <field name="do"/>
-                        <field name="quykho"/>
-                        <field name="soluongtt"/>
-                        <field name="dott"/>
-                        <field name="quykhott"/>
-                        <field name="tyle"/>
-                        <field name="state"/>
-                      </tree>                                           
+                      <field delete="0" nolabel="1" name="filtered_deliver_line_ids" style="text-align: center;">
+                        <tree default_order="to_id asc, daily_id asc" groups="base.group_erp_manager">
+                          <field name="ngay" optional="hide"/>
+                          <field name="to_name" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
+                          <field name="to_id" invisible="1"/>                        
+                          <field name="daily_id" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>                        
+                          <field name="product_name" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
+                          <field name="soluong" optional="hide"/>
+                          <field name="do" optional="hide"/>
+                          <field name="quykho" optional="hide"/>
+                          <field name="soluongtt" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
+                          <field name="dott" class="autofit-column" style="text-align: center !important; max-width: 20px !important;"/>
+                          <field name="quykhott" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
+                          <field name="tyle" optional="hide" />
+                          <field name="state"/>
+                        </tree>                                           
                       </field>                      
-                    </group>
-                    <!-- Hiển thị danh sách Xe tải nhà -->
+                    </group>                    
                     <group style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
                       <div class="container">            
                         <table class="table table-bordered" style="text-align: center;">
@@ -104,18 +107,15 @@
                     <group string="BÁN TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
                         <field delete="0" nolabel="1" name="filtered_tructiep_deliver_line_ids">
                             <tree default_order="to_id asc, daily_id asc, product_name asc">
-                                <field name="ngay"/>
-                                <field name="to_name"/>
-                                <field name="to_id" invisible="1"/>
-                                <field name="daily"/>
-                                <field name="daily_id"/>
-                                <field name="sanpham"/>
-                                <field name="product_name"/>
-                                <field name="soluongtt"/>
-                                <field name="dott"/>
-                                <field name="quykhott"/>
-                                <field name="state"/>
-                                <!-- Các trường khác nếu cần -->
+                                <field name="ngay" optional="hide"/>
+                                <field name="to_name" style="text-align: left !important; min-width: 20px !important;"/>
+                                <field name="to_id" invisible="1"/>                                
+                                <field name="daily_id" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>                                
+                                <field name="product_name" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
+                                <field name="soluongtt" class="autofit-column" style="text-align: right !important; max-width: 30px !important;"/>
+                                <field name="dott" class="autofit-column" style="text-align: center !important; max-width: 20px !important;"/>
+                                <field name="quykhott" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
+                                <field name="state"/>                                
                             </tree>
                         </field>
                     </group>                   
@@ -166,21 +166,18 @@
                     <group string="BÁN MŨ" style="border: 1px solid grey; background-color: gainsboro;" >
                       <field name="filtered_sell_line_ids" nolabel="1">
                         <tree default_order="daily_id asc">
-                          <field name="ngay" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="daily" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="daily_id" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="sanpham" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="product_name" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="soluong" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="do" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important;"/>
-                          <field name="state" style="border-top-style: solid !important;border-width: 1px !important;"/>                          
+                          <field name="ngay" class="autofit-column" style="border-top-style: solid !important;border-width: 1px !important;" optional="hide"/>                          
+                          <field name="daily_id" class="autofit-column" style="text-align: center !important; min-width: 20px !important;"/>                          
+                          <field name="product_name" class="autofit-column" style="text-align: center !important; min-width: 30px !important;"/>
+                          <field name="soluong" class="autofit-column" style="text-align: center !important; min-width: 20px !important;"/>
+                          <field name="do" class="autofit-column" style="text-align: center !important; min-width: 10px !important;"/>
+                          <field name="quykho" class="autofit-column" style="text-align: center !important; min-width: 20px !important;"/>                                                    
                         </tree>
                       </field>
                     </group>
                     <group>
                       <div class="container">            
-                        <table class="table table-bordered" style="text-align: center;">
+                        <table class="table table-bordered" style="text-align: center; border: 3px solid grey;">                          
                           <thead>
                             <tr>
                               <th>TỔNG KẾT</th>
@@ -224,31 +221,26 @@
                     </group>                                        
                   </page>
                   <page string="ORDER" >
-                    <group>
-                        <field name="ngaygiao"/>
-                        <field name="debug"/>
-                        <!-- Các trường thông tin khác nếu cần -->
+                    <group>                        
+                        <field name="debug" invisible="1"/>                        
                     </group>                    
                     <div class="oe_button_box">
                         <button name="action_select_all_order_lines" string="Select All" type="object" class="oe_link"/>
                         <button name="action_deselect_all_order_lines" string="Deselect All" type="object" class="oe_link"/>
                         <button name="action_create_sale_order_from_selected_lines" 
-                                string="Create Sale Orders from Selected" 
+                                string="Tạo Sale Orders" 
                                 type="object" 
                                 class="oe_highlight"/>
-                    </div>
-                    <!-- Mũ xe tải nhà -->
-                    <group string="MŨ GIAO XE TẢI NHÀ" style="border: 1px solid grey; background-color: gainsboro;">
+                    </div>                    
+                    <group string="MŨ XE TẢI NHÀ" style="border: 1px solid grey; background-color: gainsboro;">
                         <field delete="0" nolabel="1" name="order_xetainha_line_ids">
                             <tree>
                                 <field name="is_selected" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'order')]}"/>
-                                <field name="ngay"/>
+                                <field name="ngay" optional="hide"/>
                                 <field name="to_name"/>
-                                <field name="to_id" invisible="1"/>
-                                <field name="daily"/>
+                                <field name="to_id" invisible="1"/>                                
                                 <field name="daily_id"/>
-                                <field name="daily_ban"/>
-                                <field name="sanpham"/>
+                                <field name="daily_ban"/>                                
                                 <field name="product_name"/>
                                 <field name="soluongtt"/>
                                 <field name="dott"/>
@@ -263,13 +255,11 @@
                         <field delete="0" nolabel="1" name="order_tructiep_line_ids">
                             <tree>
                                 <field name="is_selected" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'order')]}"/>
-                                <field name="ngay"/>
+                                <field name="ngay" optional="hide"/>
                                 <field name="to_name"/>
-                                <field name="to_id" invisible="1"/>
-                                <field name="daily"/>
-                                <field name="daily_id"/>
-                                <field name="daily_ban"/>
-                                <field name="sanpham"/>
+                                <field name="to_id" invisible="1"/>                                
+                                <field name="daily_id" optional="hide"/>
+                                <field name="daily_ban"/>                               
                                 <field name="product_name"/>
                                 <field name="soluongtt" />
                                 <field name="dott"/>
@@ -284,12 +274,11 @@
                         <field delete="0" nolabel="1" name="order_chomu_line_ids">
                             <tree>
                                 <field name="is_selected" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'order')]}"/>
-                                <field name="ngay"/>
-                                <field name="to_name"/>
+                                <field name="ngay" optional="hide"/>
+                                <field name="to_name" optional="hide"/>
                                 <field name="to_id" invisible="1"/>                                
                                 <field name="daily_id"/>
-                                <field name="daily_ban"/>
-                                <field name="sanpham"/>
+                                <field name="daily_ban"/>                                
                                 <field name="product_name"/>
                                 <field name="soluongtt"/>
                                 <field name="dott"/>
@@ -306,6 +295,7 @@
                 <field name="activity_ids"/>
                 <field name="message_ids"/>
               </div>
+              
             </form>
         </field>
     </record>

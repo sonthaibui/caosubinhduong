@@ -123,7 +123,7 @@ class CompanyTruck(models.Model):
             lines = truck.deliver_line_ids.filtered(
                 lambda l: l.ngay == truck.ngaygiao and
                           (l.soluong != 0 or l.soluongtt != 0) and
-                          l.state in ['giao', 'mua', 'nhan']
+                          l.state in ['giao', 'mua', 'nhan', 'order']
             )
             # Lọc theo đại lý "Xe tải nhà" và tổ "TỔ Xe tải"
             lines = lines.filtered(
@@ -150,7 +150,7 @@ class CompanyTruck(models.Model):
             lines = truck.deliver_line_ids.filtered(
                 lambda l: l.ngay == truck.ngaygiao and
                           (l.soluong != 0 or l.soluongtt != 0) and
-                          l.state in ['giao','nhan']
+                          l.state in ['giao','nhan', 'order']
             )
             
             # Lọc theo đại lý khác "Xe tải nhà" và tổ khác "TỔ Xe tải"
