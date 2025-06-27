@@ -9,7 +9,7 @@ class RubberHarvest(models.Model):
     _description = 'Temporary model for migration'
     # Add basic fields
     name = fields.Char()
-    
+
 class RubberDeliver(models.Model):
     _name = 'rubber.deliver'
     _description = 'Rubber Deliver Model'
@@ -144,7 +144,7 @@ class RubberDeliver(models.Model):
                 rec.sale_order_line_id = False
                 if rec.daily_id.name != 'Xe tải nhà' and rec.to_name == 'TỔ Xe tải':
                     rec.state = 'mua'
-                else: rec.state == 'nhan'
+                else: rec.state = 'nhan'
             
             elif rec.state == 'nhan':
                 rec.state = 'giao'                
