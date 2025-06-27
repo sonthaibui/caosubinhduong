@@ -464,7 +464,7 @@ class CompanyTruck(models.Model):
         return action    
            
     def _get_rubber_price(self, order_line):      
-        # Find to_id record where name matches harvest_line.to (char)
+        # Find to_id record where name matches deliver_line.to (char)
         
         domain = [
             ('daily_id', '=', order_line.daily_id.id),             
@@ -475,17 +475,17 @@ class CompanyTruck(models.Model):
         # Try to determine price type from product_id first
         if order_line.product_id and order_line.product_id.default_code:
             code = order_line.product_id.default_code
-            if code == 'MUNUOC':
+            if code == 'munuoc':
                 domain.append(('price_type_id.code', '=', 'giamunuoc'))
-            elif code == 'MUTAP':
+            elif code == 'mutap':
                 domain.append('|')
                 domain.append(('price_type_id.code', '=', 'giamutap'))
                 domain.append(('price_type_id.code', '=', 'giamutap_do'))
-            elif code == 'MUDONG':
+            elif code == 'mudong':
                 domain.append(('price_type_id.code', '=', 'giamudong'))
-            elif code == 'MUDAY':
+            elif code == 'muday':
                 domain.append(('price_type_id.code', '=', 'giamuday'))
-            elif code == 'MUCHEN':
+            elif code == 'muchen':
                 domain.append(('price_type_id.code', '=', 'giamuchen'))
         
         else:
@@ -501,7 +501,7 @@ class CompanyTruck(models.Model):
                 return price.gia * 100, price.price_type_id.code
             else:
                 return price.gia, price.price_type_id.code
-        return 0.0, None
+        return 0, None
         
     @api.depends('filtered_sell_line_ids', 'active_product_id', 'ngaygiao')
     def _compute_money_loss(self):
