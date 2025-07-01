@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_res_role_group_system,access_res_role_group_system,model_res_role,base.group_system,1,1,1,1
-access_odb_base_group_system,access_odb_base_group_system,model_odb_base,base.group_system,1,1,1,1
-access_setup_access_group_system,access_setup_access_group_system,model_setup_access,base.group_system,1,1,1,1
-access_wizard_message_popup,wizard.message.popup,model_wizard_message_popup,base.group_user,1,1,1,1
-

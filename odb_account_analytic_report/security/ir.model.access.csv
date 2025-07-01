@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_report_accounting_readonly,account.report.manager readonly,model_report_accounting_manager,account.group_account_readonly,1,1,1,0
-access_report_accounting_invoice,account.report.manager invoice,model_report_accounting_manager,account.group_account_invoice,1,1,1,1
-access_report_accounting_footnote_readonly,account.report.footnote readonly,model_report_accounting_footnote,account.group_account_readonly,1,0,0,0
-access_report_accounting_footnote,account.report.footnote,model_report_accounting_footnote,account.group_account_user,1,1,1,1
-access_report_accounting_footnote_invoice,account.report.footnote invoice,model_report_accounting_footnote,account.group_account_invoice,1,0,0,0

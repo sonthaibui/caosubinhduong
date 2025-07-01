@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-
-
-
-access_stock_picking_backdate_user,stock.picking.backdate,model_stock_picking_backdate,base.group_user,1,1,1,0
-access_stock_picking_backdate_manager,stock.picking.backdate,model_stock_picking_backdate,base.group_system,1,1,1,1

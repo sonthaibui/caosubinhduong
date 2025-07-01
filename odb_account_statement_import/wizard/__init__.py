@@ -1,2 +1,0 @@
-from . import account_bank_statement_import_journal_creation
-from . import account_setup_bank_manual_config
