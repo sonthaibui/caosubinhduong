@@ -6,12 +6,497 @@
         <field name="arch" type="xml">
             <form>
               <style>
-                  .autofit-column {
-                      text-align: center !important;
-                      padding: 6px 4px !important; /* Tighter padding on mobile */
-                      max-width: 50px !important; /* Prevent extra wide columns */
-                  }
+                /* Reset any frozen header styles for editable trees */
+                .o_list_view .o_list_table thead th {
+                    position: static !important;
+                    top: auto !important;
+                    z-index: auto !important;
+                }         
+                
+                
+                /* Override width for filtered line tables to prevent full screen width */
+                .o_field_one2many[name*="filtered_"] .o_list_table {
+                  width: auto !important;
+                  table-layout: fixed !important;
+                }
+                 /* Page order_ */
+                .o_field_one2many[name*="order_"] .o_list_table {
+                  width: auto !important;
+                  table-layout: fixed !important;
+                }
+                /* Base styles for all one2many fields */
+                .o_field_one2many .o_list_table th,
+                .o_field_one2many .o_list_table td {
+                    white-space: nowrap;
+                    padding: 4px 6px !important;
+                    text-align: center;
+                    border-right: 1px solid rgb(0, 0, 0) !important;
+                    border-left: 1px solid rgb(0, 0, 0) !important;
+                }
+                /* Center align header text */
+                .o_field_one2many .o_list_table th {
+                    text-align: center !important;
+                }
+                
+                /* Add horizontal borders for complete grid */
+                .o_field_one2many .o_list_table tr {
+                    border-bottom: 1px solid #dee2e6 !important;
+                }
+                
+                /* Header styling with borders */
+                .o_field_one2many .o_list_table thead th {
+                    background-color:rgb(58, 188, 208) !important;
+                    border-bottom: 2px solid #dee2e6 !important;
+                    font-weight: bold;
+                    color: black !important;
+                }
+                
+                /* Remove double borders */
+                .o_field_one2many .o_list_table th:first-child,
+                .o_field_one2many .o_list_table td:first-child {
+                    border-left: none !important;
+                }
+                
+                .o_field_one2many .o_list_table th:last-child,
+                .o_field_one2many .o_list_table td:last-child {
+                    border-right: none !important;
+                }
+                
+                /* Global column width variables - same across all deliver/sell line fields */
+                .o_field_one2many {
+                    --col-daily-width: 80px;
+                    --col-product-width: 60px;
+                    --col-soluong-width: 65px;    /* soluong/soluongtt */
+                    --col-do-width: 45px;         /* do/dott */
+                    --col-quykho-width: 65px;     /* quykho/quykhott */
+                    --col-status-width: 65px;
+                    --col-button-width: 50px;
+                    --col-to-width: 60px;         /* to_name - specific to xetai */
+                    --col-selected-width: 30px;   /* is_selected - specific to order fields */
+                    --col-daily-ban-width: 65px;  /* daily_ban - specific to order fields */
+                }
+                
+                /* Apply widths based on field data attributes */
+                .o_field_one2many .o_list_table th[data-name="to_name"],
+                .o_field_one2many .o_list_table td[data-name="to_name"] {
+                    min-width: var(--col-to-width) !important;
+                    width: var(--col-to-width) !important;
+                }  
+
+                .o_field_one2many .o_list_table th[data-name="daily_id"],
+                .o_field_one2many .o_list_table td[data-name="daily_id"] {
+                    min-width: var(--col-daily-width) !important;
+                    width: var(--col-daily-width) !important;
+                }
+                
+                .o_field_one2many .o_list_table th[data-name="daily_ban"],
+                .o_field_one2many .o_list_table td[data-name="daily_ban"] {
+                    min-width: var(--col-daily-ban-width) !important;
+                    width: var(--col-daily-ban-width) !important;
+                }
+                
+                .o_field_one2many .o_list_table th[data-name="product_id"],
+                .o_field_one2many .o_list_table td[data-name="product_id"],
+                .o_field_one2many .o_list_table th[data-name="product_name"],
+                .o_field_one2many .o_list_table td[data-name="product_name"] {
+                    min-width: var(--col-product-width) !important;
+                    width: var(--col-product-width) !important;
+                }
+                
+                .o_field_one2many .o_list_table th[data-name="soluong"],
+                .o_field_one2many .o_list_table td[data-name="soluong"],
+                .o_field_one2many .o_list_table th[data-name="soluongtt"],
+                .o_field_one2many .o_list_table td[data-name="soluongtt"] {
+                    min-width: var(--col-soluong-width) !important;
+                    width: var(--col-soluong-width) !important;
+                }
+                
+                .o_field_one2many .o_list_table th[data-name="do"],
+                .o_field_one2many .o_list_table td[data-name="do"],
+                .o_field_one2many .o_list_table th[data-name="dott"],
+                .o_field_one2many .o_list_table td[data-name="dott"] {
+                    min-width: var(--col-do-width) !important;
+                    width: var(--col-do-width) !important;
+                }
+                
+                .o_field_one2many .o_list_table th[data-name="quykho"],
+                .o_field_one2many .o_list_table td[data-name="quykho"],
+                .o_field_one2many .o_list_table th[data-name="quykhott"],
+                .o_field_one2many .o_list_table td[data-name="quykhott"] {
+                    min-width: var(--col-quykho-width) !important;
+                    width: var(--col-quykho-width) !important;
+                }
+                
+                .o_field_one2many .o_list_table th[data-name="state"],
+                .o_field_one2many .o_list_table td[data-name="state"] {
+                    min-width: var(--col-status-width) !important;
+                    width: var(--col-status-width) !important;
+                }
+                         
+                /* Button column (always 7th column for editable tables) */
+                .o_field_one2many .o_list_table th:nth-child(7),
+                .o_field_one2many .o_list_table td:nth-child(7) {
+                    min-width: var(--col-button-width) !important;
+                    width: var(--col-button-width) !important;
+                }
+
+                /* Style for number inputs */
+                .o_field_one2many .o_field_float input,
+                .o_field_one2many .o_field_integer input {
+                    text-align: right;
+                    font-family: monospace;
+                }
+                
+                /* Visual feedback for unsaved changes */
+                .o_field_one2many input[data-dirty="true"] {
+                    border-left: 3px solid #ffc107 !important;
+                    background-color: #fff9e6 !important;
+                }
+                
+                /* Hide edit/open icons for many2one fields */
+                .o_field_one2many .o_field_many2one .o_external_button {
+                    display: none !important;
+                }
+                
+                .o_field_one2many .o_field_many2one .fa-external-link {
+                    display: none !important;
+                }
+                
+                .o_field_one2many .o_field_many2one .fa-pencil {
+                    display: none !important;
+                }
+                
+                .o_field_one2many .o_field_many2one .fa-edit {
+                    display: none !important;
+                }
+                
+                /* Keep only the dropdown arrow visible */
+                .o_field_one2many .o_field_many2one .o_input_dropdown {
+                    display: block !important;
+                }
+                
+                /* Simple "Add a line" button styling */
+                .o_field_one2many[name="filtered_deliver_line_ids"] .o_field_x2many_list_row_add a,
+                .o_field_one2many[name="filtered_sell_line_ids"] .o_field_x2many_list_row_add a {
+                    display: inline-block !important;
+                    background-color:rgb(13, 174, 206) !important;
+                    color: white !important;
+                    padding: 8px 12px !important;
+                    border-radius: 4px !important;
+                    text-decoration: none !important;
+                    font-weight: bold !important;
+                    font-size: 12px !important;
+                    border: none !important;
+                    cursor: pointer !important;
+                    height: 30px !important;
+                    width: 150px !important;
+                    text-align: center !important;
+                    line-height: 14px !important;
+                }
+                
+                .o_field_one2many[name="filtered_deliver_line_ids"] .o_field_x2many_list_row_add,
+                .o_field_one2many[name="filtered_sell_line_ids"] .o_field_x2many_list_row_add {
+                    text-align: left !important;
+                    padding: 5px !important;
+                    margin-top: 15px !important; /* Add space above the button */
+                }
+
+                /* Custom text for each button * Sửa text nút add a line */
+                .o_field_one2many[name="filtered_deliver_line_ids"] .o_field_x2many_list_row_add a {
+                    font-size: 0 !important;
+                }
+                .o_field_one2many[name="filtered_deliver_line_ids"] .o_field_x2many_list_row_add a::after {
+                    content: "+ Thêm dòng Mua Mũ";
+                    font-size: 12px !important;
+                }
+                
+                .o_field_one2many[name="filtered_sell_line_ids"] .o_field_x2many_list_row_add a {
+                    font-size: 0 !important;
+                }
+                .o_field_one2many[name="filtered_sell_line_ids"] .o_field_x2many_list_row_add a::after {
+                    content: "+ Thêm dòng Bán Mũ";
+                    font-size: 12px !important;
+                }
+                
+                .autofit-column {
+                    text-align: center !important;
+                    padding: 6px 4px !important; /* Tighter padding on mobile */
+                    max-width: 50px !important; /* Prevent extra wide columns */
+                }
+
+                .summary-table,
+                .summary-table th,
+                .summary-table td {
+                    border: 1px solid black !important;
+                    border-collapse: collapse !important;
+                }
+                /* Header: center align */
+                .summary-table th {
+                    text-align: center !important;
+                }
+                /* Body: first column left, others right */
+                .summary-table td:first-child {
+                    text-align: left !important;
+                }
+                .summary-table td:not(:first-child) {
+                    text-align: right !important;                    
+                }
+                /* Make last row bold */
+                .summary-table tbody tr:last-child td {
+                    font-weight: bold !important;
+                }
               </style>
+              
+              <script type="text/javascript">
+              //<![CDATA[
+                  (function() {
+                      'use strict';
+                      
+                      // Prevent multiple script executions
+                      if (window.xetaiSetupDone) {
+                          return;
+                      }
+                      window.xetaiSetupDone = true;
+                      
+                      // Cleanup function to prevent memory leaks
+                      function cleanup() {
+                          if (window.xetaiObserver) {
+                              window.xetaiObserver.disconnect();
+                              window.xetaiObserver = null;
+                          }
+                          window.xetaiSetupDone = false;
+                      }
+                      
+                      // Add cleanup on page unload to prevent crashes
+                      window.addEventListener('beforeunload', cleanup);
+                      window.addEventListener('pagehide', cleanup);
+                  
+                  document.addEventListener('DOMContentLoaded', function() {
+                      // Simple global function to maintain table structure using CSS variables
+                      function maintainTableStructure() {
+                          // Find all one2many tables and apply global CSS variable values
+                          const allTables = document.querySelectorAll('.o_field_one2many .o_list_table');
+                          
+                          allTables.forEach(table => {
+                              const container = table.closest('.o_field_one2many');
+                              if (!container) return;
+                              
+                              const computedStyle = getComputedStyle(container);
+                              
+                              // Get global CSS variable values
+                              const dailyWidth = computedStyle.getPropertyValue('--col-daily-width').trim();
+                              const productWidth = computedStyle.getPropertyValue('--col-product-width').trim();
+                              const soluongWidth = computedStyle.getPropertyValue('--col-soluong-width').trim();
+                              const doWidth = computedStyle.getPropertyValue('--col-do-width').trim();
+                              const quykhoWidth = computedStyle.getPropertyValue('--col-quykho-width').trim();
+                              const statusWidth = computedStyle.getPropertyValue('--col-status-width').trim();
+                              const buttonWidth = computedStyle.getPropertyValue('--col-button-width').trim();
+                              const toWidth = computedStyle.getPropertyValue('--col-to-width').trim();
+                              const selectedWidth = computedStyle.getPropertyValue('--col-selected-width').trim();
+                              const dailyBanWidth = computedStyle.getPropertyValue('--col-daily-ban-width').trim();
+                              
+                              // Apply widths to headers and cells based on data-name attributes
+                              const applyWidth = (selector, width) => {
+                                  if (width) {
+                                      table.querySelectorAll(selector).forEach(el => {
+                                          el.style.minWidth = width;
+                                          el.style.width = width;
+                                      });
+                                  }
+                              };
+                              
+                              // Apply by data-name attributes (most reliable)
+                              applyWidth('th[data-name="daily_id"], td[data-name="daily_id"]', dailyWidth);
+                              applyWidth('th[data-name="product_id"], td[data-name="product_id"], th[data-name="product_name"], td[data-name="product_name"]', productWidth);
+                              applyWidth('th[data-name="soluong"], td[data-name="soluong"], th[data-name="soluongtt"], td[data-name="soluongtt"]', soluongWidth);
+                              applyWidth('th[data-name="do"], td[data-name="do"], th[data-name="dott"], td[data-name="dott"]', doWidth);
+                              applyWidth('th[data-name="quykho"], td[data-name="quykho"], th[data-name="quykhott"], td[data-name="quykhott"]', quykhoWidth);
+                              applyWidth('th[data-name="state"], td[data-name="state"]', statusWidth);
+                              applyWidth('th[data-name="to_name"], td[data-name="to_name"]', toWidth);
+                              applyWidth('th[data-name="is_selected"], td[data-name="is_selected"]', selectedWidth);
+                              applyWidth('th[data-name="daily_ban"], td[data-name="daily_ban"]', dailyBanWidth);
+                              
+                              // Apply button width to last column
+                              if (buttonWidth) {
+                                  const lastHeaders = table.querySelectorAll('thead th:last-child');
+                                  const lastCells = table.querySelectorAll('tbody td:last-child');
+                                  [...lastHeaders, ...lastCells].forEach(el => {
+                                      el.style.minWidth = buttonWidth;
+                                      el.style.width = buttonWidth;
+                                  });
+                              }
+                              
+                              console.log(`Applied global column widths to table in ${container.getAttribute('name') || 'unknown field'}`);
+                          });
+                      }
+                      
+                      // Prevent auto-save for all one2many fields
+                      function preventAutoSave() {
+                          try {
+                              const fieldNames = [
+                                  'filtered_deliver_line_ids', 
+                                  'filtered_tructiep_deliver_line_ids',
+                                  'filtered_sell_line_ids',
+                                  'order_xenha_line_ids',
+                                  'order_tructiep_line_ids', 
+                                  'order_chomu_line_ids'
+                              ];
+                              
+                              fieldNames.forEach(fieldName => {
+                                  const container = document.querySelector(`.o_field_one2many[name="${fieldName}"]`);
+                                  if (container && !container.hasAttribute('data-autosave-disabled')) {
+                                      container.setAttribute('data-autosave-disabled', 'true');
+                                      
+                                      console.log(`Setting up auto-save prevention for ${fieldName}...`);
+                                      
+                                      // Intercept and prevent auto-save events
+                                      container.addEventListener('change', function(e) {
+                                          if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                                              console.log(`Input changed in ${fieldName}, preventing auto-save:`, e.target);
+                                              
+                                              e.stopPropagation();
+                                              e.stopImmediatePropagation();
+                                              e.target.setAttribute('data-dirty', 'true');
+                                              e.target.style.borderLeft = '3px solid #ffc107';
+                                              e.target.style.backgroundColor = '#fff9e6';
+                                              
+                                              return false;
+                                          }
+                                      }, true);
+                                      
+                                      container.addEventListener('blur', function(e) {
+                                          if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                                              e.stopPropagation();
+                                              e.stopImmediatePropagation();
+                                              return false;
+                                          }
+                                      }, true);
+                                      
+                                      container.addEventListener('focusout', function(e) {
+                                          if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                                              e.stopPropagation();
+                                              e.stopImmediatePropagation();
+                                              return false;
+                                          }
+                                      }, true);
+                                  }
+                              });
+                              
+                          } catch (error) {
+                              console.error('Error in preventAutoSave:', error);
+                          }
+                      }
+                      
+                      // Setup manual save when main form is saved
+                      function setupManualSave() {
+                          try {
+                              const saveButtons = document.querySelectorAll('button[data-hotkey="s"], .o_form_button_save, button[name="action_save"]');
+                              
+                              saveButtons.forEach(function(button) {
+                                  if (!button.hasAttribute('data-manual-save-handler')) {
+                                      button.setAttribute('data-manual-save-handler', 'true');
+                                      
+                                      button.addEventListener('click', function(e) {
+                                          console.log('Save button clicked, processing cached changes...');
+                                          
+                                          const dirtyFields = document.querySelectorAll('.o_field_one2many [data-dirty="true"]');
+                                          console.log('Found', dirtyFields.length, 'unsaved changes');
+                                          
+                                          dirtyFields.forEach(function(field) {
+                                              field.removeAttribute('data-dirty');
+                                              field.style.borderLeft = '';
+                                              field.style.backgroundColor = '';
+                                              console.log('Cleared dirty flag for:', field);
+                                          });
+                                          
+                                          console.log('Allowing normal form save to proceed...');
+                                          
+                                      }, true);
+                                  }
+                              });
+                              
+                              console.log('Manual save setup complete for', saveButtons.length, 'save buttons');
+                              
+                          } catch (error) {
+                              console.error('Error in setupManualSave:', error);
+                          }
+                      }
+                      
+                      // Main setup function
+                      function setupFields() {
+                          try {
+                              console.log('Setting up xetai fields...');
+                              maintainTableStructure();
+                              preventAutoSave();
+                              setupManualSave();
+                          } catch (error) {
+                              console.error('Error in setupFields:', error);
+                          }
+                      }
+                      
+                      // Initialize
+                      function initialize() {
+                          try {
+                              console.log('Initializing xetai enhancements...');
+                              setupFields();
+                          } catch (error) {
+                              console.error('Error in initialize:', error);
+                          }
+                      }
+                      
+                      // Run setup multiple times to catch dynamic content
+                      setTimeout(initialize, 100);
+                      setTimeout(initialize, 500);
+                      setTimeout(initialize, 1000);
+                      
+                      // Setup observer for dynamic content
+                      try {
+                          const observer = new MutationObserver(function(mutations) {
+                              let needsSetup = false;
+                              
+                              mutations.forEach(function(mutation) {
+                                  if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                      for (let node of mutation.addedNodes) {
+                                          if (node.nodeType === 1) {
+                                              if (node.matches && (
+                                                  node.matches('tr') || 
+                                                  node.matches('input') || 
+                                                  node.querySelector && (
+                                                      node.querySelector('input') ||
+                                                      node.querySelector('.o_field_widget')
+                                                  )
+                                              )) {
+                                                  needsSetup = true;
+                                                  break;
+                                              }
+                                          }
+                                      }
+                                  }
+                              });
+                              
+                              if (needsSetup) {
+                                  console.log('DOM change detected, re-running setup...');
+                                  setTimeout(initialize, 100);
+                              }
+                          });
+                          
+                          window.xetaiObserver = observer;
+                          
+                          observer.observe(document.body, {
+                              childList: true,
+                              subtree: true
+                          });
+                          
+                          console.log('MutationObserver setup complete');
+                      } catch (error) {
+                          console.error('Error setting up MutationObserver:', error);
+                      }
+                      
+                  }); // End DOMContentLoaded
+                  
+                  })(); // End IIFE
+              //]]>
+              </script>
               <sheet>
                 <!--<field name="recorded" invisible="1"/>-->
                 <field name="nguoitao" invisible="1"/>
@@ -19,10 +504,11 @@
                   <page string="NHẬN MŨ">
                     <group>
                       <field name="ngaygiao"/>
-                      <button name="mua_mu" string="Mua mũ" type="object" class="btn-info" />                    
+                      <field name="to_id"/>
+                      <!--<button name="mua_mu" string="Mua mũ" type="object" class="btn-info" />-->   
                     </group>
                     <!-- Thêm field ẩn để lưu trạng thái lọc -->                     
-                    <field name="active_product_id" domain="[('categ_id.name', '=', 'MŨ')]" invisible="1"/>                   
+                    <field name="active_product_id" domain="[('categ_id.name', '=', 'Mũ')]" invisible="1"/>                   
                     <!-- Dãy buttons để lọc sản phẩm -->
                     <div class="oe_button_box" style="margin-top: 10px; margin-bottom: 10px;">
                         <button name="set_sanpham_all" type="object" 
@@ -62,66 +548,78 @@
                             </div>
                         </button>
                     </div>
-                    <group string="XE TẢI NHÀ" style="border: 1px solid grey; background-color: gainsboro;">
-                      <field delete="0" nolabel="1" name="filtered_deliver_line_ids" style="text-align: center;">
-                        <tree default_order="to_id asc, daily_id asc" groups="base.group_erp_manager">
-                          <field name="ngay" optional="hide"/>
-                          <field name="to_name" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
-                          <field name="to_id" invisible="1"/>                        
-                          <field name="daily_id" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>                        
-                          <field name="product_name" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
-                          <field name="soluong" optional="hide"/>
-                          <field name="do" optional="hide"/>
-                          <field name="quykho" optional="hide"/>
-                          <field name="soluongtt" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
-                          <field name="dott" class="autofit-column" style="text-align: center !important; max-width: 20px !important;"/>
-                          <field name="quykhott" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
-                          <field name="tyle" optional="hide" />
-                          <field name="state"/>
-                        </tree>                                           
-                      </field>                      
+                    <group string="XE NHÀ">
+                        <field nolabel="1" name="filtered_deliver_line_ids" 
+                            context="{'default_state': 'mua', 'default_ngay': ngaygiao, 'default_to_id': to_id, 'default_product_id': active_product_id}">
+                            <tree default_order="to_id asc, daily_id asc" groups="base.group_erp_manager" create="1" delete="1" editable="bottom">
+                             <field name="ngay" optional="hide"/>
+                             <field name="to_name"/>
+                             <field name="to_id" invisible="1"/>
+                             <field name="daily_id"/>
+                             <field name="daily_ban" optional="hide"/>
+                             <field name="product_id"/>
+                             <field name="soluong" optional="hide"/>
+                             <field name="do" optional="hide"/>
+                             <field name="quykho" optional="hide"/>
+                             <field name="soluongtt" string ="SLG"/>
+                             <field name="dott" string ="Độ"/>
+                             <field name="quykhott" string ="QK" optional="hide"/>
+                             <field name="state"/>
+                             <button name="nhanmu" string="NHẬN" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['chua','nhan','mua','order'])]}"/>                                
+                             <button name="sualai" string="SỬA" type="object" class="btn-success" attrs="{'invisible': [('state','in',['chua','giao','mua','order'])]}"/>
+                             <field name="do_lythuyet" string ="Độ lý thuyết" optional="show"/>
+                             <field name="do_thu" string ="Độ Thử" optional="show"/>
+                             <field name="tyle" optional="hide"/>
+                             
+                            </tree>
+                        </field>                                            
                     </group>                    
-                    <group style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
-                      <div class="container">            
-                        <table class="table table-bordered" style="text-align: center;">
-                          <thead>
+                    <group style="margin-top: 10px;">
+                      <div class="container" style="width: auto; display: inline-block;">            
+                        <table class="table table-bordered" style="text-align: center; border: 2px solid black; width: auto; table-layout: auto;">
+                          <thead style="background-color: gainsboro;">
                             <tr>
-                              <th>TỔNG NHẬN</th>
-                              <th>Số lượng</th>
-                              <th>Độ</th>
-                              <th>Quy khô</th>
+                              <th style="border: 1px solid black;">TỔNG KẾT</th>
+                              <th style="border: 1px solid black;">Số lượng</th>
+                              <th style="border: 1px solid black;">Độ</th>
+                              <th style="border: 1px solid black;">Quy khô</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody style="background-color: white;">
                             <tr>
-                              <td><b>Nhận</b></td>
-                              <td><field name="sum_soluong" nolabel="1" decoration-info="1"/></td>
-                              <td><field name="sum_do" nolabel="1" decoration-info="1"/></td>
-                              <td><field name="sum_quykho" nolabel="1" decoration-info="1"/></td>
-                            </tr>                          
-                            
+                              <td style="border: 1px solid black;"><b>Nhận</b></td>
+                              <td style="border: 1px solid black;"><b><field name="sum_soluong" nolabel="1" decoration-info="1"/></b></td>
+                              <td style="border: 1px solid black;"><b><field name="sum_do" nolabel="1" decoration-info="1" style="color: black !important; background-color: white !important;"/></b></td>
+                              <td style="border: 1px solid black;"><field name="sum_quykho" nolabel="1" decoration-info="1"/></td>
+                            </tr>                           
                           </tbody>
                         </table>
                       </div>
                     </group>
-                    <group string="BÁN TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
-                        <field delete="0" nolabel="1" name="filtered_tructiep_deliver_line_ids">
-                            <tree default_order="to_id asc, daily_id asc, product_name asc">
+                    <group string="BÁN TRỰC TIẾP">
+                        <field nolabel="1" name="filtered_tructiep_deliver_line_ids">
+                            <tree default_order="to_id asc, daily_id asc, product_name asc" create="0" delete="0" readonly="1">
                                 <field name="ngay" optional="hide"/>
-                                <field name="to_name" style="text-align: left !important; min-width: 20px !important;"/>
+                                <field name="to_name"/>
                                 <field name="to_id" invisible="1"/>                                
-                                <field name="daily_id" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>                                
-                                <field name="product_name" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
-                                <field name="soluongtt" class="autofit-column" style="text-align: right !important; max-width: 30px !important;"/>
-                                <field name="dott" class="autofit-column" style="text-align: center !important; max-width: 20px !important;"/>
-                                <field name="quykhott" class="autofit-column" style="text-align: center !important; max-width: 30px !important;"/>
-                                <field name="state"/>                                
+                                <field name="daily_id" />
+                                <field name="daily_ban" optional="hide"/>                                
+                                <field name="product_name" />
+                                <field name="soluong" optional="hide"/>
+                                <field name="do" optional="hide"/>
+                                <field name="quykho" optional="hide"/>
+                                <field name="soluongtt" string ="SLG"/>
+                                <field name="dott" string="Độ"/>
+                                <field name="quykhott" string="QK" optional="hide"/>
+                                <field name="state"/>
+                                <button name="nhanmu" string="NHẬN" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['chua','nhan','order'])]}"/>                                
+                                <button name="sualai" string="SỬA" type="object" class="btn-success" attrs="{'invisible': [('state','in',['chua','giao','order'])]}"/>
                             </tree>
                         </field>
                     </group>                   
                   </page>
-                  <page string="BÁN MŨ" >
-                    <field name="active_product_id" domain="[('categ_id.name', '=', 'MŨ')]" invisible="1"/>
+                  <page string="BÁN MŨ" groups="caosu.group_rubber_deliver_admin,caosu.group_rubber_deliver_truck">
+                    <field name="active_product_id" domain="[('categ_id.name', '=', 'Mũ')]" invisible="1"/>                   
                     <group string="Chọn loại MŨ">
                         <!-- Reuse the same buttons as on the NHẬN MŨ page -->
                         <div class="oe_button_box" style="margin-top: 10px; margin-bottom: 10px;">
@@ -163,52 +661,57 @@
                             </button>
                         </div>
                     </group>
-                    <group string="BÁN MŨ" style="border: 1px solid grey; background-color: gainsboro;" >
-                      <field name="filtered_sell_line_ids" nolabel="1">
-                        <tree default_order="daily_id asc">
-                          <field name="ngay" class="autofit-column" style="border-top-style: solid !important;border-width: 1px !important;" optional="hide"/>                          
-                          <field name="daily_id" class="autofit-column" style="text-align: center !important; min-width: 20px !important;"/>                          
-                          <field name="product_name" class="autofit-column" style="text-align: center !important; min-width: 30px !important;"/>
-                          <field name="soluong" class="autofit-column" style="text-align: center !important; min-width: 20px !important;"/>
-                          <field name="do" class="autofit-column" style="text-align: center !important; min-width: 10px !important;"/>
-                          <field name="quykho" class="autofit-column" style="text-align: center !important; min-width: 20px !important;"/>                                                    
+                    <group string="BÁN MŨ">
+                      <field name="filtered_sell_line_ids" nolabel="1"
+                             context="{'default_ngay': ngaygiao, 'default_product_id': active_product_id}">
+                        <tree default_order="daily_id asc" create="1" delete="1" editable="bottom">
+                          <field name="ngay" optional="hide"/>                          
+                          <field name="daily_id" />                          
+                          <field name="product_id" />
+                          <field name="soluong" />
+                          <field name="do" />
+                          <field name="quykho" optional="hide"/>
+                          <field name="state" />
+                          <button name="order" string="Order" type="object" class="btn-primary" attrs="{'invisible': [('state', '=', 'order')]}"/>                                                    
+                          <button name="sualai" string="SỬA" type="object" class="btn-success"  attrs="{'invisible': [('state','=','chua')]}"/>                                
                         </tree>
                       </field>
                     </group>
                     <group>
-                      <div class="container">            
-                        <table class="table table-bordered" style="text-align: center; border: 3px solid grey;">                          
-                          <thead>
-                            <tr>
-                              <th>TỔNG KẾT</th>
-                              <th>Số lượng</th>
-                              <th>Độ</th>
-                              <th>Quy khô</th>
-                              <th>$Hao hụt</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><b>Nhận</b></td>
-                              <td><field name="sum_soluong" nolabel="1" decoration-info="1"/></td>
-                              <td><field name="sum_do" nolabel="1" decoration-info="1"/></td>
-                              <td><field name="sum_quykho" nolabel="1" decoration-info="1"/></td>
-                              <td>-</td>
-                            </tr>
-                            <tr>
-                              <td><b>Bán</b></td>
-                              <td><field name="sum_slban" nolabel="1"/></td>
-                              <td><field name="sum_doban" nolabel="1"/></td>
-                              <td><field name="sum_qkban" nolabel="1"/></td>
-                              <td>-</td>
-                            </tr>
-                            <tr>
-                              <td><b>Hao hụt</b></td>
-                              <td><field name="haohut_sl" nolabel="1" decoration-success="haohut_sl &gt; 0" decoration-danger="haohut_sl &lt; 0"/></td>
-                              <td><field name="haohut_do" nolabel="1" decoration-success="haohut_do &gt; 0" decoration-danger="haohut_do &lt; 0"/></td>
-                              <td><field name="haohut_qk" nolabel="1" decoration-success="haohut_qk &gt; 0" decoration-danger="haohut_qk &lt; 0"/></td>
-                              <td><field name="money_loss" nolabel="1" decoration-success="money_loss &gt; 0" decoration-danger="money_loss &lt; 0"/></td>
-                            </tr>
+                        <div class="container" style="width: auto; display: block; text-align: left; margin-left: 0; padding-left: 0;">
+                            <span style="font-weight: bold; font-size: 15px; margin-bottom: 5px; display: inline-block;">BẢNG TỔNG HỢP HAO HỤT</span>
+                            <table class="table table-bordered summary-table">
+                                <thead style="background-color: gainsboro;">
+                                    <tr>
+                                        <th style="min-width: 70px; max-width: 80px !important;">TỔNG</th>
+                                        <th style="min-width: 60px; max-width: 70px !important;">KG</th>
+                                        <th style="min-width: 50px; max-width: 60px !important;">Độ</th>
+                                        <th style="min-width: 60px; max-width: 70px !important;">Quykhô</th>
+                                        <td style="min-width: 70px; max-width: 80px !important;"><b>$$$</b></td>                                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>                                
+                                        <td><b>Nhận</b></td>
+                                        <td><field name="sum_soluong" nolabel="1" decoration-info="1"/></td>
+                                        <td><field name="sum_do" nolabel="1" decoration-info="1"/></td>
+                                        <td><field name="sum_quykho" nolabel="1" decoration-info="1"/></td>
+                                        <td><b>-</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Bán</b></td>
+                                        <td><field name="sum_slban" nolabel="1"/></td>
+                                        <td><field name="sum_doban" nolabel="1"/></td>
+                                        <td><field name="sum_qkban" nolabel="1"/></td>
+                                        <td><b>-</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Hao hụt</b></td>
+                                        <td><field name="haohut_sl" nolabel="1" decoration-success="haohut_sl &gt; 0" decoration-danger="haohut_sl &lt; 0"/></td>
+                                        <td><field name="haohut_do" nolabel="1" decoration-success="haohut_do &gt; 0" decoration-danger="haohut_do &lt; 0"/></td>
+                                        <td><field name="haohut_qk" nolabel="1" decoration-success="haohut_qk &gt; 0" decoration-danger="haohut_qk &lt; 0"/></td>
+                                        <td><field name="money_loss" nolabel="1" decoration-success="money_loss &gt; 0" decoration-danger="money_loss &lt; 0"/></td>
+                                    </tr>
                             <!--<tr>
                               <td><b>TL hao hụt(%)</b></td>
                               <td><field name="tylehhsl" nolabel="1" decoration-success="tylehh_nuoc &gt; 0" decoration-danger="tylehh_nuoc &lt; 0"/></td>
@@ -220,73 +723,83 @@
                       </div>
                     </group>                                        
                   </page>
-                  <page string="ORDER" >
+                  <page string="ORDER" groups="caosu.group_rubber_deliver_admin">
                     <group>                        
                         <field name="debug" invisible="1"/>                        
                     </group>                    
-                    <div class="oe_button_box">
+                    <!--<div class="oe_button_box">
                         <button name="action_select_all_order_lines" string="Select All" type="object" class="oe_link"/>
                         <button name="action_deselect_all_order_lines" string="Deselect All" type="object" class="oe_link"/>
                         <button name="action_create_sale_order_from_selected_lines" 
                                 string="Tạo Sale Orders" 
                                 type="object" 
                                 class="oe_highlight"/>
-                    </div>                    
-                    <group string="MŨ XE TẢI NHÀ" style="border: 1px solid grey; background-color: gainsboro;">
-                        <field delete="0" nolabel="1" name="order_xetainha_line_ids">
-                            <tree>
-                                <field name="is_selected" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'order')]}"/>
+                    </div>-->                    
+                    <group string="MŨ XE NHÀ">
+                        <field name="order_xenha_line_ids" nolabel="1" >
+                            <tree create="0" delete="0" readonly="1">                                
+                                <!--<field name="is_selected" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'order')]}"/>-->
                                 <field name="ngay" optional="hide"/>
                                 <field name="to_name"/>
                                 <field name="to_id" invisible="1"/>                                
                                 <field name="daily_id"/>
                                 <field name="daily_ban"/>                                
                                 <field name="product_name"/>
-                                <field name="soluongtt"/>
-                                <field name="dott"/>
-                                <field name="quykhott"/>
+                                <field name="soluongtt" string ="SLG"/>
+                                <field name="dott" string="Độ"/>
+                                <field name="quykhott" string="QK" optional="hide"/>
                                 <field name="state"/>
+                                <button name="sualai" string="SỬA" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['chua','giao','nhan','mua'])]}"/>
+                                <button name="order" string="ORDER" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['chua','giao','order'])]}"/>
                             </tree>                                
                         </field>
                     </group>
                     
                     <!-- Mũ trực tiếp -->
-                    <group string="MŨ BÁN TRỰC TIẾP" style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
-                        <field delete="0" nolabel="1" name="order_tructiep_line_ids">
-                            <tree>
-                                <field name="is_selected" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'order')]}"/>
+                    <group string="MŨ BÁN TRỰC TIẾP">
+                        <field name="order_tructiep_line_ids" nolabel="1">
+                            <tree create="0" delete="0" readonly="1">                               
                                 <field name="ngay" optional="hide"/>
                                 <field name="to_name"/>
-                                <field name="to_id" invisible="1"/>                                
+                                <field name="to_id" optional="hide"/>                                
                                 <field name="daily_id" optional="hide"/>
                                 <field name="daily_ban"/>                               
                                 <field name="product_name"/>
-                                <field name="soluongtt" />
-                                <field name="dott"/>
-                                <field name="quykhott" />
+                                <field name="soluong" optional="hide"/>
+                                <field name="do" optional="hide"/>
+                                <field name="quykho" optional="hide"/>
+                                <field name="soluongtt" string ="SLG"/>
+                                <field name="dott" string="Độ"/>
+                                <field name="quykhott" string="QK" optional="hide"/>
                                 <field name="state"/>
+                                <button name="sualai" string="SỬA" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['chua','giao','nhan','mua'])]}"/>
+                                <button name="order" string="ORDER" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['chua','giao','order'])]}"/>
                             </tree>                                
                         </field>
                     </group>
                     
                     <!-- Mũ chờ -->
-                    <group string="MŨ CHỞ" style="border: 1px solid grey; background-color: gainsboro; margin-top: 10px;">
-                        <field delete="0" nolabel="1" name="order_chomu_line_ids">
-                            <tree>
-                                <field name="is_selected" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'order')]}"/>
+                    <group string="MŨ CHỞ">
+                        <field name="order_chomu_line_ids" nolabel="1">
+                            <tree create="0" delete="0" readonly="1">
                                 <field name="ngay" optional="hide"/>
                                 <field name="to_name" optional="hide"/>
-                                <field name="to_id" invisible="1"/>                                
+                                <field name="to_id" optional="hide"/>
                                 <field name="daily_id"/>
-                                <field name="daily_ban"/>                                
+                                <field name="daily_ban"/>
                                 <field name="product_name"/>
-                                <field name="soluongtt"/>
-                                <field name="dott"/>
-                                <field name="quykhott"/>
+                                <field name="soluong" optional="hide"/>
+                                <field name="do" optional="hide"/>
+                                <field name="quykho" optional="hide"/>
+                                <field name="soluongtt" string ="SLG"/>
+                                <field name="dott" string="Độ"/>
+                                <field name="quykhott" string="QK" optional="hide"/>
                                 <field name="state"/>
-                            </tree>                                
+                                <button name="sualai" string="SỬA" type="object" class="btn-success" attrs="{'invisible': [('state','in',['chua','giao','nhan','mua'])]}"/>
+                                <button name="order" string="ORDER" type="object" class="btn-success" attrs="{'invisible': [('state','in',['chua','giao','order'])]}"/>
+                            </tree>
                         </field>
-                    </group>             
+                    </group>
                   </page>                 
                 </notebook>
               </sheet>
@@ -404,6 +917,8 @@
         <field name="arch" type="xml">
             <tree>                
                 <field name="ngay"/>
+                <field name="company_truck_id"/>
+                <field name="rubberbydate_id" optional="hide"/>
                 <field name="to_id"/>
                 <field name="daily_id"/>
                 <field name="sanpham"/>
@@ -447,6 +962,7 @@
             <tree>                
                 <field name="ngay"/>
                 <field name="company_truck_id"/>
+                <field name="rubberbydate_id" optional="hide"/>
                 <field name="to_id"/>
                 <field name="daily_id"/>
                 <field name="sanpham"/>
@@ -472,8 +988,8 @@
             </header>
             <group>
               <group>
-                <field name="ngay" attrs="{'readonly': [('state','in',['giao','nhan','order'])]}"/>
-                <field name="to_id" attrs="{'readonly': [('state','in',['giao','nhan','order'])]}"/>
+                <field name="ngay" readonly="1"/>
+                <field name="to_id" readonly="1"/>
                 <field name="soluong" attrs="{'readonly': [('state','in',['giao','nhan','order'])]}"/>
                 <field name="do" attrs="{'readonly': [('state','in',['giao','nhan','order'])]}"/>
                 <field name="quykho"/>
@@ -483,8 +999,8 @@
                 <field name="daily_ban" attrs="{'readonly': [('state','in',['chua','order'])]}"/>
                 <field name="sanpham" attrs="{'readonly': [('state','in',['giao','nhan','order'])]}"/>
                 <field name="product_id" attrs="{'readonly': [('state','in',['giao','nhan','order'])]}"/>
-                <field name="soluongtt" attrs="{'readonly': [('state','in',['nhan','order'])]}"/>
-                <field name="dott" attrs="{'readonly': [('state','in',['nhan','order'])]}"/>
+                <field name="soluongtt" attrs="{'readonly': [('state','in',['chua','nhan','order'])]}"/>
+                <field name="dott" attrs="{'readonly': [('state','in',['chua','nhan','order'])]}"/>
                 <field name="quykhott"/>                
                 <button name="nhanmu" string="NHẬN" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['chua','nhan','mua','order'])]}"/>
                 <button name="giaomu" string="GIAO" type="object" class="btn-success"  attrs="{'invisible': [('state','in',['giao','nhan','mua','order'])]}"/>
@@ -514,6 +1030,7 @@
         <field name="arch" type="xml">
             <tree>                
                 <field name="ngay"/>
+                <field name="company_truck_id"/>
                 <field name="daily_id"/>
                 <field name="sanpham"/>
                 <field name="product_id"/>

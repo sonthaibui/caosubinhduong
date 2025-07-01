@@ -2,6 +2,8 @@ from collections import defaultdict
 from datetime import datetime
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
+import logging
+_logger = logging.getLogger(__name__)
 
 class RubberTruck(models.Model):
     _name = "rubber.truck"
@@ -27,6 +29,7 @@ class CompanyTruck(models.Model):
     nam = fields.Char('Năm', compute='_compute_ngay', store=True)
     nam_kt = fields.Char('Năm khai thác', compute='_compute_ngay', store=True)
     ngayban = fields.Date('Ngày bán', default=fields.Datetime.now(), tracking=True, store=True)
+    to_id = fields.Many2one('hr.department', string='Tổ', default=81, tracking=True)
     nguoitao = fields.Char(compute='_compute_nguoitao', string='Người Tạo:')
     debug = fields.Html('Debug Info')  
     sum_soluong = fields.Float('Sảnlượng', compute='_compute_sum', digits='Product Price', store=True)
@@ -72,6 +75,7 @@ class CompanyTruck(models.Model):
         'rubber.deliver',
         'company_truck_id',
         compute='_compute_filtered_deliver_line_ids',
+        inverse='_inverse_filtered_deliver_line_ids',
         readonly=False,  # Thêm dòng này
         string='Danh sách lọc'   )
 
@@ -86,16 +90,17 @@ class CompanyTruck(models.Model):
         'rubber.sell',
         'company_truck_id',
         compute='_compute_filtered_sell_line_ids',
+        inverse='_inverse_filtered_sell_line_ids',
         readonly=False,
         string='Filtered Sell Lines'
     )
     # 6 trường one2many mới cho trang order
-    order_xetainha_line_ids = fields.One2many(
+    order_xenha_line_ids = fields.One2many(
         'rubber.deliver',
         'company_truck_id',  # Quan trọng: Thêm field relation
-        compute='_compute_order_xetainha_line_ids',
+        compute='_compute_order_xenha_line_ids',
         readonly=False,
-        string='Mũ xe tải nhà'
+        string='Mũ xe nhà'
     )
     
     order_tructiep_line_ids = fields.One2many(
@@ -123,12 +128,12 @@ class CompanyTruck(models.Model):
             lines = truck.deliver_line_ids.filtered(
                 lambda l: l.ngay == truck.ngaygiao and
                           (l.soluong != 0 or l.soluongtt != 0) and
-                          l.state in ['giao', 'mua', 'nhan', 'order']
+                          l.state in ['chua','giao', 'mua', 'nhan', 'order']
             )
-            # Lọc theo đại lý "Xe tải nhà" và tổ "TỔ Xe tải"
+            # Lọc theo đại lý "Xe nhà" và tổ "TỔ Xe tải"
             lines = lines.filtered(
-                lambda l: (l.daily_id.name == 'Xe tải nhà') or 
-                          (l.to_id.name == 'TỔ Xe tải')
+                lambda l: (l.daily_id.name == 'Xe nhà') or 
+                          (l.to_id == truck.to_id)  # Sửa: Lọc theo to_id
             )
             # Lọc theo product_id nếu được thiết lập
             if truck.active_product_id:
@@ -139,6 +144,72 @@ class CompanyTruck(models.Model):
             
             truck.filtered_deliver_line_ids = lines
     
+    def _inverse_filtered_deliver_line_ids(self):
+        """Inverse method to handle creation/modification/deletion of filtered_deliver_line_ids"""
+        for truck in self:
+            # Get the current records in the computed field
+            current_records = truck.filtered_deliver_line_ids
+            
+            # Get all existing rubber.deliver records that should be in this filtered view
+            existing_records = truck.deliver_line_ids.filtered(
+                lambda l: l.state in ['giao', 'mua', 'nhan', 'order'] and l.ngay == truck.ngaygiao and l.to_id.id == 81
+            )
+            
+            # Get IDs of current records (what should exist after save)
+            current_ids = set(record.id for record in current_records if record.id)
+            
+            # Get IDs of existing records (what currently exists in database)
+            existing_ids = set(existing_records.ids)
+            
+            # Find records to delete (exist in database but not in current view)
+            records_to_delete = existing_ids - current_ids
+            if records_to_delete:
+                self.env['rubber.deliver'].browse(list(records_to_delete)).unlink()
+            
+            # Set default to_id for truck operations to 81
+            default_to_id = 81
+            
+            for record in current_records:
+                # If this is a new record (no ID yet) or needs to be synced
+                if not record.id or record.company_truck_id != truck.id:
+                    # Find or create rubber.date record (following mua_mu pattern)
+                    target_date = record.ngay or truck.ngaygiao
+                    target_to_id = record.to_id.id if record.to_id else default_to_id
+                    
+                    rubber_date = self.env['rubber.date'].search([
+                        ('ngay', '=', target_date),
+                        ('to', '=', target_to_id)
+                    ], limit=1)
+
+                    if not rubber_date:
+                        rubber_date = self.env['rubber.date'].create({
+                            'ngay': target_date,
+                            'to': target_to_id,
+                        })
+                    
+                    # Create or update the actual rubber.deliver record
+                    vals = {
+                        'company_truck_id': truck.id,
+                        'rubberbydate_id': rubber_date.id,
+                        'soluongtt': record.soluongtt,
+                        'product_id': record.product_id.id if record.product_id else truck.active_product_id.id if truck.active_product_id else False,
+                        'daily_id': record.daily_id.id if record.daily_id else False,
+                        'dott': record.dott or 0,
+                        'quykho': record.quykho or 0,
+                    }
+                    
+                    # Only set state for new records, preserve existing state for updates
+                    if not record.id:
+                        vals['state'] = 'mua'  # New records default to 'mua'
+                    # For existing records, don't change the state unless explicitly needed
+                    
+                    if record.id:
+                        # Update existing record
+                        record.write(vals)
+                    else:
+                        # Create new record
+                        self.env['rubber.deliver'].create(vals)
+
     # Phương thức tính toán cho filtered_tructiep_deliver_line_ids
     @api.depends('deliver_line_ids', 
                 'deliver_line_ids.product_id', 
@@ -150,13 +221,13 @@ class CompanyTruck(models.Model):
             lines = truck.deliver_line_ids.filtered(
                 lambda l: l.ngay == truck.ngaygiao and
                           (l.soluong != 0 or l.soluongtt != 0) and
-                          l.state in ['giao','nhan', 'order']
+                          l.state in ['chua','giao','nhan', 'order']
             )
             
-            # Lọc theo đại lý khác "Xe tải nhà" và tổ khác "TỔ Xe tải"
+            # Lọc theo đại lý khác "Xe nhà" và tổ khác "TỔ Xe tải"
             lines = lines.filtered(
-                lambda l: (l.daily_id.name != 'Xe tải nhà' and 
-                           l.to_id.name != 'TỔ Xe tải')
+                lambda l: (l.daily_id.name != 'Xe nhà' and 
+                           l.to_id != truck.to_id)
             ) 
                 
             # Lọc theo product_id nếu được thiết lập
@@ -183,17 +254,62 @@ class CompanyTruck(models.Model):
             lines = lines.sorted(key=lambda l: (l.daily_id.name if l.daily_id else ""))
             
             truck.filtered_sell_line_ids = lines
-        
-    # 7 Phương thức tính toán cho order_xetainha_line_ids
+    
+    def _inverse_filtered_sell_line_ids(self):
+        """Inverse method to handle creation/modification/deletion of filtered_sell_line_ids"""
+        for truck in self:
+            # Get the current records in the computed field
+            current_records = truck.filtered_sell_line_ids
+            
+            # Get all existing rubber.sell records for this truck
+            existing_records = truck.sell_line_ids
+            
+            # Apply the same filtering as in the compute method
+            if truck.active_product_id:
+                existing_records = existing_records.filtered(lambda l: l.product_id == truck.active_product_id)
+            
+            # Get IDs of current records (what should exist after save)
+            current_ids = set(record.id for record in current_records if record.id)
+            
+            # Get IDs of existing records (what currently exists in database)
+            existing_ids = set(existing_records.ids)
+            
+            # Find records to delete (exist in database but not in current view)
+            records_to_delete = existing_ids - current_ids
+            if records_to_delete:
+                self.env['rubber.sell'].browse(list(records_to_delete)).unlink()
+            
+            for record in current_records:
+                # If this is a new record (no ID yet) or needs to be synced
+                if not record.id or record.company_truck_id != truck.id:
+                    # Create or update the actual rubber.sell record
+                    vals = {
+                        'company_truck_id': truck.id,
+                        'ngay': record.ngay or truck.ngaygiao,
+                        'product_id': record.product_id.id if record.product_id else truck.active_product_id.id if truck.active_product_id else False,
+                        'daily_id': record.daily_id.id if record.daily_id else False,
+                        'soluong': record.soluong or 0,
+                        'do': record.do or 0,
+                        'quykho': record.quykho or 0,
+                    }
+                    
+                    if record.id:
+                        # Update existing record
+                        record.write(vals)
+                    else:
+                        # Create new record
+                        self.env['rubber.sell'].create(vals)
+
+    # 7 Phương thức tính toán cho order_xenha_line_ids
     @api.depends('deliver_line_ids', 'deliver_line_ids.daily_id', 'deliver_line_ids.state', 'deliver_line_ids.ngay', 'ngaygiao')
-    def _compute_order_xetainha_line_ids(self):
+    def _compute_order_xenha_line_ids(self):
         for truck in self:
             lines = truck.deliver_line_ids.filtered(
                 lambda l: l.state in ['nhan','order'] and 
                           l.ngay == truck.ngaygiao and
-                          l.daily_id.name == 'Xe tải nhà'
+                          l.daily_id.name == 'Xe nhà'
             )
-            truck.order_xetainha_line_ids = lines
+            truck.order_xenha_line_ids = lines
     
     # Phương thức tính toán cho order_tructiep_line_ids
     @api.depends('deliver_line_ids', 'deliver_line_ids.daily_id', 'deliver_line_ids.to_id', 'deliver_line_ids.state', 'deliver_line_ids.ngay', 'ngaygiao')
@@ -202,8 +318,8 @@ class CompanyTruck(models.Model):
             lines = truck.deliver_line_ids.filtered(
                 lambda l: l.state in ['nhan','order'] and 
                           l.ngay == truck.ngaygiao and
-                          l.daily_id.name != 'Xe tải nhà' and
-                          l.to_name != 'TỔ Xe tải'
+                          l.daily_id.name != 'Xe nhà' and
+                          l.to_id != truck.to_id  # Sửa: Lọc theo to_id
             )
             truck.order_tructiep_line_ids = lines
     
@@ -214,8 +330,8 @@ class CompanyTruck(models.Model):
             lines = truck.deliver_line_ids.filtered(
                 lambda l: l.state in ['mua','order'] and 
                           l.ngay == truck.ngaygiao and
-                          l.daily_id.name != 'Xe tải nhà' and
-                          l.to_name == 'TỔ Xe tải'
+                          l.daily_id.name != 'Xe nhà' and
+                          l.to_id == truck.to_id  # Sửa: Lọc theo to_id
             )
             truck.order_chomu_line_ids = lines
    
@@ -332,177 +448,7 @@ class CompanyTruck(models.Model):
         companytruck_counts = self.search_count([('ngaygiao','=',self.ngaygiao),('id','!=',self.id)])
         if companytruck_counts > 0:
             raise ValidationError("Nhận và bán ngày " + str(datetime.strptime(str(self.ngaygiao),'%Y-%m-%d').strftime('%d/%m/%Y')) + " đã tồn tại.")
-        '''if len(self.env['rubber.date'].search([('ngay','=',self.ngaygiao)])) == False:
-            raise ValidationError(_('Ngày ' + str(datetime.strptime(str(self.ngaygiao),'%Y-%m-%d').strftime('%d/%m/%Y')) + ' không có mũ giao.'))'''
     
-    def action_create_sale_order_from_selected_lines(self):
-        self.ensure_one()
-        
-        # Get SELECTED rubber.deliver lines
-        selected_lines = (self.order_xetainha_line_ids + 
-                        self.order_tructiep_line_ids + 
-                        self.order_chomu_line_ids).filtered(lambda l: l.is_selected)
-        
-        if not selected_lines:
-            raise UserError(_("No lines selected. Please select at least one line."))
-        
-        # Group lines by daily_id and to_id
-        lines_by_daily_to = defaultdict(list)
-        for line in selected_lines:
-            if not line.daily_ban:
-                raise UserError(_("Line for product %s has no partner (daily_id).") % line.product_id)
-            
-            key = (line.daily_ban, line.to_id)
-            lines_by_daily_to[key].append(line)
-        '''debug_line = f"line: {lines_by_daily_to}"
-        self.debug = (self.debug or '') + debug_line'''
-        # Create sale orders for each partner+team combination
-        SaleOrder = self.env['sale.order']
-        SaleOrderLine = self.env['sale.order.line']
-        Partner = self.env['res.partner']
-        Product = self.env['product.product']
-                        
-        created_orders = []
-        for (daily_ban, to_id), lines in lines_by_daily_to.items():
-            # Find max ngay for date_order
-            max_ngay = max(line.ngay for line in lines if line.ngay)
-            
-            # Get analytic account from to_id
-            analytic_account_id = to_id.analytic_account_id.id if to_id and to_id.analytic_account_id else False
-            
-            # Check for existing orders with same criteria
-            domain = [
-                ('partner_id', '=', daily_ban.id),
-                ('commitment_date', '=', max_ngay),
-                ('state', 'in', ['draft', 'sent']),  # Only consider draft/sent orders
-            ]
-            
-            # Add to_id to domain if it exists
-            if to_id:
-                domain.append(('analytic_account_id', '=', analytic_account_id))
-            
-            existing_order = SaleOrder.search(domain, limit=1)
-            
-            if existing_order:
-                # Use existing order
-                sale_order = existing_order
-            else:
-                # Create sale order
-                sale_order_vals = {
-                    'partner_id': daily_ban.id,
-                    'date_order': max_ngay,
-                    'commitment_date': max_ngay,
-                    'expected_date': max_ngay,
-                    'analytic_account_id': analytic_account_id,
-                    #'user_id': self.env.user.id,
-                    # Add other sale order fields as needed
-                }
-                
-                sale_order = SaleOrder.create(sale_order_vals)
-            created_orders.append(sale_order)
-            
-            # Create sale order lines
-            for line in lines:
-                # Use product_id if available, otherwise look up based on sanpham
-                if line.product_id:
-                    product = line.product_id
-                
-                
-                # Get price using existing method
-                price, price_type_code = self._get_rubber_price(line)
-                
-                # Create order line based on price type
-                if price_type_code == 'giamutap':
-                    order_line = SaleOrderLine.create({
-                        'order_id': sale_order.id,
-                        'product_id': product.id,
-                        'product_uom_qty': line.soluongtt,
-                        'price_unit': price,
-                        'commitment_date': line.ngay,
-                    })
-                else:
-                    order_line = SaleOrderLine.create({
-                        'order_id': sale_order.id,
-                        'product_id': product.id,
-                        'sanluong': line.soluongtt,
-                        'do': line.dott,
-                        'product_uom_qty': line.dott * line.soluongtt / 100,
-                        'price_unit': price,
-                        'commitment_date': line.ngay,
-                    })
-                '''debug_line = f"order_line: {product.id}, ' \
-                            'sanluong': {line.soluongtt}, ' \
-                                'do': {line.dott}, ' \
-                            'product_uom_qty': {line.soluongtt}, ' \
-                                'commitment_date': {line.ngay}"
-
-                self.debug = (self.debug or '') + debug_line'''
-                # Update the rubber.deliver line to mark it as processed
-                line.write({
-                    'sale_order_id': sale_order.id,
-                    'sale_order_line_id': order_line.id,  # Store the sale order line ID
-                    'state': 'order'  # Change state to 'order'
-                })
-        # After creating sale orders, deselect all processed lines
-        selected_lines.write({'is_selected': False})
-        # Show the created sale orders
-        if not created_orders:
-            return {'type': 'ir.actions.act_window_close'}
-            
-        action = {
-            'name': _('Created Sale Orders'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'sale.order',
-            'view_mode': 'tree,form',
-            'domain': [('id', 'in', [order.id for order in created_orders])],
-        }
-        
-        if len(created_orders) == 1:
-            action['view_mode'] = 'form'
-            action['res_id'] = created_orders[0].id
-            
-        return action    
-           
-    def _get_rubber_price(self, order_line):      
-        # Find to_id record where name matches deliver_line.to (char)
-        
-        domain = [
-            ('daily_id', '=', order_line.daily_id.id),             
-            ('ngay_hieuluc', '<', order_line.ngay),
-            ('to_id', '=', order_line.to_id.id)                      
-        ]       
-        
-        # Try to determine price type from product_id first
-        if order_line.product_id and order_line.product_id.default_code:
-            code = order_line.product_id.default_code
-            if code == 'munuoc':
-                domain.append(('price_type_id.code', '=', 'giamunuoc'))
-            elif code == 'mutap':
-                domain.append('|')
-                domain.append(('price_type_id.code', '=', 'giamutap'))
-                domain.append(('price_type_id.code', '=', 'giamutap_do'))
-            elif code == 'mudong':
-                domain.append(('price_type_id.code', '=', 'giamudong'))
-            elif code == 'muday':
-                domain.append(('price_type_id.code', '=', 'giamuday'))
-            elif code == 'muchen':
-                domain.append(('price_type_id.code', '=', 'giamuchen'))
-        
-        else:
-            domain.append(('price_type_id.code', '=', ''))
-        
-        price = self.env['rubber.price'].search(domain, limit=1)
-        
-        '''debug_line = f"Domain: {domain}, Price: {price.gia if price else 'N/A'}\n"
-        self.debug = (self.debug or '') + debug_line'''
-        
-        if price:
-            if price.price_type_id.code == 'giamutap_do' or price.price_type_id.code == 'giamunuoc':
-                return price.gia * 100, price.price_type_id.code
-            else:
-                return price.gia, price.price_type_id.code
-        return 0, None
-        
     @api.depends('filtered_sell_line_ids', 'active_product_id', 'ngaygiao')
     def _compute_money_loss(self):
         # Product code to price type mapping
@@ -549,7 +495,7 @@ class CompanyTruck(models.Model):
                             ('daily_id', '=', highest_line.daily_id.id),
                         ]                    
                         # Try with team first, then without
-                        to_id = self.env['hr.department'].search([('name', '=', 'TỔ Xe tải')], limit=1)
+                        to_id = self.env['hr.department'].search([('id', '=', 81)], limit=1)
                         price_record = False
                         if to_id:
                             price_record = self.env['rubber.price'].search(
@@ -565,7 +511,9 @@ class CompanyTruck(models.Model):
                         if price_record:
                             price = price_record.gia
             
-                rec.money_loss = total_haohut * price *100
+                # Format money_loss: 100.000 -> 100k, 1.000.000 -> 1tr, 1.323.000 -> 1.3tr
+                money_loss_value = total_haohut * price * 100
+                rec.money_loss = money_loss_value
             except Exception as e:
                 _logger.error(f"Error computing money_loss: {e}")
                 rec.money_loss = 0.0
@@ -614,12 +562,72 @@ class CompanyTruck(models.Model):
     
     def action_select_all_order_lines(self):
         """Select all order lines"""
-        lines = self.order_xetainha_line_ids + self.order_tructiep_line_ids + self.order_chomu_line_ids
+        lines = self.order_xenha_line_ids + self.order_tructiep_line_ids + self.order_chomu_line_ids
         lines.write({'is_selected': True})
         return True
 
     def action_deselect_all_order_lines(self):
         """Deselect all order lines"""
-        lines = self.order_xetainha_line_ids + self.order_tructiep_line_ids + self.order_chomu_line_ids
+        lines = self.order_xenha_line_ids + self.order_tructiep_line_ids + self.order_chomu_line_ids
         lines.write({'is_selected': False})
         return True
+    
+    def action_add_deliver_line(self):
+        """Action to add a new deliver line with proper defaults"""
+        self.ensure_one()
+        
+        _logger.info(f"action_add_deliver_line called for truck {self.id}")
+        
+        # Create a new deliver line with proper defaults
+        vals = {
+            'company_truck_id': self.id,
+            'ngay': self.ngaygiao,
+            'state': 'mua',
+            'to_id': 81,  # TỔ Xe tải
+            'soluong': 1,
+        }
+        
+        # Add product_id if active_product_id is set
+        if self.active_product_id:
+            vals['product_id'] = self.active_product_id.id
+            
+        _logger.info(f"Creating deliver line with vals: {vals}")
+        
+        # Create the record
+        new_line = self.env['rubber.deliver'].create(vals)
+        
+        _logger.info(f"Created deliver line: {new_line.id}")
+        
+        # Trigger recompute of filtered fields
+        self._compute_filtered_deliver_line_ids()
+        
+        # Just return True to stay on the same form
+        return True
+    
+    def action_add_sell_line(self):
+        """Action to add a new sell line with proper defaults"""
+        self.ensure_one()
+        
+        # Create a new sell line with proper defaults
+        vals = {
+            'company_truck_id': self.id,
+            'ngay': self.ngaygiao,
+        }
+        
+        # Add product_id if active_product_id is set
+        if self.active_product_id:
+            vals['product_id'] = self.active_product_id.id
+            
+        # Create the record
+        new_line = self.env['rubber.sell'].create(vals)
+        
+        # Trigger recompute of filtered fields
+        self._compute_filtered_sell_line_ids()
+        
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }

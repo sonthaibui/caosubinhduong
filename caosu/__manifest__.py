@@ -13,9 +13,9 @@
     ],
     
     'data': [
-        'security/ir.model.access.csv',        
-        
-        
+        'security/groups.xml',
+        'security/ir.model.access.csv', 
+          
 
         'views/giaomu/domu_views.xml',
         'views/giaomu/rubber_price_views.xml',         # Then load price views that reference it

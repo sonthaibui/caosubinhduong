@@ -14,11 +14,11 @@ from PIL import Image
 import io
 from io import StringIO
 from PyPDF2 import PdfFileWriter, PdfFileReader
-from PyPDF2.errors import PdfReadError
+from PyPDF2.utils import PdfReadError
 
 try:
     from PyPDF2 import PdfFileWriter, PdfFileReader  # pylint: disable=W0404
-    from PyPDF2.errors import PdfReadError  # pylint: disable=W0404
+    from PyPDF2.utils import PdfReadError  # pylint: disable=W0404
 except ImportError:
     pass
 try:

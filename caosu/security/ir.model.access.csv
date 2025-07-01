@@ -4,7 +4,6 @@ access.rubber.date,access_rubber_date,caosu.model_rubber_date,base.group_user,1,
 access.rubber.price,access_rubber_price,caosu.model_rubber_price,base.group_user,1,1,1,1
 access.rubber.price.wizard,access_rubber_price_wizard,caosu.model_rubber_price_wizard,base.group_user,1,1,1,1
 access.rubber.price.wizard.line,access_rubber_price_wizard_line,caosu.model_rubber_price_wizard_line,base.group_user,1,1,1,1
-access.rubber.deliver,access_rubber_deliver,caosu.model_rubber_deliver,base.group_user,1,1,1,1
 access.rubber.sell,access_rubber_sell,caosu.model_rubber_sell,base.group_user,1,1,1,1
 access.rubber.loss,access_rubber_loss,caosu.model_rubber_loss,base.group_user,1,1,1,1
 access.rubber.salary,access_rubber_salary,caosu.model_rubber_salary,base.group_user,1,1,1,1
@@ -40,3 +39,6 @@ access.yield.target,access_yield_target,caosu.model_yield_target,base.group_user
 access.yield.distribution,access_yield_distribution,caosu.model_yield_distribution,base.group_user,1,1,1,1
 access.rubber.price.type,access_rubber_price_type,caosu.model_rubber_price_type,base.group_user,1,1,1,1
 access.location,access_location,caosu.model_location,base.group_user,1,1,1,1
+access_rubber_deliver_admin,access.rubber.deliver.admin,caosu.model_rubber_deliver,group_rubber_deliver_admin,1,1,1,1
+access_rubber_deliver_manager,access.rubber.deliver.manager,caosu.model_rubber_deliver,group_rubber_deliver_manager,1,1,1,1
+access_rubber_deliver_truck,access.rubber.deliver.truck,caosu.model_rubber_deliver,group_rubber_deliver_truck,1,1,1,1

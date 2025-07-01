@@ -86,6 +86,7 @@ class AllowanceByMonth(models.Model):
                             self.env['allowance'].create({'salaryboard_id': sb.id, 'employeebenefit_id': eb.id, 'employee_id': plant.employee_id.id, 'allowancebymonth_id': rec.id, 
                                 'thang': rec.thang, 'nam': rec.nam, 'cophep': cophep, 'kophep': kophep, 'sttcn': plant.sttcn, 'chuyencan': chuyencan})
                     qk = []
+                    #Tính thưởng sản lượng
                     for line in rec.allowance_line_ids:
                         qk.append(line.quykho)
                     qk.sort(reverse=True)
