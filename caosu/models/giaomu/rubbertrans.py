@@ -82,44 +82,42 @@ class RubberDeliver(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        """Override create to handle setting to_id by name from context and company_truck_id"""
-        for vals in vals_list:
-            #_logger.info(f"Creating rubber.deliver with vals: {vals} and context: {self._context}")
-            
-            # If to_name is provided in context but to_id is not set, try to find the department
-            if self._context.get('default_to_name') and not vals.get('to_id'):
-                department = self.env['hr.department'].search([
-                    ('name', '=', self._context.get('default_to_name'))
-                ], limit=1)
-                if department:
-                    vals['to_id'] = department.id
-                    _logger.info(f"Set to_id to {department.id} for department {department.name}")
-            # Set default product for "TỔ Xe tải" if not specified
-            if (self._context.get('default_to_name') == 'TỔ Xe tải' and 
-                not vals.get('product_id')):
-                default_product = self.env['product.product'].search([
-                    ('categ_id.name', '=', 'Mũ'),
-                    ('name', 'ilike', 'nước')
-                ], limit=1)
-                if default_product:
-                    vals['product_id'] = default_product.id
-                    _logger.info(f"Set default product to {default_product.name}")
-            # Ensure company_truck_id is set from context if available
-            if self._context.get('default_company_truck_id') and not vals.get('company_truck_id'):
-                vals['company_truck_id'] = self._context.get('default_company_truck_id')
-                _logger.info(f"Set company_truck_id to {vals['company_truck_id']}")
-        # --- end of your existing logic ---
-
+        """Override create to handle giaomu for new records"""
         records = super().create(vals_list)
+        # Process each record individually to avoid affecting other records
         for rec in records:
             if rec.to_id and rec.to_id.id != 81:
                 rec.giaomu()
         return records
         
     def write(self, vals):
-        protected_fields = {'daily_id', 'daily_ban', 'product_id', 'soluong', 'do'}
-        for rec in self:
-            # Prevent editing protected fields if state is 'nhan' or 'order'
+        # If no actual field changes are being made, skip validation
+        if not vals:
+            return super().write(vals)
+            
+        # Skip validation for new records (records without real IDs)
+        existing_records = self.filtered(lambda r: r.id and not isinstance(r.id, type(self.env['rubber.deliver'].new()._origin.id)))
+        
+        for rec in existing_records:
+            # Only validate if this record is actually being modified with protected fields
+            protected_fields = {'daily_id', 'daily_ban', 'product_id', 'soluong', 'do'}
+            
+            # Check if any protected field is actually being changed for this specific record
+            fields_being_changed = []
+            for field in protected_fields:
+                if field in vals:
+                    current_value = getattr(rec, field)
+                    new_value = vals[field]
+                    # For Many2one fields, compare IDs
+                    if hasattr(current_value, 'id'):
+                        current_value = current_value.id
+                    if current_value != new_value:
+                        fields_being_changed.append(field)
+            
+            # Skip validation if no protected fields are actually being changed for this record
+            if not fields_being_changed:
+                continue
+                
             if rec.state == 'order':
                 if any(field in vals for field in protected_fields):
                     raise UserError(_(
@@ -162,12 +160,11 @@ class RubberDeliver(models.Model):
                 current_user_id = self.env.user.id
                 admin_group = self.env.ref('caosu.group_rubber_deliver_admin')
                 is_admin = admin_group in self.env.user.groups_id
-                for rec in self:
-                    if any(field in vals for field in creator_only_fields):
-                        if rec.create_uid.id != current_user_id or not is_admin:
-                            raise UserError(_(
-                                "Bạn không có quyền chỉnh sửa các trường này. Chỉ người tạo lệnh và admin mới có thể chỉnh sửa các trường này."
-                            ))            
+                if any(field in vals for field in creator_only_fields):
+                    if rec.create_uid.id != current_user_id and not is_admin:
+                        raise UserError(_(
+                            "Bạn không có quyền chỉnh sửa các trường này. Chỉ người tạo lệnh và admin mới có thể chỉnh sửa các trường này."
+                        ))            
         res = super().write(vals)
         return res
 
@@ -229,6 +226,11 @@ class RubberDeliver(models.Model):
     def _compute_do_lythuyet(self):
         for rec in self:
             do_lythuyet = 0
+            # Skip computation for new records without ID
+            if not rec.id or isinstance(rec.id, type(self.env['rubber.deliver'].new()._origin.id)):
+                rec.do_lythuyet = do_lythuyet
+                continue
+                
             # Find all previous rubber.deliver records matching the criteria and created before this record
             domain = [
             ('ngay', '=', rec.ngay),
