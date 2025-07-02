@@ -154,47 +154,8 @@
                 .o_field_one2many .o_list_table td:last-child {
                     min-width: var(--col-button-width) !important;
                     width: var(--col-button-width) !important;
-                }
+                }                
                 
-                /* Fallback: nth-child selectors for when data-name attributes aren't available */
-                /* This ensures consistency even if field attributes are missing */
-                
-                /* Standard deliver line structure in nhapsanluong: daily_id, product_id, soluong, do, buttons, state */
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table th:nth-child(1),
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table td:nth-child(1) {
-                    min-width: var(--col-daily-width) !important;
-                    width: var(--col-daily-width) !important;
-                }
-                
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table th:nth-child(2),
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table td:nth-child(2) {
-                    min-width: var(--col-product-width) !important;
-                    width: var(--col-product-width) !important;
-                }
-                
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table th:nth-child(3),
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table td:nth-child(3) {
-                    min-width: var(--col-soluong-width) !important;
-                    width: var(--col-soluong-width) !important;
-                }
-                
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table th:nth-child(4),
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table td:nth-child(4) {
-                    min-width: var(--col-do-width) !important;
-                    width: var(--col-do-width) !important;
-                }
-                
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table th:nth-child(5),
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table td:nth-child(5) {
-                    min-width: var(--col-button-width) !important;
-                    width: var(--col-button-width) !important;
-                }
-                
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table th:nth-child(6),
-                .o_field_one2many[name*="deliver_line_ids"] .o_list_table td:nth-child(6) {
-                    min-width: var(--col-status-width) !important;
-                    width: var(--col-status-width) !important;
-                }
                 
                 /* Ensure the table header text is always visible */
                 .o_field_one2many .o_list_table th {
@@ -284,16 +245,16 @@
                     text-decoration: none !important;
                     font-weight: bold !important;
                     font-size: 14px !important;
-                    margin: 10px 0 !important;
+                    margin: 20px 0 !important;
                     border: none !important;
                     cursor: pointer !important;
                     transition: all 0.3s ease !important;
-                    min-height: 44px !important; /* Touch-friendly size */
+                    min-height: 40px !important; /* Touch-friendly size */
                     display: flex !important;
                     align-items: center !important;
                     justify-content: center !important;
                     width: auto !important;
-                    min-width: 150px !important;
+                    min-width: 100px !important;
                 }
                 
                 .o_field_one2many[name="deliver_line_ids"] .o_field_x2many_list_row_add a:hover {
@@ -331,9 +292,9 @@
                 }
                 
                 .o_field_one2many[name="deliver_line_ids"] .o_field_x2many_list_row_add a::after {
-                    content: "Thêm dòng";
+                    content: "Thêm lệnh giao mũ";
                     position: absolute;
-                    left: 20px;
+                    left: 10px;
                     right: 0;
                     top: 0;
                     bottom: 0;
