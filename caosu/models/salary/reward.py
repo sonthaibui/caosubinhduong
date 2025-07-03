@@ -52,20 +52,20 @@ class Reward(models.Model):
     dongthem = fields.Float('Đóng thêm', digits='Product Price')
     chiquy_pl = fields.Float('Chi quỹ PL', digits='Product Price')
     chothem = fields.Float('Cho thêm', digits='Product Price')
-    #conlai = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai')
-    qk_drc_thang = fields.Float('Quy khô', compute='_compute_quykho', digits='Product Price')
+    #conlai = fields.Float('Còn lại', digits='Product Price', compute='_compute_conlai')    
     dixa = fields.Float('Đi xa', default=2, digits='One Decimal')
     tongdiem = fields.Float('Tổng điểm', compute='_compute_tongdiem', digits='One Decimal')
     tongdiem_tl = fields.Float('Lũy kế', compute='_compute_tongdiem_tl', digits='One Decimal')
-
-    quykho_drc_target = fields.Float('Kế hoạch', digits='Product Price')
-
+    
     # New fields
-    qk_thang_lk = fields.Float('lũy kế', compute='_compute_qk_luyke',  digits='Product Price')
-    qk_target_lk = fields.Float('kế hoạch', compute='_compute_qk_luyke',  digits='Product Price')
-    tyle_kehoach = fields.Float('(% Đạt)', compute='_compute_tyle_kehoach')
-    gia_thuong = fields.Float('Giá thưởng', compute='_compute_gia_thuong', digits='Product Price')
+    qk_drc_thang = fields.Float('Quy khô', compute='_compute_quykho', digits='Product Price')
+    quykho_drc_target = fields.Float('Kế hoạch', compute='_compute_quykho_drc_target', digits='Product Price')
+    qk_thang_lk = fields.Float('QK lũy kế', compute='_compute_thuonglk',  digits='Product Price')
+    qk_target_lk = fields.Float('QK kế hoạch', compute='_compute_thuonglk',  digits='Product Price')
+    tyle_kehoach = fields.Float('(% Đạt)', compute='_compute_thuonglk')
+    gia_thuong = fields.Float('Giá thưởng', compute='_computethuonglk', digits='Product Price')
 
+    
     @api.depends('employee_id', 'thang', 'nam', 'to', 'rubbersalary_id','rubbersalary_id.thang')
     def _compute_quykho(self):            
         for rec in self:
@@ -83,8 +83,53 @@ class Reward(models.Model):
             # cộng dồn qk_drc
             rec.qk_drc_thang = sum(r.quykho_drc for r in prior_recs)
     
+    @api.depends('thang', 'namkt', 'rewardbymonth_id.to', 'rubbersalary_id.employee_id')
+    def _compute_quykho_drc_target(self):
+        for rec in self:
+            rec.quykho_drc_target = 0.0
+            if not (rec.thang and rec.namkt and rec.rewardbymonth_id.to and rec.rubbersalary_id.employee_id):
+                continue
+                       
+            # Convert month: 01->13, 02->14, 03->3, 04->4, etc.
+            month_int = int(rec.thang)
+            if month_int == 1:
+                target_month = 13
+            elif month_int == 2:
+                target_month = 14
+            else:
+                target_month = month_int
+            
+            # Look up YieldTarget model
+            # Find all plantations for the employee
+            plantations = self.env['plantation'].search([
+                ('employee_id', '=', rec.rubbersalary_id.employee_id.id)
+            ])
+            if not plantations:
+                continue
+
+            total_target = 0.0
+            month_field = f'quykho_drc_target_t{target_month}'
+            for plantation in plantations:
+                yield_target = self.env['yield.target'].search([
+                    ('department_id', '=', rec.rewardbymonth_id.to.id),
+                    ('namkt', '=', rec.namkt),
+                    ('plantation_id', '=', plantation.id)
+                ], limit=1)
+                if yield_target and hasattr(yield_target, month_field):
+                    total_target += getattr(yield_target, month_field, 0.0)
+            rec.quykho_drc_target = total_target
+            
+                    
+            '''# Raise UserError to debug values
+            raise UserError(f"DEBUG VALUES:\n"
+                            f"Plantation Name: {plantation.name}\n"
+                            f"Yield Target: {yield_target}\n"
+                            f"Target Month: {target_month}\n"
+                            f"Month Field: {month_field}\n"
+                            f"Quykho DRC Target: {rec.quykho_drc_target}")'''
+            
     @api.depends('qk_drc_thang', 'quykho_drc_target', 'thang', 'namkt', 'rewardbymonth_id.to', 'employee_id')
-    def _compute_qk_luyke(self):
+    def _compute_thuonglk(self):
         for rec in self:
             rec.qk_thang_lk = 0.0
             rec.qk_target_lk = 0.0
@@ -103,23 +148,7 @@ class Reward(models.Model):
             rec.qk_thang_lk = sum(r.qk_drc_thang for r in previous_rewards)
             rec.qk_target_lk = sum(r.quykho_drc_target for r in previous_rewards)
 
-    @api.depends('qk_thang_lk', 'qk_target_lk')
-    def _compute_tyle_kehoach(self):
-        for rec in self:
-            if rec.qk_target_lk > 0:
-                result = (rec.qk_thang_lk / rec.qk_target_lk)
-                print(f"DEBUG - Employee: {rec.employee_id.name}")
-                print(f"  qk_thang_lk: {rec.qk_thang_lk}")
-                print(f"  qk_target_lk: {rec.qk_target_lk}")
-                print(f"  Division result: {result}")
-                print(f"  Type: {type(result)}")
-                rec.tyle_kehoach = result
-                print(f"  Final tyle_kehoach: {rec.tyle_kehoach}")
-            else:
-                rec.tyle_kehoach = 0.0
-    @api.depends('tyle_kehoach')
-    def _compute_gia_thuong(self):
-        for rec in self:
+            rec.tyle_kehoach = (rec.qk_drc_thang / rec.quykho_drc_target) if rec.quykho_drc_target > 0 else 0
             if rec.tyle_kehoach >= 1.2:
                 rec.gia_thuong = 2000
             elif rec.tyle_kehoach >= 1.1:
@@ -133,7 +162,7 @@ class Reward(models.Model):
             elif rec.tyle_kehoach >= 0.7:
                 rec.gia_thuong = 200
             else:
-                rec.gia_thuong = 0
+                rec.gia_thuong = 0 
                 
     @api.depends('chuyencan', 'tinhkythuat1', 'tanthumu', 'tichcuc', 'dixa')
     def _compute_tongdiem(self):
@@ -224,30 +253,4 @@ class Reward(models.Model):
             rec.phucloitl = phucloitl      
             
 
-    '''@api.depends('diemkythuat1','diemkythuat2','to')
-    def _compute_kythuat(self):
-        for rec in self:            
-            if rec.rewardbymonth_id.to.name == "TỔ 106":                
-                if rec.diemkythuat1=='Giỏi':
-                    rec.tinhkythuat1=400000
-                elif rec.diemkythuat1 == 'Khá':
-                    rec.tinhkythuat1=200000
-                else:
-                    rec.tinhkythuat1=0
-                if rec.diemkythuat2=='Giỏi':
-                    rec.tinhkythuat2=400000
-                elif rec.diemkythuat2 == 'Khá':
-                    rec.tinhkythuat2=200000
-                else:
-                    rec.tinhkythuat2=0
-            else: 
-                if rec.diemkythuat1 == 'Đạt':
-                    rec.tinhkythuat1=150000            
-                else:
-                    rec.tinhkythuat1=0
-                if rec.diemkythuat2 == 'Đạt':
-                    rec.tinhkythuat2=150000            
-                else:
-                    rec.tinhkythuat2=0'''
-
-
+    

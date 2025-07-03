@@ -177,7 +177,7 @@
               </div>
               <div style="height: 40px;"></div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-5">
                   <table width="100%">
                   <tr>
                     <td width="50%">Số phần</td>
@@ -185,7 +185,7 @@
                   </tr>
                   <tr>
                     <td>Quy khô 1 phần</td>
-                    <td style="text-align: right;"><span t-esc="o.quykho1"/></td>
+                    <td style="text-align: right;"><span t-esc="'%.1f' % o.quykho1"/></td>
                   </tr>
                   <tr>
                     <td>Số ngày vắng</td>
@@ -369,7 +369,7 @@
                   </tr>                  
                   </table>
                 </div>
-                <div class="col-6">
+                <div class="col-7">
                   <table width="100%" style="font-size: 13px;">
                     <thead>
                       <tr>
@@ -377,12 +377,12 @@
                       </tr>
                       <tr><th colspan="7" style="height: 15px;"></th></tr>
                       <tr>
-                        <th style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">Tháng</th>
-                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">Tổng điểm</th>
-                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">Quy khô</th>
-                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">Kế hoạch</th>
-                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">% Đạt</th>
-                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">Giá thưởng</th>
+                        <th style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">THÁNG</th>
+                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">ĐIỂM</th>                        
+                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">QUYKHÔ</th>
+                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">KẾHOẠCH</th>
+                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">% ĐẠT</th>
+                        <th style="border: 0.5px solid black; text-align: right; padding-right: 10px; font-weight: bold; padding: 2px;">GIÁ THƯỞNG</th>
                         <!--<th style="border: 0.5px solid black; text-align: right; padding-right: 5px; font-weight: bold; padding: 2px;">Phúc lợi</th>-->
                       </tr>
                     </thead>
@@ -391,9 +391,9 @@
                         <tr>
                           <td style="border: 0.5px solid black; text-align: center; font-weight: normal; padding: 2px;">
                             <span t-field="line.thang"/>
-                          </td>
+                          </td>                          
                           <td style="border: 0.5px solid black; text-align: center; font-weight: normal; padding: 2px;">
-                            <span t-if="line.tongdiem != 0" t-field="line.tongdiem"/><span t-if="line.tongdiem == 0">-</span>
+                            <span t-if="line.tongdiem != 0" t-esc="'%.1f' % line.tongdiem"/><span t-if="line.tongdiem == 0">-</span>
                           </td>
                           <td style="border: 0.5px solid black; text-align: center; font-weight: normal; padding: 2px;">
                             <span t-if="line.qk_drc_thang != 0" t-field="line.qk_drc_thang"/><span t-if="line.qk_drc_thang == 0">-</span>
@@ -417,9 +417,9 @@
                       </t>
                       <!-- Sum Row -->
                       <tr>
-                        <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">Tổng cộng</td>
+                        <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">LŨY KẾ</td>                        
                         <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">
-                          <span t-if="o.tongdiem != 0" t-field="o.tongdiem"/><span t-if="o.tongdiem == 0">-</span>
+                          <span t-if="o.tongdiem != 0" t-esc="'%.1f' % o.tongdiem"/><span t-if="o.tongdiem == 0">-</span>
                         </td>
                         <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">
                           <span t-if="o.quykho_drc_thang != 0" t-field="o.quykho_drc_thang"/><span t-if="o.quykho_drc_thang == 0">-</span>
@@ -428,10 +428,11 @@
                           <span t-if="o.quykho_drc_target != 0" t-field="o.quykho_drc_target"/><span t-if="o.quykho_drc_target == 0">-</span>
                         </td>
                         <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">
-                          <span t-if="o.tyle_kehoach != 0" t-esc="str(int(round(line.tyle_kehoach*100,0))) + '%'"/><span t-if="o.tyle_kehoach == 0">-</span>
+                          <span t-if="o.tyle_kehoach != 0" t-esc="str(int(round(o.tyle_kehoach*100,0))) + '%'"/><span t-if="o.tyle_kehoach == 0">-</span>
                         </td>
-                        <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;"></td>
-                        <!--<td style="border: 0.5px solid black; text-align: right; padding-right: 5px; font-weight: bold; padding: 2px;"></td>-->
+                        <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">
+                          <span t-if="o.gia_thuong != 0" t-esc="'%.1f' % o.gia_thuong"/><span t-if="o.gia_thuong == 0">-</span>
+                        </td>
                       </tr>                      
                     </tbody>                    
                   </table>                  
