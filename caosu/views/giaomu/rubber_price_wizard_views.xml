@@ -24,15 +24,16 @@
                     <notebook>
                         <page string="Giá mủ">
                             <field name="price_line_ids">
-                                <tree editable="bottom">
+                                <tree editable="bottom" default_order="price_type_id, daily_id, ngay_hieuluc">
+                                    <field name="select"/>
+                                    <field name="price_id"/>
                                     <field name="price_type_id"/>
-                                    <field name="old_price" readonly="1"/>
-                                    <field name="new_price"/>
-                                    <field name="daily_ids" widget="many2many_tags"/>
-                                    <field name="to_ids" widget="many2many_tags"/>
+                                    <field name="old_price" readonly="1"/> 
+                                    <field name="new_price" />                                   
+                                    <field name="daily_id"/>
+                                    <field name="to_id"/>
                                     <field name="ngay_hieuluc"/>
-                                    <field name="macdinh"/>
-                                    <button name="action_delete_line" type="object" string="Xóa giá"  icon="fa-trash" />                                  
+                                    <field name="macdinh"/>                                                                     
                                 </tree>                                
                             </field>
                         </page>
@@ -40,8 +41,9 @@
                 </sheet>
                 <footer>                    
                     <button name="save_prices" string="Lưu giá" type="object" class="btn-primary"/>
+                    <button name="delete_selected_prices" string="Xóa giá đã chọn" type="object" class="btn-danger"/>
                     <button string="Hủy" class="btn-secondary" special="cancel"/>
-                    <button name="action_load_lines" type="object" string="Load Lines" class="oe_highlight"/>
+                    
                 </footer>
             </form>
         </field>
@@ -62,8 +64,8 @@
         <field name="arch" type="xml">
             <tree string="Wizard Line">
                 <field name="ngay_hieuluc"/>
-                <field name="to_ids" />
-                <field name="daily_ids" />
+                <field name="to_id" />
+                <field name="daily_id" />
                 <field name="price_type_id" />
                 <field name="old_price" />
                 <field name="new_price" />
@@ -82,8 +84,8 @@
                         <field name="price_type_id" />
                         <field name="old_price" />
                         <field name="new_price" />
-                        <field name="daily_ids" widget="many2many_tags" />
-                        <field name="to_ids" widget="many2many_tags" />
+                        <field name="daily_id" widget="many2many_tags" />
+                        <field name="to_id" widget="many2many_tags" />
                         <field name="ngay_hieuluc"/>
                         <field name="macdinh" />
                     </group>
@@ -99,8 +101,8 @@
         <field name="arch" type="xml">
             <search>
                 <field name="ngay_hieuluc" filter_domain="[]" string="Effective Date"/>
-                <field name="to_ids"/>
-                <field name="daily_ids"/>
+                <field name="to_id"/>
+                <field name="daily_id"/>
                 <field name="price_type_id"/>
                 <group expand="0" string="Group By">
                     <filter name="group_ngay_hieuluc_year" string="Year" context="{'group_by':'ngay_hieuluc:year'}"/>

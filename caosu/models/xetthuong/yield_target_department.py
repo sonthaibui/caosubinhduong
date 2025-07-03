@@ -111,7 +111,7 @@ class YieldTarget(models.Model):
                     record.quykho_drc_target_t13 = record.quykho_drc_target * distribution.t13
                     record.quykho_drc_target_t14 = record.quykho_drc_target * distribution.t14
 
-        # Check if any quykho_drc_target_t* fields are updated
+        '''# Check if any quykho_drc_target_t* fields are updated
         if any(f'quykho_drc_target_t{i}' in vals for i in range(1, 15)):
             # Find related rewards and update their quykho_drc_target field
             rewards = self.env['reward'].search([('employee_id', 'in', self.mapped('plantation_id.employee_id.id'))])
@@ -124,7 +124,7 @@ class YieldTarget(models.Model):
                     thang_num = int(reward.thang)
                     field_name = f'quykho_drc_target_t{thang_num}'
                     total += getattr(target, field_name, 0.0)
-                reward.quykho_drc_target = total
+                reward.quykho_drc_target = total'''
         return res
 class YieldDistribution(models.Model):
     _name = "yield.distribution"

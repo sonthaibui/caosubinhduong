@@ -63,7 +63,7 @@ class RubberSalary(models.Model):
     thuongsl = fields.Float('Thưởng sản lượng', compute='_compute_phucap', digits='Product Price')
     ngaylam = fields.Char('Ngày vắng', compute='_compute_phucap')
     phucap = fields.Float('Phụ cấp', compute='_compute_phucap', digits='Product Price')
-    quykho1 = fields.Float('Quy khô tương đương 1 phần', compute='_compute_phucap', digits='One Decimal')
+    quykho1 = fields.Float('Quy khô 1 phần', compute='_compute_phucap', digits='One Decimal')
     sophan = fields.Float('Số phần', default='1.0', compute='_compute_phucap', digits='One Decimal')
     caochoang = fields.Float('Cạo choàng', compute='_compute_phucap', digits='Product Price')
     duongxau = fields.Float('Đường xấu', compute='_compute_phucap', digits='Product Price')
@@ -111,7 +111,9 @@ class RubberSalary(models.Model):
     tongdiem = fields.Float('Tổng điểm', digits='Product Price', compute='_compute_reward_totals')
     quykho_drc_thang = fields.Float('Kế hoạch', digits='Product Price', compute='_compute_reward_totals')
     quykho_drc_target = fields.Float('Kế hoạch', digits='Product Price', compute='_compute_reward_totals')
-    tyle_kehoach = fields.Float('(%) Đạt', compute='_compute_tyle_kehoach', digits='Product Price')
+    tyle_kehoach = fields.Float('(%) Đạt', compute='_compute_reward_totals', digits=(16, 4))
+    gia_thuong = fields.Float('Giá thưởng', compute='_compute_reward_totals')
+    ghichu_reward = fields.Char('Ghi chú thưởng', compute='_compute_reward_totals')
 
     @api.constrains('employee_id','thang','nam')
     def _check_rubbersalary_unique(self):
@@ -176,7 +178,7 @@ class RubberSalary(models.Model):
                 rec.ngaylam = als[0].ngaylam
                 rec.phucap = als[0].phucap
                 rec.sophan = als[0].sophan
-                rec.quykho1 = als[0].quykho_drc
+                rec.quykho1 = als[0].quykho_drc/rec.sophan if rec.sophan > 0 else 0
                 rec.caochoang = als[0].caochoang
                 rec.duongxau = als[0].duongxau
                 rec.tienvattu = als[0].tienvattu
@@ -297,7 +299,7 @@ class RubberSalary(models.Model):
         for rec in self:
             total_quykho_drc_thang = 0.0
             total_quykho_drc_target = 0.0
-            total_tongdiem = 0.0
+            total_tongdiem = 0.0            
             
             # Compute totals from reward_line_ids
             for line in rec.reward_line_ids:
@@ -308,14 +310,26 @@ class RubberSalary(models.Model):
             rec.tongdiem = total_tongdiem
             rec.quykho_drc_thang = total_quykho_drc_thang
             rec.quykho_drc_target = total_quykho_drc_target
-
-    @api.depends('quykho_drc_thang', 'quykho_drc_target')
-    def _compute_tyle_kehoach(self):
-        for rec in self:
             if rec.quykho_drc_target > 0:
                 rec.tyle_kehoach = (rec.quykho_drc_thang / rec.quykho_drc_target)
             else:
-                rec.tyle_kehoach = 0.0
+                rec.tyle_kehoach = 0.0    
+            if rec.tyle_kehoach >= 1.2:
+                rec.gia_thuong = 2000
+            elif rec.tyle_kehoach >= 1.1:
+                rec.gia_thuong = 1500
+            elif rec.tyle_kehoach >= 1.0:
+                rec.gia_thuong = 1000                
+            elif rec.tyle_kehoach >= 0.9:
+                rec.gia_thuong = 700
+            elif rec.tyle_kehoach >= 0.8:
+                rec.gia_thuong = 500
+            elif rec.tyle_kehoach >= 0.7:
+                rec.gia_thuong = 200
+            else:
+                rec.gia_thuong = 0           
+            #percentage = round(rec.tyle_kehoach * 100, 1)
+            #rec.ghichu_reward = f"{percentage}%{rec.quykho_drc_thang}/{rec.quykho_drc_target} - {rec.gia_thuong}đ"
 
     @api.depends('rubber_line_ids')
     def _compute_thuong(self):
