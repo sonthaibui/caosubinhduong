@@ -218,7 +218,7 @@ class Allowance(models.Model):
             if rec.sophan > 0:
                 rec.quykho = quykho / rec.sophan
                 rec.quykho_nam = quykho_nam / rec.sophan
-    @api.depends('employee_id', 'sophan')
+    @api.depends('employee_id')
     def _compute_quykho_drc(self):
         for rec in self:
             rbs = self.env['rubber'].search([('empname','=',rec.employee_id.name)])
@@ -226,8 +226,7 @@ class Allowance(models.Model):
             for rb in rbs:
                 if rb.nam == rec.nam and rb.thang == rec.thang and rb.to == rec.allowancebymonth_id.department_id.name:
                     quykho_drc += rb.quykho_drc                
-            if rec.sophan > 0:
-                rec.quykho_drc = quykho_drc / rec.sophan
+            rec.quykho_drc = quykho_drc
                 
 
     @api.depends('ngay_bd')

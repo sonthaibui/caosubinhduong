@@ -416,12 +416,12 @@
                         </tr>
                       </t>
                       <!-- Sum Row -->
-                      <tr>
+                        <tr>
                         <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">LŨY KẾ</td>                        
                         <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">
                           <span t-if="o.tongdiem != 0" t-esc="'%.1f' % o.tongdiem"/><span t-if="o.tongdiem == 0">-</span>
                         </td>
-                        <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">
+                        <td style="border: 0.5px solid black;  text-align: center; font-weight: bold; padding: 2px;">
                           <span t-if="o.quykho_drc_thang != 0" t-field="o.quykho_drc_thang"/><span t-if="o.quykho_drc_thang == 0">-</span>
                         </td>
                         <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">
@@ -431,9 +431,9 @@
                           <span t-if="o.tyle_kehoach != 0" t-esc="str(int(round(o.tyle_kehoach*100,0))) + '%'"/><span t-if="o.tyle_kehoach == 0">-</span>
                         </td>
                         <td style="border: 0.5px solid black; text-align: center; font-weight: bold; padding: 2px;">
-                          <span t-if="o.gia_thuong != 0" t-esc="'%.1f' % o.gia_thuong"/><span t-if="o.gia_thuong == 0">-</span>
+                          <span t-if="o.gia_thuong != 0" t-esc="'{:,}'.format(int(o.gia_thuong)).replace(',', '.')"/><span t-if="o.gia_thuong == 0">-</span>
                         </td>
-                      </tr>                      
+                        </tr>                      
                     </tbody>                    
                   </table>                  
                 </div>               
