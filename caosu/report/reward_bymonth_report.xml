@@ -46,7 +46,7 @@
                       <th style="border-right-style: solid;">Đi xa</th>
                       <th style="border-right-style: solid;">Tổng điểm</th>
                       <th style="border-right-style: solid;">Tổng điểm TL</th>
-                      <th style="border-right-style: solid;">Quy khô LK</th>
+                      <th style="border-right-style: solid;">Quy khô</th>
                       <th style="border-right-style: solid;">Kế hoạch</th>
                       <th style="border-right-style: solid;">% Đạt</th>
                       <th style="border-right-style: solid;">Giá thưởng</th>
@@ -84,19 +84,19 @@
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
                         <span t-esc="line.dixa" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
-                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid; font-weight: bold;">
                         <span t-esc="line.tongdiem" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
-                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid; font-weight: bold;">
                         <span t-esc="line.tongdiem_tl" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
-                        <span t-esc="line.qk_thang_lk" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-esc="line.qk_drc_thang" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
-                        <span t-esc="line.qk_target_lk" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-esc="line.qk_drc_target" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
-                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
+                      <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid; font-weight: bold;">
                         <span t-esc="str(int(round(line.tyle_kehoach*100,0))) + '%'"/>
                       </td>
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
