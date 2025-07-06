@@ -94,7 +94,7 @@
                         <span t-esc="line.qk_drc_thang" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid;">
-                        <span t-esc="line.qk_drc_target" t-options='{"widget": "float", "precision": 0}'/>
+                        <span t-esc="line.quykho_drc_target" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
                       <td style="padding-top: 5px; padding-bottom: 5px; padding-left: 2px; padding-right: 2px; border-right-style: solid; font-weight: bold;">
                         <span t-esc="str(int(round(line.tyle_kehoach*100,0))) + '%'"/>
