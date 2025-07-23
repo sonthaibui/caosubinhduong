@@ -128,13 +128,16 @@ class CompanyTruck(models.Model):
             lines = truck.deliver_line_ids.filtered(
                 lambda l: l.ngay == truck.ngaygiao and
                           (l.soluong != 0 or l.soluongtt != 0) and
-                          l.state in ['chua','giao', 'mua', 'nhan', 'order']
+                          l.state in ['chua','giao', 'mua', 'nhan', 'order'] and
+                          l.product_id  # Only include lines that have a product_id set
             )
+            
             # Lọc theo đại lý "Xe nhà" và tổ "TỔ Xe tải"
             lines = lines.filtered(
-                lambda l: (l.daily_id.name == 'Xe nhà') or 
+                lambda l: (l.daily_id and l.daily_id.name == 'Xe nhà') or 
                           (l.to_id == truck.to_id)  # Sửa: Lọc theo to_id
             )
+            
             # Lọc theo product_id nếu được thiết lập
             if truck.active_product_id:
                 lines = lines.filtered(lambda l: l.product_id == truck.active_product_id)
@@ -147,31 +150,71 @@ class CompanyTruck(models.Model):
     def _inverse_filtered_deliver_line_ids(self):
         """Inverse method to handle creation/modification/deletion of filtered_deliver_line_ids"""
         for truck in self:
-            # Get the current records in the computed field
-            current_records = truck.filtered_deliver_line_ids
-            
-            # Get all existing rubber.deliver records that should be in this filtered view
-            existing_records = truck.deliver_line_ids.filtered(
-                lambda l: l.state in ['giao', 'mua', 'nhan', 'order'] and l.ngay == truck.ngaygiao and l.to_id.id == 81
-            )
-            
-            # Get IDs of current records (what should exist after save)
-            current_ids = set(record.id for record in current_records if record.id)
-            
-            # Get IDs of existing records (what currently exists in database)
-            existing_ids = set(existing_records.ids)
-            
-            # Find records to delete (exist in database but not in current view)
-            records_to_delete = existing_ids - current_ids
-            if records_to_delete:
-                self.env['rubber.deliver'].browse(list(records_to_delete)).unlink()
-            
-            # Set default to_id for truck operations to 81
-            default_to_id = 81
-            
-            for record in current_records:
-                # If this is a new record (no ID yet) or needs to be synced
-                if not record.id or record.company_truck_id != truck.id:
+            # Skip if we're in a compute context to avoid recursive calls
+            if self.env.context.get('skip_inverse'):
+                return
+                
+            try:
+                # Get the current records in the computed field
+                current_records = truck.filtered_deliver_line_ids
+                
+                # Get all existing rubber.deliver records that should be in this filtered view
+                # Use the SAME filtering logic as in _compute_filtered_deliver_line_ids
+                existing_records = truck.deliver_line_ids.filtered(
+                    lambda l: l.ngay == truck.ngaygiao and
+                              (l.soluong != 0 or l.soluongtt != 0) and
+                              l.state in ['chua','giao', 'mua', 'nhan', 'order'] and
+                              l.product_id and
+                              ((l.daily_id and l.daily_id.name == 'Xe nhà') or (l.to_id == truck.to_id))
+                )
+                
+                # Apply active_product_id filter if set (same as compute method)
+                if truck.active_product_id:
+                    existing_records = existing_records.filtered(lambda l: l.product_id == truck.active_product_id)
+                
+                # Get IDs of current records that already exist in the database
+                current_ids = set(record.id for record in current_records if record.id)
+                
+                # Get IDs of existing records (what currently exists in database)
+                existing_ids = set(existing_records.ids)
+                
+                # Find records to delete (exist in database but not in current view)
+                records_to_delete = existing_ids - current_ids
+                
+                # Be very conservative about deletions to prevent intermittent data loss
+                # Only delete if we are absolutely certain:
+                # 1. No new unsaved records exist
+                # 2. The number of current records is clearly less than existing records
+                # 3. We have a significant difference (not just 1 record difference which could be timing)
+                has_new_records = any(not record.id for record in current_records)
+                record_count_difference = len(existing_records) - len(current_records)
+                
+                # Only proceed with deletion under very safe conditions
+                if (records_to_delete and 
+                    not has_new_records and 
+                    record_count_difference > 0 and
+                    len(current_records) > 0):  # Ensure we're not deleting everything accidentally
+                    
+                    # Log intermittent deletion for debugging
+                    _logger.warning(f"SAFE DELETION for truck {truck.id}: deleting {len(records_to_delete)} records. Current: {len(current_records)}, Existing: {len(existing_records)}")
+                    
+                    # Additional safety: only delete up to the count difference
+                    max_safe_deletions = min(len(records_to_delete), record_count_difference)
+                    if max_safe_deletions > 0:
+                        records_to_delete_list = list(records_to_delete)[:max_safe_deletions]
+                        self.env['rubber.deliver'].browse(records_to_delete_list).unlink()
+                elif records_to_delete:
+                    # Log when we skip deletion due to safety checks
+                    _logger.info(f"SKIPPING DELETION for truck {truck.id}: has_new_records={has_new_records}, count_diff={record_count_difference}, records_to_delete={len(records_to_delete)}")
+                
+                # Set default to_id to the truck's to_id (typically 81 for TỔ Xe tải)
+                default_to_id = truck.to_id.id if truck.to_id else 81
+                
+                for record in current_records:
+                    # Skip if this is an existing record that doesn't need syncing
+                    if record.id and record.company_truck_id == truck.id:
+                        continue
+                    
                     # Find or create rubber.date record (following mua_mu pattern)
                     target_date = record.ngay or truck.ngaygiao
                     target_to_id = record.to_id.id if record.to_id else default_to_id
@@ -187,12 +230,27 @@ class CompanyTruck(models.Model):
                             'to': target_to_id,
                         })
                     
-                    # Create or update the actual rubber.deliver record
+                    # Ensure product_id is always set - get from record, truck active_product, or default
+                    product_id = False
+                    if record.product_id:
+                        product_id = record.product_id.id
+                    elif truck.active_product_id:
+                        product_id = truck.active_product_id.id
+                    else:
+                        # Find a default product (mũ nước) if no product is set
+                        default_product = self.env['product.product'].search([('default_code', '=', 'munuoc')], limit=1)
+                        if default_product:
+                            product_id = default_product.id
+                    
+                    # Validate that we have a product_id before creating
+                    if not product_id:
+                        raise UserError(_("Không thể tạo bản ghi mới: Trường sản phẩm là bắt buộc. Vui lòng chọn sản phẩm trước khi thêm dòng mới."))
+                    
                     vals = {
                         'company_truck_id': truck.id,
                         'rubberbydate_id': rubber_date.id,
-                        'soluongtt': record.soluongtt,
-                        'product_id': record.product_id.id if record.product_id else truck.active_product_id.id if truck.active_product_id else False,
+                        'soluongtt': record.soluongtt or 0,
+                        'product_id': product_id,
                         'daily_id': record.daily_id.id if record.daily_id else False,
                         'dott': record.dott or 0,
                         'quykho': record.quykho or 0,
@@ -201,7 +259,6 @@ class CompanyTruck(models.Model):
                     # Only set state for new records, preserve existing state for updates
                     if not record.id:
                         vals['state'] = 'mua'  # New records default to 'mua'
-                    # For existing records, don't change the state unless explicitly needed
                     
                     if record.id:
                         # Update existing record
@@ -209,6 +266,10 @@ class CompanyTruck(models.Model):
                     else:
                         # Create new record
                         self.env['rubber.deliver'].create(vals)
+                        
+            except Exception as e:
+                _logger.error(f"Error in _inverse_filtered_deliver_line_ids for truck {truck.id}: {e}")
+                raise UserError(_("Lỗi khi lưu dữ liệu: %s. Vui lòng kiểm tra lại thông tin và thử lại.") % str(e))
 
     # Phương thức tính toán cho filtered_tructiep_deliver_line_ids
     @api.depends('deliver_line_ids', 
@@ -576,27 +637,34 @@ class CompanyTruck(models.Model):
         """Action to add a new deliver line with proper defaults"""
         self.ensure_one()
         
-        _logger.info(f"action_add_deliver_line called for truck {self.id}")
+        # Ensure we have a product_id
+        product_id = False
+        if self.active_product_id:
+            product_id = self.active_product_id.id
+        else:
+            # Find a default product (mũ nước) if no active product is set
+            default_product = self.env['product.product'].search([('default_code', '=', 'munuoc')], limit=1)
+            if default_product:
+                product_id = default_product.id
+                # Also set the active_product_id for consistency
+                self.active_product_id = default_product.id
+        
+        # Validate that we have a product_id
+        if not product_id:
+            raise UserError(_("Không thể thêm dòng mới: Không tìm thấy sản phẩm. Vui lòng chọn sản phẩm trước hoặc tạo sản phẩm mũ nước."))
         
         # Create a new deliver line with proper defaults
         vals = {
             'company_truck_id': self.id,
             'ngay': self.ngaygiao,
             'state': 'mua',
-            'to_id': 81,  # TỔ Xe tải
+            'to_id': self.to_id.id if self.to_id else 81,  # Use truck's to_id or default to 81
             'soluong': 1,
+            'product_id': product_id,
         }
-        
-        # Add product_id if active_product_id is set
-        if self.active_product_id:
-            vals['product_id'] = self.active_product_id.id
-            
-        _logger.info(f"Creating deliver line with vals: {vals}")
         
         # Create the record
         new_line = self.env['rubber.deliver'].create(vals)
-        
-        _logger.info(f"Created deliver line: {new_line.id}")
         
         # Trigger recompute of filtered fields
         self._compute_filtered_deliver_line_ids()
@@ -630,4 +698,143 @@ class CompanyTruck(models.Model):
             'res_id': self.id,
             'view_mode': 'form',
             'target': 'current',
+            
         }
+    def action_create_sale_order(self):
+        """Create sale orders for selected order lines"""
+        self.ensure_one()
+        
+        # Collect all selected lines from the three order fields
+        selected_lines = self.env['rubber.deliver']
+        
+        # Check order_xenha_line_ids for selected lines
+        if hasattr(self, 'order_xenha_line_ids'):
+            selected_lines += self.order_xenha_line_ids.filtered('is_selected')
+        
+        # Check order_tructiep_line_ids for selected lines  
+        if hasattr(self, 'order_tructiep_line_ids'):
+            selected_lines += self.order_tructiep_line_ids.filtered('is_selected')
+        
+        # Check order_chomu_line_ids for selected lines
+        if hasattr(self, 'order_chomu_line_ids'):
+            selected_lines += self.order_chomu_line_ids.filtered('is_selected')
+        
+        if not selected_lines:
+            raise UserError(_("Vui lòng chọn ít nhất một dòng để tạo đơn hàng bán."))
+        
+        # Call the order() method for each selected line
+        created_orders = []
+        for line in selected_lines:
+            try:
+                result = line.order()  # Call the order method on rubber.deliver
+                if isinstance(result, dict) and result.get('res_id'):
+                    created_orders.append(result['res_id'])
+            except Exception as e:
+                _logger.warning(f"Failed to create order for line {line.id}: {e}")
+        
+        # Show success notification
+        if created_orders:
+            message = f"Đã tạo thành công {len(created_orders)} đơn hàng bán từ {len(selected_lines)} dòng đã chọn."
+            
+            # If only one order was created, open it directly
+            if len(created_orders) == 1:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'sale.order',  # Adjust model name if different
+                    'res_id': created_orders[0],
+                    'view_mode': 'form',
+                    'target': 'current',
+                    'context': {
+                        'return_to_truck': self.id,
+                        'active_tab': 'order'
+                    }
+                }
+            else:
+                # If multiple orders created, show list view
+                return {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'sale.order',  # Adjust model name if different
+                    'domain': [('id', 'in', created_orders)],
+                    'view_mode': 'tree,form',
+                    'target': 'current',
+                    'name': 'Đơn hàng bán đã tạo',
+                    'context': {
+                        'return_to_truck': self.id,
+                        'active_tab': 'order'
+                    }
+                }
+        else:
+            raise UserError(_("Không thể tạo đơn hàng bán. Vui lòng kiểm tra lại các dòng đã chọn."))
+    
+    def action_select_all_order_lines(self):
+        """Select all lines in the three order fields (excluding already ordered lines)"""
+        self.ensure_one()
+        
+        selected_count = 0
+        
+        # Select all lines in order_xenha_line_ids (except ordered ones)
+        if hasattr(self, 'order_xenha_line_ids'):
+            selectable_lines = self.order_xenha_line_ids.filtered(lambda x: x.state != 'order')
+            for line in selectable_lines:
+                if not line.is_selected:
+                    line.write({'is_selected': True})  # Use write instead of direct assignment
+                    selected_count += 1
+        
+        # Select all lines in order_tructiep_line_ids (except ordered ones)
+        if hasattr(self, 'order_tructiep_line_ids'):
+            selectable_lines = self.order_tructiep_line_ids.filtered(lambda x: x.state != 'order')
+            for line in selectable_lines:
+                if not line.is_selected:
+                    line.write({'is_selected': True})  # Use write instead of direct assignment
+                    selected_count += 1
+        
+        # Select all lines in order_chomu_line_ids (except ordered ones)
+        if hasattr(self, 'order_chomu_line_ids'):
+            selectable_lines = self.order_chomu_line_ids.filtered(lambda x: x.state != 'order')
+            for line in selectable_lines:
+                if not line.is_selected:
+                    line.write({'is_selected': True})  # Use write instead of direct assignment
+                    selected_count += 1
+        
+        # Force refresh of the computed fields
+        self._compute_order_xenha_line_ids()
+        self._compute_order_tructiep_line_ids()
+        self._compute_order_chomu_line_ids()
+        
+        # Just return True to stay on the same view/tab
+        return True
+
+    def action_deselect_all_order_lines(self):
+        """Deselect all lines in the three order fields"""
+        self.ensure_one()
+        
+        deselected_count = 0
+        
+        # Deselect all lines in order_xenha_line_ids
+        if hasattr(self, 'order_xenha_line_ids'):
+            for line in self.order_xenha_line_ids:
+                if line.is_selected:
+                    line.write({'is_selected': False})  # Use write instead of direct assignment
+                    deselected_count += 1
+        
+        # Deselect all lines in order_tructiep_line_ids
+        if hasattr(self, 'order_tructiep_line_ids'):
+            for line in self.order_tructiep_line_ids:
+                if line.is_selected:
+                    line.write({'is_selected': False})  # Use write instead of direct assignment
+                    deselected_count += 1
+        
+        # Deselect all lines in order_chomu_line_ids
+        if hasattr(self, 'order_chomu_line_ids'):
+            for line in self.order_chomu_line_ids:
+                if line.is_selected:
+                    line.write({'is_selected': False})  # Use write instead of direct assignment
+                    deselected_count += 1
+        
+        # Force refresh of the computed fields
+        self._compute_order_xenha_line_ids()
+        self._compute_order_tructiep_line_ids()
+        self._compute_order_chomu_line_ids()
+        
+        # Just return True to stay on the same view/tab
+        return True

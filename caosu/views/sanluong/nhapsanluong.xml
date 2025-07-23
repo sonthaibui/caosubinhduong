@@ -858,7 +858,7 @@
                               <field name="mudong" string="Đông" style="border-top-style: solid !important;border-width: 1px !important;" sum="mudong" optional="show"/>
                               <field name="muday" string="Dây" style="border-top-style: solid !important;border-width: 1px !important;" sum="muday" optional="show"/>
                               <field name="muchen" string="Chén" style="border-top-style: solid !important;border-width: 1px !important;" sum="muchen" optional="show"/>
-                              <field name="ctktup" optional="hide"/>
+                              <field name="ctktup" optional="hide"/>                              
                               <field name="kichthich" style="border-top-style: solid !important;border-width: 1px !important" optional="hide"/>
                               <field name="caoxa" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                               <field name="ghichu" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
@@ -1014,6 +1014,7 @@
             <field name="tap_ban" digits="[42, 0]" string="Tạp bán" optional="hide"/>
             <field name="day_ban" digits="[42, 1]" string="Dây bán" optional="hide"/> 
             <field name="kichthich"/>
+            <field name="color" optional="hide"/>
             <field name="ctktup" optional="show"/>            
             <field name="gianuoc" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>
             <field name="giatap" digits="[42,0]" groups="base.group_erp_manager" optional="hide"/>

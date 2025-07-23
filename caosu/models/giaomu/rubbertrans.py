@@ -76,7 +76,14 @@ class RubberDeliver(models.Model):
     rubberbydate_id = fields.Many2one('rubber.date', string='Nhập sản lượng', ondelete='cascade')
     company_truck_id = fields.Many2one('company.truck', string='Xe công ty', ondelete='set null')
     tyle = fields.Float(compute='_compute_tyle', string='Tỷ lệ (%)')
-    is_selected = fields.Boolean(string="Select", default=False)
+    is_selected = fields.Boolean(
+        'Selected', 
+        default=False, 
+        compute='_compute_is_selected',
+        inverse='_inverse_is_selected',
+        store=True,
+        help="Select this line for batch operations. Cannot select lines that already have orders."
+    )
     sale_order_id = fields.Many2one('sale.order', string='Sale Order', copy=False, ondelete='set null')
     sale_order_line_id = fields.Many2one('sale.order.line', string='Sale Order Line', copy=False, ondelete='set null')
 
@@ -351,7 +358,28 @@ class RubberDeliver(models.Model):
     def _compute_quykhott(self):
         for rec in self:
             rec.quykhott = rec.soluongtt * rec.dott / 100
+    
+    @api.depends('state')
+    def _compute_is_selected(self):
+        """Automatically uncheck selection if state becomes 'order'"""
+        for record in self:
+            if record.state == 'order':
+                record.is_selected = False
+            # Keep current value for other states
 
+    def _inverse_is_selected(self):
+        """Prevent selection of lines with state='order'"""
+        for record in self:
+            if record.state == 'order' and record.is_selected:
+                record.is_selected = False
+                # Optionally show a warning
+                return {
+                    'warning': {
+                        'title': _('Không thể chọn'),
+                        'message': _('Dòng này đã có đơn hàng, không thể chọn lại.')
+                    }
+                }
+        
     def order(self):
         """Only allow admin group to create sale order for rubber.deliver line"""
         admin_group = self.env.ref('caosu.group_rubber_deliver_admin')

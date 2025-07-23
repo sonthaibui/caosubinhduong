@@ -138,8 +138,8 @@ class RubberByDate(models.Model):
     kichthich = fields.Boolean('KT', default=False)
     recorded = fields.Boolean('recorded', default=False, compute='_compute_recorded')
     quykho = fields.Float('Quy Khô', compute='_compute_quykho', store=True, digits='Zero Decimal')
-    lan_kt = fields.Integer('Lần kt', default='0',store=True, digits='Product Unit of Measure')
-    dao_kt = fields.Integer('Dao kt', default='0',store=True, digits='Product Unit of Measure')
+    lan_kt = fields.Integer('Lần kt', compute='_compute_lan_kt_dao_kt', store=True, digits='Product Unit of Measure')
+    dao_kt = fields.Integer('Dao kt', compute='_compute_lan_kt_dao_kt', store=True, digits='Product Unit of Measure')
     mulantruoc = fields.Float('Lần trước', compute='_compute_mulantruoc', store=True, digits='Product Unit of Measure')
     chenhlechmu = fields.Float('Mũ +/-', compute='_compute_chenhlechmu', store=True, digits='Product Unit of Measure')    
     mudaotruoc = fields.Float('Dao trước', default='0',store=True, digits='Product Unit of Measure')
@@ -163,7 +163,8 @@ class RubberByDate(models.Model):
     giadong = fields.Monetary('Giá mũ đông', digits='Zero Decimal', compute='_compute_rubber_price', store=True) #
     giachen = fields.Monetary('Giá mũ chén', digits='Zero Decimal', compute='_compute_rubber_price', store=True) #
     kholantruoc = fields.Float('Khô lần trước', compute='_compute_kholantruoc', store=True, digits='Product Unit of Measure')
-    
+    color = fields.Boolean('Color', default=False, help="Check to color the record in kanban view")
+
     @api.depends('nuoc_thu', 'ke', 'mutrangthung', 'do_giao', 'rubber_line_ids')
     def _compute_thongbao(self):
         # skip during onchange/autosave of rubber_line_ids
@@ -278,6 +279,87 @@ class RubberByDate(models.Model):
                 if rec.to and rec.ngay:
                     rec.recname = rec.to.name + ' - ' + datetime.strptime(str(rec.ngay),'%Y-%m-%d').strftime('%d/%m/%Y')
 
+    @api.depends('to_name', 'lo', 'nam_kt', 'ngay', 'thang', 'kichthich', 'tongmu', 'color')
+    def _compute_lan_kt_dao_kt(self):
+        for record in self:            
+            # Find previous stimulation record in the same exploitation year
+            prev_kt = self.env['rubber.date'].search([
+                ('to_name', '=', record.to_name),
+                ('lo', '=', record.lo),
+                ('kichthich', '=', True),
+                ('nam_kt', '=', record.nam_kt),
+                ('ngay', '<', record.ngay),
+                ('thang', '!=', '02')
+            ], order="ngay desc", limit=1)            
+            
+            if prev_kt:  # Not the first stimulation
+                if record.kichthich:  # Current record has stimulation
+                    record.lan_kt = prev_kt.lan_kt + 1
+                    record.dao_kt = 1
+                else:  # No stimulation, continue same round
+                    record.lan_kt = prev_kt.lan_kt
+                    if record.tongmu != 0:
+                        # Find previous dao record
+                        prev_dao = self.env['rubber.date'].search([
+                            ('to_name', '=', record.to_name),
+                            ('lo', '=', record.lo),
+                            ('ngay', '<', record.ngay),
+                            ('dao_kt', '>', 0)
+                        ], order="ngay desc", limit=1)
+                        record.dao_kt = prev_dao.dao_kt + 1 if prev_dao else 1
+                    else:
+                        record.dao_kt = 0
+            else:  # No previous stimulation in current year
+                if record.thang == "02":  # February - check previous year
+                    prev_kt_any_year = self.env['rubber.date'].search([
+                        ('to_name', '=', record.to_name),
+                        ('lo', '=', record.lo),
+                        ('kichthich', '=', True),
+                        ('ngay', '<', record.ngay)
+                    ], order="ngay desc", limit=1)
+                    
+                    if prev_kt_any_year:  # Found previous year stimulation
+                        if record.kichthich:
+                            record.lan_kt = prev_kt_any_year.lan_kt + 1
+                            record.dao_kt = 1
+                        else:
+                            record.lan_kt = prev_kt_any_year.lan_kt
+                            if record.tongmu != 0:
+                                record.dao_kt = 0  # Special case for February
+                            else:
+                                prev_dao = self.env['rubber.date'].search([
+                                    ('to_name', '=', record.to_name),
+                                    ('lo', '=', record.lo),
+                                    ('ngay', '<', record.ngay)
+                                ], order="ngay desc", limit=1)
+                                record.dao_kt = prev_dao.dao_kt if prev_dao else 0
+                    else:  # First time ever for this team
+                        if record.kichthich:
+                            record.lan_kt = 1
+                            record.dao_kt = 1
+                        else:
+                            record.lan_kt = 0
+                            record.dao_kt = 0
+                else:  # Not February and no previous stimulation
+                    if record.kichthich:
+                        record.lan_kt = 1
+                        record.dao_kt = 1
+                    else:
+                        record.lan_kt = 0
+                        record.dao_kt = 0
+    def recompute_lan_kt_dao_kt(self):
+        """Recompute lan_kt and dao_kt for selected records"""
+        for record in self:
+            # Force recomputation
+            record._compute_lan_kt_dao_kt()
+            
+            # Update the database with new values
+            record.write({
+                'lan_kt': record.lan_kt,
+                'dao_kt': record.dao_kt,
+            })
+        return True
+        
     @api.depends('ke','mutrangthung','caoxa','rubber_line_ids','do_giao','dotap','xe')
     def _compute_thu(self):
         # skip during onchange/autosave of rubber_line_ids
@@ -701,12 +783,9 @@ class RubberByDate(models.Model):
                 ('nam_kt', '=', record.nam_kt),
                 ('ngay', '<', record.ngay),
                 ('lan_kt', '<', record.lan_kt),
-                ('dao_kt', '=', record.dao_kt)
-            ], order="ngay desc", limit=1)
-            
-            rbd = rbd.filtered(lambda r: r.thang != "02")
-            #rbd = rbd.filtered(lambda r: r.thang != "01") # tháng 1 tính của năm trước
-            #rbd = rbd.filtered(lambda r: r.thang != "02") # tháng 2 tính của năm trước
+                ('dao_kt', '=', record.dao_kt),
+                ('thang', '!=', '02')
+            ], order="ngay desc", limit=1)          
             
             if rbd:  # Không phải dao đầu tiên của năm khai thác
                 record.mulantruoc = rbd[0].tongmu
@@ -735,10 +814,9 @@ class RubberByDate(models.Model):
                 ('nam_kt', '=', record.nam_kt),
                 ('ngay', '<', record.ngay),
                 ('lan_kt', '<', record.lan_kt),
-                ('dao_kt', '=', record.dao_kt)
+                ('dao_kt', '=', record.dao_kt),
+                ('thang', '!=', '02')
             ], order="ngay desc", limit=1)
-            
-            rbd = rbd.filtered(lambda r: r.thang != "02")
             
             if rbd:  # Không phải dao đầu tiên của năm khai thác
                 record.kholantruoc = rbd[0].quykho
