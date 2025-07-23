@@ -497,6 +497,52 @@
                   })(); // End IIFE
               //]]>
               </script>
+              <script type="text/javascript">
+              //<![CDATA[
+                    (function() {
+                        // Generate unique service name to avoid conflicts
+                        var uniqueId = 'truck_tab_control_' + Date.now();
+                        
+                        odoo.define('caosu.' + uniqueId, function (require) {
+                            "use strict";
+                            
+                            var FormController = require('web.FormController');
+                            
+                            FormController.include({
+                                _onViewRendered: function () {
+                                    this._super.apply(this, arguments);
+                                    
+                                    if (this.modelName === 'company.truck') {
+                                        var context = this.initialState.getContext();
+                                        
+                                        // If returning from quotation, focus on ORDER tab
+                                        if (context.active_tab === 'order') {
+                                            var self = this;
+                                            setTimeout(function() {
+                                                // Try multiple selectors to find the ORDER tab
+                                                var orderTab = self.$('a[data-toggle="tab"]:contains("ORDER")');
+                                                if (!orderTab.length) {
+                                                    orderTab = self.$('.nav-link:contains("ORDER")');
+                                                }
+                                                if (!orderTab.length) {
+                                                    orderTab = self.$('a:contains("ORDER")');
+                                                }
+                                                
+                                                if (orderTab.length) {
+                                                    orderTab.tab('show');
+                                                    console.log('Switched to ORDER tab');
+                                                } else {
+                                                    console.log('ORDER tab not found');
+                                                }
+                                            }, 200);
+                                        }
+                                    }
+                                },
+                            });
+                        });
+                    })();
+                //]]>
+              </script>
               <sheet>
                 <!--<field name="recorded" invisible="1"/>-->
                 <field name="nguoitao" invisible="1"/>
@@ -725,7 +771,11 @@
                   </page>
                   <page string="ORDER" groups="caosu.group_rubber_deliver_admin">
                     <group>                        
-                        <field name="debug" invisible="1"/>                        
+                        <field name="debug" invisible="1"/>
+                        <button name="action_select_all_order_lines" string="Chọn tất cả" type="object" class="btn-secondary"/>
+                        <button name="action_deselect_all_order_lines" string="Bỏ chọn tất cả" type="object" class="btn-secondary"/>
+                        <button name="action_create_sale_order" string="Tạo đơn hàng bán" type="object" class="btn-primary" 
+                                confirm="Bạn có chắc chắn muốn tạo đơn hàng bán cho các dòng đã chọn?"/>                        
                     </group>                    
                     <!--<div class="oe_button_box">
                         <button name="action_select_all_order_lines" string="Select All" type="object" class="oe_link"/>
@@ -737,8 +787,9 @@
                     </div>-->                    
                     <group string="MŨ XE NHÀ">
                         <field name="order_xenha_line_ids" nolabel="1" >
-                            <tree create="0" delete="0" readonly="1">                                
+                            <tree create="0" delete="0" readonly="1" editable="bottom">                                
                                 <!--<field name="is_selected" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'order')]}"/>-->
+                                <field name="is_selected"/>
                                 <field name="ngay" optional="hide"/>
                                 <field name="to_name"/>
                                 <field name="to_id" invisible="1"/>                                
@@ -758,7 +809,8 @@
                     <!-- Mũ trực tiếp -->
                     <group string="MŨ BÁN TRỰC TIẾP">
                         <field name="order_tructiep_line_ids" nolabel="1">
-                            <tree create="0" delete="0" readonly="1">                               
+                            <tree create="0" delete="0" readonly="1" editable="bottom">                               
+                                <field name="is_selected"/>
                                 <field name="ngay" optional="hide"/>
                                 <field name="to_name"/>
                                 <field name="to_id" optional="hide"/>                                
@@ -781,7 +833,8 @@
                     <!-- Mũ chờ -->
                     <group string="MŨ CHỞ">
                         <field name="order_chomu_line_ids" nolabel="1">
-                            <tree create="0" delete="0" readonly="1">
+                            <tree create="0" delete="0" readonly="1" editable="bottom">
+                                <field name="is_selected"/>
                                 <field name="ngay" optional="hide"/>
                                 <field name="to_name" optional="hide"/>
                                 <field name="to_id" optional="hide"/>

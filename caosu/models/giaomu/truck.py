@@ -698,4 +698,143 @@ class CompanyTruck(models.Model):
             'res_id': self.id,
             'view_mode': 'form',
             'target': 'current',
+            
         }
+    def action_create_sale_order(self):
+        """Create sale orders for selected order lines"""
+        self.ensure_one()
+        
+        # Collect all selected lines from the three order fields
+        selected_lines = self.env['rubber.deliver']
+        
+        # Check order_xenha_line_ids for selected lines
+        if hasattr(self, 'order_xenha_line_ids'):
+            selected_lines += self.order_xenha_line_ids.filtered('is_selected')
+        
+        # Check order_tructiep_line_ids for selected lines  
+        if hasattr(self, 'order_tructiep_line_ids'):
+            selected_lines += self.order_tructiep_line_ids.filtered('is_selected')
+        
+        # Check order_chomu_line_ids for selected lines
+        if hasattr(self, 'order_chomu_line_ids'):
+            selected_lines += self.order_chomu_line_ids.filtered('is_selected')
+        
+        if not selected_lines:
+            raise UserError(_("Vui lòng chọn ít nhất một dòng để tạo đơn hàng bán."))
+        
+        # Call the order() method for each selected line
+        created_orders = []
+        for line in selected_lines:
+            try:
+                result = line.order()  # Call the order method on rubber.deliver
+                if isinstance(result, dict) and result.get('res_id'):
+                    created_orders.append(result['res_id'])
+            except Exception as e:
+                _logger.warning(f"Failed to create order for line {line.id}: {e}")
+        
+        # Show success notification
+        if created_orders:
+            message = f"Đã tạo thành công {len(created_orders)} đơn hàng bán từ {len(selected_lines)} dòng đã chọn."
+            
+            # If only one order was created, open it directly
+            if len(created_orders) == 1:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'sale.order',  # Adjust model name if different
+                    'res_id': created_orders[0],
+                    'view_mode': 'form',
+                    'target': 'current',
+                    'context': {
+                        'return_to_truck': self.id,
+                        'active_tab': 'order'
+                    }
+                }
+            else:
+                # If multiple orders created, show list view
+                return {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'sale.order',  # Adjust model name if different
+                    'domain': [('id', 'in', created_orders)],
+                    'view_mode': 'tree,form',
+                    'target': 'current',
+                    'name': 'Đơn hàng bán đã tạo',
+                    'context': {
+                        'return_to_truck': self.id,
+                        'active_tab': 'order'
+                    }
+                }
+        else:
+            raise UserError(_("Không thể tạo đơn hàng bán. Vui lòng kiểm tra lại các dòng đã chọn."))
+    
+    def action_select_all_order_lines(self):
+        """Select all lines in the three order fields (excluding already ordered lines)"""
+        self.ensure_one()
+        
+        selected_count = 0
+        
+        # Select all lines in order_xenha_line_ids (except ordered ones)
+        if hasattr(self, 'order_xenha_line_ids'):
+            selectable_lines = self.order_xenha_line_ids.filtered(lambda x: x.state != 'order')
+            for line in selectable_lines:
+                if not line.is_selected:
+                    line.write({'is_selected': True})  # Use write instead of direct assignment
+                    selected_count += 1
+        
+        # Select all lines in order_tructiep_line_ids (except ordered ones)
+        if hasattr(self, 'order_tructiep_line_ids'):
+            selectable_lines = self.order_tructiep_line_ids.filtered(lambda x: x.state != 'order')
+            for line in selectable_lines:
+                if not line.is_selected:
+                    line.write({'is_selected': True})  # Use write instead of direct assignment
+                    selected_count += 1
+        
+        # Select all lines in order_chomu_line_ids (except ordered ones)
+        if hasattr(self, 'order_chomu_line_ids'):
+            selectable_lines = self.order_chomu_line_ids.filtered(lambda x: x.state != 'order')
+            for line in selectable_lines:
+                if not line.is_selected:
+                    line.write({'is_selected': True})  # Use write instead of direct assignment
+                    selected_count += 1
+        
+        # Force refresh of the computed fields
+        self._compute_order_xenha_line_ids()
+        self._compute_order_tructiep_line_ids()
+        self._compute_order_chomu_line_ids()
+        
+        # Just return True to stay on the same view/tab
+        return True
+
+    def action_deselect_all_order_lines(self):
+        """Deselect all lines in the three order fields"""
+        self.ensure_one()
+        
+        deselected_count = 0
+        
+        # Deselect all lines in order_xenha_line_ids
+        if hasattr(self, 'order_xenha_line_ids'):
+            for line in self.order_xenha_line_ids:
+                if line.is_selected:
+                    line.write({'is_selected': False})  # Use write instead of direct assignment
+                    deselected_count += 1
+        
+        # Deselect all lines in order_tructiep_line_ids
+        if hasattr(self, 'order_tructiep_line_ids'):
+            for line in self.order_tructiep_line_ids:
+                if line.is_selected:
+                    line.write({'is_selected': False})  # Use write instead of direct assignment
+                    deselected_count += 1
+        
+        # Deselect all lines in order_chomu_line_ids
+        if hasattr(self, 'order_chomu_line_ids'):
+            for line in self.order_chomu_line_ids:
+                if line.is_selected:
+                    line.write({'is_selected': False})  # Use write instead of direct assignment
+                    deselected_count += 1
+        
+        # Force refresh of the computed fields
+        self._compute_order_xenha_line_ids()
+        self._compute_order_tructiep_line_ids()
+        self._compute_order_chomu_line_ids()
+        
+        # Just return True to stay on the same view/tab
+        return True
