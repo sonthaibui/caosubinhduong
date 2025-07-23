@@ -161,7 +161,7 @@ class Allowance(models.Model):
     @api.depends('employee_id','chuyencan','caochoang','thuong_sl','itmu','duongxau','boithuoc','luongthangtruoc','boikeo','giacomang','tiengomto','tienvattu1','tienvattu','xdn','bddm','bkrtmn','bkrtgn','mmcu','mmcn','ttmang','rct','rmdm','bdgv','bdgvmu','tienphan','tienung','ungtien','tiendao','chiendo','tiengomto','tbm','tamvong','truidao','bandao','banlinhtinh','tienmuon','tienbh','rutbot','ruttt','dongthem')
     def _compute_tongluong(self):
         for rec in self:
-            rbs = self.env['rubber'].search([('empname','=',rec.employee_id.name)])
+            rbs = self.env['rubber'].search([('rubbersalary_id.employee_id.name','=',rec.employee_id.name)])
             tongluong = 0
             rec.ltn = 0
             rec.ltn1 = 0
