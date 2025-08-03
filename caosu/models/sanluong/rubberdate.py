@@ -233,7 +233,7 @@ class RubberByDate(models.Model):
             if rec.nuoc_tonkk < 0 or rec.tap_tonkk < 0 or rec.day_tonkk < 0 or rec.dong_tonkk < 0 or rec.chen_tonkk < 0:
                 raise UserError("Tồn phải lớn hơn hoặc bằng 0. Nhập lại tồn.")
     
-    @api.depends('ngay')
+    @api.depends('ngay', 'color')
     def _compute_ngay(self):
         for rec in self:
             rec.thang = '01'
@@ -242,7 +242,7 @@ class RubberByDate(models.Model):
             if rec.recorded == True:
                 rec.thang = datetime.strptime(str(rec.ngay),'%Y-%m-%d').strftime('%m')
                 rec.nam = datetime.strptime(str(rec.ngay),'%Y-%m-%d').strftime('%Y')
-                if rec.thang == '01':
+                if rec.thang == '01' or rec.thang == '02':
                     rec.nam_kt = str(int(rec.nam) - 1)
                 else:
                     rec.nam_kt = rec.nam

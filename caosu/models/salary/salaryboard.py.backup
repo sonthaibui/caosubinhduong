@@ -1,5 +1,21 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exc    @api.depends('thang', 'nam', 'department_id')
+    def _compute_allowance_lines(self):
+        for rec in self:
+            if not (rec.thang and rec.nam and rec.department_id):
+                rec.allowance_line_ids = self.env['allowance'].browse()
+                continue
+            records = self.env['allowance'].search([
+                ('allowancebymonth_id.department_id','=', rec.department_id.id),
+                ('thang','=', rec.thang),
+                ('nam','=', rec.nam),
+            ])
+            # **only filter in memory**, don't write on the records:
+            rec.update({'allowance_line_ids': records})
+            
+            # Trigger recomputation of _compute_tongluong for each allowance record
+            if records:
+                records._compute_tongluong()t UserError
 
 class SalaryBoard(models.Model):
     _name = 'salary.board'
@@ -62,12 +78,9 @@ class SalaryBoard(models.Model):
                 ('thang','=', rec.thang),
                 ('nam','=', rec.nam),
             ])
-            # Trigger recomputation of _compute_tongluong for each allowance record
-            if records:
-                records._compute_tongluong()
             # **only filter in memory**, don’t write on the records:
             rec.update({'allowance_line_ids': records})
-            
+
     @api.depends('allowance_line_ids')
     def _compute_tong(self):
         for rec in self:

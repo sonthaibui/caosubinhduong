@@ -102,6 +102,7 @@ class Allowance(models.Model):
     to10 = fields.Integer('10', compute='_compute_tien')
     cophep = fields.Integer('CP', default=0)
     kophep = fields.Integer('KP', default=0)
+    nam_kt = fields.Char('Năm khai thác', related='allowancebymonth_id.nam_kt')
 
     @api.onchange('dgta','dgtb','dgtc')
     def _onchange_dgt(self):
@@ -158,7 +159,7 @@ class Allowance(models.Model):
         for rec in self:
             rec.tienmang = rec.somang * rec.giamang
 
-    @api.depends('employee_id','chuyencan','caochoang','thuong_sl','itmu','duongxau','boithuoc','luongthangtruoc','boikeo','giacomang','tiengomto','tienvattu1','tienvattu','xdn','bddm','bkrtmn','bkrtgn','mmcu','mmcn','ttmang','rct','rmdm','bdgv','bdgvmu','tienphan','tienung','ungtien','tiendao','chiendo','tiengomto','tbm','tamvong','truidao','bandao','banlinhtinh','tienmuon','tienbh','rutbot','ruttt','dongthem')
+    @api.depends('employee_id','nam_kt','chuyencan','caochoang','thuong_sl','itmu','duongxau','boithuoc','luongthangtruoc','boikeo','giacomang','tiengomto','tienvattu1','tienvattu','xdn','bddm','bkrtmn','bkrtgn','mmcu','mmcn','ttmang','rct','rmdm','bdgv','bdgvmu','tienphan','tienung','ungtien','tiendao','chiendo','tiengomto','tbm','tamvong','truidao','bandao','banlinhtinh','tienmuon','tienbh','rutbot','ruttt','dongthem')
     def _compute_tongluong(self):
         for rec in self:
             rbs = self.env['rubber'].search([('rubbersalary_id.employee_id.name','=',rec.employee_id.name)])
@@ -167,14 +168,30 @@ class Allowance(models.Model):
             rec.ltn1 = 0
             rec.ltn2 = 0
             rec.conlai = 0
-            if int(rec.thang) - 1 < 10:
-                alw1 = self.env['allowance'].search([('employee_id','=',rec.employee_id.id),('thang','=','0' + str(int(rec.thang) - 1))])
+            
+            # Calculate previous month (ltn1)
+            if int(rec.thang) == 1:
+                prev_month_1 = '12'
+                prev_month_2 = '11'                
+            elif int(rec.thang) == 2:
+                
+                prev_month_1 = '01'
+                prev_month_2 = '12'
             else:
-                alw1 = self.env['allowance'].search([('employee_id','=',rec.employee_id.id),('thang','=',str(int(rec.thang) - 1))])
-            if int(rec.thang) - 2 < 10:
-                alw2 = self.env['allowance'].search([('employee_id','=',rec.employee_id.id),('thang','=','0' + str(int(rec.thang) - 2))])
-            else:
-                alw2 = self.env['allowance'].search([('employee_id','=',rec.employee_id.id),('thang','=',str(int(rec.thang) - 2))])
+                prev_month_1 = str(int(rec.thang) - 1).zfill(2)
+                prev_month_2 = str(int(rec.thang) - 2).zfill(2)
+
+            alw1 = self.env['allowance'].search([
+                ('employee_id','=',rec.employee_id.id),
+                ('thang','=',prev_month_1),
+                ('nam','=',rec.nam_kt)
+            ])
+            alw2 = self.env['allowance'].search([
+                ('employee_id','=',rec.employee_id.id),
+                ('thang','=',prev_month_2),
+                ('nam','=',rec.nam_kt)
+            ])
+            
             if len(alw1) == 1:
                 rec.ltn1 = alw1[0].ltn
             if len(alw2) == 1:

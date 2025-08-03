@@ -1,3 +1,4 @@
+from datetime import datetime
 import calendar
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
@@ -25,7 +26,19 @@ class AllowanceByMonth(models.Model):
     allowance_line_ids = fields.One2many('allowance', 'allowancebymonth_id', string='Phụ cấp')
     thongbao = fields.Char(compute='_compute_thongbao', string='Thông báo')
     ghichu = fields.Html('Ghi chú')
+    nam_kt = fields.Char('Năm khai thác', compute='_compute_ngay', store=True)
+    color = fields.Boolean('Color', default=False, help="Check to color the record in kanban view")
 
+    @api.depends('thang', 'nam', 'color')
+    def _compute_ngay(self):
+        for rec in self:            
+            rec.nam_kt = rec.nam
+            if rec.recorded == True:
+                if rec.thang == '01' or rec.thang == '02':
+                    rec.nam_kt = str(int(rec.nam) - 1)
+                else:
+                    rec.nam_kt = rec.nam
+    
     @api.depends('thang','nam','department_id')
     def _compute_thongbao(self):
         for rec in self:

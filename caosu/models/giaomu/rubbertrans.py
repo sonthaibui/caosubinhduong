@@ -38,28 +38,17 @@ class RubberDeliver(models.Model):
     ngay_giao = fields.Date(string='Ngày giao', compute='_compute_ngay_giao', store=True)    
     to_id = fields.Many2one('hr.department', string ='Tổ', related='rubberbydate_id.to', store=True)
     to_name = fields.Char(string='Tổ', related='to_id.name', store=True)    
-    daily = fields.Many2one('res.partner', string='Đại lý', domain=[('is_customer','=',True)],
-                default=lambda self: self.env['res.partner'].search([('is_customer','=',True),('name','=','Xe nhà')], limit=1))
     daily_id = fields.Many2one('res.partner', string='Đại Lý', domain=[('is_customer','=',True)], required=True,
                 default=lambda self: self.env['res.partner'].search([('is_customer','=',True),('name','=','Xe nhà')], limit=1))
     daily_name = fields.Char('Tên đại lý', related='daily_id.name')
     daily_ban = fields.Many2one('res.partner', string='Đại lý', compute='_compute_daily_ban', inverse='_inverse_daily_ban', readonly=False)
-    _daily_ban_manual = fields.Many2one('res.partner', string='Đại lý bán (manual)', store=True)
-    sanpham = fields.Selection([
-        ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
-    ], string='Sản phẩm', required=True, default='nuoc')
+    _daily_ban_manual = fields.Many2one('res.partner', string='Đại lý bán (manual)', store=True)    
     product_id = fields.Many2one(
         'product.product', 
         string='MŨ',
         domain=[('categ_id.name', '=', 'Mũ')],
         required=True
-    )
-    product_name_only = fields.Char(
-        string='MŨ Display', 
-        related='product_id.name', 
-        readonly=True,
-        store=False
-    )
+    )    
     product_name = fields.Char(related='product_id.name', string='MŨ', readonly=True)
     soluong = fields.Float('Số lượng', default='0', digits='Product Price')
     do = fields.Float('Độ', default='0', digits='One Decimal')
@@ -76,14 +65,7 @@ class RubberDeliver(models.Model):
     rubberbydate_id = fields.Many2one('rubber.date', string='Nhập sản lượng', ondelete='cascade')
     company_truck_id = fields.Many2one('company.truck', string='Xe công ty', ondelete='set null')
     tyle = fields.Float(compute='_compute_tyle', string='Tỷ lệ (%)')
-    is_selected = fields.Boolean(
-        'Selected', 
-        default=False, 
-        compute='_compute_is_selected',
-        inverse='_inverse_is_selected',
-        store=True,
-        help="Select this line for batch operations. Cannot select lines that already have orders."
-    )
+    is_selected = fields.Boolean(string="Select", default=False)
     sale_order_id = fields.Many2one('sale.order', string='Sale Order', copy=False, ondelete='set null')
     sale_order_line_id = fields.Many2one('sale.order.line', string='Sale Order Line', copy=False, ondelete='set null')
 
@@ -358,28 +340,7 @@ class RubberDeliver(models.Model):
     def _compute_quykhott(self):
         for rec in self:
             rec.quykhott = rec.soluongtt * rec.dott / 100
-    
-    @api.depends('state')
-    def _compute_is_selected(self):
-        """Automatically uncheck selection if state becomes 'order'"""
-        for record in self:
-            if record.state == 'order':
-                record.is_selected = False
-            # Keep current value for other states
 
-    def _inverse_is_selected(self):
-        """Prevent selection of lines with state='order'"""
-        for record in self:
-            if record.state == 'order' and record.is_selected:
-                record.is_selected = False
-                # Optionally show a warning
-                return {
-                    'warning': {
-                        'title': _('Không thể chọn'),
-                        'message': _('Dòng này đã có đơn hàng, không thể chọn lại.')
-                    }
-                }
-        
     def order(self):
         """Only allow admin group to create sale order for rubber.deliver line"""
         admin_group = self.env.ref('caosu.group_rubber_deliver_admin')
@@ -507,31 +468,31 @@ class RubberSell(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Rubber Sell Model'
 
-    ngay = fields.Date('Ngày', default=fields.Datetime.now(), required=True, store=True)
-    daily = fields.Many2one('res.partner', string='Đại lý', domain=[('is_customer','=',True)], required=True,
-        default=lambda self: self.env['res.partner'].search([('is_customer','=',True)], limit=1))
+    ngay = fields.Date('Ngày', default=fields.Datetime.now(), required=True, store=True)    
     daily_id = fields.Many2one('res.partner', string='Đại lý', domain=[('is_customer','=',True)], required=True,
-        default=lambda self: self.env['res.partner'].search([('is_customer','=',True)], limit=1))
-    
-    sanpham = fields.Selection([
-        ('nuoc', 'Mũ nước'), ('tap', 'Mũ tạp'), ('day', 'Mũ dây'), ('dong', 'Mũ đông'), ('chen', 'Mũ chén')
-    ], string='Sản phẩm', required=True, default='nuoc')
+        default=lambda self: self.env['res.partner'].search([('is_customer','=',True)], limit=1))    
     product_id = fields.Many2one(
         'product.product', 
         string='MŨ',
         domain=[('categ_id.name', '=', 'Mũ')],
         required=True
-    )
-    product_name_only = fields.Char(
-        string='MŨ Display', 
-        related='product_id.name', 
-        readonly=True,
-        store=False
-    )
+    )    
     product_name = fields.Char(related='product_id.name', string='MŨ', readonly=True)
     soluong = fields.Float('SL bán', default='0', digits='Product Price')
     do = fields.Float('Độ bán', default='0', digits='One Decimal')
+    do_drc = fields.Float('Độ DR', default='0', digits='One Decimal', compute='_compute_do_drc', store=True)
+
+    @api.depends('do')
+    def _compute_do_drc(self):
+        for rec in self:
+            rec.do_drc = rec.do - 3
     quykho = fields.Float('QK bán', default='0', digits='Product Price', compute='_compute_quykho')
+    quykho_drc = fields.Float('QK DR', default='0', digits='Product Price', compute='_compute_quykho', store=True)
+    @api.depends('soluong','do')
+    def _compute_quykho(self):
+        for rec in self:
+            rec.quykho = rec.soluong * rec.do / 100
+            rec.quykho_drc = rec.soluong * rec.do_drc / 100
     company_truck_id = fields.Many2one('company.truck', string='Xe công ty', ondelete='cascade', required=True)
     ngaygiao = fields.Date(related='company_truck_id.ngaygiao')
     dailygiao = fields.Char('dailygiao', readonly=True, default='Xe nhà')
@@ -541,39 +502,43 @@ class RubberSell(models.Model):
     sale_order_id = fields.Many2one('sale.order', string='Sale Order', copy=False, ondelete='set null')
     sale_order_line_id = fields.Many2one('sale.order.line', string='Sale Order Line', copy=False, ondelete='set null')
     
-    @api.depends('soluong','do')
-    def _compute_quykho(self):
-        for rec in self:
-            rec.quykho = rec.soluong * rec.do / 100    
+        
            
-    def order(self):
+    '''def order(self):
         """Create sale order for single rubber.sell line"""
         self.ensure_one()
         if self.state == 'order':
             raise UserError(_("This line is already ordered."))
         if not self.daily_id:
             raise UserError(_("No customer (daily_id) set for this line."))
+        
         # Check for existing draft/sent sale order for this customer and date
-        ngaygiao = self.company_truck_id.ngaygiao
+        ngaygiao = self.company_truck_id.ngaygiao        
+        
         domain = [
             ('partner_id', '=', self.daily_id.id),
             ('commitment_date', '=', ngaygiao),
             ('state', 'in', ['draft', 'sent']),
-        ]
-        # Debug: log the domain and ngay/ngaygiao values
-        
-        '''_logger.info('RubberSell order() domain: %s', domain)
-        _logger.info('RubberSell order() self.ngay: %s, self.ngaygiao: %s', self.ngay, self.ngaygiao)'''
+        ]   
         
         existing_order = self.env['sale.order'].search(domain, limit=1)
         if existing_order:
             sale_order = existing_order
         else:
             partner = self.daily_id
-            pricelist_id = partner.property_product_pricelist.id or self.env['product.pricelist'].search([], limit=1).id
+            # Get pricelist with proper error handling
+            pricelist_id = False
+            if partner.property_product_pricelist and partner.property_product_pricelist.id:
+                pricelist_id = partner.property_product_pricelist.id
+            if not pricelist_id:
+                default_pricelist = self.env['product.pricelist'].search([], limit=1)
+                pricelist_id = default_pricelist.id if default_pricelist else False
+            
             addr = partner.address_get(['delivery', 'invoice'])
-            partner_invoice_id = addr['invoice']
-            partner_shipping_id = addr['delivery']
+            # Ensure we get valid partner IDs, fallback to main partner if needed
+            partner_invoice_id = addr.get('invoice') if isinstance(addr.get('invoice'), int) else partner.id
+            partner_shipping_id = addr.get('delivery') if isinstance(addr.get('delivery'), int) else partner.id                     
+            
             sale_order = self.env['sale.order'].create({
                 'partner_id': partner.id,
                 'date_order': self.ngay,
@@ -583,17 +548,26 @@ class RubberSell(models.Model):
                 'partner_invoice_id': partner_invoice_id,
                 'partner_shipping_id': partner_shipping_id,
             })
-        # Create sale order line
-        order_line = self.env['sale.order.line'].create({
-            'order_id': sale_order.id,
-            'product_id': self.product_id.id,
-            'product_uom_qty': self.soluong,
-            'price_unit': self._get_sell_price(ngaygiao),
-            'commitment_date': ngaygiao,
-        })
-        raise UserError(f"{order_line.id} - {order_line.product_id} - {order_line.price_unit} - {order_line.product_uom_qty}")
-        self.message_post(body=f"Debug info: sale_order={sale_order.id}, order_line={order_line.id}")
-        # Mark as ordered and set sale order references
+        price, price_type_code = self._get_sell_price(ngaygiao)
+        ngay = ngaygiao
+        
+        # Create order line based on price type (same logic as RubberDeliver)
+        if price_type_code == 'giamutap':
+            order_line = self.env['sale.order.line'].create({
+                'order_id': sale_order.id,
+                'product_id': self.product_id.id,
+                'product_uom_qty': self.soluong,
+                'price_unit': price,
+            })
+        else:
+            order_line = self.env['sale.order.line'].create({
+                'order_id': sale_order.id,
+                'product_id': self.product_id.id,
+                'sanluong': self.soluong,
+                'do': self.do,
+                'product_uom_qty': self.do * self.soluong / 100,
+                'price_unit': price,
+            })        
         self.write({
             'state': 'order',
             'sale_order_id': sale_order.id,
@@ -635,10 +609,10 @@ class RubberSell(models.Model):
         price = self.env['rubber.price'].search(domain, limit=1)
         if price:
             if price.price_type_id.code == 'giamutap_do' or price.price_type_id.code == 'giamunuoc':
-                return price.gia * 100
+                return price.gia * 100, price.price_type_id.code
             else:
-                return price.gia
-        return 0
+                return price.gia, price.price_type_id.code
+        return 0, None
 
     def sualai(self):
         """Revert sale order and sale order line for this rubber.sell record if possible."""
@@ -661,7 +635,7 @@ class RubberSell(models.Model):
                 rec.sale_order_id = False
                 rec.sale_order_line_id = False
                 rec.state = 'chua'
-            # Optionally handle other state transitions if needed
+            # Optionally handle other state transitions if needed'''
 class RubberLoss(models.Model):
     _name = 'rubber.loss'
     _description = 'Rubber Loss Model'
