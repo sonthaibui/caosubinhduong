@@ -159,7 +159,7 @@ class Allowance(models.Model):
         for rec in self:
             rec.tienmang = rec.somang * rec.giamang
 
-    @api.depends('employee_id','nam_kt','chuyencan','caochoang','thuong_sl','itmu','duongxau','boithuoc','luongthangtruoc','boikeo','giacomang','tiengomto','tienvattu1','tienvattu','xdn','bddm','bkrtmn','bkrtgn','mmcu','mmcn','ttmang','rct','rmdm','bdgv','bdgvmu','tienphan','tienung','ungtien','tiendao','chiendo','tiengomto','tbm','tamvong','truidao','bandao','banlinhtinh','tienmuon','tienbh','rutbot','ruttt','dongthem')
+    @api.depends('employee_id','nam_kt','thang','chuyencan','caochoang','thuong_sl','itmu','duongxau','boithuoc','luongthangtruoc','boikeo','giacomang','tiengomto','tienvattu1','tienvattu','xdn','bddm','bkrtmn','bkrtgn','mmcu','mmcn','ttmang','rct','rmdm','bdgv','bdgvmu','tienphan','tienung','ungtien','tiendao','chiendo','tiengomto','tbm','tamvong','truidao','bandao','banlinhtinh','tienmuon','tienbh','rutbot','ruttt','dongthem')
     def _compute_tongluong(self):
         for rec in self:
             rbs = self.env['rubber'].search([('rubbersalary_id.employee_id.name','=',rec.employee_id.name)])
@@ -173,8 +173,7 @@ class Allowance(models.Model):
             if int(rec.thang) == 1:
                 prev_month_1 = '12'
                 prev_month_2 = '11'                
-            elif int(rec.thang) == 2:
-                
+            elif int(rec.thang) == 2:                
                 prev_month_1 = '01'
                 prev_month_2 = '12'
             else:
