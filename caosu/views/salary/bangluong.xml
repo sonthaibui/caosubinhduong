@@ -36,6 +36,7 @@
                     <tree create="0" delete="0" editable="bottom" default_order="sttcn asc">
                       <field name="sttcn" style="border-top-style: solid !important;border-width: 1px !important" optional= "show"/>
                       <field name="employee_id" style="border-top-style: solid !important;border-width: 1px !important" optional= "show"/>
+                      <field name="ltn0" decoration-danger="ltn0 &lt; ltn" decoration-success="ltn0 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn0' optional= "show"/>
                       <field name="ltn2" decoration-danger="ltn2 &lt; ltn" decoration-success="ltn2 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn2' optional= "show"/>
                       <field name="ltn1" decoration-danger="ltn1 &lt; ltn" decoration-success="ltn1 &gt; ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn1' optional= "show"/>
                       <field name="ltn" style="border-top-style: solid !important;border-width: 1px !important" sum='ltn' optional= "show"/>

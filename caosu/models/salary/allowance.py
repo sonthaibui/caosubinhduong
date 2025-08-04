@@ -73,6 +73,7 @@ class Allowance(models.Model):
     ruttt = fields.Float('Rút tiền thưởng', compute='_compute_rutbot', digits='Product Price')
     ttth = fields.Float('Tăng/giảm tiền thưởng', compute='_compute_tong', digits='Product Price')
     ltn = fields.Float('Lương thực nhận', compute='_compute_tongluong', digits='Product Price')
+    ltn0 = fields.Float('LTN năm ngoái', compute='_compute_tongluong', digits='Product Price')
     ltn1 = fields.Float('LTN 1 tháng trước', compute='_compute_tongluong', digits='Product Price')
     ltn2 = fields.Float('LTN 2 tháng trước', compute='_compute_tongluong', digits='Product Price')
     nctb = fields.Float('Nhân công trang bị', compute='_compute_tongluong', digits='Product Price')
@@ -165,6 +166,7 @@ class Allowance(models.Model):
             rbs = self.env['rubber'].search([('rubbersalary_id.employee_id.name','=',rec.employee_id.name)])
             tongluong = 0
             rec.ltn = 0
+            rec.ltn0 = 0
             rec.ltn1 = 0
             rec.ltn2 = 0
             rec.conlai = 0
@@ -190,6 +192,19 @@ class Allowance(models.Model):
                 ('thang','=',prev_month_2),
                 ('nam','=',rec.nam_kt)
             ])
+            # Find allowance of same month in previous nam_kt if available
+            prev_nam_kt = str(int(rec.nam_kt) - 1) if rec.nam_kt and rec.nam_kt.isdigit() else None
+            alw0 = False
+            if prev_nam_kt:
+                alw0_search = self.env['allowance'].search([
+                    ('employee_id','=',rec.employee_id.id),
+                    ('thang','=',rec.thang),
+                    ('nam','=',prev_nam_kt)
+                ])
+                if alw0_search:
+                    alw0 = alw0_search[0]
+            if alw0:
+                rec.ltn0 = alw0.ltn
             
             if len(alw1) == 1:
                 rec.ltn1 = alw1[0].ltn

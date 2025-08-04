@@ -78,6 +78,9 @@
                             <field name="rct" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='rct'/>
                             <field name="xdn" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='xdn'/>
                             <field name="tbm" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='tbm'/>
+                            <field name="ltn0" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='ltn0'/>
+                            <field name="ltn1" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='ltn1'/>
+                            <field name="ltn2" style="border-top-style: solid !important;border-width: 1px !important" optional="hide" sum='ltn2'/>
                         </tree>
                     </field>
                 </group>
@@ -211,6 +214,9 @@
                 <field name="rct" optional="hide"/>
                 <field name="xdn" optional="hide"/>
                 <field name="tbm" optional="hide"/>
+                <field name="ltn0" optional="hide"/>
+                <field name="ltn1" optional="hide"/>
+                <field name="ltn2" optional="hide"/>
             </tree>
         </field>
     </record>
