@@ -44,6 +44,7 @@ class RubberSalary(models.Model):
     tienchen = fields.Float('Tiền chén', compute='_compute_khotien', digits='Product Price')
     phucap1 = fields.Float('Phụ cấp tổng', compute='_compute_khotien', digits='Product Price')
     tongtien = fields.Monetary('Tổng cộng', compute='_compute_khotien')
+    luong_nam_ngoai = fields.Float('Lương năm ngoái', digits='Product Price', compute='_compute_phucap')
     rubber_line_ids = fields.One2many(
         'rubber', 'rubbersalary_id',
         compute='_compute_lines', store=False
@@ -212,6 +213,7 @@ class RubberSalary(models.Model):
                 rec.bandao = als[0].bandao
                 rec.banlinhtinh = als[0].banlinhtinh
                 rec.conlai = rec.tongluong - rec.tienvattu1  - rec.tienung - rec.tiendao - rec.chiendo - rec.tiengomto - rec.tbm - rec.tamvong - rec.truidao - rec.bandao - rec.banlinhtinh - rec.tienmuon - rec.tienbh - rec.tiencuoinam
+                rec.luong_nam_ngoai = als[0].ltn0
                 mod = rec.conlai % 10000
                 if mod >= 5000:
                     rec.tongtienr = rec.conlai - mod + 10000

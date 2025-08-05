@@ -192,6 +192,10 @@
                     <td style="text-align: right;"><span t-field="o.ngaylam"/></td>
                   </tr>
                   <tr>
+                    <td style="font-weight: bold;">Lương năm ngoái</td>
+                    <td style="font-weight: bold; text-align: right;"><span t-field="o.luong_nam_ngoai" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                  </tr>
+                  <tr>
                     <td style="font-weight: bold;">Lương sản phẩm</td>
                     <td style="font-weight: bold; text-align: right;"><span t-field="o.tongtien" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
                   </tr>

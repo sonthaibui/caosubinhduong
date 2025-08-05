@@ -40,6 +40,7 @@
                       <th style="padding-left: 5px; border-right-style: solid;">STT</th>
                       <th style="border-right-style: solid;">Công nhân</th>
                       <th t-if="o.chiendo > 0" style="border-right-style: solid;">Chiên độ</th>
+                      <!--<th style="border-right-style: solid;">Năm ngoái</th>-->
                       <th style="border-right-style: solid;">Tổng lương</th>
                       <th t-if="o.tienung > 0" style="border-right-style: solid;">Tiền ứng 1</th>
                       <th t-if="o.ungtien > 0" style="border-right-style: solid;">Tiền ứng 2</th>
@@ -71,6 +72,9 @@
                         <span t-if="line.chiendo > 0" t-field="line.chiendo" t-options='{"widget": "float", "precision": 0}'/>
                         <span t-if="line.chiendo == 0">-</span>
                       </td>
+                      <!--<td style="padding-top: 15px; padding-bottom: 15px; font-weight: bold; border-right-style: solid;">
+                        <span t-field="line.ltn0" t-options='{"widget": "float", "precision": 0}'/>
+                      </td>-->
                       <td style="padding-top: 15px; padding-bottom: 15px; font-weight: bold; border-right-style: solid;">
                         <span t-field="line.tongluong" t-options='{"widget": "float", "precision": 0}'/>
                       </td>
@@ -138,6 +142,7 @@
                   <tr style="text-align: center;">
                       <td colspan="2" style="text-align: center; font-weight: bold;"><span t-field="o.tongcong"/></td>
                       <td t-if="o.chiendo > 0" style="font-weight: bold;"><span t-field="o.chiendo" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                      <!--<td>-</td>-->
                       <td style="font-weight: bold;"><span t-field="o.tongluong" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
                       <td t-if="o.tienung > 0" style="font-weight: bold;"><span t-field="o.tienung" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
                       <td t-if="o.ungtien > 0" style="font-weight: bold;"><span t-field="o.ungtien" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>

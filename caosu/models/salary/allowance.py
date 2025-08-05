@@ -185,12 +185,14 @@ class Allowance(models.Model):
             alw1 = self.env['allowance'].search([
                 ('employee_id','=',rec.employee_id.id),
                 ('thang','=',prev_month_1),
-                ('nam','=',rec.nam_kt)
+                ('nam','=',rec.nam_kt),
+                ('allowancebymonth_id.department_id','=',rec.allowancebymonth_id.department_id.id)
             ])
             alw2 = self.env['allowance'].search([
                 ('employee_id','=',rec.employee_id.id),
                 ('thang','=',prev_month_2),
-                ('nam','=',rec.nam_kt)
+                ('nam','=',rec.nam_kt),
+                ('allowancebymonth_id.department_id','=',rec.allowancebymonth_id.department_id.id)
             ])
             # Find allowance of same month in previous nam_kt if available
             prev_nam_kt = str(int(rec.nam_kt) - 1) if rec.nam_kt and rec.nam_kt.isdigit() else None
@@ -199,7 +201,8 @@ class Allowance(models.Model):
                 alw0_search = self.env['allowance'].search([
                     ('employee_id','=',rec.employee_id.id),
                     ('thang','=',rec.thang),
-                    ('nam','=',prev_nam_kt)
+                    ('nam','=',prev_nam_kt),
+                    ('allowancebymonth_id.department_id','=',rec.allowancebymonth_id.department_id.id)
                 ])
                 if alw0_search:
                     alw0 = alw0_search[0]
