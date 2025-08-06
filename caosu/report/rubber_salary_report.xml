@@ -209,8 +209,8 @@
                     <tr>
                       <td style="font-weight: bold;">Lương năm ngoái</td>
                       <td style="font-weight: bold; text-align: right;">
-                        <span t-if="hasattr(o, 'luong_nam_ngoai') and o.luong_nam_ngoai != False" t-field="o.luong_nam_ngoai"/>
-                        <span t-if="not hasattr(o, 'luong_nam_ngoai') or o.luong_nam_ngoai == False">-</span>
+                        <span t-if="o.luong_nam_ngoai" t-field="o.luong_nam_ngoai"/>
+                        <span t-if="not o.luong_nam_ngoai">-</span>
                       </td>
                     </tr>
                     <tr>
