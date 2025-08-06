@@ -2,10 +2,37 @@ from odoo import api, fields, models, _
 import calendar
 from odoo.exceptions import UserError, ValidationError
 
-class Rubber(models.Model):
+class Rubber(models.Model):    
     _name = "rubber"
     _description = "Rubber Model"
     _rec_name = 'empname'
+    
+    # Add database indexes for performance
+    _sql_constraints = []
+    
+    def init(self):
+        # Create indexes for frequently queried fields in _compute_mulantruoc
+        # Only use columns that definitely exist
+        self.env.cr.execute("""
+            CREATE INDEX IF NOT EXISTS rubber_performance_idx_basic 
+            ON rubber ("to", empname, ngay);
+        """)
+        self.env.cr.execute("""
+            CREATE INDEX IF NOT EXISTS rubber_ngay_idx 
+            ON rubber (ngay DESC);
+        """)
+        
+        # Try to create more specific indexes if columns exist
+        try:
+            self.env.cr.execute("""
+                CREATE INDEX IF NOT EXISTS rubber_performance_idx_extended 
+                ON rubber ("to", lo, empname, ngay);
+            """)
+        except Exception:
+            # Column might not exist yet, skip this index
+            pass
+            
+        super().init()
 
     active = fields.Boolean('Active', default=True)
     bymonth = fields.Boolean('By Month', default=True, readonly=False)
@@ -15,6 +42,7 @@ class Rubber(models.Model):
     do = fields.Float('Độ', default='0', digits='One Decimal', store=True)
     do_phancay = fields.Float('Độ CN', compute='_compute_do_phancay', digits='One Decimal', store=True)
     ghichu = fields.Char('Ghi chú')
+    #ghichu2 = fields.Text('Ghi chú chung', related='rubberbydate_id.ghi_chu', store=True)
     kichthich = fields.Boolean('KT-U', store=True, readonly=False, compute='_compute_kichthich') #Son sua
     ctktup = fields.Many2one('ctkt', string='CT úp', default=lambda self: self._default_ctkt())
     occtktup = fields.Boolean('OC CT úp', default = False, store=True)
@@ -35,6 +63,7 @@ class Rubber(models.Model):
     nam = fields.Char('Năm', related='rubberbydate_id.nam')
     quykho = fields.Float('Quy khô', compute='_compute_quykho', store=True, digits='One Decimal')
     quykho_drc = fields.Float('QK-DRC', compute='_compute_quykho', store=True, digits='One Decimal')        
+    quykho_drc_lk = fields.Float('QK-Lũykế', compute='_compute_quykholuyke', digits='One Decimal')
     dongia_nuoc = fields.Float('Giá nước', digits='Product Price')
     dongia_day = fields.Float('Giá dây', digits='Product Price')
     dongia_dong = fields.Float('Giá đông', digits='Product Price')
@@ -57,28 +86,75 @@ class Rubber(models.Model):
             rec.empname = rec.rubbersalary_id.employee_id.name or False
     planname = fields.Selection(related='plantation_id.sttcn', store=True)    
     to = fields.Char('Tổ', compute='_compute_to', store=True)
-
+    
     @api.depends('rubberbydate_id.to', 'rubberbydate_id.to.name')
     def _compute_to(self):
         for rec in self:
             rec.to = rec.rubberbydate_id.to.name if rec.rubberbydate_id.to else False
     miengcao = fields.Char('Miệng cạo', related='rubberbydate_id.miengcao', store=True, readonly=False) #Son them
-    thoitiet = fields.Char('Thời tiết', related='rubberbydate_id.thoitiet', store=True, readonly=False) #Son them
-    
-    mulantruoc = fields.Float('Lần trước', default='0',store=True, digits='Product Unit of Measure')
-    chenhlechmu = fields.Float('Mũ +/-', default='0', store=True, digits='Product Unit of Measure')
-    chenhlechmu_state = fields.Boolean('CLM', default=True,store=True)
-    mudaotruoc = fields.Float('Dao trước', default='0',store=True, digits='Product Unit of Measure')
-    chenhlechkho = fields.Float('Khô +/-', default='0',store=True, digits='One Decimal')
-    chenhlechkho_state = fields.Boolean('CLK', default=True,store=True)
+    thoitiet = fields.Char('Thời tiết', related='rubberbydate_id.thoitiet', store=True, readonly=False) #Son them    
+    mulantruoc = fields.Float('Lần trước', default='0', compute='_compute_mulantruoc', digits='Product Unit of Measure')
+    chenhlechmu = fields.Float('Mũ +/-', default='0', compute='_compute_mulantruoc', digits='Product Unit of Measure')    
+    mudaotruoc = fields.Float('Dao trước', default='0', compute='_compute_mulantruoc', digits='Product Unit of Measure')
+    kholantruoc = fields.Float('Khô lần trước', default='0', compute='_compute_mulantruoc', digits='One Decimal')
+    chenhlechkho = fields.Float('Khô +/-', default='0', compute='_compute_mulantruoc', digits='One Decimal')    
     daoup = fields.Integer(related='rubberbydate_id.daoup',store=True, digits='Product Unit of Measure')
-    nam_kt = fields.Char('Năm khai thác', related='rubberbydate_id.nam_kt')
+    nam_kt = fields.Char('Năm khai thác', related='rubberbydate_id.nam_kt', store=True)
     tientangdg = fields.Float('Tiền tăng đơn giá', compute='_compute_tientang', digits='Product Price')
     phep = fields.Selection([
         ('ko', 'Ko nghỉ'), ('cp', 'Có phép'), ('kp', 'Ko phép')
     ], string='Nghỉ', default='ko', required=True)
     caoxa = fields.Boolean('Cạo xả', default=True, readonly=True)
     
+
+    @api.depends('cong', 'quykho', 'nam_kt')  # Simplified dependencies - only recalculate when current record changes
+    def _compute_mulantruoc(self):
+        # Batch process to avoid N+1 queries
+        if not self:
+            return
+            
+        # Create a cache for previous records to avoid repeated queries
+        cache = {}
+        
+        for rec in self:
+            # Create unique cache keys
+            cache_key_1 = (rec.to, rec.lo, rec.empname, rec.nam_kt, rec.lan_kt, rec.dao_kt)
+            cache_key_2 = (rec.to, rec.lo, rec.empname, rec.nam_kt)
+            
+            # Get previous record for mulantruoc (with lan_kt condition)
+            if cache_key_1 not in cache:
+                rb = self.env['rubber'].search([
+                    ('to','=',rec.to),
+                    ('lo','=',rec.lo),
+                    ('empname','=',rec.empname),
+                    ('nam_kt','=',rec.nam_kt),
+                    ('ngay','<',rec.ngay),
+                    ('lan_kt','<',rec.lan_kt),
+                    ('dao_kt','=',rec.dao_kt)
+                ], order="ngay desc", limit=1)
+                cache[cache_key_1] = rb
+            else:
+                rb = cache[cache_key_1]
+                
+            rec.mulantruoc = rb.cong if rb else 0
+            rec.chenhlechmu = rec.cong - rec.mulantruoc if rb else 0
+            rec.kholantruoc = rb.quykho if rb else 0
+            rec.chenhlechkho = (rec.quykho - rec.kholantruoc)/rec.kholantruoc if rb and rec.kholantruoc != 0 else 0
+            
+            # Get previous record for mudaotruoc (without lan_kt condition)
+            if cache_key_2 not in cache:
+                rb2 = self.env['rubber'].search([
+                    ('to','=',rec.to),
+                    ('lo','=',rec.lo),
+                    ('empname','=',rec.empname),
+                    ('nam_kt','=',rec.nam_kt),
+                    ('ngay','<',rec.ngay)
+                ], order="ngay desc", limit=1)
+                cache[cache_key_2] = rb2
+            else:
+                rb2 = cache[cache_key_2]
+                
+            rec.mudaotruoc = rb2.cong if rb2 else 0
     @api.depends('ctktup') # Add the appropriate dependencies
     def _compute_kichthich(self):
         for rec in self:
@@ -239,17 +315,40 @@ class Rubber(models.Model):
         for rec in self:
             rec.cong = rec.congnuoc + rec.congtap
 
-    @api.depends('cong','do_phancay')
-    def _compute_quykho(self):            
+    @api.depends('cong','do_phancay', 'muday', 'muchen', 'mudong')
+    def _compute_quykho(self):   #Trinh báo mũ đông xe tải =33 nên lấy bằng mũ nước, mũ chén tổ 75 năm 2025 là 58, mũ dây dao động từ 55-58         
         for rec in self:
             # base khô and DRC
-            rec.quykho   = rec.cong * rec.do_phancay / 100
-            rec.quykho_drc   = rec.cong * (rec.do_phancay - 3) / 100          
+            rec.quykho   = ((rec.cong + rec.mudong)* rec.do_phancay + (rec.muday + rec.muchen)*55 ) / 100
+            rec.quykho_drc   = ((rec.cong + rec.mudong) * (rec.do_phancay - 3) + (rec.muday + rec.muchen + rec.mudong)*52) / 100
+    @api.depends('quykho_drc')
+    def _compute_quykholuyke(self): 
+        for rec in self:
+            if not rec.ngay or not rec.to or not rec.empname:
+                rec.quykho_drc_lk = 0
+                continue
+                
+            ngay = rec.ngay.strftime("%d")
+            thang = rec.ngay.strftime("%m")
+            nam = rec.ngay.strftime("%Y")
+            
+            # More efficient query: only get records for this specific employee in this month
+            qks = self.env['rubber'].search([
+                ('to','=',rec.to),
+                ('empname','=',rec.empname),
+                ('thang','=',thang),
+                ('nam','=',nam),
+                ('ngay','<=',rec.ngay)
+            ], order="ngay asc")
+            
+            quykho_lk = sum(qk.quykho_drc for qk in qks)
+            rec.quykho_drc_lk = quykho_lk
 
-    @api.depends('quykho','dongia_nuoc')
+
+    @api.depends('cong','do_phancay','dongia_nuoc')
     def _compute_tiennuoc(self):
         for rec in self:
-            rec.tiennuoc = rec.quykho * rec.dongia_nuoc
+            rec.tiennuoc = rec.cong * rec.do_phancay/100 * rec.dongia_nuoc
 
     @api.depends('muday','dongia_day')
     def _compute_tienday(self):
@@ -266,10 +365,10 @@ class Rubber(models.Model):
         for rec in self:
             rec.tiendong = rec.mudong * rec.dongia_dong
 
-    @api.depends('quykho','dongia_tang')
+    @api.depends('cong','do_phancay','dongia_tang')
     def _compute_tientang(self):
         for rec in self:
-            rec.tientangdg = rec.quykho * rec.dongia_tang
+            rec.tientangdg = rec.cong * rec.do_phancay/100 * rec.dongia_tang
 
     @api.depends('tiennuoc','tienday','phucap')
     def _compute_tongtien(self):
@@ -282,4 +381,90 @@ class Rubber(models.Model):
             if rec.do == 0:
                 rec.do_phancay = rec.rubberbydate_id.do_giao
             else:
-                rec.do_phancay = rec.do + rec.rubberbydate_id.do_giao - rec.rubberbydate_id.do_tb
+                if rec.rubberbydate_id.do_giao != 0:
+                    rec.do_phancay = rec.do + rec.rubberbydate_id.do_giao - rec.rubberbydate_id.do_tb
+                else:
+                    rec.do_phancay = rec.do 
+    def recompute_quykho_selected(self):
+        """
+        Server action method to recompute quy kho for selected records
+        """
+        for record in self:
+            record._compute_quykho()
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Recompute Complete',
+                'message': f'Quy khô has been recomputed for {len(self)} record(s)',
+                'type': 'success',
+                'sticky': False,
+            }
+        }
+
+    @api.model
+    def recompute_quykho_all(self):
+        """
+        Server action method to recompute quy kho for ALL rubber records
+        """
+        all_records = self.search([])
+        total_count = len(all_records)
+        
+        for record in all_records:
+            record._compute_quykho()
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Mass Recompute Complete',
+                'message': f'Quy khô has been recomputed for ALL {total_count} rubber record(s)',
+                'type': 'success',
+                'sticky': True,
+            }
+        }
+
+    def recompute_mulantruoc_batch(self):
+        """
+        Optimized method to recompute mulantruoc fields in batches
+        """
+        # Process in smaller batches to avoid memory issues
+        batch_size = 100
+        total_records = len(self)
+        
+        for i in range(0, total_records, batch_size):
+            batch = self[i:i+batch_size]
+            batch._compute_mulantruoc()
+            # Commit every batch to avoid long transactions
+            self.env.cr.commit()
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Batch Recompute Complete',
+                'message': f'Mulantruoc fields recomputed for {total_records} records in batches',
+                'type': 'success',
+                'sticky': False,
+            }
+        }
+    @api.model
+    def recompute_do_phancay_all(self):
+        """
+        Server action method to recompute do_phancay for ALL rubber records
+        """
+        all_records = self.search([])
+        total_count = len(all_records)
+        for record in all_records:
+            record._compute_do_phancay()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Mass Recompute Complete',
+                'message': f'do_phancay has been recomputed for ALL {total_count} rubber record(s)',
+                'type': 'success',
+                'sticky': True,
+            }
+        }

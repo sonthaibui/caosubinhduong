@@ -18,8 +18,8 @@
                       <field name="mulantruoc" style="border-top-style: solid !important;border-width: 1px !important" optional="show"/>
                       <field name="do_phancay" style="border-top-style: solid !important;border-width: 1px !important"/>
                       <field name="quykho" style="border-top-style: solid !important;border-width: 1px !important"/>
-                      <field name="chenhlechkho" decoration-success="chenhlechkho_state == True" decoration-danger="chenhlechkho_state == False"  widget="percentage" optional="show"/>
-                      <field name="chenhlechkho_state" optional="hide"/>
+                      <field name="chenhlechkho" decoration-success="chenhlechkho &gt;0" decoration-danger="chenhlechkho &lt;0" widget="percentage" digits="[42, 0]" optional="show"/>
+                      
                       <field name="mudong" style="border-top-style: solid !important;border-width: 1px !important" optional ="hide"/>
                       <field name="muday" style="border-top-style: solid !important;border-width: 1px !important" optional ="hide"/>
                       <field name="kichthich" style="border-top-style: solid !important;border-width: 1px !important"/>

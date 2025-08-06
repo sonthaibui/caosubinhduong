@@ -169,7 +169,7 @@ class RubberSalary(models.Model):
                 ('nam', '=', rec.nam),
                 ('allowancebymonth_id.department_id', '=', rec.to.id)
             ])
-            if als:                
+            if als:
                 rec.boithuoc = als[0].boithuoc
                 rec.boikeo = als[0].boikeo
                 rec.ghichu = als[0].ghichu
@@ -264,6 +264,7 @@ class RubberSalary(models.Model):
                 rec.banlinhtinh = 0
                 rec.tongluong = 0
                 rec.conlai = 0
+                rec.luong_nam_ngoai = 0
 
     @api.depends('rubber_line_ids')
     def _compute_khotien(self):

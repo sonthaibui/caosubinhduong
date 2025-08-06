@@ -58,21 +58,22 @@
             <field name="rubbersalary_id" widget="many2onebutton"/>-->
             <field name="plantation_id" optional="hide"/>
             <field name="rubbersalary_id"/>
-            <field name="lo"/>
-            <field name="planname"/>
+            <field name="lo" optional="hide"/>
+            <field name="planname" optional="hide"/>
             <field name="ngay"/>
+            <field name="cong" digits="[42, 0]"/>
             <field name="thang" optional="hide"/>
             <field name="nam" optional="hide"/>
-            <field name="nam_kt" optional="show"/>    
-            <field name="mulantruoc" optional="show"/>
-            <field name="chenhlechmu" decoration-success="chenhlechmu_state == True" decoration-danger="chenhlechmu_state == False" optional="show"/>
-            <field name="chenhlechmu_state" optional="hide"/>       
-            <field name="mudaotruoc" optional="show"/>
-            <field name="cong"/>
+            <field name="nam_kt" optional="hide"/>    
+            <field name="mulantruoc" optional="show" digits="[42, 0]"/>
+            <field name="chenhlechmu" decoration-success="chenhlechmu &gt;0" decoration-danger="chenhlechmu &lt;0" digits="[42, 0]" optional="show"/>                   
+            <field name="mudaotruoc" optional="hide"/>            
             <field name="do_phancay"/>
-            <field name="quykho"/>
-            <field name="chenhlechkho" decoration-success="chenhlechkho_state == True" decoration-danger="chenhlechkho_state == False"  widget="percentage" optional="show"/>
-            <field name="chenhlechkho_state" optional="hide"/>
+            <field name="quykho" optional="show"/>
+            <field name="quykho_drc" optional="hide"/>
+            <field name="kholantruoc" optional="show"/>            
+            <field name="chenhlechkho" decoration-success="chenhlechkho &gt;0" decoration-danger="chenhlechkho &lt;0" widget="percentage" digits="[42, 0]" optional="show"/>            
+            <field name="quykho_drc_lk" optional="hide"/>
             <field name="dongia_nuoc" optional="hide"/>              
             <field name="tiennuoc" optional="hide"/>
             <field name="muday" optional="hide"/>
@@ -111,6 +112,7 @@
           <search>
             <field name="ngay" />
             <filter name="2024" string="2024" domain="[('ngay','&lt;=',time.strftime('2025-01-31')),('ngay','&gt;=',time.strftime('2024-02-01'))]"/>
+            <filter name="2025" string="2025" domain="[('ngay','&lt;=',time.strftime('2026-01-31')),('ngay','&gt;=',time.strftime('2025-02-01'))]"/>
             <group expand="0" string="Group By">
               <filter name="to" string="Tổ" context="{'group_by': 'to'}"/>
               <filter name="lo" string="Lô" context="{'group_by': 'lo'}"/>
@@ -129,7 +131,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">rubber</field>
         <field name="view_mode">tree,form,pivot</field>
-        <field name="context">{"search_default_to":1, "search_default_lo":1, "search_default_CN":1, "search_default_2024":1,}</field>
+        <field name="context">{"search_default_to":1, "search_default_lo":1, "search_default_STT":1}</field>
         <field name="help" type="html">
             <p>
                 Sản lượng công nhân cạo.

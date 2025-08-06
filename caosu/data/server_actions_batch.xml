@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Server Action for Batch Recompute Mulantruoc -->
+        <record id="action_recompute_mulantruoc_batch" model="ir.actions.server">
+            <field name="name">Recompute Mulantruoc (Batch)</field>
+            <field name="model_id" ref="model_rubber"/>
+            <field name="binding_model_id" ref="model_rubber"/>
+            <field name="state">code</field>
+            <field name="code">
+if records:
+    records.recompute_mulantruoc_batch()
+            </field>
+        </record>
+        
+        <!-- Server Action for All Records Batch Recompute -->
+        <record id="action_recompute_mulantruoc_all_batch" model="ir.actions.server">
+            <field name="name">Recompute Mulantruoc ALL (Batch)</field>
+            <field name="model_id" ref="model_rubber"/>
+            <field name="binding_model_id" ref="model_rubber"/>
+            <field name="state">code</field>
+            <field name="code">
+# Get all rubber records and recompute in batches
+all_records = env['rubber'].search([])
+all_records.recompute_mulantruoc_batch()
+            </field>
+        </record>
+    </data>
+</odoo>
