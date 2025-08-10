@@ -6,8 +6,7 @@ __pycache__/
 *.pyc
 __pycache__/
 # Ignore specific directories and their contents
-accounting_pdf_reports/
-base_account_budget/
+
 
 # Add any other directories or files you want to ignore
 # For example:
